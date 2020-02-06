@@ -1,6 +1,9 @@
 package com.example.security;
 
-import static com.example.security.ApplicationUserRole.*;
+import static com.example.security.ApplicationUserRole.ADMIN;
+import static com.example.security.ApplicationUserRole.USER;
+
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 
 @Configuration
@@ -32,15 +37,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
-                .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/h2-console/**").permitAll()
-                .antMatchers("/admin/**").hasRole(ADMIN.name())
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic();
+            .csrf()
+            	.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            	.ignoringAntMatchers("/h2-console/**")
+            .and()
+              .authorizeRequests()
+              .antMatchers("/", "index", "/css/*", "/js/*", "/h2-console/**").permitAll()
+              .antMatchers("/admin/**").hasRole(ADMIN.name())
+              .anyRequest()
+              .authenticated()
+            .and()
+            	.headers().frameOptions().disable()
+            .and()
+            	.httpBasic();
     }
 
     @Override
