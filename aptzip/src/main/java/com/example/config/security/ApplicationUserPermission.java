@@ -1,7 +1,9 @@
-package com.example.security;
+package com.example.config.security;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public enum ApplicationUserPermission {
 	USER_READ("user:read"),
@@ -11,8 +13,4 @@ public enum ApplicationUserPermission {
 
   private final String permission;
 
-  ApplicationUserPermission(String permission) {
-      this.permission = permission;
-  }
-  
 }

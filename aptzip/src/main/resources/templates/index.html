@@ -42,7 +42,7 @@
                 <!-- /toggle mobile menu -->
                 <!-- logo -->
                 <div class="tt-logo">
-                    <a href="index.html"><img src="images/logo.png" alt=""></a>
+                    <a href="/"><img src="images/logo.png" alt=""></a>
                 </div>
                 <!-- /logo -->
                 <!-- desctop menu -->
@@ -55,7 +55,7 @@
                             <li>
                                 <a href="page-single-user.html"><span>Pages</span></a>
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="/">Home</a></li>
                                     <li><a href="page-single-topic.html">Single Topic</a></li>
                                     <li><a href="page-create-topic.html">Create Topic</a></li>
                                     <li><a href="page-single-user.html">Single User Activity</a></li>
@@ -65,7 +65,7 @@
                                     <li><a href="page-single_categories.html">Single User Categories</a></li>
                                     <li><a href="page-single_settings.html">Single User Settings</a></li>
                                     <li><a href="page-signup.html">Sign up</a></li>
-                                    <li><a href="page-login.html">Log in</a></li>
+                                    <li><a href="page-login">Log in</a></li>
                                     <li><a href="page-categories.html">Categories</a></li>
                                     <li><a href="page-categories-single.html">Single Category</a></li>
                                     <li><a href="page-tabs.html">About</a></li>
@@ -166,8 +166,8 @@
             </div>
             <div class="col-auto ml-auto">
                 <div class="tt-account-btn">
-                    <a href="page-login.html" class="btn btn-primary">Log in</a>
-                    <a href="page-signup.html" class="btn btn-secondary">Sign up</a>
+                    <a href="/user/go/login" class="btn btn-primary">Log in</a>
+                    <a href="/user/go/signup" class="btn btn-secondary">Sign up</a>
                 </div>
             </div>
         </div>
@@ -374,8 +374,8 @@
                     Looks like you are new here. Register for free, learn and contribute.
                 </div>
                 <div class="tt-col-btn">
-                    <button type="button" class="btn btn-primary">Log in</button>
-                    <button type="button" class="btn btn-secondary">Sign up</button>
+                    <button type="button" class="btn btn-primary" onclick="location.href='login'">Log in</button>
+                    <button type="button" class="btn btn-secondary" onclick="location.href='signup'">Sign up</button>
                     <button type="button" class="btn-icon">
                         <svg class="tt-icon">
                           <use xlink:href="#icon-cancel"></use>

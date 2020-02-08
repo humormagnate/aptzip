@@ -6,10 +6,10 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Forum - Responsive HTML5 Template">
     <meta name="author" content="Forum">
-    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="shortcut icon" href="/favicon/favicon.ico">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css"><!-- css/style.css = /user/css/style.css, /css/style.css = /css/style.css -->
 </head>
 <body>
 <!-- tt-mobile menu -->
@@ -33,19 +33,19 @@
     <div class="container">
         <div class="tt-loginpages-wrapper">
             <div class="tt-loginpages">
-                <a href="index.html" class="tt-block-title">
-                    <img src="images/logo.png" alt="">
+                <a href="/" class="tt-block-title">
+                    <img src="/images/logo.png" alt="">
                     <div class="tt-title">
-                        Welcome to Forum19
+                        Welcome to apt-zip
                     </div>
                     <div class="tt-description">
                        Log into your account to unlock true power of community.
                     </div>
                 </a>
-                <form class="form-default">
+                <form class="form-default" action="login" method="post">
                     <div class="form-group">
                         <label for="loginUserName">Username</label>
-                        <input type="text" name="name" class="form-control" id="loginUserName" placeholder="type your ID">
+                        <input type="text" name="name" class="form-control" id="loginUserName" placeholder="your name">
                     </div>
                     <div class="form-group">
                         <label for="loginUserPassword">Password</label>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <a href="#" class="btn btn-secondary btn-block">Log in</a>
+                        <a href="/user/login" class="btn btn-secondary btn-block">Log in</a>
                     </div>
                     <p>Or login with social network</p>
                     <div class="row">
@@ -98,17 +98,17 @@
                             </div>
                         </div>
                     </div>
-                    <p>Don’t have an account? <a href="#" class="tt-underline">Signup here</a></p>
+                    <p>Don’t have an account? <a href="signup" class="tt-underline">Signup here</a></p>
                     <div class="tt-notes">
                         By Logging in, signing in or continuing, I agree to
-                        Forum19’s <a href="#" class="tt-underline">Terms of Use</a> and <a href="#" class="tt-underline">Privacy Policy.</a>
+                        aptzip’s <a href="#" class="tt-underline">Terms of Use</a> and <a href="#" class="tt-underline">Privacy Policy.</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </main>
-<script src="js/bundle.js"></script>
+<script src="/js/bundle.js"></script>
 <svg width="0" height="0" class="hidden">
 	 <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
     <path fill="currentColor" d="M215.8 85H264V3.6C255.7 2.5 227.1 0 193.8 0 124.3 0 76.7 42.4 76.7 120.3V192H0v91h76.7v229h94V283h73.6l11.7-91h-85.3v-62.7c0-26.3 7.3-44.3 45.1-44.3z"></path>

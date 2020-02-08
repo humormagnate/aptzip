@@ -1,20 +1,20 @@
 package com.example.domain;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,29 +23,33 @@ import lombok.ToString;
 @Entity
 @Table(name = "TB_USER")
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 	
 	@Id
-	@Column
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String userId;
 	
-  @Column
+  @Column(nullable = false)
 	private String email;
   @Column
+  private String phone;
+  @Column(nullable = false)
 	private String password;
-  @Column
+  @Column(nullable = false)
 	private String userName;
   @Column
 	private String address;
   @Column
 	private String gender;
   @Column
+  @Lob
 	private String introduction;
-  @Column
+  @Column(nullable = false)
   @CreatedDate
 	private Timestamp signUpDate;
-  @Column
+  @Column(nullable = false)
 	private int reported;
 	
   // @OneToMany(fetch = FetchType.LAZY)

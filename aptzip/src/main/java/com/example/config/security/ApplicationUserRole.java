@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.config.security;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.google.common.collect.Sets;
 
-import static com.example.security.ApplicationUserPermission.*;
+import static com.example.config.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
 	USER(Sets.newHashSet()),
