@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
         .antMatchers("/**").permitAll()
         .antMatchers("/admin/**").hasRole("ADMIN")
-        .antMatchers("/user/myinfo").hasRole("USER")
+        .antMatchers("/user/info").hasRole("USER")
         .anyRequest().authenticated()
       // .and()
       //  .exceptionHandling().accessDeniedPage("/denied")
@@ -73,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    //   .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
 	    //   .key("somethingverysecured")
 	    //   .rememberMeParameter("remember-me")
-      //   .and() => userdetailsservice is required (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
+      //   .and()
+      // => userdetailsservice is required (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
       .logout()
         .logoutUrl("/user/logout")
         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout", "GET")) // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html

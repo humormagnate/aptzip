@@ -1,15 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Forum - Responsive HTML5 Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Forum - Responsive HTML5 Template">
-    <meta name="author" content="Forum">
-    <link rel="shortcut icon" href="favicon/favicon.ico">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/style.css">
+    <div th:replace="fragments/header :: header" />
 </head>
 <body>
 <!-- tt-mobile menu -->
@@ -221,8 +213,8 @@
         <div class="tt-tab-wrapper">
             <div class="tt-wrapper-inner">
                 <ul class="nav nav-tabs pt-tabs-default" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link " data-toggle="tab" href="#tt-tab-01" role="tab"><span>Activity</span></a>
+                    <li class="nav-item show">
+                        <a class="nav-link active" data-toggle="tab" href="#tt-tab-01" role="tab"><span>Activity</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#tt-tab-02" role="tab"><span>Threads</span></a>
@@ -236,13 +228,13 @@
                     <li class="nav-item tt-hide-md">
                         <a class="nav-link" data-toggle="tab" href="#tt-tab-05" role="tab"><span>489 Following</span></a>
                     </li>
-                    <li class="nav-item tt-hide-md show">
-                        <a class="nav-link active" data-toggle="tab" href="#tt-tab-06" role="tab"><span>Categories</span></a>
+                    <li class="nav-item tt-hide-md">
+                        <a class="nav-link" data-toggle="tab" href="#tt-tab-06" role="tab"><span>Categories</span></a>
                     </li>
                 </ul>
             </div>
             <div class="tab-content">
-                <div class="tab-pane tt-indent-none" id="tt-tab-01" role="tabpanel">
+                <div class="tab-pane tt-indent-none  show active" id="tt-tab-01" role="tabpanel">
                    <div class="tt-topic-list">
                         <div class="tt-list-header">
                             <div class="tt-col-topic">Topic</div>
@@ -2095,7 +2087,7 @@
 
                     </div>
                 </div>
-                <div class="tab-pane show active" id="tt-tab-06" role="tabpanel">
+                <div class="tab-pane" id="tt-tab-06" role="tabpanel">
                     <div class="tt-wrapper-inner">
                         <div class="tt-categories-list">
                             <div class="row">
