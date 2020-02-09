@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+게시판 상세보기<br>
+[[${b}]]<br>
+<a th:href="@{edit(bid=${b.bid})}">수정</a>
+<a href="list">목록</a>
+<a href="del">삭제</a>
+</body>
+</html>

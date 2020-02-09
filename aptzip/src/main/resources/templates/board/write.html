@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-게시판 글쓰기<br>
-<form action="write" method="post">
-	제목<input name="title" th:value=${vo.title}"><br>
-	작성자<input name="user_id" th:value=${vo.user_id}"><br>
-	내용<input name="content" th:value=${vo.content}"><br>
-	<button>글쓰기</button>
-</form>	
+게시판  
+[[${b}?'수정':'글쓰기']]<br>
+<form th:action="@{${b}?'edit':'write'}" method="post">
+	카테<input name="category" th:value="${b}?${b.category}:''"><br>
+	apt_id<input name="apt_id" th:value="${b}?${b.apt_id}:''"><br>
+	제목<input name="title" th:value="${b}?${b.title}:''"><br>
+	글쓴<input name="user_id" th:value="${b}?${b.user_id}:''"><br>
+	내용<input name="content" th:value="${b}?${b.content}:''"><br>
+	<button th:text="${b}?'수정':'글쓰기'"></button>
+</form>
 </body>
 </html>

@@ -12,7 +12,7 @@
 			<td>MID</td>
 		</tr>
 		<tr th:each="b:${list}">
-			<td th:text="${b}"></td>
+			<td><a th:href="${b.bid}">[[${b}]]</a></td>
 		</tr>
 	</table>
 </body>

@@ -1,10 +1,13 @@
 package com.example.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -31,6 +34,9 @@ public class Board {
 	private String apt_id;
 	private String title;
 	private String content;
+	
+	@Column(nullable=false)
+	@ColumnDefault("Y")
 	private String del_yn;
 	private String createdate;
 	private String updatedate;
