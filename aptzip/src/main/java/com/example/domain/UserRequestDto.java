@@ -47,11 +47,13 @@ public class UserRequestDto {
 	private String introduction;
 	private Timestamp signUpDate;
 	private int reported;
-	private List<UserRole> roles;
+	// private List<UserRole> roles;
+	private String role;
 
 	public User toEntity() {
 		// String[] phones = parsePhone();
-		return new User(userId, email, phone, password, userName, address, gender, introduction, new Timestamp(System.currentTimeMillis()), reported);
+		// return new User(userId, email, phone, password, userName, address, gender, introduction, new Timestamp(System.currentTimeMillis()), reported);
+		return new User(userId, email, phone, password, userName, address, gender, introduction, new Timestamp(System.currentTimeMillis()), reported, role);
 		// return new User(userId, email, phone, password, userName, address, gender, introduction, new Timestamp(System.currentTimeMillis()), reported, roles);
 	}
 

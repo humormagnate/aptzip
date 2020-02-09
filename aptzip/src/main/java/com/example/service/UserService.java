@@ -23,9 +23,10 @@ import com.example.domain.UserRole;
 import com.example.persistence.UserRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
-@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
   @Autowired
@@ -54,18 +55,18 @@ public class UserService implements UserDetailsService {
     
     /* 존재하지 않는 사용자일 경우 */
     if (user == null) {
-        throw new UsernameNotFoundException("Not found " + email);
+      throw new UsernameNotFoundException("Not found " + email);
     }
-
+    log.info("===============================UserService-loadUserByUsername=====================================");
     List<GrantedAuthority> authorities = new ArrayList<>();
 
-    if ((user.getEmail()).equals(email)) {
-        authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+    if (user.getRole().equals("USER")) {
+      authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
     } else {
-        authorities.add(new SimpleGrantedAuthority(UserRole.MEMBER.getValue()));
+      authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
     }
     
-    // role.forEach( role -> list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole())));
+    // roles.forEach( role -> list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole())));
 
     return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
   }
