@@ -1,6 +1,5 @@
 package com.example.service;
 
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +21,6 @@ import com.example.domain.UserResponseDto;
 import com.example.domain.UserRole;
 import com.example.persistence.UserRepository;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -60,7 +58,7 @@ public class UserService implements UserDetailsService {
     log.info("===============================UserService-loadUserByUsername=====================================");
     List<GrantedAuthority> authorities = new ArrayList<>();
 
-    if (user.getRole().equals("USER")) {
+    if (user.getRole() != null && user.getRole().equals("USER")) {
       authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
     } else {
       authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));

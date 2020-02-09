@@ -33,8 +33,8 @@ Context Root (localhost:XXXX/aptzip)
 
 ## Authors
 
-* **이두영** - *Board* - [dooyounglee](https://github.com/dooyounglee)
-* **임창수** - *User* - [humormagnate](https://github.com/humormagnate)
+* **이두영** - [dooyounglee](https://github.com/dooyounglee)
+* **임창수** - [humormagnate](https://github.com/humormagnate)
 
 See also the list of [contributors](https://github.com/humormagnate/aptzip/graphs/contributors) who participated in this project.
 
