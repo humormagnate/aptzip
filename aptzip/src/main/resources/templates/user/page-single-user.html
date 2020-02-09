@@ -1,181 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <div th:replace="fragments/header :: header" />
 </head>
 <body>
-<!-- tt-mobile menu -->
-<nav class="panel-menu" id="mobile-menu">
-    <ul>
-
-    </ul>
-    <div class="mm-navbtn-names">
-        <div class="mm-closebtn">
-            Close
-            <div class="tt-icon">
-                <svg>
-                  <use xlink:href="#icon-cancel"></use>
-                </svg>
-            </div>
-        </div>
-        <div class="mm-backbtn">Back</div>
-    </div>
-</nav>
-<header id="tt-header">
-    <div class="container">
-        <div class="row tt-row no-gutters">
-            <div class="col-auto">
-                <!-- toggle mobile menu -->
-                <a class="toggle-mobile-menu" href="#">
-                    <svg class="tt-icon">
-                      <use xlink:href="#icon-menu_icon"></use>
-                    </svg>
-                </a>
-                <!-- /toggle mobile menu -->
-                <!-- logo -->
-                <div class="tt-logo">
-                    <a href="index.html"><img src="images/logo.png" alt=""></a>
-                </div>
-                <!-- /logo -->
-                <!-- desctop menu -->
-                  <div class="tt-desktop-menu">
-                    <nav>
-                        <ul>
-                            <li><a href="page-categories.html"><span>Categories</span></a></li>
-                            <li><a href="page-tabs.html"><span>Trending</span></a></li>
-                            <li><a href="page-create-topic.html"><span>New</span></a></li>
-                            <li>
-                                <a href="page-single-user.html"><span>Pages</span></a>
-                                <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="page-single-topic.html">Single Topic</a></li>
-                                    <li><a href="page-create-topic.html">Create Topic</a></li>
-                                    <li><a href="page-single-user.html">Single User Activity</a></li>
-                                    <li><a href="page-single_threads.html">Single User Threads</a></li>
-                                    <li><a href="page-single_replies.html">Single User Replies</a></li>
-                                    <li><a href="page-single_followers.html">Single User Followers</a></li>
-                                    <li><a href="page-single_categories.html">Single User Categories</a></li>
-                                    <li><a href="page-single_settings.html">Single User Settings</a></li>
-                                    <li><a href="page-signup.html">Sign up</a></li>
-                                    <li><a href="page-login.html">Log in</a></li>
-                                    <li><a href="page-categories.html">Categories</a></li>
-                                    <li><a href="page-categories-single.html">Single Category</a></li>
-                                    <li><a href="page-tabs.html">About</a></li>
-                                    <li><a href="page-tabs_guidelines.html">Guidelines</a></li>
-                                    <li><a href="_demo_modal-advancedSearch.html">Advanced Search</a></li>
-                                    <li><a href="error404.html">Error 404</a></li>
-                                    <li><a href="_demo_modal-age-confirmation.html">Age Verification</a></li>
-                                    <li><a href="_demo_modal-level-up.html">Level up Notification</a></li>
-                                    <li><a href="messages-page.html">Message</a></li>
-                                    <li><a href="messages-compose.html">Message Compose</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <!-- /desctop menu -->
-                <!-- tt-search -->
-                <div class="tt-search">
-                    <!-- toggle -->
-                    <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
-                       <svg class="tt-icon">
-                          <use xlink:href="#icon-search"></use>
-                        </svg>
-                    </button>
-                    <!-- /toggle -->
-                    <form class="search-wrapper">
-                        <div class="search-form">
-                            <input type="text" class="tt-search__input" placeholder="Search">
-                            <button class="tt-search__btn" type="submit">
-                               <svg class="tt-icon">
-                                  <use xlink:href="#icon-search"></use>
-                                </svg>
-                            </button>
-                             <button class="tt-search__close">
-                               <svg class="tt-icon">
-                                  <use xlink:href="#cancel"></use>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="search-results">
-                            <div class="tt-search-scroll">
-                                <ul>
-                                    <li>
-                                        <a href="page-single-topic.html">
-                                            <h6 class="tt-title">Rdr2 secret easter eggs</h6>
-                                            <div class="tt-description">
-                                               Here’s what I’ve found in Red Dead Redem..
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                       <a href="page-single-topic.html">
-                                            <h6 class="tt-title">Top 10 easter eggs in Red Dead Rede..</h6>
-                                            <div class="tt-description">
-                                                You can find these easter eggs in Red Dea..
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                       <a href="page-single-topic.html">
-                                            <h6 class="tt-title">Red Dead Redemtion: Arthur Morgan..</h6>
-                                            <div class="tt-description">
-                                                Here’s what I’ve found in Red Dead Redem..
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="page-single-topic.html">
-                                            <h6 class="tt-title">Rdr2 secret easter eggs</h6>
-                                            <div class="tt-description">
-                                               Here’s what I’ve found in Red Dead Redem..
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                       <a href="page-single-topic.html">
-                                            <h6 class="tt-title">Top 10 easter eggs in Red Dead Rede..</h6>
-                                            <div class="tt-description">
-                                                You can find these easter eggs in Red Dea..
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                       <a href="page-single-topic.html">
-                                            <h6 class="tt-title">Red Dead Redemtion: Arthur Morgan..</h6>
-                                            <div class="tt-description">
-                                                Here’s what I’ve found in Red Dead Redem..
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch">Advanced Search</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- /tt-search -->
-            </div>
-            <div class="col-auto ml-auto">
-                 <div class="tt-user-info d-flex justify-content-center">
-                    <a href="#" class="tt-btn-icon">
-                         <i class="tt-icon"><svg><use xlink:href="#icon-notification"></use></svg></i>
-                    </a>
-                    <div class="tt-avatar-icon tt-size-md">
-                        <i class="tt-icon"><svg><use xlink:href="#icon-ava-a"></use></svg></i>
-                    </div>
-                    <div class="custom-select-01">
-                        <select>
-                            <option value="Default Sorting">azyrusmax</option>
-                            <option value="value 01">value 01</option>
-                            <option value="value 02">value 02</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+    <div th:replace="fragments/navbar" />
 <main id="tt-pageContent" class="tt-offset-small">
     <div class="tt-wrapper-section">
         <div class="container">
@@ -189,7 +20,7 @@
                 </div>
                 <div class="tt-col-title">
                     <div class="tt-title">
-                        <a href="#">Dylan89</a>
+                        <a href="#"><span th:text="${ principal.getName() }"></span></a>
                     </div>
                     <ul class="tt-list-badge">
                         <li><a href="#"><span class="tt-color14 tt-badge">LVL : 26</span></a></li>
@@ -2779,7 +2610,7 @@
 		</div>
 	</div>
 </div>
-<script src="js/bundle.js"></script>
+<script src="/js/bundle.js"></script>
 <svg width="0" height="0" class="hidden">
 	 <symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512" id="facebook-f-brands">
     <path fill="currentColor" d="M215.8 85H264V3.6C255.7 2.5 227.1 0 193.8 0 124.3 0 76.7 42.4 76.7 120.3V192H0v91h76.7v229h94V283h73.6l11.7-91h-85.3v-62.7c0-26.3 7.3-44.3 45.1-44.3z"></path>

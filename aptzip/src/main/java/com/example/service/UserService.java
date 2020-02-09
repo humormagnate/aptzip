@@ -66,7 +66,8 @@ public class UserService implements UserDetailsService {
     
     // roles.forEach( role -> list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole())));
 
-    return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    // Principal 로 반납되는 UserDetails
+    return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
   }
   
   

@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +47,11 @@ public class UserController {
     return "redirect:go/login";
 	}
 	
-	@GetMapping("/user/info")
-	public String userInfo() {
-		return "user/page-single-user";
+	@GetMapping("/info")
+	public ModelAndView userInfo(Principal principal, ModelAndView mv) {
+		mv.addObject("principal", principal)
+			.setViewName("user/page-single-user");
+		return mv;
 	}
 
 	@GetMapping(value = "/{test}")

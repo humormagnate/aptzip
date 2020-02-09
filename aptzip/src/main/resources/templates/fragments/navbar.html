@@ -29,7 +29,7 @@
               <!-- /toggle mobile menu -->
               <!-- logo -->
               <div class="tt-logo">
-                  <a href="/"><img src="images/logo.png" alt=""></a>
+                  <a href="/"><img src="/images/logo.png" alt=""></a>
               </div>
               <!-- /logo -->
               <!-- desctop menu -->
@@ -40,14 +40,14 @@
                           <li><a href="page-tabs.html"><span>Trending</span></a></li>
                           <li><a href="page-create-topic.html"><span>New</span></a></li>
                           <li>
-                              <a href="page-single-user.html"><span>Pages</span></a>
+                              <a href="/user/info"><span>MyPage</span></a>
                               <ul>
                                   <li><a href="/">Home</a></li>
                                   <li><a href="page-single-topic.html">Single Topic</a></li>
                                   <li><a href="page-create-topic.html">Create Topic</a></li>
                                   <li><a href="page-single-user.html">Single User Activity</a></li>
-                              </ul>
-                          </li>
+                                </ul>
+                            </li>
                       </ul>
                   </nav>
               </div>
@@ -135,6 +135,7 @@
               <!-- /tt-search -->
           </div>
           <div class="col-auto ml-auto">
+              <span th:text="${ principal } ? ${principal.getName()} : ''"></span>
               <div class="tt-account-btn">
                 <a sec:authorize="isAnonymous()" th:href="@{/user/go/login}" class="btn btn-primary">Log in</a>
                 <a sec:authorize="isAnonymous()" th:href="@{/user/go/signup}" class="btn btn-secondary">Sign up</a>
