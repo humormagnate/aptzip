@@ -2,11 +2,13 @@ package com.example.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,10 +38,11 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/login")
-	public String loginsignin(@RequestBody @Valid UserRequestDto user) {
+	public String loginsignin(UserRequestDto user, HttpSession session) {
 		log.info(user.toString());
 		log.info("login");
-		return "/";
+		
+		return "redirect:/";
 	}
 	
 	@PostMapping(value = "/logout")
@@ -53,9 +56,8 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "/signup")
-	public String signup(UserRequestDto userForm) {
-		log.info("signup");
-		System.out.println("signup");
+	public String signup(@ModelAttribute @Valid UserRequestDto userForm) {
+		log.info("signup : " + userForm);
 		userService.save(userForm);
     return "redirect:go/login";
 	}

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import lombok.AllArgsConstructor;
@@ -28,10 +30,11 @@ import lombok.ToString;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private String userId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	private int userId;
 	
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
 	private String email;
   @Column
   private String phone;

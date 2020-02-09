@@ -10,7 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class UserResponseDto {
-	private String userId;
+	private int userId;
 	private String email;
 	private String phone;
 	private String password;
