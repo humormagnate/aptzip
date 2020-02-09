@@ -36,19 +36,20 @@ public class UserController {
 		return mv;
 	}
 
-	@PostMapping(value = "/login")
-	public String loginsignin(UserRequestDto user, HttpServletRequest request) {
-		log.info(user.toString());
-		//userService.loadUserByUsername(user.getEmail());
-		String referer = request.getHeader("Referer");
-		request.getSession().setAttribute("prevPage", referer);
-		return "redirect:/";
-	}
+	// @PostMapping(value = "/login")
+	// public String loginsignin(UserRequestDto user, HttpServletRequest request) {
+	// 	log.info("============================LOGIN=========================");
+	// 	log.info(user.toString());
+	// 	//userService.loadUserByUsername(user.getEmail());
+	// 	String referer = request.getHeader("Referer");
+	// 	request.getSession().setAttribute("prevPage", referer);
+	// 	return "redirect:/";
+	// }
 	
-	@PostMapping(value = "/logout")
-	public void logout(@RequestBody @Valid UserRequestDto user) {
-		log.info("logout");
-	}
+	// @PostMapping(value = "/logout")
+	// public void logout(@RequestBody @Valid UserRequestDto user) {
+	// 	log.info("logout");
+	// }
 
 	@GetMapping(value = "/go/signup")
 	public String goSignup() {
@@ -57,6 +58,7 @@ public class UserController {
 	
 	@PostMapping(value = "/signup")
 	public String signup(@ModelAttribute @Valid UserRequestDto userForm, RedirectAttributes redirectAttributes) {
+		log.info("=============================SIGN UP================================");
 		log.info("signup : " + userForm);
 		userService.save(userForm);
 		redirectAttributes.addFlashAttribute("msg", "register success");
