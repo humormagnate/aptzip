@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+게시판 글쓰기<br>
+<form action="write" method="post">
+	제목<input name="title" th:value=${vo.title}"><br>
+	작성자<input name="user_id" th:value=${vo.user_id}"><br>
+	내용<input name="content" th:value=${vo.content}"><br>
+	<button>글쓰기</button>
+</form>	
+</body>
+</html>

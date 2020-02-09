@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+게시판<br>
+<a href="write">글쓰기</a>
+	<table>
+		<tr>
+			<td>MID</td>
+		</tr>
+		<tr th:each="b:${list}">
+			<td th:text="${b}"></td>
+		</tr>
+	</table>
+</body>
+</html>
