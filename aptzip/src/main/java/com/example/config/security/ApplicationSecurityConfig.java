@@ -98,17 +98,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //
 //	}
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-      auth.authenticationProvider(daoAuthenticationProvider());
+  @Autowired
+  protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.authenticationProvider(daoAuthenticationProvider());
   }
   
  
   @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider() {
-      DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-      provider.setPasswordEncoder(passwordEncoder);
-      provider.setUserDetailsService(applicationUserService);
-      return provider;
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setPasswordEncoder(passwordEncoder);
+    provider.setUserDetailsService(applicationUserService);
+    return provider;
   }
 }

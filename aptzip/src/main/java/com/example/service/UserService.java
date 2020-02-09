@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.domain.User;
 import com.example.domain.UserRequestDto;
 import com.example.domain.UserResponseDto;
 import com.example.persistence.UserRepository;
@@ -17,12 +19,13 @@ import lombok.AllArgsConstructor;
 @Service
 public class UserService {
 	
-	@Autowired
-	private UserRepository userRepository;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Transactional
-  public int save(UserRequestDto userRequestDto){
-    return userRepository.save(userRequestDto.toEntity()).getUserId();
+  public User save(UserRequestDto userRequestDto) {
+    userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+    return userRepository.save(userRequestDto.toEntity());
   }
 
   @Transactional(readOnly = true)

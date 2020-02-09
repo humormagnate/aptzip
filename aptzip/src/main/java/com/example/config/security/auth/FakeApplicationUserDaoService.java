@@ -13,13 +13,9 @@ import com.google.common.collect.Lists;
 
 @Repository("fake")
 public class FakeApplicationUserDaoService implements ApplicationUserDao {
-
-    private final PasswordEncoder passwordEncoder;
-
+    
     @Autowired
-    public FakeApplicationUserDaoService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<ApplicationUser> selectApplicationUserByUsername(String username) {
@@ -28,7 +24,7 @@ public class FakeApplicationUserDaoService implements ApplicationUserDao {
                 .filter(applicationUser -> username.equals(applicationUser.getUsername()))
                 .findFirst();
     }
-
+    
     private List<ApplicationUser> getApplicationUsers() {
         List<ApplicationUser> applicationUsers = Lists.newArrayList(
                 new ApplicationUser(
