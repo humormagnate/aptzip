@@ -20,7 +20,7 @@
                 </div>
                 <div class="tt-col-title">
                     <div class="tt-title">
-                        <a href="#"><span th:text="${ principal.getName() }"></span></a>
+                        <a href="#"><span th:text="${ principal } ? ${ principal.getName() } : ''"></span></a>
                     </div>
                     <ul class="tt-list-badge">
                         <li><a href="#"><span class="tt-color14 tt-badge">LVL : 26</span></a></li>
