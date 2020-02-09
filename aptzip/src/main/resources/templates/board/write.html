@@ -7,6 +7,7 @@
 게시판  
 [[${b}?'수정':'글쓰기']]<br>
 <form th:action="@{${b}?'edit':'write'}" method="post">
+	<input type=hidden name="bid" th:if="${b!=null}" th:value="${b.bid}"><br>
 	카테<input name="category" th:value="${b}?${b.category}:''"><br>
 	apt_id<input name="apt_id" th:value="${b}?${b.apt_id}:''"><br>
 	제목<input name="title" th:value="${b}?${b.title}:''"><br>

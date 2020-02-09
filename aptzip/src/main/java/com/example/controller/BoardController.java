@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.Board;
 import com.example.persistence.BoardRepository;
@@ -57,7 +58,6 @@ public class BoardController {
 	
 	@GetMapping("/{bid}")
 	public String get(Model model,@PathVariable("bid") Long bid) {
-		System.out.println(bid);
 		br.findById(bid).ifPresent(board->model.addAttribute("b", board));
 		return "/board/get";
 	}
@@ -69,13 +69,24 @@ public class BoardController {
 	}
 	
 	@PostMapping("/edit")
-	public String editPOST(Board b) {
+	public String editPOST(Board b,RedirectAttributes rttr) {
 		Date now=new Date();
-		b.setCreatedate(sdf.format(now));
 		b.setUpdatedate(sdf.format(now));
 		b.setDel_yn("N");
-		System.out.println(""+b);
-		br.save(b);
+		
+		br.findById(b.getBid()).ifPresent(origin->{
+			origin.setCategory(b.getCategory());
+			origin.setTitle(b.getTitle());
+			origin.setContent(b.getContent());
+			origin.setUpdatedate(b.getUpdatedate());
+			br.save(origin);
+		});;
+		return "redirect:/board/"+b.getBid();
+	}
+	
+	@GetMapping("/del")
+	public String delGET(Long bid) {
+		br.deleteById(bid);
 		return "redirect:/board/list";
 	}
 }
