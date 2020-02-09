@@ -1,18 +1,22 @@
 package com.example.domain;
 
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
+@Builder
 @ToString
 public class UserRequestDto {
 	
@@ -38,18 +42,20 @@ public class UserRequestDto {
 	private String introduction;
 	private Timestamp signUpDate;
 	private int reported;
+	private List<UserRole> roles;
 
 	public User toEntity() {
 		// String[] phones = parsePhone();
 		return new User(userId, email, phone, password, userName, address, gender, introduction, new Timestamp(System.currentTimeMillis()), reported);
+		// return new User(userId, email, phone, password, userName, address, gender, introduction, new Timestamp(System.currentTimeMillis()), reported, roles);
 	}
 
-	private String[] parsePhone() {
-		String[] phones = new String[3];
-		int mid = phone.length() == 10 ? 7 : 8;
-		phones[0] = phone.substring(0, 3);
-		phones[1] = phone.substring(4, mid);
-		phones[2] = phone.substring(mid, phone.length() - 1);
-		return phones;
-	}
+	// private String[] parsePhone() {
+	// 	String[] phones = new String[3];
+	// 	int mid = phone.length() == 10 ? 7 : 8;
+	// 	phones[0] = phone.substring(0, 3);
+	// 	phones[1] = phone.substring(4, mid);
+	// 	phones[2] = phone.substring(mid, phone.length() - 1);
+	// 	return phones;
+	// }
 }

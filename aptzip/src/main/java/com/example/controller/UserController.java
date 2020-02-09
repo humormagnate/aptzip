@@ -2,10 +2,9 @@ package com.example.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,10 +37,11 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/login")
-	public String loginsignin(UserRequestDto user, HttpSession session) {
+	public String loginsignin(UserRequestDto user, HttpServletRequest request) {
 		log.info(user.toString());
-		log.info("login");
-		
+		//userService.loadUserByUsername(user.getEmail());
+		String referer = request.getHeader("Referer");
+		request.getSession().setAttribute("prevPage", referer);
 		return "redirect:/";
 	}
 	

@@ -20,6 +20,7 @@ public class UserResponseDto {
 	private String introduction;
 	private Timestamp signUpDate;
 	private int reported;
+	private String role;
 	
   public UserResponseDto(User user) {
     userId = user.getUserId();
