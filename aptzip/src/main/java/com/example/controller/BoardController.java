@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.domain.Board;
+import com.example.domain.board.Board;
 import com.example.persistence.BoardRepository;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/board/")
-@Log
+@Slf4j
 public class BoardController {
 
 	@Autowired
@@ -43,6 +43,7 @@ public class BoardController {
 	
 	@GetMapping("/write")
 	public ModelAndView writeGET(Principal principal, ModelAndView mv) {
+		log.info("principal : " + principal);
 		mv.addObject("principal", principal)
 			.setViewName("/board/write");
 		return mv;

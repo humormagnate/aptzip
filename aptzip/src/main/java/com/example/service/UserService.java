@@ -1,13 +1,11 @@
 package com.example.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,10 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.domain.User;
-import com.example.domain.UserRequestDto;
-import com.example.domain.UserResponseDto;
-import com.example.domain.UserRole;
+import com.example.domain.user.AptzipUserEntity;
+import com.example.domain.user.UserRequestDto;
+import com.example.domain.user.UserResponseDto;
+import com.example.domain.user.UserRole;
 import com.example.persistence.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +32,11 @@ public class UserService implements UserDetailsService {
   private PasswordEncoder passwordEncoder;
 
   @Transactional
-  public User save(UserRequestDto userRequestDto) {
+  public AptzipUserEntity save(UserRequestDto userRequestDto) {
+    // log.info("UserService : " + userRequestDto);
     userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+    // log.info("UserService : " + userRequestDto);
+    // log.info("UserService.toEntity() : " + userRequestDto.toEntity());
     return userRepository.save(userRequestDto.toEntity());
   }
 
@@ -48,27 +49,39 @@ public class UserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Optional<User> userEntityWrapper = userRepository.findByEmail(email);
-    User user = userEntityWrapper.get();
+
+    // return type이 Optional<T>
+    Optional<AptzipUserEntity> userEntityWrapper = userRepository.findByEmail(email);
+    // Optional<T>에서 get()을 통해 T 반환
+    AptzipUserEntity user = userEntityWrapper.get();
     
-    /* 존재하지 않는 사용자일 경우 */
+    // If the user does not exist
     if (user == null) {
       throw new UsernameNotFoundException("Not found " + email);
     }
-    log.info("===============================UserService-loadUserByUsername=====================================");
-    List<GrantedAuthority> authorities = new ArrayList<>();
 
-    if (user.getRole() != null && user.getRole().equals("USER")) {
-      authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
+    log.info("===============================UserService-loadUserByUsername=====================================");
+    // List<GrantedAuthority> authorities = new ArrayList<>();
+    StringBuilder authority = new StringBuilder();
+
+    // authorization
+    if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
+      // UserBuilder creates GrantedAuthority via roles()
+      // authorities.add(new SimpleGrantedAuthority(UserRole.USER.name()));
+      authority.append(UserRole.USER.name());
     } else {
-      authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+      // authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.name()));
+      authority.append(UserRole.ADMIN.name());
     }
     
     // roles.forEach( role -> list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole())));
 
-    // Principal 로 반납되는 UserDetails
-    return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
+    // UserDetails returned to Principal
+    return User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .roles(authority.toString()) // append "ROLE_" prefix
+                .build();
   }
-  
   
 }

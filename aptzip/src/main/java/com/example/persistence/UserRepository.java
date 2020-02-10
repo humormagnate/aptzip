@@ -5,12 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import com.example.domain.User;
+import com.example.domain.user.AptzipUserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<AptzipUserEntity, Long>{
 	
-	Optional<User> findByEmail(String email);
+	Optional<AptzipUserEntity> findByEmail(String email);
 	
 	// UserResponseDto findByEmail(String email);
 	

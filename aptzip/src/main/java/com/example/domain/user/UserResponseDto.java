@@ -1,4 +1,4 @@
-package com.example.domain;
+package com.example.domain.user;
 
 import java.sql.Timestamp;
 
@@ -10,11 +10,11 @@ import lombok.ToString;
 @Getter
 @ToString
 public class UserResponseDto {
-	private int userId;
+	private long id;
 	private String email;
 	private String phone;
 	private String password;
-	private String userName;
+	private String username;
 	private String address;
 	private String gender;
 	private String introduction;
@@ -22,11 +22,11 @@ public class UserResponseDto {
 	private int reported;
 	private String role;
 	
-  public UserResponseDto(User user) {
-    userId = user.getUserId();
-    userName = user.getUserName();
-    phone = user.getPhone();
-    email = user.getEmail();
+  public UserResponseDto(AptzipUserEntity user) {
+    this.id = user.getId();
+    this.username = user.getUsername();
+    this.phone = user.getPhone();
+    this.email = user.getEmail();
   }
   
 //  private String toStringPhone(String phone1, String phone2, String phone3){

@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.example.domain.user.UserRole;
 import com.example.service.UserService;
 
 @Configuration
@@ -45,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .authorizeRequests()
         .antMatchers("/**").permitAll()
-        .antMatchers("/admin/**").hasRole("ADMIN")
-        .antMatchers("/user/info").hasRole("USER")
+        .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+        .antMatchers("/user/info").hasRole(UserRole.USER.name())
         .anyRequest().authenticated()
       // .and()
       //  .exceptionHandling().accessDeniedPage("/denied")
