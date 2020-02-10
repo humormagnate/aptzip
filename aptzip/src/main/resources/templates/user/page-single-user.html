@@ -15,7 +15,8 @@
                 <div class="tt-col-avatar">
                     <div class="tt-icon">
                        <svg class="tt-icon">
-                          <use xlink:href="#icon-ava-d"></use>
+                            <!-- Get First Letter of Name -->
+                            <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(principal.getName(), 0, 1) }"></use>
                         </svg>
                     </div>
                 </div>
