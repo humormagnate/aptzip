@@ -37,13 +37,18 @@ public class AptzipErrorController implements ErrorController {
     // resolveErrorView(request, response, status, model);
     // Map<String, Object> body = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));
     
-    log.info("=======================================erro-controller================================");
+    log.info("=======================================error-controller================================");
     log.info(statusCode);
 
     mv.addObject("statusCode", statusCode)
-      .setViewName("/error");
+      .setViewName("error");
     
     return mv;
+  }
+
+  @GetMapping("/error")
+  public String goException() {
+    return("error");
   }
 
   @Override
