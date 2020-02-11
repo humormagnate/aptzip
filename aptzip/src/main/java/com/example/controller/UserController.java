@@ -34,8 +34,12 @@ public class UserController {
 	
 	@GetMapping(value = "/go/login")
 	public ModelAndView goLogin(ModelAndView mv, HttpServletRequest request) {
+		
+		// not signup page
 		String referrer = request.getHeader("Referer");
-		request.getSession().setAttribute("prevPage", referrer);
+		if (!referrer.endsWith("signup")) {
+			request.getSession().setAttribute("prevPage", referrer);
+		}
 		
 		mv.setViewName("user/page-login");
 		return mv;

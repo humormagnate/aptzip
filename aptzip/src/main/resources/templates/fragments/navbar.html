@@ -150,7 +150,7 @@
                      <i class="tt-icon"><svg><use xlink:href="#icon-notification"></use></svg></i>
                 </a>
                 <div class="tt-avatar-icon tt-size-md">
-                    <i class="tt-icon"><svg><use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(principal.getName(), 0, 1) }"></use></svg></i>
+                    <i class="tt-icon"><svg><use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use></svg></i>
                 </div>
                 <div class="tt-btn-icon">
                     <a th:href="@{/user/logout}" class="btn btn-secondary">Log out</a>

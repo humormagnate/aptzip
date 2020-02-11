@@ -12,6 +12,7 @@ import com.example.persistence.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,10 +42,7 @@ public class UserService implements UserDetailsService {
 
   @Transactional
   public AptzipUserEntity save(UserRequestDto userRequestDto) {
-    // log.info("UserService : " + userRequestDto);
     userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-    // log.info("UserService : " + userRequestDto);
-    // log.info("UserService.toEntity() : " + userRequestDto.toEntity());
     return userRepository.save(userRequestDto.toEntity());
   }
 
@@ -58,25 +56,35 @@ public class UserService implements UserDetailsService {
   
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
+    
+    log.info("===============================UserService-loadUserByUsername start=====================================");
     // return type이 Optional<T>
     Optional<AptzipUserEntity> userEntityWrapper = userRepository.findByEmail(email);
     // Optional<T>에서 get()을 통해 T 반환
     AptzipUserEntity user = userEntityWrapper.get();
     
+    log.info("===============================UserService-loadUserByUsername get=====================================");
+    log.info("user : " + user);
     // If the user does not exist
     if (user == null) {
       throw new UsernameNotFoundException("Not found " + email);
     }
 
-    log.info("===============================UserService-loadUserByUsername=====================================");
-    log.info("email : " + email);
-    log.info("user : " + user);
-    
+    // https://otrodevym.tistory.com/entry/Spring-Security-%EC%A0%95%EB%A6%AC-4-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%8B%A4%ED%8C%A8-%ED%9B%84-%EC%B2%98%EB%A6%AC
+    // 가끔 InternalAuthenticationServiceException? 존재 하지 않는 아이디일 경우
+
+    // Spring Security FilterChain 공부하기 (14개, loggin level = debug로 하면 볼 수 있음)
+
+    // InitializeUserDetailsBeanManagerConfigurer
+    // AbstractUserDetailsAuthenticationProvider
+    // AuthenticationManagerBuilder
+    // TokenBasedRememberMeServices
+    // UsernamePasswordAuthenticationToken
+    // SecurityContextHolderAwareRequestFilter
     
     UserResponseDto urd = new UserResponseDto(
-
-                                user.getUsername()
+                                user.getId()
+                              , user.getUsername()
                               , user.getPassword()
                               , enabled
                               , accountNonExpired
@@ -95,10 +103,6 @@ public class UserService implements UserDetailsService {
                               
                               );
     
-    
-    // List<GrantedAuthority> authorities = new ArrayList<>();
-    // StringBuilder authority = new StringBuilder();
-    
     // authorization
     if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
       // UserBuilder creates GrantedAuthority via roles()
@@ -110,20 +114,9 @@ public class UserService implements UserDetailsService {
       urd.setPrivilege(UserRole.ADMIN.getPrivileges());
     }
 
-    
-    
     // roles.forEach( role -> list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole())));
-    
-    // log.info("role : " + authority.toString());
     log.info("===============================UserService-loadUserByUsername return=====================================");
-    // UserDetails returned to Principal
-    
-    // return User.builder()
-    //             .username(user.getUsername())
-    //             .password(user.getPassword())
-    //             .roles(authority.toString()) // append "ROLE_" prefix
-    //             .build();
-
+    log.info("urd : " + urd);
 
     return urd;
   }

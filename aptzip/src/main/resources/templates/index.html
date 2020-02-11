@@ -7,10 +7,14 @@
     <div th:replace="fragments/header :: header" />
 </head>
 <body>
-    <div th:replace="fragments/navbar" />
-<main id="tt-pageContent" class="tt-offset-small">
-    <div class="container">
-				<!-- <span th:text="${principal}"></span> -->
+	<div th:replace="fragments/navbar" />
+	<main id="tt-pageContent" class="tt-offset-small">
+		<div class="container">
+			<!-- Id<p th:text="${#authentication.principal.getId()}"></p>
+			Email<p th:text="${#authentication.principal.getEmail()}"></p>
+			autho<p th:text="${#authentication.principal.getAuthorities()}"></p>
+			name<p th:text="${#authentication.principal.getUsername()}"></p>
+			password<p th:text="${#authentication.principal.getPassword()}"></p> -->
 				<!-- <br><br> -->
         <!-- <th:block th:with="auth=${#authentication.getPrincipal()}"> -->
 					<!-- <span th:text="${auth}"></span> -->
@@ -30,11 +34,11 @@
             </div>
             <div class="tt-item tt-itemselect">
                 <div class="tt-col-avatar">
-                    <svg class="tt-icon">
-                      <use xlink:href="#icon-ava-k"></use>
-                    </svg>
+									<svg class="tt-icon">
+										<use xlink:href="#icon-ava-k"></use>
+									</svg>
                 </div>
-                <div class="tt-col-description">
+									<div class="tt-col-description">
                     <h6 class="tt-title"><a href="page-single-topic.html">
                         <svg class="tt-icon">
                           <use xlink:href="#icon-pinned"></use>

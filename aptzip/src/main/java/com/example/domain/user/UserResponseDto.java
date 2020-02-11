@@ -34,7 +34,8 @@ public class UserResponseDto extends User {
   private Collection<UserPrivilege> privilege;
   
   public UserResponseDto(
-                    String username
+                    long id
+                  , String username
                   , String password
                   , boolean enabled
                   , boolean accountNonExpired
@@ -51,7 +52,9 @@ public class UserResponseDto extends User {
                   , UserRole role
                   , Collection<UserPrivilege> privilege) {
     super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-
+    this.id = id;
+    this.username = username;
+    this.password = password;
     this.email = email;
     this.phone = phone;
     this.address = address;
