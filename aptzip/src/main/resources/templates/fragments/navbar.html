@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <!-- tt-mobile menu -->
 <nav class="panel-menu" id="mobile-menu">
   <ul>
@@ -38,7 +41,7 @@
                         <ul>
                             <li><a href="page-categories.html"><span>Categories</span></a></li>
                             <li><a href="page-tabs.html"><span>Trending</span></a></li>
-                            <li><a href="page-create-topic.html"><span>New</span></a></li>
+                            <li><a href="/board/write"><span>New</span></a></li>
                             <li>
                                 <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/info}"><span>User</span></a>
                                 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
@@ -135,12 +138,24 @@
               </div>
               <!-- /tt-search -->
           </div>
+        
           <div class="col-auto ml-auto">
-              <div class="tt-account-btn">
+              <div class="tt-account-btn" sec:authorize="isAnonymous()">
                 <a sec:authorize="isAnonymous()" th:href="@{/user/go/login}" class="btn btn-primary">Log in</a>
                 <a sec:authorize="isAnonymous()" th:href="@{/user/go/signup}" class="btn btn-secondary">Sign up</a>
-                <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}" class="btn btn-secondary">Log out</a>
               </div>
+
+              <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
+                <a href="/user/info" class="tt-btn-icon">
+                     <i class="tt-icon"><svg><use xlink:href="#icon-notification"></use></svg></i>
+                </a>
+                <div class="tt-avatar-icon tt-size-md">
+                    <i class="tt-icon"><svg><use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(principal.getName(), 0, 1) }"></use></svg></i>
+                </div>
+                <div class="tt-btn-icon">
+                    <a th:href="@{/user/logout}" class="btn btn-secondary">Log out</a>
+                </div>
+            </div>
           </div>
       </div>
   </div>

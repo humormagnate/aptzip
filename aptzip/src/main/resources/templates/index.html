@@ -10,7 +10,12 @@
     <div th:replace="fragments/navbar" />
 <main id="tt-pageContent" class="tt-offset-small">
     <div class="container">
-        <!-- <span th:text="${principal}"></span> -->
+				<!-- <span th:text="${principal}"></span> -->
+				<!-- <br><br> -->
+        <!-- <th:block th:with="auth=${#authentication.getPrincipal()}"> -->
+					<!-- <span th:text="${auth}"></span> -->
+					<!-- <p th:text="${auth ? auth.getAuthorities() : 'NULL'}">Email</p> -->
+        <!-- </th:block> -->
         <div class="tt-topic-list">
             <div class="tt-list-header">
                 <div class="tt-col-topic">Topic</div>
@@ -639,7 +644,7 @@
 		</div>
 		</form>
 </div>
-<a href="page-create-topic.html" class="tt-btn-create-topic">
+<a href="/board/write" class="tt-btn-create-topic">
     <span class="tt-icon">
         <svg>
           <use xlink:href="#icon-create_new"></use>

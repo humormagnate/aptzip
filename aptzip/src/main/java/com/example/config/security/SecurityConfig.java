@@ -1,5 +1,10 @@
 package com.example.config.security;
 
+import java.util.concurrent.TimeUnit;
+
+import com.example.domain.user.UserRole;
+import com.example.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,75 +17,103 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.example.domain.user.UserRole;
-import com.example.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final PasswordEncoder passwordEncoder;
-  private final UserService userService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private UserService userService;
 
   @Autowired
 	public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
   	this.passwordEncoder = passwordEncoder;
   	this.userService = userService;
   }
-
+  
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**");
+    web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**");
 	}
   
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+
+    // 아래 순서가 중요함.
+    // 실제로 스프링 문서를 보면 permitAll로 첫번째 허가를 낸 경우 authenticated 로 제한을 걸어도 걸리지 않음.
     http
-      .csrf().disable();
-      	// .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        // .ignoringAntMatchers("/h2-console/**")
-    
-    http
+      .sessionManagement()
+        .maximumSessions(1)
+        .maxSessionsPreventsLogin(true)
+        .and().and()
+      .csrf()
+        .disable()
+        // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        // .ignoringAntMatchers("/admin/**")
+        // .and()
       .authorizeRequests()
-        .antMatchers("/**").permitAll()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
         .antMatchers("/user/info").hasRole(UserRole.USER.name())
+        .antMatchers("/anonymous*").anonymous()
+        .antMatchers("/**").permitAll()
         .anyRequest().authenticated()
       // .and()
       //  .exceptionHandling().accessDeniedPage("/denied")
         .and()
-      .headers()
-        .frameOptions().disable()
-        .and()
+      // .headers()
+      //   .xssProtection().and()
+      //   .frameOptions().disable().and()
       .httpBasic()
 			  .and()
+      .rememberMe()
+        .key("remember-me-key")
+        .rememberMeParameter("remember-me")
+        .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+        // .rememberMeCookieName("remember-me-cookie")
+        // .userDetailsService(userService)
+        // .rememberMeServices(tokenBasedRememberMeServices())
+        .and()
+      // => userdetailsservice is required (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
+      // https://docs.spring.io/spring-security/site/docs/3.2.0.CI-SNAPSHOT/reference/html/remember-me.html
 			.formLogin()
 				.loginPage("/user/go/login")
-	      .loginProcessingUrl("/user/login")
-        .defaultSuccessUrl("/", true)
-        //.failureUrl("/user/go/login")
+	      .loginProcessingUrl("/login")
+        .failureUrl("/user/go/login?error=true")
 				.usernameParameter("email")
 				.passwordParameter("password")
         .successHandler(successHandler())
+        // .defaultSuccessUrl("/", true)
 				.permitAll()
         .and()
-	    // .rememberMe()
-	    //   .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
-	    //   .key("somethingverysecured")
-	    //   .rememberMeParameter("remember-me")
-      //   .and()
-      // => userdetailsservice is required (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
       .logout()
         .logoutUrl("/user/logout")
         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout", "GET")) // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID", "remember-me")
-        .logoutSuccessUrl("/")
-      ;
+        .logoutSuccessUrl("/");
+  }
+
+  @Bean
+  public TokenBasedRememberMeServices tokenBasedRememberMeServices() {
+    TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("remember-me-key", userService);
+    rememberMeServices.setAlwaysRemember(true);
+    rememberMeServices.setTokenValiditySeconds(60 * 60 * 24 * 31);
+    // rememberMeServices.setCookieName(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
+    // rememberMeServices.setParameter(TokenBasedRememberMeServices.DEFAULT_PARAMETER);
+    // rememberMeServices.autoLogin(request, response);
+    
+    return rememberMeServices;
   }
 
   @Autowired
@@ -98,6 +131,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public AuthenticationSuccessHandler successHandler() {
+    log.info("===============================Security-Config-successHandler=====================================");
     return new LoginSuccessHandler("/");
   }
 }

@@ -2,9 +2,14 @@ package com.example.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.example.domain.user.UserRequestDto;
+import com.example.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,9 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.example.domain.user.UserRequestDto;
-import com.example.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +28,15 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@GetMapping(value = "/go/login")
-	public ModelAndView goLogin(ModelAndView mv) {
+	public ModelAndView goLogin(ModelAndView mv, HttpServletRequest request) {
+		String referrer = request.getHeader("Referer");
+		request.getSession().setAttribute("prevPage", referrer);
+		
 		mv.setViewName("user/page-login");
 		return mv;
 	}
@@ -46,13 +54,24 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("success", true);
     return "redirect:go/login";
 	}
-	
+
 	@GetMapping("/info")
-	public ModelAndView userInfo(Principal principal, ModelAndView mv) {
+	public ModelAndView userInfo(HttpServletRequest request, ModelAndView mv) {
+		Principal principal = request.getUserPrincipal();
 		mv.addObject("principal", principal)
 			.setViewName("user/page-single-user");
 		return mv;
 	}
+
+	// @PostMapping("/users/{userId}")
+	// @PreAuthorize("#updateUser.email == authentication.name")
+	// public String update(@PathVariable("userId") Long id, @ModelAttribute @Valid UserRequestDto updateUser, Model model) {
+	// 	AptzipUserEntity currentUser = userService.findOne(id);
+	// 	if (!passwordEncoder.matches(updateUser.getPassword(), currentUser.getPassword())){
+	// 		throw new RuntimeException("Not password equals...");
+	// 	}
+	// 	return "";
+	// }
 
 	@GetMapping(value = "/{test}")
 	public ModelAndView test(@PathVariable("test") String test, ModelAndView mv) {

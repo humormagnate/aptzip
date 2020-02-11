@@ -17,6 +17,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
   
   public LoginSuccessHandler(String defaultTargetUrl) {
     setDefaultTargetUrl(defaultTargetUrl);
+    log.info("===============================LoginSuccessHandler-Constructor=====================================");
   }
 
   @Override
@@ -25,6 +26,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
       
     // log.info(getClientIp(request));
     log.info(request.toString());
+    log.info("===============================LoginSuccessHandler-onAuthenticationSuccess=====================================");
     // ((SecurityMember)authentication.getPrincipal()).setIp(getClientIp(request));
     
     HttpSession session = request.getSession();

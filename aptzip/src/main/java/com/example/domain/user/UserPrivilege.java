@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum UserPermission {
+public enum UserPrivilege {
   COMMON_READ("common:read"),
   BOARD_READ("board:read"),
   NOTICE_READ("notice:read"),
   BOARD_WRITE("board:write"),
   NOTICE_WRITE("notice:write");
 
-  private final String permission;
+  private final String privileges;
 }

@@ -1,11 +1,15 @@
 package com.example.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,22 +24,26 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto {
-	
+public class UserRequestDto implements UserDetails {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private long id;
 
 	@NotBlank(message = "메일을 작성해주세요.")
 	@Email(message = "메일의 양식을 지켜주세요.")
 	private String email;
 
-	//@NotBlank(message = "전화번호를 작성해주세요.")
-	//@Pattern(regexp = "[0-9]{10,11}", message = "10~11자리의 숫자만 입력가능합니다")
+	// @NotBlank(message = "전화번호를 작성해주세요.")
+	// @Pattern(regexp = "[0-9]{10,11}", message = "10~11자리의 숫자만 입력가능합니다")
 	private String phone;
 
 	@NotBlank(message = "이름을 작성해주세요.")
 	@Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문자만 입력가능합니다")
 	private String username;
-	
+
 	@NotBlank(message = "비밀번호를 입력해주세요")
 	private String password;
 
@@ -48,11 +56,47 @@ public class UserRequestDto {
 	private int reported;
 	// private List<UserRole> roles;
 	// private UserRole roles;
-	private AptzipRoleEntity role;
+	private UserRole role;
+
+	public UserRequestDto(AptzipUserEntity user) {
+		this.id = user.getId();
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+	}
 
 	public AptzipUserEntity toEntity() {
 		// User랑 컬럼 순서가 다르면 다르게 삽입됨
-		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, new AptzipRoleEntity("USER"));
+		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate,
+				reported, new AptzipRoleEntity("USER"));
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return role.getGrantedAuthorities();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	// private String[] parsePhone() {
