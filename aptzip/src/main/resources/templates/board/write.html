@@ -18,7 +18,7 @@
 	            </h1>
 	            <form class="form-default form-create-topic" th:action="@{${b}?'edit':'write'}" method="post">
 	            	<input type=hidden name="bid" th:if="${b!=null}" th:value="${b.bid}">
-	            	<input type=text name="user_id" th:value="${ principal } ? ${ principal.getName() } : ''">
+	            	<input type=text name="user_id" th:value="${ #authenticationprincipal } ? ${ #authenticationprincipal.getUsername() } : ''">
 	                <div class="form-group">
 	                    <label for="inputTopicTitle">Topic Title</label>
 	                    <div class="tt-value-wrapper">
