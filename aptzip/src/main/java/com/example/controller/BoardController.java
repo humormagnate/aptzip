@@ -46,11 +46,13 @@ public class BoardController {
 	}
 	
 	@GetMapping("/write")
-	public ModelAndView writeGET(Principal principal, ModelAndView mv) {
-		log.info("principal : " + principal);
-		mv.addObject("principal", principal)
-			.setViewName("/board/write");
-		return mv;
+	public String writeGET() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		Authentication authentication = context.getAuthentication();
+		if(authentication.getPrincipal()=="anonymousUser") {
+			return "redirect:/board/list";
+		}
+		return "/board/write";
 	}
 	
 	@PostMapping("/write")
@@ -68,6 +70,9 @@ public class BoardController {
 	public String get(Model model,@PathVariable("bid") Long bid) {
 		SecurityContext context = SecurityContextHolder.getContext();
 		Authentication authentication = context.getAuthentication();
+		if(authentication.getPrincipal()=="anonymousUser") {
+			return "redirect:/board/list";
+		}
 		UserResponseDto user=(UserResponseDto)authentication.getPrincipal();
 		br.findById(bid).ifPresent(board->{
 			board.setUser_id(user.getId());

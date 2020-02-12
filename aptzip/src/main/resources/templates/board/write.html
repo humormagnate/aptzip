@@ -49,7 +49,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="inputTopicTitle">Apt_ID</label>
-                                <select class="form-control" th:value="${b}?${b.apt_id}:'00'">
+                                <select name="apt_id" class="form-control" th:value="${b}?${b.apt_id}:'00'">
                                     <option value="00">Select</option>
                                     <option value="101">101동</option>
                                     <option value="102">102동</option>
