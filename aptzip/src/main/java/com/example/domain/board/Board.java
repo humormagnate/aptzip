@@ -30,14 +30,19 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long bid;
 	private String category; 
-	private String user_id;
+	private Long user_id;
 	private String apt_id;
 	private String title;
 	private String content;
-	
+	@ColumnDefault("play")
+	private String tag;
 	@Column(nullable=false)
 	@ColumnDefault("Y")
 	private String del_yn;
 	private String createdate;
 	private String updatedate;
+	
+	@Column
+	@ColumnDefault(value="0")
+	private int viewCount;
 }

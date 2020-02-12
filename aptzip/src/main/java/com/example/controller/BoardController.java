@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.board.Board;
+import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -62,7 +68,17 @@ public class BoardController {
 	
 	@GetMapping("/{bid}")
 	public String get(Model model,@PathVariable("bid") Long bid) {
-		br.findById(bid).ifPresent(board->model.addAttribute("b", board));
+		SecurityContext context = SecurityContextHolder.getContext();
+		Authentication authentication = context.getAuthentication();
+		UserResponseDto user=(UserResponseDto)authentication.getPrincipal();
+		br.findById(bid).ifPresent(board->{
+			board.setUser_id(user.getId());
+			board.setViewCount(board.getViewCount()+1);
+			br.save(board);
+			
+			model.addAttribute("b", board);
+		});
+		
 		return "/board/get";
 	}
 	
