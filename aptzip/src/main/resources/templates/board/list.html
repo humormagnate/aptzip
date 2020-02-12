@@ -41,8 +41,7 @@
 	                        <div class="col-11">
 	                            <ul class="tt-list-badge">
 	                                <li class="show-mobile"><a href="#"><span class="tt-color01 tt-badge">[[${b.category}]]</span></a></li>
-	                                <li><a href="#"><span class="tt-badge">contests</span></a></li>
-	                                <li><a href="#"><span class="tt-badge">authors</span></a></li>
+	                                <li th:each="tag:${b.tag.split(',')}"><a href="#"><span class="tt-badge">[[${tag}]]</span></a></li>
 	                            </ul>
 	                        </div>
 	                        <div class="col-1 ml-auto show-mobile">
@@ -88,15 +87,6 @@
 	
 	
 	
-<a href="write">글쓰기</a>
-	<table>
-		<tr>
-			<td>MID</td>
-		</tr>
-		<tr th:each="b:${list}">
-			<td><a th:href="${b.bid}">[[${b}]]</a></td>
-		</tr>
-	</table>
 
 
 <!-- main 아래부분들 -->

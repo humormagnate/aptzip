@@ -30,9 +30,10 @@
                         </h3>
                         <div class="tt-item-tag">
                             <ul class="tt-list-badge">
-                                <li><a href="#"><span class="tt-color03 tt-badge">exchange</span></a></li>
+                            	<li th:each="tag:${b.tag.split(',')}"><a href="#"><span class="tt-badge">[[${tag}]]</span></a></li>
+                                <!-- <li><a href="#"><span class="tt-color03 tt-badge">exchange</span></a></li>
                                 <li><a href="#"><span class="tt-badge">themeforest</span></a></li>
-                                <li><a href="#"><span class="tt-badge">elements</span></a></li>
+                                <li><a href="#"><span class="tt-badge">elements</span></a></li> -->
                             </ul>
                         </div>
                     </div>
