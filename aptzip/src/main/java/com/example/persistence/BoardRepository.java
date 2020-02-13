@@ -2,8 +2,12 @@ package com.example.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.example.domain.board.Board;
+import java.util.List;
 
-public interface BoardRepository extends CrudRepository<Board, Long> {
+import com.example.domain.board.BoardEntity;
 
+public interface BoardRepository extends CrudRepository<BoardEntity, Long> {
+  
+  public List<BoardEntity> findByUserId(long userId);
+  
 }

@@ -16,7 +16,6 @@
 >Spring Data JPA<br>
 >Spring Security<br>
 >Thymeleaf<br>
->Bootstrap<br>
 
 ```
 Context Root (localhost:XXXX/aptzip)
@@ -33,7 +32,6 @@ Context Root (localhost:XXXX/aptzip)
 
 ## Authors
 
-* **이두영** - [dooyounglee](https://github.com/dooyounglee)
 * **임창수** - [humormagnate](https://github.com/humormagnate)
 
 See also the list of [contributors](https://github.com/humormagnate/aptzip/graphs/contributors) who participated in this project.
