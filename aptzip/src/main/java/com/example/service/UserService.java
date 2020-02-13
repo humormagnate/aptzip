@@ -8,15 +8,14 @@ import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserRequestDto;
 import com.example.domain.user.UserResponseDto;
 import com.example.domain.user.UserRole;
-import com.example.persistence.UserRepository;
+import com.example.persistence.UserJpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsManager {
 
   @Autowired
-  private UserRepository userRepository;
+  private UserJpaRepository userJpaRepository;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -43,23 +42,28 @@ public class UserService implements UserDetailsService {
   @Transactional
   public AptzipUserEntity save(UserRequestDto userRequestDto) {
     userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-    return userRepository.save(userRequestDto.toEntity());
+    AptzipUserEntity entity = userRequestDto.toEntity();
+    log.info("entity : " + entity);
+    return userJpaRepository.save(entity);
   }
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @Transactional(readOnly = true)
   public List<UserRequestDto> findAll() {
-    return userRepository.findAll().stream()
-                          .map(UserRequestDto::new)
-                          .collect(Collectors.toList());
+    return userJpaRepository.findAll().stream()
+                            .map(UserRequestDto::new)
+                            .collect(Collectors.toList());
   }
   
+
+  // https://lemontia.tistory.com/602
+  // 해당기능을 사용할 시 외부로그인 연동(네이버나 페이스북 로그인 등)시 세션처리에 문제를 겪을 수 있어 추천드리지 않습니다.
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     
     log.info("===============================UserService-loadUserByUsername start=====================================");
     // return type이 Optional<T>
-    Optional<AptzipUserEntity> userEntityWrapper = userRepository.findByEmail(email);
+    Optional<AptzipUserEntity> userEntityWrapper = userJpaRepository.findByEmail(email);
     // Optional<T>에서 get()을 통해 T 반환
     AptzipUserEntity user = userEntityWrapper.get();
     
@@ -69,18 +73,6 @@ public class UserService implements UserDetailsService {
     if (user == null) {
       throw new UsernameNotFoundException("Not found " + email);
     }
-
-    // https://otrodevym.tistory.com/entry/Spring-Security-%EC%A0%95%EB%A6%AC-4-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%8B%A4%ED%8C%A8-%ED%9B%84-%EC%B2%98%EB%A6%AC
-    // 가끔 InternalAuthenticationServiceException? 존재 하지 않는 아이디일 경우
-
-    // Spring Security FilterChain 공부하기 (14개, loggin level = debug로 하면 볼 수 있음)
-
-    // InitializeUserDetailsBeanManagerConfigurer
-    // AbstractUserDetailsAuthenticationProvider
-    // AuthenticationManagerBuilder
-    // TokenBasedRememberMeServices
-    // UsernamePasswordAuthenticationToken
-    // SecurityContextHolderAwareRequestFilter
     
     UserResponseDto urd = new UserResponseDto(
                                 user.getId()
@@ -96,7 +88,7 @@ public class UserService implements UserDetailsService {
                               , user.getPhone()
                               , user.getGender()
                               , user.getIntroduction()
-                              , user.getSignUpDate()
+                              , user.getSignupDate()
                               , user.getReported()
                               , null
                               , UserRole.USER.getPrivileges()
@@ -104,7 +96,7 @@ public class UserService implements UserDetailsService {
                               );
     
     // authorization
-    if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
+    if (user.getRole() != null && user.getRole().equals(UserRole.USER.name())) {
       // UserBuilder creates GrantedAuthority via roles()
       // authorities.add(new SimpleGrantedAuthority(UserRole.USER.name()));
       urd.setRole(UserRole.USER);
@@ -121,8 +113,34 @@ public class UserService implements UserDetailsService {
     return urd;
   }
 
-  public AptzipUserEntity findOne(Long id) {
-    return null;
+
+  @Override
+  public void createUser(UserDetails user) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void updateUser(UserDetails user) {
+    // userRepository.updateUser(user);
+  }
+
+  @Override
+  public void deleteUser(String username) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void changePassword(String oldPassword, String newPassword) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public boolean userExists(String username) {
+    // TODO Auto-generated method stub
+    return false;
   }
   
 }

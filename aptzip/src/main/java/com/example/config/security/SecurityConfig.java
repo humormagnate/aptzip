@@ -1,11 +1,14 @@
 package com.example.config.security;
 
-import java.util.concurrent.TimeUnit;
+import java.util.EventListener;
+
+import javax.sql.DataSource;
 
 import com.example.domain.user.UserRole;
 import com.example.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,10 +18,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private DataSource dataSource;
 
   @Autowired
 	public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
@@ -52,15 +63,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 아래 순서가 중요함.
     // 실제로 스프링 문서를 보면 permitAll로 첫번째 허가를 낸 경우 authenticated 로 제한을 걸어도 걸리지 않음.
     http
+      // https://gompangs.tistory.com/entry/Spring-Boot-Spring-Security-maximumSessions-%EA%B4%80%EB%A0%A8
       .sessionManagement()
         .maximumSessions(1)
-        .maxSessionsPreventsLogin(true)
-        .and().and()
+          .maxSessionsPreventsLogin(true)
+          .sessionRegistry(sessionRegistry())
+          .and()
+        .and()
       .csrf()
-        .disable()
-        // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        // .ignoringAntMatchers("/admin/**")
-        // .and()
+        // .disable()
+        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .ignoringAntMatchers("/admin/**")
+        .and()
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
         .antMatchers("/user/info").hasRole(UserRole.USER.name())
@@ -70,21 +84,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // .and()
       //  .exceptionHandling().accessDeniedPage("/denied")
         .and()
-      // .headers()
-      //   .xssProtection().and()
-      //   .frameOptions().disable().and()
+      .headers()
+        .xssProtection().and()
+        .frameOptions().disable()
+        .httpStrictTransportSecurity() // HSTS
+          .maxAgeInSeconds(0)
+          .includeSubDomains(true)
+          .and()
+        .and()
       .httpBasic()
 			  .and()
       .rememberMe()
-        .key("remember-me-key")
-        .rememberMeParameter("remember-me")
-        .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+        .rememberMeServices(persistentTokenBasedRememberMeServices())
+        // .key("remember-me-key")
+        // .rememberMeParameter("remember-me")
+        // .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
         // .rememberMeCookieName("remember-me-cookie")
         // .userDetailsService(userService)
-        // .rememberMeServices(tokenBasedRememberMeServices())
+        // .tokenRepository(remembermeRepository)
         .and()
       // => userdetailsservice is required (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
-      // https://docs.spring.io/spring-security/site/docs/3.2.0.CI-SNAPSHOT/reference/html/remember-me.html
 			.formLogin()
 				.loginPage("/user/go/login")
 	      .loginProcessingUrl("/login")
@@ -105,20 +124,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  public TokenBasedRememberMeServices tokenBasedRememberMeServices() {
-    TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("remember-me-key", userService);
-    rememberMeServices.setAlwaysRemember(true);
+  public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
+    PersistentTokenBasedRememberMeServices rememberMeServices
+     = new PersistentTokenBasedRememberMeServices("remember-me-key", userService, jdbcTokenRepositoryImpl());
     rememberMeServices.setTokenValiditySeconds(60 * 60 * 24 * 31);
-    // rememberMeServices.setCookieName(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
-    // rememberMeServices.setParameter(TokenBasedRememberMeServices.DEFAULT_PARAMETER);
+    rememberMeServices.setCookieName(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
+    rememberMeServices.setParameter(TokenBasedRememberMeServices.DEFAULT_PARAMETER);
+    // rememberMeServices.setAlwaysRemember(true);
     // rememberMeServices.autoLogin(request, response);
-    
     return rememberMeServices;
   }
 
   @Autowired
   protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(daoAuthenticationProvider());
+  }
+
+  @Bean
+  public JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl() {
+    JdbcTokenRepositoryImpl jtri = new JdbcTokenRepositoryImpl();
+    jtri.setDataSource(dataSource);
+    return jtri;
   }
 
   @Bean
@@ -133,5 +159,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public AuthenticationSuccessHandler successHandler() {
     log.info("===============================Security-Config-successHandler=====================================");
     return new LoginSuccessHandler("/");
+  }
+
+  @Bean // Register HttpSessionEventPublisher
+  public SessionRegistry sessionRegistry() {
+    return new SessionRegistryImpl();
+  }
+
+  @Bean
+  public static ServletListenerRegistrationBean<EventListener> httpSessionEventPublisher() {
+    return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
   }
 }

@@ -2,6 +2,7 @@ package com.example.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -25,22 +26,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDto implements UserDetails {
-	/**
-	 *
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	private long id;
 
-	@NotBlank(message = "메일을 작성해주세요.")
-	@Email(message = "메일의 양식을 지켜주세요.")
+	@NotBlank(message = "메일을 입력해주세요.")
+	@Email(message = "메일 양식을 지켜주세요.")
 	private String email;
 
 	// @NotBlank(message = "전화번호를 작성해주세요.")
 	// @Pattern(regexp = "[0-9]{10,11}", message = "10~11자리의 숫자만 입력가능합니다")
 	private String phone;
 
-	@NotBlank(message = "이름을 작성해주세요.")
+	@NotBlank(message = "닉네임을 입력해주세요.")
 	@Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문자만 입력가능합니다")
 	private String username;
 
@@ -54,9 +53,8 @@ public class UserRequestDto implements UserDetails {
 
 	@PositiveOrZero
 	private int reported;
-	// private List<UserRole> roles;
-	// private UserRole roles;
-	private UserRole role;
+	private AptzipRoleEntity role;
+	private AptEntity apt;
 
 	public UserRequestDto(AptzipUserEntity user) {
 		this.id = user.getId();
@@ -66,45 +64,36 @@ public class UserRequestDto implements UserDetails {
 
 	public AptzipUserEntity toEntity() {
 		// User랑 컬럼 순서가 다르면 다르게 삽입됨
-		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate,
-				reported, new AptzipRoleEntity("USER"));
+		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt);
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return role.getGrantedAuthorities();
+		if (UserRole.USER.name().equals(role.getRole())) {
+			return UserRole.USER.getGrantedAuthorities();
+		} else {
+			return UserRole.ADMIN.getGrantedAuthorities();
+		}
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
-	// private String[] parsePhone() {
-	// 	String[] phones = new String[3];
-	// 	int mid = phone.length() == 10 ? 7 : 8;
-	// 	phones[0] = phone.substring(0, 3);
-	// 	phones[1] = phone.substring(4, mid);
-	// 	phones[2] = phone.substring(mid, phone.length() - 1);
-	// 	return phones;
-	// }
 }

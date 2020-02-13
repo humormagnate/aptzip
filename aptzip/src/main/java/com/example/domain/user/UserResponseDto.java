@@ -13,6 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+// @EqualsAndHashCode(of = "id") -> User에 구현되어 있음
 public class UserResponseDto extends User {
 
   /**

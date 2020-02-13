@@ -18,6 +18,7 @@ public class CustomContainer implements
     factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"));
     factory.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500"));
     factory.addErrorPages(new ErrorPage(Exception.class, "/error"));
+    factory.addErrorPages(new ErrorPage(Throwable.class, "/error"));
     //factory.addAdditionalTomcatConnectors(new Connector("AJP/1.3"));
   }
   

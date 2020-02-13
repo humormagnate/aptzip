@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,7 +35,9 @@ public class AptzipUserEntity {
 
   //@GeneratedValue(strategy = GenerationType.AUTO)
 	//@GenericGenerator(name = "system-uuid", strategy = "uuid")
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Column(name = "user_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 	
   @Column(length = 30, nullable = false, unique = true)
@@ -46,7 +49,7 @@ public class AptzipUserEntity {
   @Column(nullable = false)
   private String password;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String username;
 
   private String address;
@@ -59,18 +62,18 @@ public class AptzipUserEntity {
   
   // 하이버네이트 5.2 이상을 사용하고 있다면 Java8 날짜와 시간에 CreationTimestamp과 UpdateTimestamp을 추가해 주면 시간 설정을 하이버네이트가 알아서 해준다.
   @CreationTimestamp
-  private LocalDateTime signUpDate;
+  private LocalDateTime signupDate;
 
   @Column(nullable = false)
   private int reported;
 
-  //@Enumerated(EnumType.STRING)
-  //@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+  // cascade = CascadeType.ALL
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "ROLE")
+  @JoinColumn(name = "role")
   private AptzipRoleEntity role;
-	
-  // @ManyToOne(fetch = FetchType.LAZY)
-  // private Apt apt;
-    
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "apt_id")
+  private AptEntity apt;
+  
 }
