@@ -118,8 +118,11 @@ public class UserService implements UserDetailsService {
   }
 
   public AptzipUserEntity findById(Long id) {
-    Optional<AptzipUserEntity> optional = userJpaRepository.findById(id);
-    return optional.get();
+    // AptzipUserEntity optional optional = userJpaRepository.findById(id);
+    // Optional<AptzipUserEntity> user = Optional.ofNullable(optional);
+    // AptzipUserEntity user = optional.get();
+    // return Optional.ofNullable(findById(id)).filter(value -> value != null).map();
+    return userJpaRepository.findById(id).orElse(new AptzipUserEntity());
   }
 
 }

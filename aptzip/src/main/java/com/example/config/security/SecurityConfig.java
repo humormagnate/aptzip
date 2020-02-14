@@ -28,6 +28,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -66,6 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 아래 순서가 중요함.
     // 실제로 스프링 문서를 보면 permitAll로 첫번째 허가를 낸 경우 authenticated 로 제한을 걸어도 걸리지 않음.
     http
+      .httpBasic()
+        .and()
       // https://gompangs.tistory.com/entry/Spring-Boot-Spring-Security-maximumSessions-%EA%B4%80%EB%A0%A8
       .sessionManagement()
         .maximumSessions(1)
@@ -89,16 +92,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // .and()
       //  .exceptionHandling().accessDeniedPage("/denied")
         .and()
-      .headers()
-        .xssProtection().and()
-        .frameOptions().disable()
+      // .headers()
+      //   .xssProtection().and()
+      //   .frameOptions().disable()
         // .httpStrictTransportSecurity() // HSTS : HTTPS 를 클라이언트 측에서 강제하는 것
         //   .maxAgeInSeconds(60 * 60 * 24 * 365)
         //   .includeSubDomains(true)
         //   .and()
-        .and()
-      .httpBasic()
-			  .and()
       .rememberMe()
         .rememberMeServices(persistentTokenBasedRememberMeServices())
         // .key("remember-me-key")

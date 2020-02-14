@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.common;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.ErrorPage;
@@ -15,7 +15,9 @@ public class CustomContainer implements
     factory.setContextPath("");
     factory.setPort(8888);
     factory.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST, "/error/400"));
+    factory.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403"));
     factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"));
+    factory.addErrorPages(new ErrorPage(HttpStatus.METHOD_NOT_ALLOWED, "/error/405"));
     factory.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500"));
     factory.addErrorPages(new ErrorPage(Exception.class, "/error"));
     factory.addErrorPages(new ErrorPage(Throwable.class, "/error"));

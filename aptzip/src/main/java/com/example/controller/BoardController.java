@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.example.domain.board.BoardEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
@@ -11,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -89,24 +94,52 @@ public class BoardController {
 		return "board/page-single-topic";
 	}
 
+	@ResponseBody
+	@DeleteMapping("/{id}")
+	public String delete(@PathVariable("id") Long id) {
+		log.info("====================================Delete Mapping=================================");
+		log.info(id.toString());
+		boardRepository.deleteById(id);
+		return "성공적으로 삭제되었습니다.";
+	}
+
+	@ResponseBody
+	@PutMapping("/{id}")
+	public String put(@PathVariable("id") Long id, BoardEntity board) {
+		log.info("====================================Put Mapping=================================");
+		log.info(id.toString());
+		boardRepository.updateById(id, board.getBoardTitle(), board.getBoardContent());
+		return "성공적으로 수정되었습니다.";
+	}
+
 	@GetMapping("/edit/{id}")
 	public String editGet(Model model, @PathVariable("id") Long id) {
 		boardRepository.findById(id).ifPresent(value -> model.addAttribute("board", value));
 		return "board/write";
 	}
 
-	@PostMapping("/edit")
-	public String editPost(BoardEntity board, RedirectAttributes rttr) {
-		boardRepository.findById(board.getId()).ifPresent(origin -> {
-			origin.setCategory(board.getCategory());
-			origin.setBoardTitle(board.getBoardTitle());
-			origin.setBoardContent(board.getBoardContent());
-			origin.setUpdateDate(board.getUpdateDate());
-			boardRepository.save(origin);
-		});
-		;
-		return "redirect:/board/" + board.getId();
+	@PutMapping("/edit/{id}")
+	public String editPut(@PathVariable("id") Long id, BoardEntity board) {
+			boardRepository.findById(id).ifPresent(origin -> {
+				origin.setCategory(board.getCategory());
+				origin.setBoardTitle(board.getBoardTitle());
+				origin.setBoardContent(board.getBoardContent());
+				boardRepository.save(origin);
+			});
+			return "redirect:/board/" + id;
 	}
+
+	// @Deprecated
+	// @PostMapping("/edit/{id}")
+	// public String editPost(BoardEntity board, RedirectAttributes rttr) {
+	// 	boardRepository.findById(board.getId()).ifPresent(origin -> {
+	// 		origin.setCategory(board.getCategory());
+	// 		origin.setBoardTitle(board.getBoardTitle());
+	// 		origin.setBoardContent(board.getBoardContent());
+	// 		boardRepository.save(origin);
+	// 	});
+	// 	return "redirect:/board/" + board.getId();
+	// }
 
 	@GetMapping("/del")
 	public String delGET(Long id) {

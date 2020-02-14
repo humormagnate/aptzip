@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.config.error;
 
 import javax.servlet.http.HttpServletRequest;
 

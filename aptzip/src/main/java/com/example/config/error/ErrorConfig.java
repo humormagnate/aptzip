@@ -1,4 +1,4 @@
-// package com.example.config;
+// package com.example.config.error;
 
 // import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 // import org.springframework.boot.web.server.ErrorPage;
