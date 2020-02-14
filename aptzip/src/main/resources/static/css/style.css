@@ -42,9 +42,8 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md)
  */
-/*
-@import url(../../node_modules/magnific-popup/dist/magnific-popup.css);
-*/
+/* @import url(../../node_modules/magnific-popup/dist/magnific-popup.css); */
+@import url(/css/magnific-popup.css);
 *,
 *::before,
 *::after {

@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
 
 <head>
 	<link rel="shortcut icon" href="/favicon/favicon.ico">
@@ -9,92 +8,208 @@
 
 <body>
 	<div th:replace="fragments/navbar" />
-	<main id="tt-pageContent" class="tt-offset-small">
 
-		<!-- container start -->
+	<main id="tt-pageContent">
 		<div class="container">
-			<!-- Id<p th:text="${#authentication.principal.getId()}"></p>
-			Email<p th:text="${#authentication.principal.getEmail()}"></p>
-			autho<p th:text="${#authentication.principal.getAuthorities()}"></p>
-			name<p th:text="${#authentication.principal.getUsername()}"></p>
-			password<p th:text="${#authentication.principal.getPassword()}"></p> -->
-			<!-- <br><br> -->
-			<!-- <th:block th:with="auth=${#authentication.getPrincipal()}"> -->
-			<!-- <span th:text="${auth}"></span> -->
-			<!-- <p th:text="${auth ? auth.getAuthorities() : 'NULL'}">Email</p> -->
-			<!-- </th:block> -->
-
-			<!-- topic-list start -->
-			<div class="tt-topic-list">
-				<!-- list-header start -->
-				<div class="tt-list-header">
-					<div class="tt-col-topic">Topic</div>
-					<div class="tt-col-category">Category</div>
-					<div class="tt-col-value hide-mobile">Likes</div>
-					<div class="tt-col-value hide-mobile">Replies</div>
-					<div class="tt-col-value hide-mobile">Views</div>
-					<div class="tt-col-value">Activity</div>
-				</div>
-				<!-- list-header end -->
-				
-				<div class="tt-topic-alert tt-alert-default" role="alert">
-					<a href="#" target="_blank">[[${ #lists.size(list) }]] new posts</a> are added recently, click here to load them.
-				</div>
-
-				<!-- board-list start -->
-				<div class="tt-item tt-itemselect" th:each="board : ${ list }">
-					<!-- <div>[[${ board.user }]]</div> -->
-					<div class="tt-col-avatar">
-						<svg class="tt-icon">
-							<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.getUsername(), 0, 1) }"></use>
-						</svg>
+			<div class="tt-wrapper-inner">
+				<h1 class="tt-title-border">
+					[[${ board } ? 'Update Post' : 'Create New Post' ]]
+				</h1>
+				<form class="form-default form-create-topic" action="write" method="post">
+					<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
+					<input type="hidden" name="category" th:value="${ board } ? ${ board.category } : ''">
+					
+					<div class="form-group">
+						<label for="inputTopicTitle">Post Title</label>
+						<div class="tt-value-wrapper">
+							<input type="text" name="boardTitle" class="form-control" id="inputTopicTitle"
+								placeholder="Subject of your topic" maxlength="99" th:value="${ board } ? ${ board.boardContent } : ''">
+							<span class="tt-value-input"></span>
+						</div>
+						<div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
 					</div>
-					<div class="tt-col-description">
-						<h6 class="tt-title">
-							<a th:href="${'/board/' + board.id }">
-								<svg class="tt-icon">
-									<use xlink:href="#icon-pinned"></use>
-								</svg>
-								[[${ board.boardTitle }]]
-							</a>
-						</h6>
-						<div class="row align-items-center no-gutters">
-							<div class="col-11">
-								<ul class="tt-list-badge">
-									<li class="show-mobile"><a href="#"><span class="tt-color01 tt-badge">politics</span></a></li>
-									<li><a href="#"><span class="tt-badge">contests</span></a></li>
-									<li><a href="#"><span class="tt-badge">authors</span></a></li>
-								</ul>
-							</div>
-							<div class="col-1 ml-auto show-mobile">
-								<div class="tt-value">1h</div>
+					
+					<div class="form-group">
+						<label>Post Type</label>
+						<div class="tt-js-active-btn tt-wrapper-btnicon">
+							<div class="row tt-w410-col-02 topic-type">
+								<div class="col-4 col-lg-3 col-xl-2">
+									<a href="#" class="tt-button-icon">
+										<span class="tt-icon">
+											<svg>
+												<use xlink:href="#icon-discussion"></use>
+											</svg>
+										</span>
+										<span class="tt-text">Discussion</span>
+									</a>
+								</div>
+								<div class="col-4 col-lg-3 col-xl-2">
+									<a href="#" class="tt-button-icon">
+										<span class="tt-icon">
+											<svg>
+												<use xlink:href="#Question"></use>
+											</svg>
+										</span>
+										<span class="tt-text">Question</span>
+									</a>
+								</div>
+								<div class="col-4 col-lg-3 col-xl-2">
+									<a href="#" class="tt-button-icon">
+										<span class="tt-icon">
+											<svg>
+												<use xlink:href="#Poll"></use>
+											</svg>
+										</span>
+										<span class="tt-text">Poll</span>
+									</a>
+								</div>
+								<div class="col-4 col-lg-3 col-xl-2">
+									<a href="#" class="tt-button-icon">
+										<span class="tt-icon">
+											<svg>
+												<use xlink:href="#icon-gallery"></use>
+											</svg>
+										</span>
+										<span class="tt-text">Gallery</span>
+									</a>
+								</div>
+								<div class="col-4 col-lg-3 col-xl-2">
+									<a href="#" class="tt-button-icon">
+										<span class="tt-icon">
+											<svg>
+												<use xlink:href="#Video"></use>
+											</svg>
+										</span>
+										<span class="tt-text">Media</span>
+									</a>
+								</div>
+								<div class="col-4 col-lg-3 col-xl-2">
+									<a href="#" class="tt-button-icon">
+										<span class="tt-icon">
+											<svg>
+												<use xlink:href="#Others"></use>
+											</svg>
+										</span>
+										<span class="tt-text">Common</span>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
-					<!-- 3항 연산자 단축 표현 -->
-					<div class="tt-col-category"><span class="tt-color01 tt-badge">[[${ board.category } ?: ${ board.category }]]</span></div>
-					<div class="tt-col-value hide-mobile">0</div>
-					<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
-					<div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
-					<div class="tt-col-value hide-mobile">[[${ #temporals.format(board.createDate, 'HH:mm') }]]</div>
-				</div>
-				<!-- board-list end -->
-				
-				<!-- row-btn start -->
-				<div class="tt-row-btn">
-					<button type="button" class="btn-icon js-topiclist-showmore">
-						<svg class="tt-icon">
-							<use xlink:href="#icon-load_lore_icon"></use>
-						</svg>
-					</button>
-				</div>
-				<!-- row-btn end -->
-
+					<div class="pt-editor">
+						<h6 class="pt-title">Post Body</h6>
+						<div class="pt-row">
+							<div class="col-left">
+								<ul class="pt-edit-btn">
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-quote"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-bold"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-italic"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-share_topic"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-blockquote"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-performatted"></use>
+											</svg>
+										</button></li>
+									<li class="hr"></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-upload_files"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-bullet_list"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-heading"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-horizontal_line"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-emoticon"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-settings"></use>
+											</svg>
+										</button></li>
+									<li><button type="button" class="btn-icon">
+											<svg class="tt-icon">
+												<use xlink:href="#icon-color_picker"></use>
+											</svg>
+										</button></li>
+								</ul>
+							</div>
+						</div>
+						<div class="form-group">
+							<textarea name="boardContent" class="form-control" rows="5" placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
+						</div>
+						<!--
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="inputTopicTitle">Tags</label>
+									<select class="form-control">
+										<option value="Select">Select</option>
+										<option value="Value 01">Value 01</option>
+										<option value="Value 02">Value 02</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="form-group">
+									<label for="inputTopicTags">Selected</label>
+									<input type="text" name="tag" class="form-control" id="inputTopicTags"
+										placeholder="Select Tags" disabled>
+								</div>
+							</div>
+						</div>
+						-->
+						<div class="row">
+							<div class="col-auto ml-md-auto">
+								<button th:if="${ board }" type="submit" class="btn btn-secondary btn-width-lg">
+									Delete Post
+								</button>
+								<button type="submit" class="btn btn-secondary btn-width-lg">
+									[[${ board } ? 'Update Post' : 'Create Post' ]]
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
 			</div>
-			<!-- topic-list end -->
 		</div>
-		<!-- container end -->
 	</main>
+	<div class="tt-row-btn"></div>
 	<div id="js-popup-settings" class="tt-popup-settings">
 		<div class="tt-btn-col-close">
 			<a href="#">
@@ -319,7 +434,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="js/bundle.js"></script>
 	<svg width="0" height="0" class="hidden">
 		<symbol aria-hidden="true" data-prefix="fab" data-icon="facebook-f" xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 264 512" id="facebook-f-brands">
@@ -1000,6 +1114,7 @@
 				fill="#b9c2c6"></path>
 		</symbol>
 	</svg>
-</body>
+	<div th:replace="fragments/footer :: footer" />
+	</body>
 
 </html>

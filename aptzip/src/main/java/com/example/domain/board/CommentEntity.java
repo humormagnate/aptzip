@@ -54,7 +54,7 @@ public class CommentEntity {
   private String commentStatus;
 
   @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "board_id")
+	// @JoinColumn(name = "board_id")
   private BoardEntity board;
   
   @OneToOne(fetch = FetchType.LAZY)

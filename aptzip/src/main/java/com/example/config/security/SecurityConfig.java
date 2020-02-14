@@ -4,6 +4,7 @@ import java.util.EventListener;
 
 import javax.sql.DataSource;
 
+import com.example.domain.user.UserPrivilege;
 import com.example.domain.user.UserRole;
 import com.example.service.UserService;
 
@@ -21,11 +22,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -37,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+  // private final PasswordEncoder passwordEncoder;
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -71,13 +74,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .and()
         .and()
       .csrf()
-        // .disable()
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .ignoringAntMatchers("/admin/**")
-        .and()
+        .disable()
+        // The server understood the request but refuses to authorize it. 403 error
+        // -> /board/write post 실행 시
+        // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        // .ignoringAntMatchers("/admin/**")
+        // .and()
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/info").hasRole(UserRole.USER.name())
+        .antMatchers("/user/info", "/board/write", "/board/edit/**").hasAuthority(UserPrivilege.BOARD_WRITE.getPrivileges())
         .antMatchers("/anonymous*").anonymous()
         .antMatchers("/**").permitAll()
         .anyRequest().authenticated()
@@ -87,10 +92,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .headers()
         .xssProtection().and()
         .frameOptions().disable()
-        .httpStrictTransportSecurity() // HSTS
-          .maxAgeInSeconds(0)
-          .includeSubDomains(true)
-          .and()
+        // .httpStrictTransportSecurity() // HSTS : HTTPS 를 클라이언트 측에서 강제하는 것
+        //   .maxAgeInSeconds(60 * 60 * 24 * 365)
+        //   .includeSubDomains(true)
+        //   .and()
         .and()
       .httpBasic()
 			  .and()
@@ -108,10 +113,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/user/go/login")
 	      .loginProcessingUrl("/login")
         .failureUrl("/user/go/login?error=true")
-				.usernameParameter("email")
-				.passwordParameter("password")
+        // .failureForwardUrl("/user/go/login?error=true")
+        .failureHandler(failureHandler())
         .successHandler(successHandler())
         // .defaultSuccessUrl("/", true)
+				.usernameParameter("email")
+				.passwordParameter("password")
 				.permitAll()
         .and()
       .logout()
@@ -153,6 +160,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     provider.setPasswordEncoder(passwordEncoder);
     provider.setUserDetailsService(userService);
     return provider;
+  }
+
+  @Bean
+  public AuthenticationFailureHandler failureHandler() {
+    log.info("===============================Security-Config-failureHandler=====================================");
+    return new SimpleUrlAuthenticationFailureHandler("/user/go/login?error=true");
   }
 
   @Bean

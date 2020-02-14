@@ -18,21 +18,23 @@
 						<div class="tt-icon">
 							<svg class="tt-icon">
 								<!-- Get First Letter of Name -->
-								<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use>
+								<!-- <use sec:authorize="isAuthenticated()" th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use> -->
+								<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(infouser.getUsername(), 0, 1) }"></use>
 							</svg>
 						</div>
 					</div>
 					<div class="tt-col-title">
 						<div class="tt-title">
-							<a href="#"><span th:text="${ #authentication.principal } ? ${ #authentication.principal.getUsername() } : ''"></span></a>
+							<!-- <a href="#"><span th:text="${ #authentication.principal } ? ${ #authentication.principal.getUsername() } : ''"></span></a> -->
+							<a th:href="@{mailto:{email}(email=${infouser.getEmail()})}"><span th:text="${ infouser.getUsername() }"></span></a>
 						</div>
 						<ul class="tt-list-badge">
-							<li><a href="#"><span class="tt-color14 tt-badge" th:text="${ #authentication.principal.getRole() }"></span></a></li>
+							<li><span class="tt-color14 tt-badge" th:text="${ infouser.getRole().getRole() }"></span></li>
 						</ul>
 					</div>
 					<div class="tt-col-btn">
 						<div class="tt-list-btn">
-							<a href="#" class="tt-btn-icon" id="js-settings-btn">
+							<a sec:authorize="isAuthenticated()" th:if="${ infouser.getId() == #authentication.principal.getId() }" href="#" class="tt-btn-icon" id="js-settings-btn">
 								<svg class="tt-icon">
 									<use xlink:href="#icon-settings_fill"></use>
 								</svg>
@@ -530,7 +532,7 @@
 									<div class="tt-col-description">
 										<h6 class="tt-title"><a href="#">Taylor</a></h6>
 										<ul>
-											<li><a href="mailto:@tails23">@tails23</a></li>
+											<li><a href="#">@tails23</a></li>
 										</ul>
 									</div>
 								</div>
@@ -1670,29 +1672,30 @@
 			</div>
 			<div class="form-group">
 				<label for="settingsUserName">Username</label>
-				<input type="text" name="name" class="form-control" id="settingsUserName" placeholder="username"
-					th:value="${ #authentication.principal.getUsername() }">
+				<input type="text" name="username" class="form-control" id="settingsUserName" placeholder="username"
+					th:value="${ #authentication.principal.getUsername() }" disabled>
 			</div>
 			<div class="form-group">
 				<label for="settingsUserEmail">Email</label>
-				<input type="text" name="name" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com"
-					th:value="${ #authentication.principal.getEmail() }">
+				<input type="email" name="email" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com"
+					th:value="${ #authentication.principal.getEmail() }" disabled>
 			</div>
 			<div class="form-group">
 				<label for="settingsUserPassword">Password</label>
-				<input type="password" name="name" class="form-control" id="settingsUserPassword" placeholder="************">
+				<input type="password" name="password" class="form-control" id="settingsUserPassword" placeholder="************">
 			</div>
 			<div class="form-group">
 				<label for="settingsUserLocation">Location</label>
-				<input type="text" name="name" class="form-control" id="settingsUserLocation" placeholder="APT Complex">
+				<input type="text" name="apt" class="form-control" id="settingsUserLocation" placeholder="APT Complex"
+					th:value="${ #authentication.principal.getApt().getAptName() }" disabled>
 			</div>
 			<div class="form-group">
 				<label for="settingsUserWebsite">Website</label>
-				<input type="text" name="name" class="form-control" id="settingsUserWebsite" placeholder="YourSite.com">
+				<input type="text" name="name" class="form-control" id="settingsUserWebsite" placeholder="Not yet" disabled>
 			</div>
 			<div class="form-group">
 				<label for="settingsUserAbout">About</label>
-				<textarea name="" placeholder="Few words about you" class="form-control" id="settingsUserAbout"
+				<textarea name="introduction" placeholder="Few words about you" class="form-control" id="settingsUserAbout"
 				th:value="${ #authentication.principal.getIntroduction() }"></textarea>
 			</div>
 			<div class="form-group">
@@ -1727,7 +1730,7 @@
 			</div>
 		</form>
 	</div>
-	<a href="page-create-topic.html" class="tt-btn-create-topic">
+	<a href="/board/write" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
 				<use xlink:href="#icon-create_new"></use>

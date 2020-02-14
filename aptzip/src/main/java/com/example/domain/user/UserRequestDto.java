@@ -62,7 +62,6 @@ public class UserRequestDto implements UserDetails {
 	}
 
 	public AptzipUserEntity toEntity() {
-		// User랑 컬럼 순서가 다르면 다르게 삽입됨
 		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt);
 	}
 

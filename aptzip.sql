@@ -4,11 +4,11 @@ drop table aptzip.tb_role;
 drop table aptzip.tb_board;
 drop table aptzip.persistent_logins;
 
+rollback;
 
 select * from aptzip.tb_user;
 select * from aptzip.tb_board;
 select * from aptzip.tb_comment;
-select * from aptzip.tb_board_comments;
 select * from aptzip.tb_role;
 select * from aptzip.tb_apt;
 select * from aptzip.tb_notice;
@@ -21,3 +21,4 @@ CREATE TABLE tb_persistent_logins (
   token VARCHAR(64) not null, 
   last_used timestamp not null
 );
+ALTER TABLE tb_user ADD UNIQUE (email);

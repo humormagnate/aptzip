@@ -23,15 +23,18 @@
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
-									<a href="#">[[${ board.user.username }]]</a>
+									<div sec:authorize="isAuthenticated()">[[${#authentication.principal}]]</div>
+									<div sec:authorize="isAuthenticated()">[[${#authentication.principal.getId()}]]</div>
+									<!-- <a th:href="${ '/user/info/' + board.user.id }">[[${ board.user.username }]]</a> -->
+									<a th:href="@{ /user/info/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 								</div>
-								<a href="#" class="tt-info-time">
+								<span class="tt-info-time">
 									<i class="tt-icon">
 										<svg>
 											<use xlink:href="#icon-time"></use>
 										</svg>
 									</i>[[${ board.updateDate }]]
-								</a>
+								</span>
 							</div>
 							<h3 class="tt-item-title">
 								<a href="#">[[${ board.boardTitle }]]</a>
@@ -39,8 +42,8 @@
 							<div class="tt-item-tag">
 								<ul class="tt-list-badge">
 									<li>
-										<a href="#">
-											<span class="tt-color03 tt-badge">color class</span>
+										<a th:href="${ '/board/edit/' + board.id }">
+											<span class="tt-color03 tt-badge">edit</span>
 										</a>
 									</li>
 									<li th:each="category : ${ board.category }">
@@ -52,8 +55,10 @@
 							</div>
 						</div>
 						<div class="tt-item-description">
-							<p>
-								[[${ board.boardContent }]]
+							<!-- html 태그의 내용으로 출력하는 경우와 속성의 값으로 출력하는 경우 th:text -->
+							<!-- html 태그가 포함된 내용을 출력할 때는 unescaped text를 출력해 주는 th:utext -->
+							<p th:utext="${#strings.replace(board.boardContent, '\n', '&lt;br /&gt;')}">
+							<!-- <p th:utext="${#strings.replace(board.boardContent, '\n', '&lt;br /&gt;')}"> -->
 							</p>
 						</div>
 						<div class="tt-item-info info-bottom">
@@ -908,7 +913,7 @@
 			</div>
 		</form>
 	</div>
-	<a href="page-create-topic.html" class="tt-btn-create-topic">
+	<a href="/board/write" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
 				<use xlink:href="#icon-create_new"></use>

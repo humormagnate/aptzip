@@ -3,15 +3,16 @@ package com.example.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import com.example.domain.board.BoardEntity;
+import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserRequestDto;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 import com.example.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,22 +56,41 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "/signup")
-	public String insertUser(@ModelAttribute @Valid UserRequestDto userForm, RedirectAttributes redirectAttributes) {
+	public String insertUser(@ModelAttribute UserRequestDto userForm, RedirectAttributes redirectAttributes) {
 		log.info("=============================SIGN UP================================");
-		log.info("signup : " + userForm);
-		userService.createUser(userForm);
+		// @Valid -> 400 error 페이지로 이동중 SecurityContext 에서 계속 405 error로 바뀐다. Why?
+		try {
+			userService.save(userForm);
+    } catch (DataIntegrityViolationException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("error", true);
+			return "redirect:go/signup";
+    }
 		redirectAttributes.addFlashAttribute("success", true);
-    return "redirect:go/login";
+		return "redirect:go/login";
 	}
 
+	@Deprecated
 	@GetMapping("/info")
-	public ModelAndView info(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
+	public ModelAndView deprecatedInfo(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
 		// Principal principal = request.getUserPrincipal();
 		List<BoardEntity> list = boardRepository.findByUserId(principal.getId());
 		log.info(list.toString());
-
+		
 		mv.addObject("principal", principal)
 			.addObject("list", list)
+			.setViewName("user/page-single-user");
+		return mv;
+	}
+
+	@GetMapping("/info/{id}")
+	public ModelAndView info(@PathVariable("id") Long id, ModelAndView mv) {
+		List<BoardEntity> list = boardRepository.findByUserId(id);
+		AptzipUserEntity user = userService.findById(id);
+		log.info(list.toString());
+		
+		mv.addObject("list", list)
+			.addObject("infouser", user)
 			.setViewName("user/page-single-user");
 		return mv;
 	}
@@ -78,7 +98,7 @@ public class UserController {
 	@ResponseBody
 	@GetMapping("/edit")
 	public String updateUser(HttpServletRequest request, UserRequestDto user) {
-		userService.updateUser(user);
+		// userService.updateUser(user);
 		return "";
 	}
 
@@ -92,10 +112,10 @@ public class UserController {
 	// 	return "";
 	// }
 
-	@GetMapping(value = "/{test}")
-	public ModelAndView test(@PathVariable("test") String test, ModelAndView mv) {
-		mv.addObject("test", test).setViewName("error404");
-		return mv;
-	}
+	// @GetMapping(value = "/{test}")
+	// public ModelAndView test(@PathVariable("test") String test, ModelAndView mv) {
+	// 	mv.addObject("test", test).setViewName("error404");
+	// 	return mv;
+	// }
 
 }

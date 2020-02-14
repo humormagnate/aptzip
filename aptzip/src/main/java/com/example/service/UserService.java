@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.example.domain.user.AptzipRoleEntity;
 import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserRequestDto;
 import com.example.domain.user.UserResponseDto;
@@ -13,9 +14,9 @@ import com.example.persistence.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UserService implements UserDetailsManager {
+public class UserService implements UserDetailsService {
 
   @Autowired
   private UserJpaRepository userJpaRepository;
@@ -39,12 +40,12 @@ public class UserService implements UserDetailsManager {
   boolean credentialsNonExpired = true;
   boolean accountNonLocked = true;
 
-  @Transactional
-  public AptzipUserEntity save(UserRequestDto userRequestDto) {
+  @Transactional(rollbackFor = Exception.class)
+  public void save(UserRequestDto userRequestDto) {
     userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+    userRequestDto.setRole(new AptzipRoleEntity(UserRole.USER.name()));
     AptzipUserEntity entity = userRequestDto.toEntity();
-    log.info("entity : " + entity);
-    return userJpaRepository.save(entity);
+    userJpaRepository.save(entity);
   }
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -69,6 +70,9 @@ public class UserService implements UserDetailsManager {
     
     log.info("===============================UserService-loadUserByUsername get=====================================");
     log.info("user : " + user);
+    // -> could not initialize proxy [com.example.domain.user.AptEntity#1] - no Session
+    // AptEntity 에 대한 FetchType을 LAZY로 해서 그럼...EAGER로 ㄱㄱ
+
     // If the user does not exist
     if (user == null) {
       throw new UsernameNotFoundException("Not found " + email);
@@ -92,12 +96,12 @@ public class UserService implements UserDetailsManager {
                               , user.getReported()
                               , null
                               , UserRole.USER.getPrivileges()
-                              
+                              , user.getApt()
                               );
     
     // authorization
-    if (user.getRole() != null && user.getRole().equals(UserRole.USER.name())) {
-      // UserBuilder creates GrantedAuthority via roles()
+    if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
+    // UserBuilder creates GrantedAuthority via roles()
       // authorities.add(new SimpleGrantedAuthority(UserRole.USER.name()));
       urd.setRole(UserRole.USER);
       urd.setPrivilege(UserRole.USER.getPrivileges());
@@ -113,34 +117,9 @@ public class UserService implements UserDetailsManager {
     return urd;
   }
 
-
-  @Override
-  public void createUser(UserDetails user) {
-    // TODO Auto-generated method stub
-
+  public AptzipUserEntity findById(Long id) {
+    Optional<AptzipUserEntity> optional = userJpaRepository.findById(id);
+    return optional.get();
   }
 
-  @Override
-  public void updateUser(UserDetails user) {
-    // userRepository.updateUser(user);
-  }
-
-  @Override
-  public void deleteUser(String username) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void changePassword(String oldPassword, String newPassword) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public boolean userExists(String username) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-  
 }

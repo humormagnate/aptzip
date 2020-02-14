@@ -42,7 +42,7 @@
 							<li><a href="/board/trend"><span>Trending</span></a></li>
 							<li><a href="/board/write"><span>New</span></a></li>
 							<li>
-								<a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/info}"><span>User</span></a>
+								<a sec:authorize="hasRole('ROLE_USER')" th:href="${'/user/info/' + #authentication.principal.getId() }"><span>User</span></a>
 								<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
 								<ul>
 									<li><a href="#">Activity</a></li>

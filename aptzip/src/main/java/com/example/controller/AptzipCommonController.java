@@ -33,7 +33,7 @@ public class AptzipCommonController {
 		for (BoardEntity str : boardRepository.findAll()) {
 			list.add(str);
 		}
-		log.info(list.toString());
+		// log.info(list.toString());
 		
 		mv.addObject("principal", principal)
 			.addObject("list", list)

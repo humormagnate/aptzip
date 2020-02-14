@@ -49,9 +49,9 @@ public class BoardEntity {
   @Column(name = "board_content")
 	private String boardContent;
 	
-	// @Column(nullable = false)
 	// @ColumnDefault("Y")
-	@Column(columnDefinition = "varchar(1) default 'Y' not null", name = "board_status")
+	// Column 'board_status' cannot be null -> Why? default 값도 전혀 적용안된다.
+	@Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
 	private String boardStatus;
 	
 	@Column(name = "view_count")
@@ -65,7 +65,8 @@ public class BoardEntity {
   @Column(name = "update_date")
 	private LocalDateTime updateDate;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	// mappedBy 안하면 tb_board_comments 테이블도 생김 (양방향 정규화)
+	@OneToMany(mappedBy = "board")
 	private List<CommentEntity> comments;
 
 	@OneToOne(fetch = FetchType.LAZY)

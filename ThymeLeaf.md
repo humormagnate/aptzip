@@ -24,10 +24,16 @@
 </span>
 ```
 6. 3항 연산자
+// 기본 표현법
 ```html
 <span class="tt-badge">
-  [[${ board.category } ? 'common' : ${ board.category }]]
+  [[${ board.category } ? ${ board.category } : 'common']]
 </span>
+
+// 단축 표현법
+<span class="tt-badge">
+  [[${ board.category } ?: ${ board.category }]]
+</span></div>
 ```
 7. fragment import
 ```html
@@ -42,6 +48,29 @@
 9. Collection 사이즈
 ```html
 <div class="tt-col-value">[[${ #lists.size(board.comments) }]]</div>
+```
+
+10. form 태그에서 Set 타입의 필드를 가지는 Post 객체가 있다고 할 때,
+```html
+<form th:object="${post}" th:action="@{/post}" th:method="post">
+  <input type="text" th:field="*{title}">
+  <input type="text" th:field="*{content}">
+
+  <!-- Using select tag -->
+  <select id="tags" th:field="*{tags}" size="3" multiple="multiple">
+    <option th:each="tag : ${tags}" th:value="${tag}" th:text="${tag}">
+      Tag
+    </option>
+  </select>
+
+  <!-- Using checkbox tag -->
+  <div th:each="tag : ${tags}">
+    <input type="checkbox" th:id="${tag}" th:value="${tag}" th:field="*{tags}">
+    <label th:for="${tag}" th:text="${tag}">Tag</label>
+  </div>
+
+  <button type="submit">저장</button>
+</form>
 ```
 
 # To-Do

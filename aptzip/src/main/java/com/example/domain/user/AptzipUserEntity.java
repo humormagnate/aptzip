@@ -72,7 +72,7 @@ public class AptzipUserEntity {
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_id")
   private AptEntity apt;
   

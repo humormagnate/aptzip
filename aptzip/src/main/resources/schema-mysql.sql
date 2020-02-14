@@ -23,7 +23,7 @@ CREATE TABLE tb_apt (
 
 CREATE TABLE tb_user (
 	user_id				BIGINT				NOT NULL	AUTO_INCREMENT,
-	email					VARCHAR(128)	NOT NULL,
+	email					VARCHAR(128)	NOT NULL UNIQUE,
 	password			VARCHAR(256)	NOT NULL,
 	phone					VARCHAR(128),
 	username			VARCHAR(128)	NOT NULL,
@@ -36,8 +36,11 @@ CREATE TABLE tb_user (
 	apt_id				INTEGER,
 	PRIMARY KEY (user_id),
 	FOREIGN KEY (apt_id)	REFERENCES tb_apt (apt_id)
+	--UNIQUE (email)
+	--CONSTRAINT unique_email UNIQUE (email)
 );
 ALTER TABLE tb_user ADD CONSTRAINT FOREIGN KEY (role) REFERENCES tb_role (role);
+
 
 CREATE TABLE tb_board (
 	board_id			BIGINT				NOT NULL	AUTO_INCREMENT,
@@ -45,7 +48,7 @@ CREATE TABLE tb_board (
   board_content	TEXT					NOT NULL,
 	attachment		VARCHAR(100),
   category			VARCHAR(10),
-  board_status	VARCHAR(1)	DEFAULT 'Y'	NOT NULL,
+  board_status	VARCHAR(1)	DEFAULT 'Y',
   create_date		TIMESTAMP		DEFAULT NOW()	NOT NULL,
   update_date		TIMESTAMP		DEFAULT NOW()	NOT NULL,
   view_count		INTEGER			DEFAULT '0'	NOT NULL,

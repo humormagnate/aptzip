@@ -33,6 +33,7 @@ public class UserResponseDto extends User {
 	private int reported;
   private UserRole role;
   private Collection<UserPrivilege> privilege;
+  private AptEntity apt;
   
   public UserResponseDto(
                     long id
@@ -51,7 +52,8 @@ public class UserResponseDto extends User {
                   , LocalDateTime signUpDate
                   , int reported
                   , UserRole role
-                  , Collection<UserPrivilege> privilege) {
+                  , Collection<UserPrivilege> privilege
+                  , AptEntity apt) {
     super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     this.id = id;
     this.username = username;
@@ -65,18 +67,11 @@ public class UserResponseDto extends User {
     this.reported = reported;
     this.role = role;
     this.privilege = privilege;
-
+    this.apt = apt;
   }
 
-  // public UserResponseDto(AptzipUserEntity user) {
-    //   this.id = user.getId();
-    //   this.username = user.getUsername();
-    //   this.phone = user.getPhone();
-    //   this.email = user.getEmail();
-    // }
-    
-    //  private String toStringPhone(String phone1, String phone2, String phone3){
-      //    return phone1+"-"+phone2+"-"+phone3;
-      //  }
-      
-    }
+  public AptzipUserEntity toEntity() {
+		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, new AptzipRoleEntity(role.name()), apt);
+	}
+
+}
