@@ -27,4 +27,5 @@ public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 		servletContext.addFilter("httpMethodFilter", HiddenHttpMethodFilter.class)
 									.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
 	}
+
 }

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 // @RequestMapping({"${server.error.path:${error.path:/error}}"})
-public class AptzipErrorController implements ErrorController {
+public class ErrorAptzipController implements ErrorController {
 
   @GetMapping(value = "/error/{statusCode}")
   public ModelAndView getErrorPage(@PathVariable("statusCode") String statusCode, HttpServletRequest request, HttpServletResponse response,

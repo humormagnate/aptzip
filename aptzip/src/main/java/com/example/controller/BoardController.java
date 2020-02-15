@@ -3,13 +3,14 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import com.example.domain.board.BoardEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardRepository boardRepository;
+
+	@Autowired
+	private SimpMessageSendingOperations smso;
 
 	@Deprecated
 	@GetMapping("/list")
@@ -150,6 +154,26 @@ public class BoardController {
 	@PostMapping(value="/search")
 	public ModelAndView retrieve(ModelAndView mv) {
 		return mv;
+	}
+
+	/*
+		클라이언트는 @MessageMapping 으로 request
+		서버는 @SendTo 로 response
+	*/
+	// return String
+	@MessageMapping("/nbax") // 전역 RequestMapping(여기서 '/board')에 적용되지 않는다. -> 따로 컨트롤러를 두자
+	@SendTo("/topic/messagexx")	// publishing
+	public String newBoardAlertx(String message) throws Exception {
+		log.info("STOMP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + message);
+		return message;
+	}
+	
+	// return Object
+	@MessageMapping("/nbaxx")
+	@SendTo("/topic/messagexx")	// publishing
+	public String newBoardAlertxx(String message) throws Exception {
+		log.info("STOMP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + message);
+		return message;
 	}
 	
 }

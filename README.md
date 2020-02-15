@@ -10,21 +10,21 @@
 >ID : test@test.test<br>
 >PW : test
 
-### Environment
-
+### Focus on
 >Spring Boot<br>
->Spring Data JPA<br>
->Spring Security<br>
->Thymeleaf<br>
+>[Spring Data JPA (Hibernate, MySQL)](https://github.com/humormagnate/aptzip/study/SpringDataJPA.md)<br>
+>[Spring Security](https://github.com/humormagnate/aptzip/study/SpringSecurity.md)<br>
+>Spring Websocket (SocketJS, STOMP)<br>
+>[Thymeleaf](https://github.com/humormagnate/aptzip/study/ThymeLeaf.md)<br>
 
 ```
 Context Root (localhost:XXXX/aptzip)
 ```
 
->Java Framework : Spring Boot (Java 8)<br>
->Persistence Framework : MySQL, Hibernate<br>
+>[Java 8](https://github.com/humormagnate/aptzip/study/stream.md)<br>
 >FE : Bootstrap, Thymeleaf<br>
->SCM : Git, GitHub, VS Code<br>
+>SCM : Git Bash, GitHub, VS Code<br>
+>IDE : VS Code
 
 ## Built With
 

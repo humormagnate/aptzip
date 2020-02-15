@@ -228,11 +228,47 @@
 		</span>
 	</a>
 
-	<script>
-		const boardId = document.getElementById('boardId').value;
-	</script>
 	<div th:replace="fragments/modalAdvancedSearch" />
 	<div th:replace="fragments/footer :: footer" />
+	
+	<script>
+		const BOARD_ID = document.getElementById('boardId').value;
+		let boardTitle = document.getElementById('boardTitle');
+		let boardContent = document.getElementById('boardContent');
+		
+		const DELETE_POST_BTN = document.getElementById('deletePostBtn');
+		const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
+		
+		// window.onload는 javascript
+		// document.ready는 jquery
+		window.onload = loadCalcRestTitle();
+		boardTitle.addEventListener('keyup', function(){
+			keyUpCalcRestTitle()
+		}, false);
+
+		let categoryTypes = document.querySelectorAll('.tt-button-icon')
+		let hiddenCategoryTypes = document.querySelector('input[name=category]');
+		categoryTypes.forEach(function (input) {
+			selectCategoryTypes(input, hiddenCategoryTypes);
+		});
+
+		if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
+  		DELETE_POST_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				deletePost(BOARD_ID);
+			}, false);
+		}
+
+		if (UPDATE_POST_BTN != undefined && UPDATE_POST_BTN != null) {
+			UPDATE_POST_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				updatePost(BOARD_ID, boardTitle.value, boardContent.value);
+			}, false);
+		}
+
+	</script>
 	</body>
 
 </html>

@@ -19,16 +19,22 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Table(name = "TB_COMMENT")
+@Getter
+@Setter
+@Builder
 @ToString(exclude = "board")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "TB_COMMENT")
 public class CommentEntity {
 
   @Id

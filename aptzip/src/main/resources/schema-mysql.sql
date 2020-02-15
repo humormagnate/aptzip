@@ -75,7 +75,7 @@ CREATE TABLE tb_notice (
 CREATE TABLE tb_comment (
 	comment_id			BIGINT				NOT NULL	AUTO_INCREMENT,
   comment_content	TEXT					NOT NULL,
-  ip_address			VARCHAR(128)	NOT NULL,
+  ip_address			VARCHAR(128),	--NOT NULL,
   create_date			TIMESTAMP		DEFAULT NOW()	NOT NULL,
   update_date			TIMESTAMP		DEFAULT NOW()	NOT NULL,
   comment_status	VARCHAR(1)	DEFAULT 'Y'		NOT NULL,

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-public class AptzipCommonController {
+public class CommonController {
 	
 	@Autowired
 	private BoardRepository boardRepository;
