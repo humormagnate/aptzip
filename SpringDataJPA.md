@@ -45,6 +45,25 @@ name 값을 지정해주지 않고 schema-vendor.sql 파일로 데이터 초기�
 
 > ScriptUtils
 
+> [주의사항](https://cheese10yun.github.io/jpa-preference/)
+1. Entity에 과도한 Annotation은 피하자.
+```java
+@Entity
+@Table(
+    name = "member",
+    indexes = [
+        Index(columnList = "username"),
+        Index(columnList = "age")
+    ],
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["username", "age"])
+    ]
+)
+data class Member(
+    ...
+)
+```
+
 # To-Do
 
 - DAO와 Repository의 차이

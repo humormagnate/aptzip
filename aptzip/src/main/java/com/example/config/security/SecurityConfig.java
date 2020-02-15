@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,6 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
+    // 모든 작업은 여러 종류의 Filter들과  Interceptor를 통해서 동작하기 때문에 개발자의 입장에서는
+    // 적절한 처리르 담당하는 핸들러(Handler)들을 추가하는 것만으로 모든 처리가 완료됩니다.
+
     // 아래 순서가 중요함.
     // 실제로 스프링 문서를 보면 permitAll로 첫번째 허가를 낸 경우 authenticated 로 제한을 걸어도 걸리지 않음.
     http
@@ -72,10 +76,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // https://gompangs.tistory.com/entry/Spring-Boot-Spring-Security-maximumSessions-%EA%B4%80%EB%A0%A8
       .sessionManagement()
         .maximumSessions(1)
-          .maxSessionsPreventsLogin(true)
-          .sessionRegistry(sessionRegistry())
+        .maxSessionsPreventsLogin(true)
+        .sessionRegistry(sessionRegistry())
           .and()
+        // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+      // Cross-site request forgery, CSRF, XSRF
+      // 요청을 보내는 URL에서 서버가 가진 동일한 값과 같은 값을 가지고 데이터를 전송할 때에만 신뢰하기 위한 방법
+      // 스프링 시큐리티가 적용되면 POST 방식으로 보내는 모든 데이터는 CSRF 토큰 값이 필요하다.
+      // 만일 CSRF 토큰을 사용하지 않으려면 application.properties에 security.enable-csrf 속성을 이용해서 사용하지 않도록 설정할 수도 있습니다.
       .csrf()
         .disable()
         // The server understood the request but refuses to authorize it. 403 error
@@ -83,14 +92,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         // .ignoringAntMatchers("/admin/**")
         // .and()
+      // https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#authorizeRequests--
+      // Allows restricting access based upon the HttpServletRequest using
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
         .antMatchers("/user/info", "/board/write", "/board/edit/**").hasAuthority(UserPrivilege.BOARD_WRITE.getPrivileges())
         .antMatchers("/anonymous*").anonymous()
         .antMatchers("/**").permitAll()
         .anyRequest().authenticated()
-      // .and()
-      //  .exceptionHandling().accessDeniedPage("/denied")
+        .and()
+      .exceptionHandling().accessDeniedPage("/denied")
         .and()
       // .headers()
       //   .xssProtection().and()
@@ -123,7 +134,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
       .logout()
         .logoutUrl("/user/logout")
-        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout", "GET")) // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
+        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout", "GET")) // 로그아웃은 POST로 처리하는 것이 안전하다.
+        // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID", "remember-me")
@@ -145,6 +157,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(daoAuthenticationProvider());
+
+    // auth.inMemoryAuthentication()
+    //     .withUser("root")
+    //     .password("aptzip")
+    //     .roles(UserRole.ADMIN.name());
   }
 
   @Bean

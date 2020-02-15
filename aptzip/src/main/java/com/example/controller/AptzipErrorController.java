@@ -56,4 +56,7 @@ public class AptzipErrorController implements ErrorController {
     return "/error";
   }
 
+  @GetMapping("/denied")
+  public void accessDenied() {}
+
 }

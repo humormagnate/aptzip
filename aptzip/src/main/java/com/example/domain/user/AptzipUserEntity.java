@@ -2,6 +2,7 @@ package com.example.domain.user;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -68,7 +69,8 @@ public class AptzipUserEntity {
   private int reported;
 
   // cascade = CascadeType.ALL
-  @ManyToOne(fetch = FetchType.EAGER)
+  // -> User 객체를 insert 하는 순간 UserRole 객체도 insert 하려니까 Unique 제약조건 위배 (ConstraintViolationException)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
 

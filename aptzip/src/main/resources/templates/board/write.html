@@ -18,6 +18,7 @@
 				<!-- <div>[[${#request.getRequestURI()}]]</div> -->
 				<form class="form-default form-create-topic" action="write" method="post">
 					<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+					<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}"/>
 					<!-- <input type="hidden" th:if="${#strings.contains(#request.getRequestURI(), '/board/edit')}" name="_method" value="put"/> -->
 					<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
 					<input type="hidden" name="category" th:value="${ board } ? ${ board.category } : ''">
@@ -228,7 +229,7 @@
 	</a>
 
 	<script>
-		const boardId = '[[${ board.getId() }]]';
+		const boardId = document.getElementById('boardId').value;
 	</script>
 	<div th:replace="fragments/modalAdvancedSearch" />
 	<div th:replace="fragments/footer :: footer" />
