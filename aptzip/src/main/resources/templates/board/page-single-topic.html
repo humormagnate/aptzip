@@ -10,10 +10,12 @@
 	<div th:replace="fragments/navbar" />
 	
 	<main id="tt-pageContent">
-		<!-- <div>[[${ board }]]</div> -->
+		<!-- <div>[[${ board.comments }]]</div> -->
 		<!-- <input type="hidden" th:value="${board.getUser().getUsername()}" id="hiddenBoardUsername"> -->
 		<div class="container">
 			<div class="tt-single-topic-list">
+
+				<!-- board content start -->
 				<div class="tt-item">
 					<div class="tt-single-topic">
 						<div class="tt-item-header">
@@ -29,7 +31,7 @@
 									<!-- <a th:href="${ '/user/info/' + board.user.id }">[[${ board.user.username }]]</a> -->
 									<a th:href="@{ /user/info/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardId" th:value="${ board.getId() }">
-									<input sec:authorize="isAuthenticated()" type="hidden" id="commentId" th:value="${#authentication.principal.getId()}">
+									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.getId()}">
 								</div>
 								<span class="tt-info-time">
 									<i class="tt-icon">
@@ -102,6 +104,9 @@
 						</div>
 					</div>
 				</div>
+				<!-- board content end -->
+
+				<!-- tt-info-box start -->
 				<div class="tt-item">
 					<div class="tt-info-box">
 						<h6 class="tt-title">Thread Status</h6>
@@ -156,6 +161,7 @@
 							</div>
 						</div>
 						<hr>
+
 						<h6 class="tt-title">Frequent Posters</h6>
 						<div class="tt-row-icon">
 							<div class="tt-item">
@@ -208,6 +214,7 @@
 								</a>
 							</div>
 						</div>
+
 						<hr>
 						<div class="row-object-inline form-default">
 							<h6 class="tt-title">Sort replies by:</h6>
@@ -228,70 +235,74 @@
 						</div>
 					</div>
 				</div>
+				<!-- tt-info-box end -->
 
-				<div class="tt-item">
-					<div class="tt-single-topic">
-						<div class="tt-item-header pt-noborder">
-							<div class="tt-item-info info-top">
-								<div class="tt-avatar-icon">
+				<!-- comment-list start -->
+				<!-- <div class="tt-item" th:each="comment : ${ #lists.sort(board.comments) }"> -->
+				<!-- <div>[[${board.comments}]]</div> -->
+				<div class="tt-single-topic-list" id="commentList">
+					<div class="tt-item" th:each="comment : ${ board.comments }">
+						<!-- <div>[[${comment}]]</div> -->
+						<div class="tt-single-topic">
+							<input type="hidden" th:value="${ comment.id }">
+
+							<div class="tt-item-header pt-noborder">
+								<div class="tt-item-info info-top">
+									<div class="tt-avatar-icon">
+										<i class="tt-icon"><svg>
+											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(comment.user.getUsername(), 0, 1) }"></use>
+											</svg></i>
+									</div>
+									<div class="tt-avatar-title">
+										<a th:href="@{ /user/info/{id}(id=${comment.user.id}) }">[[${ comment.user.username }]]</a>
+									</div>
+									<a href="#" class="tt-info-time">
+										<i class="tt-icon"><svg>
+												<use xlink:href="#icon-time"></use>
+											</svg></i>[[${ comment.updateDate }]]
+									</a>
+								</div>
+							</div>
+
+							<div class="tt-item-description">
+								[[${ comment.commentContent }]]
+							</div>
+
+							<div class="tt-item-info info-bottom">
+								<a href="#" class="tt-icon-btn">
 									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-ava-t"></use>
+											<use xlink:href="#icon-favorite"></use>
 										</svg></i>
-								</div>
-								<div class="tt-avatar-title">
-									<a href="#">tesla02</a>
-								</div>
-								<a href="#" class="tt-info-time">
+									<span class="tt-text">0</span>
+								</a>
+								<div class="col-separator"></div>
+								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
 									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-time"></use>
-										</svg></i>6 Jan,2019
+										<use xlink:href="#icon-edit"></use>
+									</svg></i>
+								</a>
+								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+									<i class="tt-icon"><svg>
+											<use xlink:href="#icon-share"></use>
+										</svg></i>
+								</a>
+								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+									<i class="tt-icon"><svg>
+											<use xlink:href="#icon-flag"></use>
+										</svg></i>
+								</a>
+								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+									<i class="tt-icon"><svg>
+											<use xlink:href="#icon-reply"></use>
+										</svg></i>
 								</a>
 							</div>
-						</div>
-						<div class="tt-item-description">
-							Finally!<br>
-							Are there any special recommendations for design or an updated guide that includes new preview sizes,
-							including retina displays?
-						</div>
-						<div class="tt-item-info info-bottom">
-							<a href="#" class="tt-icon-btn">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-like"></use>
-									</svg></i>
-								<span class="tt-text">671</span>
-							</a>
-							<a href="#" class="tt-icon-btn">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-dislike"></use>
-									</svg></i>
-								<span class="tt-text">39</span>
-							</a>
-							<a href="#" class="tt-icon-btn">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-favorite"></use>
-									</svg></i>
-								<span class="tt-text">12</span>
-							</a>
-							<div class="col-separator"></div>
-							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-share"></use>
-									</svg></i>
-							</a>
-							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-flag"></use>
-									</svg></i>
-							</a>
-							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-reply"></use>
-									</svg></i>
-							</a>
+
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- comment-list end -->
 
 			<div class="tt-wrapper-inner">
 				<h4 class="tt-title-separator"><span>You’ve reached the end of replies</span></h4>
@@ -310,7 +321,7 @@
 					<div class="tt-col-btn">
 						<a th:href="@{/user/go/login}" class="btn btn-primary">Log in</a>
 						<a th:href="@{/user/go/signup}" class="btn btn-secondary">Sign up</a>
-						<button type="button" class="btn-icon">
+						<button type="button" class="btn-icon" id="removePopup">
 							<svg class="tt-icon">
 								<use xlink:href="#icon-cancel"></use>
 							</svg>
@@ -318,88 +329,24 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="tt-wrapper-inner">
+<!-- 
+			<button id="asd">asd</button>
+			<script>
+				var asd = document.getElementById('asd');
+				asd.addEventListener('click', function(){
+					console.log('[[${board}]]');
+				}, false);
+			</script>
+			 -->
+			<!-- comment form start -->
+			<div sec:authorize="isAuthenticated()" class="tt-wrapper-inner">
 				<div class="pt-editor form-default">
 					<h6 class="pt-title">Post Your Reply</h6>
-					<div class="pt-row">
-						<div class="col-left">
-							<ul class="pt-edit-btn">
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-quote"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-bold"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-italic"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-share_topic"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-blockquote"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-performatted"></use>
-										</svg>
-									</button></li>
-								<li class="hr"></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-upload_files"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-bullet_list"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-heading"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-horizontal_line"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-emoticon"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-settings"></use>
-										</svg>
-									</button></li>
-								<li><button type="button" class="btn-icon">
-										<svg class="tt-icon">
-											<use xlink:href="#icon-color_picker"></use>
-										</svg>
-									</button></li>
-							</ul>
-						</div>
-						<div class="col-right tt-hidden-mobile">
-							<a href="#" class="btn btn-primary">Preview</a>
-						</div>
-					</div>
+					
 					<div class="form-group">
 						<textarea name="message" id="commentContent" class="form-control" rows="5" placeholder="Lets get started"></textarea>
 					</div>
+					
 					<div class="pt-row">
 						<div class="col-auto">
 							<div class="checkbox-group">
@@ -412,12 +359,50 @@
 							</div>
 						</div>
 						<div class="col-auto">
-							<a href="#" id="createReplyBtn" class="btn btn-secondary btn-width-lg">Reply</a>
+							<a href="#" id="createReplyBtn" class="btn btn-secondary btn-width-lg">Comment</a>
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- comment form end -->
+
+			<!-- comment edit popup start -->
+			<div id="js-popup-edit-comment" class="tt-popup-edit-comment">
+				<div class="tt-btn-col-close">
+					<a href="#">
+						<span class="tt-icon-title">
+							<svg>
+								<use xlink:href="#icon-edit"></use>
+							</svg>
+						</span>
+						<span class="tt-icon-text">
+							Edit Comment
+						</span>
+						<span class="tt-icon-close">
+							<svg>
+								<use xlink:href="#icon-cancel"></use>
+							</svg>
+						</span>
+					</a>
+				</div>
+				<form class="form-default">
+					<input type="hidden" id="commentHiddenId">
+					<div class="form-group">
+						<label for="settingsUserAbout">Content</label>
+						<textarea name="commentContent" placeholder="Edit Your Comment" class="form-control" id="updateCommentContent"></textarea>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary" id="deleteCommentBtn">Delete</button>
+						<button type="button" class="btn btn-secondary" id="saveEditCommentBtn">Save</button>
+					</div>
+				</form>
+			</div>
+			<!-- comment edit popup end -->
+
+		</div>
+		<!-- container ner -->
 		<div class="tt-row-btn"></div>
+
 	</main>
 	
 	<a href="/board/write" class="tt-btn-create-topic">
@@ -428,23 +413,138 @@
 		</span>
 	</a>
 
-	<script>
-		const BOARD_ID = document.getElementById('boardId').value;
-		const COMMENT_ID = document.getElementById('commentId').value;
-
-		const CREATE_REPLY_BTN = document.getElementById('createReplyBtn');
-
-		if (CREATE_REPLY_BTN != undefined && CREATE_REPLY_BTN != null) {
-			CREATE_REPLY_BTN.addEventListener('click', function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				const commentContent = document.getElementById('commentContent').value;
-				createReply(BOARD_ID, commentContent);
-			}, false);
-		}
-	</script>
 	<div th:replace="fragments/modalAdvancedSearch" />
 	<div th:replace="fragments/footer :: footer" />
+
+	<script>
+		const BOARD_ID = document.getElementById('boardId').value;
+		// const COMMENT_USER = document.getElementById('commentUser');
+
+		const CREATE_COMMENT_BTN = document.getElementById('createReplyBtn');
+		let commentList = document.getElementById('commentList');
+
+		if (CREATE_COMMENT_BTN != undefined && CREATE_COMMENT_BTN != null) {
+			CREATE_COMMENT_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				const COMMENT_CONTENT = document.getElementById('commentContent').value;
+				// createReply(BOARD_ID, COMMENT_CONTENT);
+
+				const obj = { boardId:BOARD_ID, commentContent:COMMENT_CONTENT };
+				comment.create(obj, function(list) {
+					// console.log(list);
+
+					document.getElementById('commentContent').value = '';
+				  commentList.innerHTML = '';
+					renderComment(list, commentList);
+
+		      // socket alert
+		      // configureMessageBroker() 에서 지정한 Application Destination Prefixes
+		      socket.send(
+		        "/sub/anb",
+		        {},
+		        JSON.stringify({
+		          id: BOARD_ID,
+		          content: commentContent
+		        })
+		      );
+				});
+			}, false);
+		}
+
+		const DELETE_COMMENT_BTN = document.getElementById('deleteCommentBtn');
+		if (DELETE_COMMENT_BTN != undefined && DELETE_COMMENT_BTN != null) {
+			DELETE_COMMENT_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				// console.log(this);
+				// console.log(event.target);
+
+				if (confirm('정말 삭제하시겠습니까?')) {
+					const commentId = document.getElementById('commentHiddenId').value;
+					const obj = { boardId:BOARD_ID, commentId:commentId };
+	
+					comment.remove(obj, function(list) {
+						// console.log(list);
+	
+						document.getElementById('updateCommentContent').value = '';
+						
+						commentList.innerHTML = '';
+						renderComment(list, commentList);
+						// $(".tt-btn-col-close").trigger('click');
+						document.getElementsByClassName('modal-filter').item(0).click();
+					});
+				}
+			}, false);
+		}
+
+		const UPDATE_COMMENT_BTN = document.getElementById('saveEditCommentBtn');
+		if (UPDATE_COMMENT_BTN != undefined && UPDATE_COMMENT_BTN != null) {
+			UPDATE_COMMENT_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const COMMENT_ID = document.getElementById('commentHiddenId').value;
+				const COMMENT_CONTENT = document.getElementById('updateCommentContent').value;
+				
+				const obj = { boardId:BOARD_ID, id:COMMENT_ID, commentContent:COMMENT_CONTENT };
+
+				comment.update(obj, function(list) {
+					alert('댓글이 성공적으로 수정되었습니다.');
+
+					commentList.innerHTML = '';
+					renderComment(list, commentList);
+					document.getElementsByClassName('modal-filter').item(0).click();
+				});
+			}, false);
+		}
+		
+		editBtn();
+		function editBtn() {
+			const editComment = document.getElementsByClassName('edit-comment');
+			for (let i = 0; i < editComment.length; i++) {
+				editComment.item(i).addEventListener('click', function(event){
+					event.preventDefault();
+					// event.stopPropagation(); -> 다음 이벤트로 넘어가질 않는다.
+	
+					// console.log(this);
+					const commentHiddenId = document.getElementById('commentHiddenId');
+					// childNodes 같은 경우는 공백과 같은 문자열도 textNodes로 잡기 때문에
+					// 이후에 동적 생성한 객체처럼 공백이 없을 경우 node 숫자가 달라진다.
+					// children으로 사용할 것.
+					// commentHiddenId.value = this.parentElement.parentElement.childNodes.item(1).value;
+					commentHiddenId.value = this.parentElement.parentElement.children.item(0).value;
+					
+					const updateCommentContent = document.getElementById('updateCommentContent');
+					// updateCommentContent.value = this.parentElement.parentElement.childNodes.item(5).innerText;
+					updateCommentContent.value = this.parentElement.parentElement.children.item(2).innerText;
+					updateCommentContent.focus();
+					
+				});
+			}
+		}
+
+
+		/*
+			!!! popup !!! remove
+		*/
+		const REMOVE_POPUP_BTN = document.getElementById('removePopup');
+		if (REMOVE_POPUP_BTN != undefined && REMOVE_POPUP_BTN != null) {
+			REMOVE_POPUP_BTN.addEventListener('click', function (event) {
+
+				// this에만 해당
+				event.preventDefault();
+				event.stopPropagation();
+
+				this.parentNode.parentNode.parentElement.remove();
+				// console.log(this);
+				// console.log(event.target);
+
+			}, false);
+		}
+
+	</script>
 </body>
 
 </html>

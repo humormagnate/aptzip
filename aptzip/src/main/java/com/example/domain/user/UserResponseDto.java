@@ -29,7 +29,7 @@ public class UserResponseDto extends User {
 	private String address;
 	private String gender;
 	private String introduction;
-	private LocalDateTime signUpDate;
+	private LocalDateTime signupDate;
 	private int reported;
   private UserRole role;
   private Collection<UserPrivilege> privilege;
@@ -49,7 +49,7 @@ public class UserResponseDto extends User {
                   , String phone
                   , String gender
                   , String introduction
-                  , LocalDateTime signUpDate
+                  , LocalDateTime signupDate
                   , int reported
                   , UserRole role
                   , Collection<UserPrivilege> privilege
@@ -63,7 +63,7 @@ public class UserResponseDto extends User {
     this.address = address;
     this.gender = gender;
     this.introduction = introduction;
-    this.signUpDate = signUpDate;
+    this.signupDate = signupDate;
     this.reported = reported;
     this.role = role;
     this.privilege = privilege;
@@ -71,7 +71,20 @@ public class UserResponseDto extends User {
   }
 
   public AptzipUserEntity toEntity() {
-		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, new AptzipRoleEntity(role.name()), apt);
+    // return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, new AptzipRoleEntity(role.name()), apt);
+    return AptzipUserEntity.builder()
+                           .id(id)
+                           .username(username)
+                           .password(password)
+                           .email(email)
+                           .phone(phone)
+                           .address(address)
+                           .gender(gender)
+                           .introduction(introduction)
+                           .signupDate(signupDate)
+                           .reported(reported)
+                           .role(new AptzipRoleEntity(role.name()))
+                           .build();
 	}
 
 }

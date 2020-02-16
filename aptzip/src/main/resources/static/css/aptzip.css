@@ -1,0 +1,125 @@
+#commentList {
+  margin-top: 30px;
+}
+
+.tt-item.tt-item-popup {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+/*-------  Comment Edit Popup Settings : from style.css --------*/
+.tt-popup-edit-comment {
+  position: fixed;
+  display: block;
+  margin: 0;
+  padding: 70px 30px;
+  background: #fff;
+  z-index: 14;
+  top: 0;
+  right: -150%;
+  height: 100%;
+  max-width: inherit;
+  text-align: left;
+  -webkit-transition: right 0.3s linear;
+  transition: right 0.3s linear;
+}
+
+.tt-popup-edit-comment.column-open {
+  right: 0;
+}
+
+.tt-popup-edit-comment .tt-btn-col-close {
+  margin-bottom: 25px;
+  position: relative;
+}
+.tt-popup-edit-comment .tt-btn-col-close .tt-icon-title {
+  pointer-events: none;
+  position: relative;
+  top: -1px;
+  margin-right: 30px;
+}
+.tt-popup-edit-comment .tt-btn-col-close .tt-icon-title svg {
+  width: 17px;
+  height: 18px;
+  fill: #666f74;
+}
+.tt-popup-edit-comment .tt-btn-col-close .tt-icon-close {
+  pointer-events: none;
+  position: absolute;
+  right: 0px;
+  top: 35px;
+}
+.tt-popup-edit-comment .tt-btn-col-close .tt-icon-close svg {
+  width: 13px;
+  height: 12px;
+  fill: #70797d;
+  -webkit-transition: fill 0.2s linear;
+  transition: fill 0.2s linear;
+}
+.tt-popup-edit-comment .tt-btn-col-close a {
+  display: block;
+  color: #303344;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 36px 0 22px;
+  border-bottom: 1px solid #e2e7ea;
+  -webkit-transition: color 0.2s linear;
+  transition: color 0.2s linear;
+}
+.tt-popup-edit-comment .tt-btn-col-close a:hover {
+  color: #2172cd;
+}
+.tt-popup-edit-comment .tt-btn-col-close a:hover .tt-icon-close svg {
+  fill: #182730;
+}
+.tt-popup-edit-comment .tt-form-upload {
+  padding-bottom: 27px;
+}
+.tt-popup-edit-comment .tt-form-upload .tt-avatar svg {
+  width: 40px;
+  height: 40px;
+}
+.tt-popup-edit-comment .tt-form-upload .btn {
+  min-width: 170px;
+}
+.tt-popup-edit-comment .form-default .form-group {
+  margin-bottom: 21px;
+}
+.tt-popup-edit-comment .form-default .form-group label:not(.error) {
+  padding-bottom: 7px;
+}
+.tt-popup-edit-comment
+  .form-default
+  .form-group
+  label:not(.error)
+  + .checkbox-group {
+  margin-top: 7px;
+}
+.tt-popup-edit-comment .form-default .btn {
+  min-width: 160px;
+}
+.tt-popup-edit-comment .checkbox-group + .checkbox-group {
+  margin-top: 8px;
+}
+.tt-popup-edit-comment textarea.form-control {
+  height: 129px;
+  padding: 19px 12px 12px 28px;
+}
+@media (min-width: 451px) {
+  .tt-popup-edit-comment {
+    width: 410px;
+  }
+}
+@media (max-width: 450px) {
+  .tt-popup-edit-comment {
+    width: 320px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .tt-popup-edit-comment .form-group .btn {
+    width: 100%;
+  }
+}

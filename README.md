@@ -12,16 +12,17 @@
 
 ### Focus on
 >Spring Boot<br>
->[Spring Data JPA (Hibernate, MySQL)](https://github.com/humormagnate/aptzip/study/SpringDataJPA.md)<br>
->[Spring Security](https://github.com/humormagnate/aptzip/study/SpringSecurity.md)<br>
->Spring Websocket (SocketJS, STOMP)<br>
->[Thymeleaf](https://github.com/humormagnate/aptzip/study/ThymeLeaf.md)<br>
+>[Spring Data JPA (Hibernate, MySQL)](/study/SpringDataJPA.md)<br>
+>[Spring Security](./study/SpringSecurity.md)<br>
+>[Spring Websocket (SocketJS, STOMP)](./study/WebSocket.md)<br>
+>[Thymeleaf](./study/ThymeLeaf.md)<br>
+>[REST API](./study/REST-API.md)
 
 ```
 Context Root (localhost:XXXX/aptzip)
 ```
 
->[Java 8](https://github.com/humormagnate/aptzip/study/stream.md)<br>
+>[Java 8](./study/Java8.md)<br>
 >FE : Bootstrap, Thymeleaf<br>
 >SCM : Git Bash, GitHub, VS Code<br>
 >IDE : VS Code

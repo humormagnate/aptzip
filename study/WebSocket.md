@@ -4,6 +4,10 @@
 [Spring stomp와 SockJs를 통한 웹소켓 구현하기, 그리고 장,단점](https://postitforhooney.tistory.com/entry/SpringStomp-Spring-stomp%EC%99%80-Socjks%EB%A5%BC-%ED%86%B5%ED%95%9C-%EC%9B%B9%EC%86%8C%EC%BC%93-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%9E%A5%EB%8B%A8%EC%A0%90)<br>
 [Spring websocket chatting server](https://daddyprogrammer.org/post/4077/spring-websocket-chatting/) : Stateless 적용을 위한 JWT 도입<br>
 [webSocket으로 개발하기 전에 알고 있어야 할 것들](https://adrenal.tistory.com/20)
+[웹 소켓을 활용한 쪽지 알람 기능](https://simsimjae.tistory.com/25)
+[WebSocket과 STOMP 연동](https://wondongho.tistory.com/73)
+[Spring WebSocket 소개](https://supawer0728.github.io/2018/03/30/spring-websocket/
+)
 
 >## 1. 개념
 
@@ -49,7 +53,7 @@ WebSocket 방식
   - @MessageMapping
   - @SendTo
   - @SendToUser
-  - SimpMessagingTemplate
+  - SimpMessagingTemplate.convertAndSendToUser()
   - MessagesSupplier
 
 # To-Do

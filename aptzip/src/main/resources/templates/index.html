@@ -44,60 +44,84 @@
           </div>
 
           <!-- board-list start -->
-          <div class="tt-item tt-itemselect" th:each="board : ${ list }">
-            <!-- <div>[[${ board.user }]]</div> -->
-            <div class="tt-col-avatar">
-              <svg class="tt-icon">
-                <use
-                  th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.getUsername(), 0, 1) }"
-                ></use>
-              </svg>
-            </div>
-            <div class="tt-col-description">
-              <h6 class="tt-title">
-                <a th:href="${'/board/' + board.id }">
-                  <svg class="tt-icon">
-                    <use xlink:href="#icon-pinned"></use>
-                  </svg>
-                  [[${ board.boardTitle }]]
-                </a>
-              </h6>
-              <div class="row align-items-center no-gutters">
-                <div class="col-11">
-                  <ul class="tt-list-badge">
-                    <li class="show-mobile">
-                      <a href="#"
-                        ><span class="tt-color01 tt-badge">politics</span></a
-                      >
-                    </li>
-                    <li>
-                      <a href="#"><span class="tt-badge">contests</span></a>
-                    </li>
-                    <li>
-                      <a href="#"><span class="tt-badge">authors</span></a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-1 ml-auto show-mobile">
-                  <div class="tt-value">1h</div>
+          <th:block th:each="board, index : ${ list }">
+            <th:block th:if="${ index.index } eq 4">
+          		<div class="tt-topic-list" sec:authorize="isAnonymous()">
+                <div class="tt-item tt-item-popup">
+                  <div class="tt-col-avatar">
+                    <svg class="tt-icon">
+                      <use xlink:href="#icon-ava-f"></use>
+                    </svg>
+                  </div>
+                  <div class="tt-col-message">
+                    Looks like you are new here. Register for free, learn and contribute.
+                  </div>
+                  <div class="tt-col-btn">
+                    <a th:href="@{/user/go/login}" class="btn btn-primary">Log in</a>
+                    <a th:href="@{/user/go/signup}" class="btn btn-secondary">Sign up</a>
+                    <button type="button" class="btn-icon" id="removePopup">
+                      <svg class="tt-icon">
+                        <use xlink:href="#icon-cancel"></use>
+                      </svg>
+                    </button></div>
                 </div>
               </div>
+          	</th:block>
+            <div class="tt-item tt-itemselect" >
+              <!-- <div>[[${ board.user }]]</div> -->
+              <div class="tt-col-avatar">
+                <svg class="tt-icon">
+                  <use
+                    th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.getUsername(), 0, 1) }"
+                  ></use>
+                </svg>
+              </div>
+              <div class="tt-col-description">
+                <h6 class="tt-title">
+                  <a th:href="${'/board/' + board.id }">
+                    <svg class="tt-icon">
+                      <use xlink:href="#icon-pinned"></use>
+                    </svg>
+                    [[${ board.boardTitle }]]
+                  </a>
+                </h6>
+                <div class="row align-items-center no-gutters">
+                  <div class="col-11">
+                    <ul class="tt-list-badge">
+                      <li class="show-mobile">
+                        <a href="#"
+                          ><span class="tt-color01 tt-badge">politics</span></a
+                        >
+                      </li>
+                      <li>
+                        <a href="#"><span class="tt-badge">contests</span></a>
+                      </li>
+                      <li>
+                        <a href="#"><span class="tt-badge">authors</span></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-1 ml-auto show-mobile">
+                    <div class="tt-value">1h</div>
+                  </div>
+                </div>
+              </div>
+              <!-- 3항 연산자 단축 표현 -->
+              <div class="tt-col-category">
+                <span class="tt-color01 tt-badge"
+                  >[[${ board.category } ?: ${ board.category }]]</span
+                >
+              </div>
+              <div class="tt-col-value hide-mobile">0</div>
+              <div class="tt-col-value tt-color-select hide-mobile">
+                [[${ #lists.size(board.comments) }]]
+              </div>
+              <div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
+              <div class="tt-col-value hide-mobile">
+                [[${ #temporals.format(board.createDate, 'HH:mm') }]]
+              </div>
             </div>
-            <!-- 3항 연산자 단축 표현 -->
-            <div class="tt-col-category">
-              <span class="tt-color01 tt-badge"
-                >[[${ board.category } ?: ${ board.category }]]</span
-              >
-            </div>
-            <div class="tt-col-value hide-mobile">0</div>
-            <div class="tt-col-value tt-color-select hide-mobile">
-              [[${ #lists.size(board.comments) }]]
-            </div>
-            <div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
-            <div class="tt-col-value hide-mobile">
-              [[${ #temporals.format(board.createDate, 'HH:mm') }]]
-            </div>
-          </div>
+          </th:block>
           <!-- board-list end -->
 
           <!-- row-btn start -->
@@ -248,5 +272,13 @@
 
 		<div th:replace="fragments/modalAdvancedSearch" />
     <div th:replace="fragments/footer :: footer" />
+    <script>
+  		const REMOVE_POPUP_BTN = document.getElementById('removePopup');
+  		REMOVE_POPUP_BTN.addEventListener('click', function(event){
+        event.preventDefault();
+        event.stopPropagation();
+  			deletePopup(event);
+  		}, false);
+    </script>
   </body>
 </html>

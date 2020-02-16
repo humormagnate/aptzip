@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.example.domain.user.AptEntity;
@@ -33,7 +34,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "TB_BOARD")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "comments")
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardEntity {
@@ -67,6 +68,7 @@ public class BoardEntity {
 	
 	// mappedBy 안하면 tb_board_comments 테이블도 생김 (양방향 정규화)
 	@OneToMany(mappedBy = "board")
+  @OrderBy("id asc")
 	private List<CommentEntity> comments;
 
 	@OneToOne(fetch = FetchType.LAZY)

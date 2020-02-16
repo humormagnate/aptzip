@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class WebHookController {
+public class WebSocketController {
 
   @MessageMapping("/anb")
   @SendTo("/topic/message")

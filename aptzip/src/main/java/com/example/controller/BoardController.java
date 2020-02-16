@@ -32,17 +32,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardController {
 
-	@Autowired
-	private BoardRepository boardRepository;
-
-	@Autowired
-	private SimpMessageSendingOperations smso;
+	@Autowired private BoardRepository boardRepo;
+	@Autowired private SimpMessageSendingOperations smso;
 
 	@Deprecated
 	@GetMapping("/list")
 	public ModelAndView list(ModelAndView mv) {
 		List<BoardEntity> list = new ArrayList<BoardEntity>();
-		for (BoardEntity str : boardRepository.findAll()) {
+		for (BoardEntity str : boardRepo.findAll()) {
 			list.add(str);
 		}
 		log.info(list.toString());
@@ -74,7 +71,7 @@ public class BoardController {
 		board.setBoardStatus("Y");
 		board.setUser(principal.toEntity());	// java.lang.NullPointerException: null
 		board.setApt(board.getUser().getApt());
-		boardRepository.save(board);
+		boardRepo.save(board);
 
 		/*
 			Post-Redirect-Get 방식
@@ -87,14 +84,15 @@ public class BoardController {
 
 	@GetMapping("/{id}")
 	public String read(Model model, @PathVariable("id") Long id) {
-		// boardRepository.findById(id).ifPresent(value -> model.addAttribute("board", value));
-		boardRepository.findById(id).ifPresent(board -> {
+		log.info("/boardGet/////////////////////////////////////////////////////////////////");
+
+		boardRepo.findById(id).ifPresent(board -> {
 			board.setBoardContent(board.getBoardContent().replace(System.lineSeparator(), "<br>"));
-			log.info(board.toString());
 			model.addAttribute("board", board);
 		});
-		// boardRepo.findById(id).ifPresent(value -> log.info(value.toString()));
+		
 		model.addAttribute("newLineChar", "\r");
+
 		return "board/page-single-topic";
 	}
 
@@ -103,7 +101,7 @@ public class BoardController {
 	public String delete(@PathVariable("id") Long id) {
 		log.info("====================================Delete Mapping=================================");
 		log.info(id.toString());
-		boardRepository.deleteById(id);
+		boardRepo.deleteById(id);
 		return "성공적으로 삭제되었습니다.";
 	}
 
@@ -112,23 +110,23 @@ public class BoardController {
 	public String put(@PathVariable("id") Long id, BoardEntity board) {
 		log.info("====================================Put Mapping=================================");
 		log.info(id.toString());
-		boardRepository.updateById(id, board.getBoardTitle(), board.getBoardContent());
+		boardRepo.updateById(id, board.getBoardTitle(), board.getBoardContent());
 		return "성공적으로 수정되었습니다.";
 	}
 
 	@GetMapping("/edit/{id}")
 	public String editGet(Model model, @PathVariable("id") Long id) {
-		boardRepository.findById(id).ifPresent(value -> model.addAttribute("board", value));
+		boardRepo.findById(id).ifPresent(value -> model.addAttribute("board", value));
 		return "board/write";
 	}
 
 	@PutMapping("/edit/{id}")
 	public String editPut(@PathVariable("id") Long id, BoardEntity board) {
-			boardRepository.findById(id).ifPresent(origin -> {
+			boardRepo.findById(id).ifPresent(origin -> {
 				origin.setCategory(board.getCategory());
 				origin.setBoardTitle(board.getBoardTitle());
 				origin.setBoardContent(board.getBoardContent());
-				boardRepository.save(origin);
+				boardRepo.save(origin);
 			});
 			return "redirect:/board/" + id;
 	}
@@ -147,7 +145,7 @@ public class BoardController {
 
 	@GetMapping("/del")
 	public String delGET(Long id) {
-		boardRepository.deleteById(id);
+		boardRepo.deleteById(id);
 		return "redirect:/";
 	}
 

@@ -194,8 +194,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new SessionRegistryImpl();
   }
 
+  // the servlet container will notify
+  // Spring Security (through HttpSessionEventPublisher) of session life cycle events
   @Bean
   public static ServletListenerRegistrationBean<EventListener> httpSessionEventPublisher() {
     return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
   }
+
 }

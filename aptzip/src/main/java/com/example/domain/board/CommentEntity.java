@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.example.domain.user.AptzipUserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,6 +27,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+// 답글, 답장 : reply
+// 댓글 : comment
 @Getter
 @Setter
 @Builder
@@ -59,11 +62,12 @@ public class CommentEntity {
   @Column(name = "comment_status")
   private String commentStatus;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
   private BoardEntity board;
   
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private AptzipUserEntity user;
 }
