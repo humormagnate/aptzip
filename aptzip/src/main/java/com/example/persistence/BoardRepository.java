@@ -14,6 +14,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Changsu Im
+ */
 public interface BoardRepository extends CrudRepository<BoardEntity, Long>, QuerydslPredicateExecutor<BoardEntity> {
 
   @Transactional

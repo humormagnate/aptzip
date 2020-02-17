@@ -418,7 +418,7 @@
 	// 하지만 편집기에서 계속 경고 표시가 나오니 ''로 감싸자... 주석처리해도 parsing 된다.
 
 		// 사용자가 devtool로 DOM 조작으로 삭제할 수 없도록
-		const USER_ID = "[[${#authentication.principal} ? ${#authentication.principal.id} : '']]";
+		const USER_ID = "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.id} : '']]";
 		const BOARD_ID = document.getElementById('boardId').value;
 		// const COMMENT_USER = document.getElementById('commentUser');
 

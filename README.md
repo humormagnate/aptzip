@@ -7,8 +7,8 @@
 
 
 ### TEST 계정
->ID : test@test.test<br>
->PW : test
+>ID : qwe@qwe.qwe<br>
+>PW : qwe
 
 ### Focus on
 >Spring Boot<br>

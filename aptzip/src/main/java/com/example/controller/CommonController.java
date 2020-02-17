@@ -2,7 +2,9 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import com.example.config.thymeleaf.expression.TemporalsAptzip;
 import com.example.domain.board.BoardEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
@@ -32,14 +34,19 @@ public class CommonController {
 
 		List<BoardEntity> list = new ArrayList<BoardEntity>();
 		Iterable<BoardEntity> board = boardRepo.findAll();
+		int newBoard = 0;
 
 		for (BoardEntity str : board) {
 			list.add(str);
+			if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {
+				newBoard++;
+			}
 		}
 		// log.info(list.toString());
 		
 		mv.addObject("principal", principal)
 			.addObject("list", list)
+			.addObject("newBoard", newBoard)
 			.setViewName("index");
 		
 		return mv;
