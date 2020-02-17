@@ -84,6 +84,7 @@ public class UserResponseDto extends User {
                            .signupDate(signupDate)
                            .reported(reported)
                            .role(new AptzipRoleEntity(role.name()))
+                           .apt(apt)
                            .build();
 	}
 

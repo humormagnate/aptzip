@@ -20,8 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonController {
 	
 	@Autowired
-	private BoardRepository boardRepository;
+	private BoardRepository boardRepo;
 
+	// @Secured({ "ROLE_ADMIN" })
 	@GetMapping("/")
   //public ModelAndView home(Principal principal, ModelAndView mv) {
   public ModelAndView home(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
@@ -30,7 +31,9 @@ public class CommonController {
 		log.info(principal + "=========================================================");
 
 		List<BoardEntity> list = new ArrayList<BoardEntity>();
-		for (BoardEntity str : boardRepository.findAll()) {
+		Iterable<BoardEntity> board = boardRepo.findAll();
+
+		for (BoardEntity str : board) {
 			list.add(str);
 		}
 		// log.info(list.toString());

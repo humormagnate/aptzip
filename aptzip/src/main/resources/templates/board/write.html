@@ -1,274 +1,269 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en"
+			xmlns:th="http://www.thymeleaf.org"
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/layout.html}">
 
-<head>
-	<link rel="shortcut icon" href="/favicon/favicon.ico">
-	<div th:replace="fragments/header :: header" />
-</head>
+  <div layout:fragment="content">
 
-<body>
-	<div th:replace="fragments/navbar" />
+		<main id="tt-pageContent">
+			<div class="container">
+				<div class="tt-wrapper-inner">
+					<h1 class="tt-title-border">
+						[[${ board } ? 'Update Post' : 'Create New Post' ]]
+					</h1>
+					<!-- <div>[[${#request.getRequestURI()}]]</div> -->
+					<form class="form-default form-create-topic" action="write" method="post">
+						<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+						<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
+						<!-- <input type="hidden" th:if="${#strings.contains(#request.getRequestURI(), '/board/edit')}" name="_method" value="put"/> -->
+						<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
+						<input type="hidden" name="category" th:value="${ board } ? ${ board.category } : ''">
 
-	<main id="tt-pageContent">
-		<div class="container">
-			<div class="tt-wrapper-inner">
-				<h1 class="tt-title-border">
-					[[${ board } ? 'Update Post' : 'Create New Post' ]]
-				</h1>
-				<!-- <div>[[${#request.getRequestURI()}]]</div> -->
-				<form class="form-default form-create-topic" action="write" method="post">
-					<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
-					<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}"/>
-					<!-- <input type="hidden" th:if="${#strings.contains(#request.getRequestURI(), '/board/edit')}" name="_method" value="put"/> -->
-					<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
-					<input type="hidden" name="category" th:value="${ board } ? ${ board.category } : ''">
-					
-					<div class="form-group">
-						<label for="inputTopicTitle">Post Title</label>
-						<div class="tt-value-wrapper">
-							<input type="text" id="boardTitle" name="boardTitle" class="form-control"
-								placeholder="Subject of your topic" maxlength="99" th:value="${ board } ? ${ board.boardTitle } : ''">
-							<span class="tt-value-input"></span>
-						</div>
-						<div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
-					</div>
-					
-					<div class="form-group">
-						<label>Post Type</label>
-						<div class="tt-js-active-btn tt-wrapper-btnicon">
-							<div class="row tt-w410-col-02 topic-type">
-								<div class="col-4 col-lg-3 col-xl-2">
-									<a href="#" class="tt-button-icon">
-										<span class="tt-icon">
-											<svg>
-												<use xlink:href="#icon-discussion"></use>
-											</svg>
-										</span>
-										<span class="tt-text">Discussion</span>
-									</a>
-								</div>
-								<div class="col-4 col-lg-3 col-xl-2">
-									<a href="#" class="tt-button-icon">
-										<span class="tt-icon">
-											<svg>
-												<use xlink:href="#Question"></use>
-											</svg>
-										</span>
-										<span class="tt-text">Question</span>
-									</a>
-								</div>
-								<div class="col-4 col-lg-3 col-xl-2">
-									<a href="#" class="tt-button-icon">
-										<span class="tt-icon">
-											<svg>
-												<use xlink:href="#Poll"></use>
-											</svg>
-										</span>
-										<span class="tt-text">Poll</span>
-									</a>
-								</div>
-								<div class="col-4 col-lg-3 col-xl-2">
-									<a href="#" class="tt-button-icon">
-										<span class="tt-icon">
-											<svg>
-												<use xlink:href="#icon-gallery"></use>
-											</svg>
-										</span>
-										<span class="tt-text">Gallery</span>
-									</a>
-								</div>
-								<div class="col-4 col-lg-3 col-xl-2">
-									<a href="#" class="tt-button-icon">
-										<span class="tt-icon">
-											<svg>
-												<use xlink:href="#Video"></use>
-											</svg>
-										</span>
-										<span class="tt-text">Media</span>
-									</a>
-								</div>
-								<div class="col-4 col-lg-3 col-xl-2">
-									<a href="#" class="tt-button-icon">
-										<span class="tt-icon">
-											<svg>
-												<use xlink:href="#Others"></use>
-											</svg>
-										</span>
-										<span class="tt-text">Common</span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="pt-editor">
-						<h6 class="pt-title">Post Body</h6>
-						<div class="pt-row">
-							<div class="col-left">
-								<ul class="pt-edit-btn">
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-quote"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-bold"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-italic"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-share_topic"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-blockquote"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-performatted"></use>
-											</svg>
-										</button></li>
-									<li class="hr"></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-upload_files"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-bullet_list"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-heading"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-horizontal_line"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-emoticon"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-settings"></use>
-											</svg>
-										</button></li>
-									<li><button type="button" class="btn-icon">
-											<svg class="tt-icon">
-												<use xlink:href="#icon-color_picker"></use>
-											</svg>
-										</button></li>
-								</ul>
-							</div>
-						</div>
 						<div class="form-group">
-							<textarea id="boardContent" name="boardContent" class="form-control" rows="5" placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
+							<label for="inputTopicTitle">Post Title</label>
+							<div class="tt-value-wrapper">
+								<input type="text" id="boardTitle" name="boardTitle" class="form-control"
+									placeholder="Subject of your topic" maxlength="99" th:value="${ board } ? ${ board.boardTitle } : ''">
+								<span class="tt-value-input"></span>
+							</div>
+							<div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
 						</div>
-						<!--
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="inputTopicTitle">Tags</label>
-									<select class="form-control">
-										<option value="Select">Select</option>
-										<option value="Value 01">Value 01</option>
-										<option value="Value 02">Value 02</option>
-									</select>
+
+						<div class="form-group">
+							<label>Post Type</label>
+							<div class="tt-js-active-btn tt-wrapper-btnicon">
+								<div class="row tt-w410-col-02 topic-type">
+									<div class="col-4 col-lg-3 col-xl-2">
+										<a href="#" class="tt-button-icon">
+											<span class="tt-icon">
+												<svg>
+													<use xlink:href="#icon-discussion"></use>
+												</svg>
+											</span>
+											<span class="tt-text">Discussion</span>
+										</a>
+									</div>
+									<div class="col-4 col-lg-3 col-xl-2">
+										<a href="#" class="tt-button-icon">
+											<span class="tt-icon">
+												<svg>
+													<use xlink:href="#Question"></use>
+												</svg>
+											</span>
+											<span class="tt-text">Question</span>
+										</a>
+									</div>
+									<div class="col-4 col-lg-3 col-xl-2">
+										<a href="#" class="tt-button-icon">
+											<span class="tt-icon">
+												<svg>
+													<use xlink:href="#Poll"></use>
+												</svg>
+											</span>
+											<span class="tt-text">Poll</span>
+										</a>
+									</div>
+									<div class="col-4 col-lg-3 col-xl-2">
+										<a href="#" class="tt-button-icon">
+											<span class="tt-icon">
+												<svg>
+													<use xlink:href="#icon-gallery"></use>
+												</svg>
+											</span>
+											<span class="tt-text">Gallery</span>
+										</a>
+									</div>
+									<div class="col-4 col-lg-3 col-xl-2">
+										<a href="#" class="tt-button-icon">
+											<span class="tt-icon">
+												<svg>
+													<use xlink:href="#Video"></use>
+												</svg>
+											</span>
+											<span class="tt-text">Media</span>
+										</a>
+									</div>
+									<div class="col-4 col-lg-3 col-xl-2">
+										<a href="#" class="tt-button-icon">
+											<span class="tt-icon">
+												<svg>
+													<use xlink:href="#Others"></use>
+												</svg>
+											</span>
+											<span class="tt-text">Common</span>
+										</a>
+									</div>
 								</div>
 							</div>
-							<div class="col-md-8">
-								<div class="form-group">
-									<label for="inputTopicTags">Selected</label>
-									<input type="text" name="tag" class="form-control" id="inputTopicTags"
-										placeholder="Select Tags" disabled>
+						</div>
+						<div class="pt-editor">
+							<h6 class="pt-title">Post Body</h6>
+							<div class="pt-row">
+								<div class="col-left">
+									<ul class="pt-edit-btn">
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-quote"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-bold"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-italic"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-share_topic"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-blockquote"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-performatted"></use>
+												</svg>
+											</button></li>
+										<li class="hr"></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-upload_files"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-bullet_list"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-heading"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-horizontal_line"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-emoticon"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-settings"></use>
+												</svg>
+											</button></li>
+										<li><button type="button" class="btn-icon">
+												<svg class="tt-icon">
+													<use xlink:href="#icon-color_picker"></use>
+												</svg>
+											</button></li>
+									</ul>
+								</div>
+							</div>
+							<div class="form-group">
+								<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
+									placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
+							</div>
+							<!--
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="inputTopicTitle">Tags</label>
+										<select class="form-control">
+											<option value="Select">Select</option>
+											<option value="Value 01">Value 01</option>
+											<option value="Value 02">Value 02</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-8">
+									<div class="form-group">
+										<label for="inputTopicTags">Selected</label>
+										<input type="text" name="tag" class="form-control" id="inputTopicTags"
+											placeholder="Select Tags" disabled>
+									</div>
+								</div>
+							</div>
+							-->
+							<div class="row">
+								<div class="col-auto ml-md-auto">
+									<button th:if="${ board }" id="deletePostBtn" class="btn btn-secondary btn-width-lg">
+										Delete Post
+									</button>
+									<!-- <button type="submit" class="btn btn-secondary btn-width-lg">
+										[[${ board } ? 'Update Post' : 'Create Post' ]]
+									</button> -->
+									<button th:if="${ board }" id="updatePostBtn" class="btn btn-secondary btn-width-lg">
+										Update Post
+									</button>
+									<button th:if="${#strings.contains(#request.getRequestURI(), '/board/write')}" type="submit" class="btn btn-secondary btn-width-lg">
+										Create Post
+									</button>
 								</div>
 							</div>
 						</div>
-						-->
-						<div class="row">
-							<div class="col-auto ml-md-auto">
-								<button th:if="${ board }" id="deletePostBtn" class="btn btn-secondary btn-width-lg">
-									Delete Post
-								</button>
-								<!-- <button type="submit" class="btn btn-secondary btn-width-lg">
-									[[${ board } ? 'Update Post' : 'Create Post' ]]
-								</button> -->
-								<button th:if="${ board }" id="updatePostBtn" class="btn btn-secondary btn-width-lg">
-									Update Post
-								</button>
-								<button th:if="${#strings.contains(#request.getRequestURI(), '/board/write')}" type="submit" class="btn btn-secondary btn-width-lg">
-									Create Post
-								</button>
-							</div>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
-	</main>
+		</main>
 	
-	<a href="/board/write" class="tt-btn-create-topic">
-		<span class="tt-icon">
-			<svg>
-				<use xlink:href="#icon-create_new"></use>
-			</svg>
-		</span>
-	</a>
-
-	<div th:replace="fragments/modalAdvancedSearch" />
-	<div th:replace="fragments/footer :: footer" />
-	
-	<script>
-		const BOARD_ID = document.getElementById('boardId').value;
-		let boardTitle = document.getElementById('boardTitle');
-		let boardContent = document.getElementById('boardContent');
+		<a href="/board/write" class="tt-btn-create-topic">
+			<span class="tt-icon">
+				<svg>
+					<use xlink:href="#icon-create_new"></use>
+				</svg>
+			</span>
+		</a>
+	</div>
 		
-		const DELETE_POST_BTN = document.getElementById('deletePostBtn');
-		const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
-		
-		// window.onload는 javascript
-		// document.ready는 jquery
-		window.onload = loadCalcRestTitle();
-		boardTitle.addEventListener('keyup', function(){
-			keyUpCalcRestTitle()
-		}, false);
+	<script layout:fragment="script">
+			const BOARD_ID = document.getElementById('boardId');
+			let boardTitle = document.getElementById('boardTitle');
+			let boardContent = document.getElementById('boardContent');
 
-		let categoryTypes = document.querySelectorAll('.tt-button-icon')
-		let hiddenCategoryTypes = document.querySelector('input[name=category]');
-		categoryTypes.forEach(function (input) {
-			selectCategoryTypes(input, hiddenCategoryTypes);
-		});
+			const DELETE_POST_BTN = document.getElementById('deletePostBtn');
+			const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
 
-		if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
-  		DELETE_POST_BTN.addEventListener('click', function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				deletePost(BOARD_ID);
+			// window.onload는 javascript
+			// document.ready는 jquery
+			window.onload = loadCalcRestTitle();
+			boardTitle.addEventListener('keyup', function () {
+				keyUpCalcRestTitle()
 			}, false);
-		}
 
-		if (UPDATE_POST_BTN != undefined && UPDATE_POST_BTN != null) {
-			UPDATE_POST_BTN.addEventListener('click', function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				updatePost(BOARD_ID, boardTitle.value, boardContent.value);
-			}, false);
-		}
+			const categoryTypes = document.querySelectorAll('.tt-button-icon');
+			const hiddenCategoryTypes = document.querySelector('input[name=category]');
+			categoryTypes.forEach(function (input) {
+				selectCategoryTypes(input, hiddenCategoryTypes);
+			});
 
-	</script>
-	</body>
+			if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
+				DELETE_POST_BTN.addEventListener('click', function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+					deletePost(BOARD_ID.value);
+				}, false);
+			}
+
+			if (UPDATE_POST_BTN != undefined && UPDATE_POST_BTN != null) {
+				UPDATE_POST_BTN.addEventListener('click', function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+					updatePost(BOARD_ID.value, boardTitle.value, boardContent.value);
+				}, false);
+			}
+
+		</script>
 
 </html>

@@ -12,6 +12,7 @@ import com.example.persistence.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +30,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/comment/")
 public class CommentController {
 
-	@Autowired private CommentRepository commentRepo;
-  
+  @Autowired
+  private CommentRepository commentRepo;
+
   public List<CommentEntity> getCommentList(BoardEntity board) throws RuntimeException {
     log.info("/comment/get//////////////////////////////////////////////////////////");
     return commentRepo.getCommentsByBoardId(board);
   }
 
+  // @Secured({ "ROLE_ADMIN" }) -> ajax 가 안되는 건지, RestController가 안되는 건지.
   @GetMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> commentGet(@PathVariable("boardId") Long boardId) {
 
@@ -49,16 +52,18 @@ public class CommentController {
 
   // @RequestBody error
   // nested exception is com.fasterxml.jackson.core.JsonParseException:
-  // Unrecognized token 'commentContent': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+  // Unrecognized token 'commentContent': was expecting (JSON String, Number,
+  // Array, Object or token 'null', 'true' or 'false')
   // -> 'json' 타입으로 보내줘야 함
   @Transactional
-	@PostMapping("/{boardId}")
-	public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId, @RequestBody CommentEntity comment, @AuthenticationPrincipal UserResponseDto principal) {
+  @PostMapping("/{boardId}")
+  public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
+      @RequestBody CommentEntity comment, @AuthenticationPrincipal UserResponseDto principal) {
     log.info("/comment/post//////////////////////////////////////////////////////////");
     log.info(comment.toString());
     BoardEntity board = new BoardEntity();
     board.setId(boardId);
-    
+
     comment.setUser(principal.toEntity());
     comment.setBoard(board);
     comment.setCommentStatus("Y");
@@ -73,7 +78,8 @@ public class CommentController {
 
   @Transactional
   @DeleteMapping("/{boardId}/{commentId}")
-  public ResponseEntity<List<CommentEntity>> commentDelete(@PathVariable("boardId") Long boardId, @PathVariable("commentId") Long commentId) {
+  public ResponseEntity<List<CommentEntity>> commentDelete(@PathVariable("boardId") Long boardId,
+      @PathVariable("commentId") Long commentId) {
 
     log.info("/comment/delete//////////////////////////////////////////////////////");
     commentRepo.deleteById(commentId);
@@ -83,10 +89,11 @@ public class CommentController {
 
     return new ResponseEntity<>(getCommentList(board), HttpStatus.OK);
   }
-  
+
   @Transactional
   @PutMapping("/{boardId}")
-  public ResponseEntity<List<CommentEntity>> commentPut(@PathVariable("boardId") Long boardId, @RequestBody CommentEntity comment) {
+  public ResponseEntity<List<CommentEntity>> commentPut(@PathVariable("boardId") Long boardId,
+      @RequestBody CommentEntity comment) {
 
     log.info("/comment/put//////////////////////////////////////////////////////");
     log.info(boardId.toString());
@@ -102,6 +109,5 @@ public class CommentController {
 
     return new ResponseEntity<>(getCommentList(board), HttpStatus.CREATED);
   }
-  
 
 }

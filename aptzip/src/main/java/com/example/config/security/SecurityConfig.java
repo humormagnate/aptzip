@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   // private final PasswordEncoder passwordEncoder;
@@ -50,39 +50,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private DataSource dataSource;
 
   @Autowired
-	public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
-  	this.passwordEncoder = passwordEncoder;
-  	this.userService = userService;
+  public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
+    this.passwordEncoder = passwordEncoder;
+    this.userService = userService;
   }
-  
-	@Override
-	public void configure(WebSecurity web) throws Exception {
+
+  @Override
+  public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**");
-	}
-  
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    // 모든 작업은 여러 종류의 Filter들과  Interceptor를 통해서 동작하기 때문에 개발자의 입장에서는
+    // 모든 작업은 여러 종류의 Filter들과 Interceptor를 통해서 동작하기 때문에 개발자의 입장에서는
     // 적절한 처리르 담당하는 핸들러(Handler)들을 추가하는 것만으로 모든 처리가 완료됩니다.
 
     // 아래 순서가 중요함.
     // 실제로 스프링 문서를 보면 permitAll로 첫번째 허가를 낸 경우 authenticated 로 제한을 걸어도 걸리지 않음.
     http
-      .httpBasic()
-        .and()
+      // .httpBasic().and() -> login form popup (HTTP 기본 인증(HTTP Basic Authentication)
       // https://gompangs.tistory.com/entry/Spring-Boot-Spring-Security-maximumSessions-%EA%B4%80%EB%A0%A8
       .sessionManagement()
         .maximumSessions(1)
         .maxSessionsPreventsLogin(true)
         .sessionRegistry(sessionRegistry())
-          .and()
+        .and()
         // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-      // Cross-site request forgery, CSRF, XSRF
-      // 요청을 보내는 URL에서 서버가 가진 동일한 값과 같은 값을 가지고 데이터를 전송할 때에만 신뢰하기 위한 방법
-      // 스프링 시큐리티가 적용되면 POST 방식으로 보내는 모든 데이터는 CSRF 토큰 값이 필요하다.
-      // 만일 CSRF 토큰을 사용하지 않으려면 application.properties에 security.enable-csrf 속성을 이용해서 사용하지 않도록 설정할 수도 있습니다.
+        // Cross-site request forgery, CSRF, XSRF
+        // 요청을 보내는 URL에서 서버가 가진 동일한 값과 같은 값을 가지고 데이터를 전송할 때에만 신뢰하기 위한 방법
+        // 스프링 시큐리티가 적용되면 POST 방식으로 보내는 모든 데이터는 CSRF 토큰 값이 필요하다.
+        // 만일 CSRF 토큰을 사용하지 않으려면 application.properties에 security.enable-csrf 속성을 이용해서
+        // 사용하지 않도록 설정할 수도 있습니다.
       .csrf()
         .disable()
         // The server understood the request but refuses to authorize it. 403 error
@@ -90,24 +90,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         // .ignoringAntMatchers("/admin/**")
         // .and()
-      // https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#authorizeRequests--
-      // Allows restricting access based upon the HttpServletRequest using
+        // https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#authorizeRequests--
+        // Allows restricting access based upon the HttpServletRequest using
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/info", "/board/write", "/board/edit/**").hasAuthority(UserPrivilege.BOARD_WRITE.getPrivileges())
-        .antMatchers("/anonymous*").anonymous()
+        .antMatchers("/user/info/*", "/board/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+        .antMatchers("/board/write/**").authenticated()
+        // .antMatchers("/board/write/**").hasAuthority(UserPrivilege.BOARD_WRITE.getPrivileges())
+        .antMatchers("/user/go/login/*").anonymous()
         .antMatchers("/**").permitAll()
-        .anyRequest().authenticated()
+        .anyRequest().authenticated().and().exceptionHandling().accessDeniedPage("/") // -> root context("/")를 주소창에 입력해서 접근 시 exception "Access is denied"
         .and()
-      .exceptionHandling().accessDeniedPage("/denied")
-        .and()
-      // .headers()
-      //   .xssProtection().and()
-      //   .frameOptions().disable()
+        // .headers()
+        // .xssProtection().and()
+        // .frameOptions().disable()
         // .httpStrictTransportSecurity() // HSTS : HTTPS 를 클라이언트 측에서 강제하는 것
-        //   .maxAgeInSeconds(60 * 60 * 24 * 365)
-        //   .includeSubDomains(true)
-        //   .and()
+        // .maxAgeInSeconds(60 * 60 * 24 * 365)
+        // .includeSubDomains(true)
+        // .and()
       .rememberMe()
         .rememberMeServices(persistentTokenBasedRememberMeServices())
         // .key("remember-me-key")
@@ -117,18 +117,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // .userDetailsService(userService)
         // .tokenRepository(remembermeRepository)
         .and()
-      // => userdetailsservice is required (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
-			.formLogin()
-				.loginPage("/user/go/login")
-	      .loginProcessingUrl("/login")
+        // => userdetailsservice is required
+        // (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
+      .formLogin()
+        .loginPage("/user/go/login")
+        .loginProcessingUrl("/login")
         .failureUrl("/user/go/login?error=true")
         // .failureForwardUrl("/user/go/login?error=true")
-        .failureHandler(failureHandler())
-        .successHandler(successHandler())
+        .failureHandler(failureHandler()).successHandler(successHandler())
         // .defaultSuccessUrl("/", true)
-				.usernameParameter("email")
-				.passwordParameter("password")
-				.permitAll()
+        .usernameParameter("email")
+        .passwordParameter("password")
+        .permitAll()
         .and()
       .logout()
         .logoutUrl("/user/logout")
@@ -142,8 +142,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
-    PersistentTokenBasedRememberMeServices rememberMeServices
-     = new PersistentTokenBasedRememberMeServices("remember-me-key", userService, jdbcTokenRepositoryImpl());
+    PersistentTokenBasedRememberMeServices rememberMeServices = new PersistentTokenBasedRememberMeServices(
+        "remember-me-key", userService, jdbcTokenRepositoryImpl());
     rememberMeServices.setTokenValiditySeconds(60 * 60 * 24 * 31);
     rememberMeServices.setCookieName(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
     rememberMeServices.setParameter(TokenBasedRememberMeServices.DEFAULT_PARAMETER);
@@ -157,9 +157,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     auth.authenticationProvider(daoAuthenticationProvider());
 
     // auth.inMemoryAuthentication()
-    //     .withUser("root")
-    //     .password("aptzip")
-    //     .roles(UserRole.ADMIN.name());
+    // .withUser("root")
+    // .password("aptzip")
+    // .roles(UserRole.ADMIN.name());
   }
 
   @Bean
@@ -195,7 +195,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   // the servlet container will notify
-  // Spring Security (through HttpSessionEventPublisher) of session life cycle events
+  // Spring Security (through HttpSessionEventPublisher) of session life cycle
+  // events
   @Bean
   public static ServletListenerRegistrationBean<EventListener> httpSessionEventPublisher() {
     return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());

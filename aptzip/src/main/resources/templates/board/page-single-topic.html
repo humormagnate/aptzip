@@ -1,14 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"
+			xmlns:th="http://www.thymeleaf.org"
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/layout.html}">
 
-<head>
-	<link rel="shortcut icon" href="/favicon/favicon.ico">
-	<div th:replace="fragments/header :: header" />
-</head>
-
-<body>
-	<div th:replace="fragments/navbar" />
-	
+<div layout:fragment="content">
 	<main id="tt-pageContent">
 		<!-- <div>[[${ board.comments }]]</div> -->
 		<!-- <input type="hidden" th:value="${board.getUser().getUsername()}" id="hiddenBoardUsername"> -->
@@ -29,7 +25,7 @@
 									<div sec:authorize="isAuthenticated()">[[${#authentication.principal}]]</div>
 									<div sec:authorize="isAuthenticated()">[[${#authentication.principal.getId()}]]</div>
 									<!-- <a th:href="${ '/user/info/' + board.user.id }">[[${ board.user.username }]]</a> -->
-									<a th:href="@{ /user/info/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
+									<a th:href="@{ ~/user/info/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardId" th:value="${ board.getId() }">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.getId()}">
 								</div>
@@ -46,7 +42,7 @@
 							</h3>
 							<div class="tt-item-tag">
 								<ul class="tt-list-badge">
-									<li>
+									<li sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id} eq ${board.user.id}">
 										<a th:href="${ '/board/edit/' + board.id }">
 											<span class="tt-color03 tt-badge">edit</span>
 										</a>
@@ -276,7 +272,7 @@
 									<span class="tt-text">0</span>
 								</a>
 								<div class="col-separator"></div>
-								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
+								<a sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id} eq ${comment.user.id}" href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
 									<i class="tt-icon"><svg>
 										<use xlink:href="#icon-edit"></use>
 									</svg></i>
@@ -404,7 +400,7 @@
 		<div class="tt-row-btn"></div>
 
 	</main>
-	
+
 	<a href="/board/write" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
@@ -412,11 +408,17 @@
 			</svg>
 		</span>
 	</a>
+	
+</div>
 
-	<div th:replace="fragments/modalAdvancedSearch" />
-	<div th:replace="fragments/footer :: footer" />
 
-	<script>
+	<script layout:fragment="script">
+	// <script th:inline="javascript">
+	// th:inline 으로 작성할 경우 thymeleaf 변수에 ''를 감싸지 않아도 자동으로 문자열 처리된다.
+	// 하지만 편집기에서 계속 경고 표시가 나오니 ''로 감싸자... 주석처리해도 parsing 된다.
+
+		// 사용자가 devtool로 DOM 조작으로 삭제할 수 없도록
+		const USER_ID = "[[${#authentication.principal} ? ${#authentication.principal.id} : '']]";
 		const BOARD_ID = document.getElementById('boardId').value;
 		// const COMMENT_USER = document.getElementById('commentUser');
 
@@ -436,7 +438,7 @@
 
 					document.getElementById('commentContent').value = '';
 				  commentList.innerHTML = '';
-					renderComment(list, commentList);
+					renderComment(list, commentList, USER_ID);
 
 		      // socket alert
 		      // configureMessageBroker() 에서 지정한 Application Destination Prefixes
@@ -471,7 +473,7 @@
 						document.getElementById('updateCommentContent').value = '';
 						
 						commentList.innerHTML = '';
-						renderComment(list, commentList);
+						renderComment(list, commentList, USER_ID);
 						// $(".tt-btn-col-close").trigger('click');
 						document.getElementsByClassName('modal-filter').item(0).click();
 					});
@@ -494,7 +496,7 @@
 					alert('댓글이 성공적으로 수정되었습니다.');
 
 					commentList.innerHTML = '';
-					renderComment(list, commentList);
+					renderComment(list, commentList, USER_ID);
 					document.getElementsByClassName('modal-filter').item(0).click();
 				});
 			}, false);
@@ -545,6 +547,5 @@
 		}
 
 	</script>
-</body>
 
 </html>

@@ -72,7 +72,7 @@ function deletePopup(event) {
 }
 
 // todo : transform into mustache template
-function renderComment(list, container) {
+function renderComment(list, container, USER_ID) {
   let str = '';
   let renderobj = '';
 
@@ -111,13 +111,15 @@ function renderComment(list, container) {
       							+ '</svg></i>'
       						+ '<span class="tt-text">0</span>'
       					+ '</a>'
-                + '<div class="col-separator"></div>'
-                + '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">'
+                + '<div class="col-separator"></div>';
+    if (USER_ID == renderobj.user.id) {
+    str         += '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">'
 									+ '<i class="tt-icon"><svg>'
 										+ '<use xlink:href="#icon-edit"></use>'
 									+ '</svg></i>'
-								+ '</a>'
-      					+ '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
+                + '</a>';
+    }
+    str  			  += '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
       						+ '<i class="tt-icon"><svg>'
       								+ '<use xlink:href="#icon-share"></use>'
       							+ '</svg></i>'

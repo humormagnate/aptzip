@@ -73,6 +73,16 @@
 </form>
 ```
 
+11. 링크 경로
+```html
+<a th:href="@{http://localhost:8080/sample}"></a> // 절대 경로
+<a th:href="@{/sample}"></a> // 상대 경로
+<a th:href="@{~/sample}"></a> // 무조건 '/' 루트 경로
+```
+
+12. 레이아웃
+소스 참고
+
 # To-Do
 - Spring EL 과의 호환성?
 - $, #, @ 차이 알아보기

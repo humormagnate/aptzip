@@ -3,6 +3,8 @@
 */
 function selectCategoryTypes(input) {
   input.addEventListener("click", function(event) {
+    console.log(input);
+    console.log(event);
     hiddenCategoryTypes.value = this.childNodes.item(3).textContent;
   });
 }

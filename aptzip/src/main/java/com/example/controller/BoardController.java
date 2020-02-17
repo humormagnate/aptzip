@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,8 +70,12 @@ public class BoardController {
 		log.info(principal.toString());
 
 		board.setBoardStatus("Y");
-		board.setUser(principal.toEntity());	// java.lang.NullPointerException: null
+		board.setUser(principal.toEntity());
 		board.setApt(board.getUser().getApt());
+
+		log.info(board.toString());
+		log.info(board.getUser().getApt().toString());
+
 		boardRepo.save(board);
 
 		/*
@@ -114,12 +119,14 @@ public class BoardController {
 		return "성공적으로 수정되었습니다.";
 	}
 
+	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
 	@GetMapping("/edit/{id}")
 	public String editGet(Model model, @PathVariable("id") Long id) {
 		boardRepo.findById(id).ifPresent(value -> model.addAttribute("board", value));
 		return "board/write";
 	}
 
+	@Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@PutMapping("/edit/{id}")
 	public String editPut(@PathVariable("id") Long id, BoardEntity board) {
 			boardRepo.findById(id).ifPresent(origin -> {
@@ -143,16 +150,17 @@ public class BoardController {
 	// 	return "redirect:/board/" + board.getId();
 	// }
 
+	@Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping("/del")
 	public String delGET(Long id) {
 		boardRepo.deleteById(id);
 		return "redirect:/";
 	}
 
-	@PostMapping(value="/search")
-	public ModelAndView retrieve(ModelAndView mv) {
-		return mv;
-	}
+	// @PostMapping(value="/search")
+	// public ModelAndView retrieve(ModelAndView mv) {
+	// 	return mv;
+	// }
 
 	/*
 		클라이언트는 @MessageMapping 으로 request

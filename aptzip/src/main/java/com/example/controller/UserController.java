@@ -38,16 +38,8 @@ public class UserController {
 	private BoardRepository boardRepository;
 	
 	@GetMapping(value = "/go/login")
-	public ModelAndView login(ModelAndView mv, HttpServletRequest request) {
-		
-		// not signup page
-		String referrer = request.getHeader("Referer");
-		if (!referrer.endsWith("signup")) {
-			request.getSession().setAttribute("prevPage", referrer);
-		}
-		
-		mv.setViewName("user/page-login");
-		return mv;
+	public String login() {
+		return "user/page-login";
 	}
 	
 	@GetMapping(value = "/go/signup")

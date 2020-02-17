@@ -3,6 +3,7 @@ package com.example.domain.board;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,8 +41,8 @@ import lombok.ToString;
 public class BoardEntity {
 
 	@Id
-	@Column(name = "board_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "board_id")
 	private Long id;
 	private String category;
 
@@ -67,8 +68,8 @@ public class BoardEntity {
 	private LocalDateTime updateDate;
 	
 	// mappedBy 안하면 tb_board_comments 테이블도 생김 (양방향 정규화)
-	@OneToMany(mappedBy = "board")
-  @OrderBy("id asc")
+	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+	@OrderBy("id asc")
 	private List<CommentEntity> comments;
 
 	@OneToOne(fetch = FetchType.LAZY)

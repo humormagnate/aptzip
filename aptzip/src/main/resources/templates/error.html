@@ -1,35 +1,31 @@
-<!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head>
-    <div th:replace="fragments/header :: header" />
-</head>
-<body>
-    <div th:replace="fragments/navbar" />
-<main id="tt-pageContent">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout.html}">
+
+<div layout:fragment="content">
+  <main id="tt-pageContent">
     <div class="container">
-        <div class="tt-layout-404">
-           <span class="tt-icon">
-                <svg class="icon">
-                  <use xlink:href="#icon-error_404"></use>
-                </svg>
-           </span>
-           <h6 class="tt-title"><span th:text="${'ERROR ' + statusCode}"></span></h6>
-           <p>Sorry we can’t find what you are looking for, here’s some<br>
-            <a href="/" class="tt-color-dark tt-underline-02">suggested topics</a> for you.</p>
-        </div>
+      <div class="tt-layout-404">
+        <span class="tt-icon">
+          <svg class="icon">
+            <use xlink:href="#icon-error_404"></use>
+          </svg>
+        </span>
+        <h6 class="tt-title"><span th:text="${'ERROR ' + statusCode}"></span></h6>
+        <p>Sorry we can’t find what you are looking for, here’s some<br>
+          <a href="/" class="tt-color-dark tt-underline-02">suggested topics</a> for you.</p>
+      </div>
     </div>
-</main>
+  </main>
 
-<a href="/board/write" class="tt-btn-create-topic">
+  <a href="/board/write" class="tt-btn-create-topic">
     <span class="tt-icon">
-        <svg>
-          <use xlink:href="#icon-create_new"></use>
-        </svg>
+      <svg>
+        <use xlink:href="#icon-create_new"></use>
+      </svg>
     </span>
-</a>
+  </a>
 
-<div th:replace="fragments/footer :: footer" />
-</body>
+</div>
+
 </html>
