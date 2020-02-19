@@ -220,8 +220,8 @@
 						Looks like you are new here. Register for free, learn and contribute.
 					</div>
 					<div class="tt-col-btn">
-						<a th:href="@{/user/go/login}" class="btn btn-primary">Log in</a>
-						<a th:href="@{/user/go/signup}" class="btn btn-secondary">Sign up</a>
+						<a th:href="@{/login}" class="btn btn-primary">Log in</a>
+						<a th:href="@{/join}" class="btn btn-secondary">Sign up</a>
 						<button type="button" class="btn-icon" id="removePopup">
 							<svg class="tt-icon">
 								<use xlink:href="#icon-cancel"></use>
@@ -240,7 +240,7 @@
 			</script>
 			 -->
 			<!-- comment form start -->
-			<div sec:authorize="isAuthenticated()" class="tt-wrapper-inner">
+			<div sec:authorize="isAuthenticated()" th:if="${board.apt.id} eq ${#authentication.principal.apt.id}" class="tt-wrapper-inner">
 				<div class="pt-editor form-default">
 					<h6 class="pt-title">Post Your Reply</h6>
 					
@@ -458,5 +458,76 @@
 		});
 
 	</script>
-
+	
+	<script layout:fragment="handlebars" id="comments-template" type="text/x-handlebars-template">
+		<!-- <div>{{login}}</div> -->
+		{{#each list}}
+			<!-- <div>{{this.id}}</div> -->
+				<div class="tt-item">
+					<div class="tt-single-topic">
+				 	  <input type="hidden" value="{{this.id}}">
+				    	<div class="tt-item-header pt-noborder">
+								<div class="tt-item-info info-top">
+		 		        	<div class="tt-avatar-icon">
+			 		          <i class="tt-icon">
+											<svg>
+			                 	<use xlink:href="#icon-ava-{{{subString this.user.username}}}"></use>
+											 </svg>
+										</i>
+			            </div>
+			 	          <div class="tt-avatar-title">
+			 		          <a href="/user/{{this.user.id}}/info">{{{this.user.username}}}</a>
+					        </div>
+		 			        <a href="#" class="tt-info-time">
+		 					      <i class="tt-icon">
+											<svg>
+												<use xlink:href="#icon-time"></use>
+											</svg>
+										</i>{{moment this.updateDate}}</a>
+		 				    </div>
+		 			    </div>
+		
+	 			    	<div class="tt-item-description">
+		   					{{this.commentContent}}
+	            </div>
+		
+				 			<div class="tt-item-info info-bottom">
+								<a href="#" class="tt-icon-btn">
+									<i class="tt-icon">
+										<svg>
+											<use xlink:href="#icon-favorite"></use>
+										</svg>
+									</i>
+									<span class="tt-text">0</span>
+								</a>
+								<div class="col-separator"></div>
+								<!-- {{{../login}}} {{this.user.id}} -->
+								{{#ifCond ../login '==' this.user.id}}
+								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
+									<i class="tt-icon">
+										<svg>
+											<use xlink:href="#icon-edit"></use>
+										</svg>
+									</i>
+								</a>
+								{{/ifCond}}
+				  		<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+						<i class="tt-icon">
+							<svg>
+								<use xlink:href="#icon-share"></use>
+							</svg>
+						</i>
+					</a>
+					<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+						<i class="tt-icon">
+							<svg>
+								<use xlink:href="#icon-reply"></use>
+							</svg>
+						</i>
+					</a>
+				</div>
+   		</div>
+ 		</div>
+	{{/each}}
+	</script>
 </html>

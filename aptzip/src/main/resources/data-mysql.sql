@@ -7,13 +7,13 @@ INSERT INTO TB_APT (apt_name, apt_province, apt_city, apt_town) VALUES ('푸르�
 INSERT INTO TB_APT (apt_name, apt_province, apt_city, apt_town) VALUES ('중흥S클래스', '경기도', '군포시', '산본동');
 INSERT INTO TB_APT (apt_name, apt_province, apt_city, apt_town) VALUES ('사랑으로부영', '부산광역시', '수영구', '수영동');
 
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('qqq@qqq.qqq', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'qqqqq', 'USER', 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('qqq@qqq.qqq', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'qqqqq', 'ADMIN', 1);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('www@www.www', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'wwwww', 'USER', 1);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('eee@eee.eee', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'eeeee', 'USER', 1);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('aaa@aaa.aaa', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'aaaaa', 'ADMIN', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('sss@sss.sss', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'sssss', 'ADMIN', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ddd@ddd.ddd', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'ddddd', 'ADMIN', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('zzz@zzz.zzz', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'zzzzz', 'USER', 3);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('sss@sss.sss', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'sssss', 'USER', 2);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ddd@ddd.ddd', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'ddddd', 'USER', 2);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('zzz@zzz.zzz', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'zzzzz', 'ADMIN', 3);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('xxx@xxx.xxx', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'xxxxx', 'USER', 3);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ccc@ccc.ccc', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'ccccc', 'USER', 3);
 

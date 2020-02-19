@@ -1,3 +1,6 @@
+/**
+ * comment CRUD utils
+ */
 const comment = (function(){
 
   let create = function(obj, callback) {
@@ -73,70 +76,75 @@ function deletePopup(event) {
 
 // todo : transform into mustache template
 function renderComment(list, container, USER_ID) {
-  let str = '';
-  let renderobj = '';
+  // todo : transform into mustache template
+  hbs('comments-template', list, container, USER_ID);
+  editBtn();
+  
+  // let str = '';
+  // let renderobj = '';
 
-  for (let i = 0; i < list.length; i++) {
-    renderobj = list[i];
-    let temporal = new Date(renderobj.updateDate);
-    str += '<div class="tt-item">'
-          + '<div class="tt-single-topic">'
-  		      + '<input type="hidden" value="' + renderobj.id + '">'
-            + '<div class="tt-item-header pt-noborder">'
-              + '<div class="tt-item-info info-top">'
-				        + '<div class="tt-avatar-icon">'
-				          + '<i class="tt-icon"><svg>'
-                    + '<use xlink:href="#icon-ava-' + renderobj.user.username.substring(0, 1) + '"></use>'
-				          + '</svg></i>'
-                + '</div>'
-			          + '<div class="tt-avatar-title">'
-				          + '<a href="/user/info/' + renderobj.user.id + '">' + renderobj.user.username + '</a>'
-				        + '</div>'
-  				        + '<a href="#" class="tt-info-time">'
-  						      + '<i class="tt-icon"><svg>'
-  							      + '<use xlink:href="#icon-time"></use>'
-  								  + '</svg></i>' + (temporal.getFullYear() + '-' + (temporal.getMonth()+1) + '-' + temporal.getDate())
-  						    + '</a>'
-  					    + '</div>'
-  				    + '</div>'
+  // for (let i = 0; i < list.length; i++) {
+  //   renderobj = list[i];
+  //   let temporal = new Date(renderobj.updateDate);
 
-  				    + '<div class="tt-item-description">'
-      					+ renderobj.commentContent
-              + '</div>'
+    // str += '<div class="tt-item">'
+    //       + '<div class="tt-single-topic">'
+  	// 	      + '<input type="hidden" value="' + renderobj.id + '">'
+    //         + '<div class="tt-item-header pt-noborder">'
+    //           + '<div class="tt-item-info info-top">'
+		// 		        + '<div class="tt-avatar-icon">'
+		// 		          + '<i class="tt-icon"><svg>'
+    //                 + '<use xlink:href="#icon-ava-' + renderobj.user.username.substring(0, 1) + '"></use>'
+		// 		          + '</svg></i>'
+    //             + '</div>'
+		// 	          + '<div class="tt-avatar-title">'
+		// 		          + '<a href="/user/info/' + renderobj.user.id + '">' + renderobj.user.username + '</a>'
+		// 		        + '</div>'
+  	// 			        + '<a href="#" class="tt-info-time">'
+  	// 					      + '<i class="tt-icon"><svg>'
+  	// 						      + '<use xlink:href="#icon-time"></use>'
+  	// 							  + '</svg></i>' + (temporal.getFullYear() + '-' + (temporal.getMonth()+1) + '-' + temporal.getDate())
+  	// 					    + '</a>'
+  	// 				    + '</div>'
+  	// 			    + '</div>'
 
-      				+ '<div class="tt-item-info info-bottom">'
-      					+ '<a href="#" class="tt-icon-btn">'
-      						+ '<i class="tt-icon"><svg>'
-      							+ '<use xlink:href="#icon-favorite"></use>'
-      							+ '</svg></i>'
-      						+ '<span class="tt-text">0</span>'
-      					+ '</a>'
-                + '<div class="col-separator"></div>';
-    if (USER_ID == renderobj.user.id) {
-    str         += '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">'
-									+ '<i class="tt-icon"><svg>'
-										+ '<use xlink:href="#icon-edit"></use>'
-									+ '</svg></i>'
-                + '</a>';
-    }
-    str  			  += '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
-      						+ '<i class="tt-icon"><svg>'
-      								+ '<use xlink:href="#icon-share"></use>'
-      							+ '</svg></i>'
-      					+ '</a>'
-      					+ '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
-      						+ '<i class="tt-icon"><svg>'
-      							+ '<use xlink:href="#icon-reply"></use>'
-      						+ '</svg></i>'
-      					+ '</a>'
-      				+ '</div>'
-        		+ '</div>'
-      		+ '</div>'
-      	 + '</div>';
-    container.innerHTML = str;
+  	// 			    + '<div class="tt-item-description">'
+    //   					+ renderobj.commentContent
+    //           + '</div>'
 
-    editBtn();;
-  }
+    //   				+ '<div class="tt-item-info info-bottom">'
+    //   					+ '<a href="#" class="tt-icon-btn">'
+    //   						+ '<i class="tt-icon"><svg>'
+    //   							+ '<use xlink:href="#icon-favorite"></use>'
+    //   							+ '</svg></i>'
+    //   						+ '<span class="tt-text">0</span>'
+    //   					+ '</a>'
+    //             + '<div class="col-separator"></div>';
+    // if (USER_ID == renderobj.user.id) {
+    // str         += '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">'
+		// 							+ '<i class="tt-icon"><svg>'
+		// 								+ '<use xlink:href="#icon-edit"></use>'
+		// 							+ '</svg></i>'
+    //             + '</a>';
+    // }
+    // str  			  += '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
+    //   						+ '<i class="tt-icon"><svg>'
+    //   								+ '<use xlink:href="#icon-share"></use>'
+    //   							+ '</svg></i>'
+    //   					+ '</a>'
+    //   					+ '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
+    //   						+ '<i class="tt-icon"><svg>'
+    //   							+ '<use xlink:href="#icon-reply"></use>'
+    //   						+ '</svg></i>'
+    //   					+ '</a>'
+    //   				+ '</div>'
+    //     		+ '</div>'
+    //   		+ '</div>'
+    //   	 + '</div>';
+    // container.innerHTML = str;
+
+  // }
+  // editBtn();
 
 }
 

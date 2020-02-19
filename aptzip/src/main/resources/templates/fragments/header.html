@@ -38,24 +38,23 @@
             <ul>
               <li>
                 <a href="/categories"><span>Categories</span></a>
+                <ul>
+                  <li><a href="#">Common</a></li>
+                  <li><a href="#">Discussion</a></li>
+                  <li><a href="#">Poll</a></li>
+                  <li><a href="#">Media</a></li>
+                  <li><a href="#">Question</a></li>
+                  <li><a href="#">Gallery</a></li>
+                </ul>
+              </li>
+              <li>
+                <a sec:authorize="isAuthenticated()" th:href="'/apt/' + ${#authentication.principal.apt.id}"><span>Apt</span></a>
               </li>
               <li>
                 <a href="/zip"><span>Zip</span></a>
               </li>
               <li>
                 <a href="/board/write"><span>New</span></a>
-              </li>
-              <li>
-                <a sec:authorize="hasRole('ROLE_USER')"
-                  th:href="${'/user/' + #authentication.principal.id + '/info' }"><span>User</span></a>
-                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
-                <ul>
-                  <li><a href="#">Activity</a></li>
-                  <li><a href="#">Thread</a></li>
-                  <li><a href="#">Replies</a></li>
-                  <li><a href="#">Follower</a></li>
-                  <li><a href="#">Following</a></li>
-                </ul>
               </li>
             </ul>
           </nav>
@@ -71,7 +70,8 @@
               <use xlink:href="#icon-search"></use>
             </svg>
           </button>
-          <!-- /toggle -->
+          
+          <!-- search form start -->
           <form class="search-wrapper">
             <div class="search-form">
               <input type="text" class="tt-search__input" placeholder="Search" />
@@ -152,8 +152,8 @@
               </button>
             </div>
           </form>
+          <!-- search form end -->
         </div>
-        <!-- /tt-search -->
       </div>
 
       <div class="col-auto ml-auto">
@@ -163,16 +163,15 @@
         </div>
 
         <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
-          <!-- <a href="/user/info" class="tt-btn-icon">
-                     <i class="tt-icon"><svg><use xlink:href="#icon-notification"></use></svg></i>
-                </a> -->
           <div class="tt-avatar-icon tt-size-md">
-            <i class="tt-icon">
-              <svg>
-                <use
-                  th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.username, 0, 1) }">
-                </use>
-              </svg></i>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="${'/user/' + #authentication.principal.id + '/info' }">
+              <i class="tt-icon">
+                <svg>
+                  <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.username, 0, 1) }"></use>
+                </svg>
+              </i>
+            </a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
           </div>
           <div class="tt-btn-icon">
             <a th:href="@{/user/logout}" class="btn btn-secondary">Log out</a>

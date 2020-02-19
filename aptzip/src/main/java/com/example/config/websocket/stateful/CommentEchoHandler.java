@@ -6,11 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.domain.user.UserResponseDto;
-import com.example.service.UserService;
-
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -18,6 +14,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Basic(Pure) WebSocket
+ */
 @Slf4j
 public class CommentEchoHandler extends TextWebSocketHandler {
 
@@ -41,9 +40,9 @@ public class CommentEchoHandler extends TextWebSocketHandler {
   @Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
     log.info("handleTextMessage >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>{}:{}", session, message);
-    String senderId = getId(session);
-
+    
     // broadcasting
+    // String senderId = getId(session);
     // for (WebSocketSession webSocketSession : sessionList) {
     //   webSocketSession.sendMessage(new TextMessage(senderId + " : " + message.getPayload()));
     //   log.info("broadcasting test success");
@@ -55,15 +54,16 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     log.info("payload {}", msg);
 
     if (StringUtils.isNotEmpty(msg)) {
-      log.info("unicasting test success");
       String[] strs = msg.split(",");
-      if (strs != null && strs.length == 3) {
+
+      if (strs != null && strs.length == 3 && session.getPrincipal() != null) {
         log.info("strs is not null");
         String comment = strs[0];
         String commentUser = strs[1];
         String boardUser = strs[2];
         if (commentUser.equals(boardUser)) return;
-        log.info("{}", strs[1]);
+        log.info("comment {} / commentUser {} / boardUser {}", strs[0], strs[1], strs[2]);
+
         WebSocketSession boardSocketSession = userSessions.get(boardUser);
         if (boardSocketSession != null) {
           log.info("boardSocketSession : {}", boardSocketSession);
@@ -72,17 +72,19 @@ public class CommentEchoHandler extends TextWebSocketHandler {
         }
         // if ("comment".equals(comment) && boardSocketSession != null) {
         
+        log.info("unicasting test success");
         if (boardSocketSession != null) {
           log.info("boardSocketSession is not null");
           TextMessage tm = new TextMessage(commentUser + "님이 댓글을 달았습니다! " + comment);
           boardSocketSession.sendMessage(tm);
         }
       }
+
     }
   }
   
   private String getId(WebSocketSession session) {
-    Map<String, Object> httpSession = session.getAttributes();
+    // Map<String, Object> httpSession = session.getAttributes();
     
     // if (!(auth instanceof AnonymousAuthenticationToken)) {
     //   String currentUserName = auth.getName();

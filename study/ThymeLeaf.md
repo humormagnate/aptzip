@@ -11,7 +11,7 @@
 ```
 3. th:href
 ```html
-<a sec:authorize="isAnonymous()" th:href="@{/user/go/login}" class="btn">Log in</a>
+<a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn">Log in</a>
 ```
 4. 날짜 포맷
 ```html

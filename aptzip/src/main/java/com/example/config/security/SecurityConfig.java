@@ -4,7 +4,6 @@ import java.util.EventListener;
 
 import javax.sql.DataSource;
 
-import com.example.domain.user.UserPrivilege;
 import com.example.domain.user.UserRole;
 import com.example.service.UserService;
 
@@ -97,9 +96,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/user/info/*", "/board/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
         // production
         // .antMatchers("/user/info/*", "/board/edit/**", "/").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
-        .antMatchers("/board/write/**").authenticated()
+        .antMatchers("/board/write/**", "/categories", "/zip").authenticated()
         // .antMatchers("/board/write/**").hasAuthority(UserPrivilege.BOARD_WRITE.getPrivileges())
-        .antMatchers("/user/go/login/*").anonymous()
+        .antMatchers("/login/*").anonymous()
         .antMatchers("/**").permitAll()
         .anyRequest().authenticated().and().exceptionHandling().accessDeniedPage("/") // -> root context("/")를 주소창에 입력해서 접근 시 exception "Access is denied"
         .and()

@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
@@ -21,12 +23,15 @@ import lombok.ToString;
 @Table(name = "tb_apt")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class AptEntity {
   @Id
+  @NonNull // Long이 아닌 long으로 지정할 경우 @NonNull is meaningless on a primitive : 하지만 어차피 Required를 위한 것.
   @Column(name = "apt_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
+
   @Column(name = "apt_name")
   private String aptName;
   @Column(name = "apt_province")

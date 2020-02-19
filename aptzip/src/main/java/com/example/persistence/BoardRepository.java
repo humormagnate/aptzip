@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.QBoardEntity;
+import com.example.domain.user.AptEntity;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
@@ -30,10 +31,11 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
   
   public List<BoardEntity> findByUserIdOrderByIdDesc(long userId);
 
-  //
   public List<BoardEntity> findAllOrderById(@Param("id") Long id);
   
   public List<BoardEntity> findAllByOrderByIdDesc();
+
+  public List<BoardEntity> findAllByAptOrderByIdDesc(AptEntity apt);
 
   // Java 8 can add code by adding a default method to the interface. 
   public default Predicate makePredicate(String type, String keyword) {

@@ -1,4 +1,4 @@
-package com.example.config.websocket;
+package com.example.config.websocket.stateless;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -11,8 +11,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
 	/**
-	 * Register STOMP endpoints mapping each to a specific URL and (optionally)
-	 * enabling and configuring SockJS fallback options.
+	 * Register STOMP endpoints mapping each to a specific URL
+	 * and (optionally) enabling and configuring SockJS fallback options.
 	 */
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/ws/message")
