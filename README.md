@@ -7,25 +7,30 @@
 
 
 ### TEST 계정
->ID : qwe@qwe.qwe<br>
->PW : qwe
+>ID : wwwww<br>
+>PW : qwe<br>
 
 ### Focus on
->Spring Boot<br>
->[Spring Data JPA (Hibernate, MySQL)](/study/SpringDataJPA.md)<br>
->[Spring Security](./study/SpringSecurity.md)<br>
->[Spring Websocket (SocketJS, STOMP)](./study/WebSocket.md)<br>
->[Thymeleaf](./study/ThymeLeaf.md)<br>
->[REST API](./study/REST-API.md)
+>Spring Boot 2.2.4 (Spring 5.2.3)<br>
+>[Spring Data JPA 2.2.4(Hibernate, MySQL)](/study/SpringDataJPA.md)<br>
+>[Spring Security 5.2.1](./study/SpringSecurity.md)<br>
+>[Spring Websocket 5.2.3(Web Socket Protocol, SocketJS, STOMP, SSE와의 차이)](./study/WebSocket.md)<br>
+>Spring WebFlux<br>
+>Spring Cloud<br>
+>Netty<br>
+>[Thymeleaf 3.0.11](./study/ThymeLeaf.md)<br>
+>[REST API](./study/REST-API.md)<br>
+>[Java 8](./study/Java8.md)<br>
+>RxJava (Java 9)<br>
+>Swagger<br>
 
 ```
 Context Root (localhost:XXXX/aptzip)
 ```
 
->[Java 8](./study/Java8.md)<br>
->FE : Bootstrap, Thymeleaf<br>
+>FE : Bootstrap, Thymeleaf, Handlebars<br>
 >SCM : Git Bash, GitHub, VS Code<br>
->IDE : VS Code
+>IDE : VS Code<br>
 
 ## Built With
 
