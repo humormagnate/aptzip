@@ -37,7 +37,7 @@
 									<use xlink:href="#icon-settings_fill"></use>
 								</svg>
 							</a>
-							<a href="#" class="btn btn-primary">Message</a>
+							<a th:href="@{ ~/user/{id}/message(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a>
 							<a href="#" class="btn btn-secondary">Follow</a>
 						</div>
 					</div>
@@ -1657,7 +1657,7 @@
 				</span>
 			</a>
 		</div>
-		<form class="form-default" action="/user/edit" method="POST">
+		<form class="form-default" action="/user/edit" method="post">
 			<div class="tt-form-upload">
 				<div class="row no-gutter">
 					<div class="col-auto">
@@ -1731,7 +1731,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-secondary">Save</button>
+				<button type="button" id="userInfoSaveButn" class="btn btn-secondary">Save</button>
 			</div>
 		</form>
 	</div>
@@ -1745,5 +1745,47 @@
 		</span>
 	</a>
 </div>
+
+<script layout:fragment="script">
+	
+		const UPDATE_USER_BTN = document.getElementById('userInfoSaveButn');
+		if (UPDATE_USER_BTN != undefined && UPDATE_USER_BTN != null) {
+			UPDATE_USER_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const USER_ID = '[[${ #authentication.principal.id }]]';
+				const NEW_PASSWORD = document.getElementById('settingsUserPassword').value;
+				
+				const obj = { id:USER_ID, password:NEW_PASSWORD };
+
+				$.ajax({
+		      url: '/user/edit',
+		      method: 'put',
+		      data: JSON.stringify(obj),
+		      dataType: 'json',
+		      contentType: 'application/json',
+		      success: function(data){
+						alert(data);
+						if (data === 'success') {
+							alert('success');
+						}
+					},
+		      error: function() {
+		        alert('ajax error');
+		      }
+		    });
+				
+				// comment.update(obj, function(list) {
+				// 	alert('test');
+
+				// 	commentList.innerHTML = '';
+				// 	renderComment(list, commentList, USER_ID);
+				// 	document.getElementsByClassName('modal-filter').item(0).click();
+				// });
+			}, false);
+		}
+		
+	</script>
 
 </html>

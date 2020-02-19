@@ -60,22 +60,24 @@ public class UserService implements UserDetailsService {
   // https://lemontia.tistory.com/602
   // 해당기능을 사용할 시 외부로그인 연동(네이버나 페이스북 로그인 등)시 세션처리에 문제를 겪을 수 있어 추천드리지 않습니다.
   @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     
     log.info("===============================UserService-loadUserByUsername start=====================================");
+    log.info("username : {}", username);
+
     // return type이 Optional<T>
-    Optional<AptzipUserEntity> userEntityWrapper = userJpaRepository.findByEmail(email);
+    Optional<AptzipUserEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
     // Optional<T>에서 get()을 통해 T 반환
     AptzipUserEntity user = userEntityWrapper.get();
     
     log.info("===============================UserService-loadUserByUsername get=====================================");
-    log.info("user : " + user);
+    log.info("user : {}", user);
     // -> could not initialize proxy [com.example.domain.user.AptEntity#1] - no Session
     // AptEntity 에 대한 FetchType을 LAZY로 해서 그럼...EAGER로 ㄱㄱ
 
     // If the user does not exist
     if (user == null) {
-      throw new UsernameNotFoundException("Not found " + email);
+      throw new UsernameNotFoundException("Not found " + username);
     }
     
     UserResponseDto urd = new UserResponseDto(
@@ -112,7 +114,7 @@ public class UserService implements UserDetailsService {
 
     // roles.forEach( role -> list.add(new SimpleGrantedAuthority("ROLE_" + role.getRole())));
     log.info("===============================UserService-loadUserByUsername return=====================================");
-    log.info("urd : " + urd);
+    log.info("urd : {}", urd);
 
     return urd;
   }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"
+			xmlns:th="http://www.thymeleaf.org"
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/noheader.html}">
+
+  <div layout:fragment="content">
+	<!-- tt-mobile menu -->
+	<nav class="panel-menu" id="mobile-menu">
+		<ul>
+
+		</ul>
+		<div class="mm-navbtn-names">
+			<div class="mm-closebtn">
+				Close
+				<div class="tt-icon">
+					<svg>
+						<use xlink:href="#icon-cancel"></use>
+					</svg>
+				</div>
+			</div>
+			<div class="mm-backbtn">Back</div>
+		</div>
+	</nav>
+	<main id="tt-pageContent" class="tt-offset-none">
+		<div class="container">
+			<div class="tt-loginpages-wrapper">
+				<div class="tt-loginpages">
+					<a href="/" class="tt-block-title">
+						<img src="/images/logo.png" alt="">
+						<div class="tt-title">
+							Welcome to apt-zip
+						</div>
+						<div class="tt-description">
+							Log into your account to unlock true power of community.
+						</div>
+					</a>
+					<form class="form-default" action="/signin" method="post">
+						<!-- SpringEL expression: "_csrf.parameterName" (template: "user/page-login" - line 42, col 29) -->
+						<!-- <input type ="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+						<div th:if="${param.error}">
+							<div class="alert alert-danger" role="alert">
+								Invalid email or password.
+							</div>
+						</div>
+						<div th:if="${success}">
+							<div class="alert alert-success" role="alert">
+								You have successfully registered!
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="loginUserName">Name</label>
+							<input type="text" name="username" class="form-control" id="loginUserName" placeholder="your name" value="qqqqq">
+						</div>
+						<div class="form-group">
+							<label for="loginUserPassword">Password</label>
+							<input type="password" name="password" class="form-control" id="loginUserPassword" placeholder="************" value="qwe">
+						</div>
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<div class="checkbox-group">
+										<input type="checkbox" id="settingsCheckBox01" name="remember-me">
+										<label for="settingsCheckBox01">
+											<span class="check"></span>
+											<span class="box"></span>
+											<span class="tt-text">Remember me</span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="col ml-auto text-right">
+								<a href="#" class="tt-underline">Forgot Password</a>
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-secondary btn-block">Log in</button>
+						</div>
+						<p>Or login with social network</p>
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<a href="#" class="btn btn-color01 btn-secondary btn-block">
+										<i>
+											<svg class="icon">
+												<use xlink:href="#facebook-f-brands"></use>
+											</svg>
+										</i>
+										Facebook
+									</a>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-group">
+									<a href="#" class="btn btn-color02 btn-block">
+										<i>
+											<svg class="icon">
+												<use xlink:href="#twitter-brands"></use>
+											</svg>
+										</i>
+										Twitter
+									</a>
+								</div>
+							</div>
+						</div>
+						<p>Don’t have an account? <a href="/join" class="tt-underline">Signup here</a></p>
+						<div class="tt-notes">
+							By Logging in, signing in or continuing, I agree to
+							aptzip’s <a href="#" class="tt-underline">Terms of Use</a> and <a href="#" class="tt-underline">Privacy
+								Policy.</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+</div>
+
+</html>

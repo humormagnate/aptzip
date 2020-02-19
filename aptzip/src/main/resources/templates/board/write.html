@@ -18,7 +18,7 @@
 						<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
 						<!-- <input type="hidden" th:if="${#strings.contains(#request.getRequestURI(), '/board/edit')}" name="_method" value="put"/> -->
 						<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
-						<input type="hidden" name="category" th:value="${ board } ? ${ board.category } : ''">
+						<input type="hidden" name="categoryName" th:value="${ board } ? ${ board.category } : ''">
 
 						<div class="form-group">
 							<label for="inputTopicTitle">Post Title</label>
@@ -229,8 +229,7 @@
 		
 	<script layout:fragment="script">
 			const BOARD_ID = document.getElementById('boardId');
-			let boardTitle = document.getElementById('boardTitle');
-			let boardContent = document.getElementById('boardContent');
+			const BOARD_TITLE = document.getElementById('boardTitle');
 
 			const DELETE_POST_BTN = document.getElementById('deletePostBtn');
 			const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
@@ -238,12 +237,12 @@
 			// window.onload는 javascript
 			// document.ready는 jquery
 			window.onload = loadCalcRestTitle();
-			boardTitle.addEventListener('keyup', function () {
+			BOARD_TITLE.addEventListener('keyup', function () {
 				keyUpCalcRestTitle()
 			}, false);
 
 			const categoryTypes = document.querySelectorAll('.tt-button-icon');
-			const hiddenCategoryTypes = document.querySelector('input[name=category]');
+			const hiddenCategoryTypes = document.querySelector('input[name=categoryName]');
 			categoryTypes.forEach(function (input) {
 				selectCategoryTypes(input, hiddenCategoryTypes);
 			});
@@ -260,7 +259,11 @@
 				UPDATE_POST_BTN.addEventListener('click', function (event) {
 					event.preventDefault();
 					event.stopPropagation();
-					updatePost(BOARD_ID.value, boardTitle.value, boardContent.value);
+					const NEW_BOARD_TITLE = document.getElementById('boardTitle');
+					const NEW_BOARD_CONTENT = document.getElementById('boardContent');
+					console.log(NEW_BOARD_TITLE.value);
+					console.log(NEW_BOARD_CONTENT.value);
+					updatePost(BOARD_ID.value, NEW_BOARD_TITLE.value, NEW_BOARD_CONTENT.value);
 				}, false);
 			}
 

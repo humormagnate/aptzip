@@ -15,7 +15,7 @@ public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfi
 	 * enabling and configuring SockJS fallback options.
 	 */
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/alert")
+		registry.addEndpoint("/ws/message")
 						.setAllowedOrigins("*")
 						.withSockJS();
   }

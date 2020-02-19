@@ -13,11 +13,17 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    /**
+     * 도메인이 다른 서버에서도 접속 가능하도록 CORS
+     * setAllowedOrigins("*")
+     */
+
     // pure websocket (standard) > IE 10
     registry.addHandler(new CommentEchoHandler(), "/ws/comment").setAllowedOrigins("*");
 
     // Use SockJS Library > IE 8
-    // registry.addHandler(new CommentEchoHandler(), "/ws/comment").setAllowedOrigins("*").withSockJS();
+    // endpoint
+    registry.addHandler(new CommentEchoHandler(), "/ws/message").setAllowedOrigins("*").withSockJS();
   }
   
 }

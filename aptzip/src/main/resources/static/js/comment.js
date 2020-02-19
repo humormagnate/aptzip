@@ -78,7 +78,7 @@ function renderComment(list, container, USER_ID) {
 
   for (let i = 0; i < list.length; i++) {
     renderobj = list[i];
-
+    let temporal = new Date(renderobj.updateDate);
     str += '<div class="tt-item">'
           + '<div class="tt-single-topic">'
   		      + '<input type="hidden" value="' + renderobj.id + '">'
@@ -95,7 +95,7 @@ function renderComment(list, container, USER_ID) {
   				        + '<a href="#" class="tt-info-time">'
   						      + '<i class="tt-icon"><svg>'
   							      + '<use xlink:href="#icon-time"></use>'
-  								  + '</svg></i>' + renderobj.updateDate
+  								  + '</svg></i>' + (temporal.getFullYear() + '-' + (temporal.getMonth()+1) + '-' + temporal.getDate())
   						    + '</a>'
   					    + '</div>'
   				    + '</div>'
@@ -126,11 +126,6 @@ function renderComment(list, container, USER_ID) {
       					+ '</a>'
       					+ '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
       						+ '<i class="tt-icon"><svg>'
-      							+ '<use xlink:href="#icon-flag"></use>'
-      						+ '</svg></i>'
-      					+ '</a>'
-      					+ '<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">'
-      						+ '<i class="tt-icon"><svg>'
       							+ '<use xlink:href="#icon-reply"></use>'
       						+ '</svg></i>'
       					+ '</a>'
@@ -139,7 +134,8 @@ function renderComment(list, container, USER_ID) {
       		+ '</div>'
       	 + '</div>';
     container.innerHTML = str;
-		editBtn();
+
+    editBtn();;
   }
 
 }

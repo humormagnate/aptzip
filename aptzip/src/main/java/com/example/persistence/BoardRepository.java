@@ -28,10 +28,12 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
                          @Param("title") String title,
                          @Param("content") String content);
   
-  public List<BoardEntity> findByUserId(long userId);
+  public List<BoardEntity> findByUserIdOrderByIdDesc(long userId);
 
   //
   public List<BoardEntity> findAllOrderById(@Param("id") Long id);
+  
+  public List<BoardEntity> findAllByOrderByIdDesc();
 
   // Java 8 can add code by adding a default method to the interface. 
   public default Predicate makePredicate(String type, String keyword) {

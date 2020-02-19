@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.domain.board.BoardEntity;
+import com.example.domain.board.CategoryEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
+import com.example.persistence.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 
 	@Autowired private BoardRepository boardRepo;
+	@Autowired private CategoryRepository categoryRepo;
 	@Autowired private SimpMessageSendingOperations smso;
 
 	@Deprecated
@@ -64,11 +68,14 @@ public class BoardController {
 	// UserDetails를 구현한 UserRequestDto는 @AuthenticationPrincipal 이 안먹히고
 	// UserDetails를 구현한 User를 상속한 UserResponseDto는 먹힌다. Why?
 	@PostMapping("/write")
-	public String writePost(BoardEntity board, @AuthenticationPrincipal UserResponseDto principal, RedirectAttributes rttr) {
+	public String writePost(BoardEntity board, @AuthenticationPrincipal UserResponseDto principal, RedirectAttributes rttr, String categoryName) {
 		
+		log.info("/board/write/post////////////////////////////////////////////////////////////////////////////");
 		log.info(board.toString());
 		log.info(principal.toString());
 
+		CategoryEntity category = categoryRepo.findByName(categoryName).get();
+		board.setCategory(category);
 		board.setBoardStatus("Y");
 		board.setUser(principal.toEntity());
 		board.setApt(board.getUser().getApt());
@@ -92,6 +99,10 @@ public class BoardController {
 		log.info("/boardGet/////////////////////////////////////////////////////////////////");
 
 		boardRepo.findById(id).ifPresent(board -> {
+			
+			board.setViewCount(board.getViewCount() + 1);
+			boardRepo.save(board);
+
 			board.setBoardContent(board.getBoardContent().replace(System.lineSeparator(), "<br>"));
 			model.addAttribute("board", board);
 		});
@@ -112,9 +123,11 @@ public class BoardController {
 
 	@ResponseBody
 	@PutMapping("/{id}")
-	public String put(@PathVariable("id") Long id, BoardEntity board) {
+	public String put(@PathVariable("id") Long id, @ModelAttribute BoardEntity board) {
 		log.info("====================================Put Mapping=================================");
 		log.info(id.toString());
+		log.info(board.toString());
+		
 		boardRepo.updateById(id, board.getBoardTitle(), board.getBoardContent());
 		return "성공적으로 수정되었습니다.";
 	}

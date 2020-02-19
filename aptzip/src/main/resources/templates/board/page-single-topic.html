@@ -7,34 +7,32 @@
 <div layout:fragment="content">
 	<main id="tt-pageContent">
 		<!-- <div>[[${ board.comments }]]</div> -->
-		<!-- <input type="hidden" th:value="${board.getUser().getUsername()}" id="hiddenBoardUsername"> -->
+		<!-- <input type="hidden" th:value="${board.user}" id="hiddenBoardUsername"> -->
 		<div class="container">
 			<div class="tt-single-topic-list">
 
 				<!-- board content start -->
+				<!-- <div>[[${board}]]</div> -->
 				<div class="tt-item">
 					<div class="tt-single-topic">
 						<div class="tt-item-header">
 							<div class="tt-item-info info-top">
 								<div class="tt-avatar-icon">
 									<i class="tt-icon"><svg>
-										<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.getUsername(), 0, 1) }"></use>
+										<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }"></use>
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
-									<div sec:authorize="isAuthenticated()">[[${#authentication.principal}]]</div>
-									<div sec:authorize="isAuthenticated()">[[${#authentication.principal.getId()}]]</div>
-									<!-- <a th:href="${ '/user/info/' + board.user.id }">[[${ board.user.username }]]</a> -->
-									<a th:href="@{ ~/user/info/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
-									<input type="hidden" id="boardId" th:value="${ board.getId() }">
-									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.getId()}">
+									<a th:href="@{ ~/user/{id}/info(id=${board.user.id}) }">[[${ board.user.username }]]</a>
+									<input type="hidden" id="boardId" th:value="${ board.id }">
+									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.id}">
 								</div>
 								<span class="tt-info-time">
 									<i class="tt-icon">
 										<svg>
 											<use xlink:href="#icon-time"></use>
 										</svg>
-									</i>[[${ board.updateDate }]]
+									</i>[[${ #temporals.format(board.updateDate, 'yyyy-MM-dd') }]]
 								</span>
 							</div>
 							<h3 class="tt-item-title">
@@ -44,12 +42,12 @@
 								<ul class="tt-list-badge">
 									<li sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id} eq ${board.user.id}">
 										<a th:href="${ '/board/edit/' + board.id }">
-											<span class="tt-color03 tt-badge">edit</span>
+											<span class="tt-color08 tt-badge">edit</span>
 										</a>
 									</li>
-									<li th:each="category : ${ board.category }">
+									<li th:each="category : ${ board?.category?.name }">
 										<a href="#">
-											<span class="tt-badge">[[${ category }]]</span>
+											<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }">[[${ category }]]</span>
 										</a>
 									</li>
 								</ul>
@@ -59,42 +57,25 @@
 							<!-- html 태그의 내용으로 출력하는 경우와 속성의 값으로 출력하는 경우 th:text -->
 							<!-- html 태그가 포함된 내용을 출력할 때는 unescaped text를 출력해 주는 th:utext -->
 							<p th:utext="${#strings.replace(board.boardContent, '\n', '&lt;br /&gt;')}">
-							<!-- <p th:utext="${#strings.replace(board.boardContent, '\n', '&lt;br /&gt;')}"> -->
+							<!-- <p th:utext="${#strings.replace( #strings.escapeXml( board.boardContent ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"> -->
+							<p th:utext="${board.boardContent}">
 							</p>
 						</div>
 						<div class="tt-item-info info-bottom">
-							<a href="#" class="tt-icon-btn">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-like"></use>
-									</svg></i>
-								<span class="tt-text">0</span>
-							</a>
-							<a href="#" class="tt-icon-btn">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-dislike"></use>
-									</svg></i>
-								<span class="tt-text">0</span>
-							</a>
-							<a href="#" class="tt-icon-btn">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-favorite"></use>
-									</svg></i>
-								<span class="tt-text">0</span>
-							</a>
 							<div class="col-separator"></div>
 							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
 								<i class="tt-icon"><svg>
+									<use xlink:href="#icon-favorite"></use>
+								</svg></i>
+							</a>
+							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent" id="iconReply">
+								<i class="tt-icon"><svg>
+									<use xlink:href="#icon-reply"></use>
+								</svg></i>
+							</a>
+							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+								<i class="tt-icon"><svg>
 										<use xlink:href="#icon-share"></use>
-									</svg></i>
-							</a>
-							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-flag"></use>
-									</svg></i>
-							</a>
-							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-reply"></use>
 									</svg></i>
 							</a>
 						</div>
@@ -108,125 +89,54 @@
 						<h6 class="tt-title">Thread Status</h6>
 						<div class="tt-row-icon">
 							<div class="tt-item">
-								<a href="#" class="tt-icon-btn tt-position-bottom">
-									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-reply"></use>
-										</svg></i>
-									<span class="tt-text">283</span>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class="tt-icon-btn tt-position-bottom">
+								<span href="#" class="tt-icon-btn tt-position-bottom">
 									<i class="tt-icon"><svg>
 											<use xlink:href="#icon-view"></use>
 										</svg></i>
-									<span class="tt-text">10.5k</span>
-								</a>
+									<span class="tt-text">[[${board?.viewCount}]]</span>
+								</span>
 							</div>
 							<div class="tt-item">
-								<a href="#" class="tt-icon-btn tt-position-bottom">
-									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-user"></use>
-										</svg></i>
-									<span class="tt-text">168</span>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class="tt-icon-btn tt-position-bottom">
-									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-like"></use>
-										</svg></i>
-									<span class="tt-text">2.4k</span>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class="tt-icon-btn tt-position-bottom">
+								<span href="#" class="tt-icon-btn tt-position-bottom">
 									<i class="tt-icon"><svg>
 											<use xlink:href="#icon-favorite"></use>
 										</svg></i>
-									<span class="tt-text">951</span>
-								</a>
+									<span class="tt-text">0</span>
+								</span>
 							</div>
 							<div class="tt-item">
-								<a href="#" class="tt-icon-btn tt-position-bottom">
+								<span href="#" class="tt-icon-btn tt-position-bottom">
+									<i class="tt-icon"><svg>
+											<use xlink:href="#icon-reply"></use>
+										</svg></i>
+									<span class="tt-text" id="replyCount">[[${#lists.size(board.comments)}]]</span>
+								</span>
+							</div>
+							<div class="tt-item">
+								<span href="#" class="tt-icon-btn tt-position-bottom">
 									<i class="tt-icon"><svg>
 											<use xlink:href="#icon-share"></use>
 										</svg></i>
-									<span class="tt-text">32</span>
-								</a>
-							</div>
-						</div>
-						<hr>
-
-						<h6 class="tt-title">Frequent Posters</h6>
-						<div class="tt-row-icon">
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-d"></use>
-									</svg>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-t"></use>
-									</svg>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-k"></use>
-									</svg>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-n"></use>
-									</svg>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-a"></use>
-									</svg>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-c"></use>
-									</svg>
-								</a>
-							</div>
-							<div class="tt-item">
-								<a href="#" class=" tt-icon-avatar">
-									<svg>
-										<use xlink:href="#icon-ava-h"></use>
-									</svg>
-								</a>
+									<span class="tt-text">0</span>
+								</span>
 							</div>
 						</div>
 
 						<hr>
+
 						<div class="row-object-inline form-default">
 							<h6 class="tt-title">Sort replies by:</h6>
 							<ul class="tt-list-badge tt-size-lg">
-								<li><a href="#"><span class="tt-badge">Recent</span></a></li>
-								<li><a href="#"><span class="tt-color02 tt-badge">Most Liked</span></a></li>
+								<li><a href="#"><span class="tt-color02 tt-badge">Recent</span></a></li>
+								<li><a href="#"><span class="tt-badge">Most Liked</span></a></li>
 								<li><a href="#"><span class="tt-badge">Longest</span></a></li>
 								<li><a href="#"><span class="tt-badge">Shortest</span></a></li>
-								<li><a href="#"><span class="tt-badge">Accepted Answers</span></a></li>
 							</ul>
 							<select class="tt-select form-control">
 								<option value="Recent">Recent</option>
 								<option value="Most Liked">Most Liked</option>
 								<option value="Longest">Longest</option>
 								<option value="Shortest">Shortest</option>
-								<option value="Accepted Answer">Accepted Answer</option>
 							</select>
 						</div>
 					</div>
@@ -252,11 +162,11 @@
 									<div class="tt-avatar-title">
 										<a th:href="@{ /user/info/{id}(id=${comment.user.id}) }">[[${ comment.user.username }]]</a>
 									</div>
-									<a href="#" class="tt-info-time">
+									<span class="tt-info-time">
 										<i class="tt-icon"><svg>
 												<use xlink:href="#icon-time"></use>
-											</svg></i>[[${ comment.updateDate }]]
-									</a>
+											</svg></i>[[${ #temporals.format(comment.updateDate, 'yyyy-MM-dd') }]]
+									</span>
 								</div>
 							</div>
 
@@ -281,12 +191,7 @@
 									<i class="tt-icon"><svg>
 											<use xlink:href="#icon-share"></use>
 										</svg></i>
-								</a>
-								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-flag"></use>
-										</svg></i>
-								</a>
+								</a><!-- https://www.w3schools.com/howto/howto_css_social_media_buttons.asp -->
 								<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
 									<i class="tt-icon"><svg>
 											<use xlink:href="#icon-reply"></use>
@@ -436,20 +341,18 @@
 				comment.create(obj, function(list) {
 					// console.log(list);
 
+			    if (ws.readyState === 1) {
+						// console.log('comment alert');
+						let msg = COMMENT_CONTENT + "," + "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.username} : '']]" + "," + "[[${ board.user.username }]]";
+						ws.send(msg);
+					}
+
 					document.getElementById('commentContent').value = '';
 				  commentList.innerHTML = '';
 					renderComment(list, commentList, USER_ID);
+					// console.log(list.length);
+    			document.getElementById('replyCount').innerText = list.length;
 
-		      // socket alert
-		      // configureMessageBroker() 에서 지정한 Application Destination Prefixes
-		      socket.send(
-		        "/sub/anb",
-		        {},
-		        JSON.stringify({
-		          id: BOARD_ID,
-		          content: commentContent
-		        })
-		      );
 				});
 			}, false);
 		}
@@ -474,6 +377,8 @@
 						
 						commentList.innerHTML = '';
 						renderComment(list, commentList, USER_ID);
+						document.getElementById('replyCount').innerText = list.length;
+						
 						// $(".tt-btn-col-close").trigger('click');
 						document.getElementsByClassName('modal-filter').item(0).click();
 					});
@@ -545,6 +450,12 @@
 
 			}, false);
 		}
+
+
+		document.getElementById('iconReply').addEventListener('click', function(event) {
+			event.preventDefault();
+			document.getElementById('commentContent').focus();
+		});
 
 	</script>
 

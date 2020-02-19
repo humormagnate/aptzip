@@ -95,6 +95,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
         .antMatchers("/user/info/*", "/board/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+        // production
+        // .antMatchers("/user/info/*", "/board/edit/**", "/").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
         .antMatchers("/board/write/**").authenticated()
         // .antMatchers("/board/write/**").hasAuthority(UserPrivilege.BOARD_WRITE.getPrivileges())
         .antMatchers("/user/go/login/*").anonymous()
@@ -120,13 +122,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // => userdetailsservice is required
         // (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
       .formLogin()
-        .loginPage("/user/go/login")
-        .loginProcessingUrl("/login")
-        .failureUrl("/user/go/login?error=true")
-        // .failureForwardUrl("/user/go/login?error=true")
-        .failureHandler(failureHandler()).successHandler(successHandler())
+        .loginPage("/login")
+        .loginProcessingUrl("/signin")
+        .failureUrl("/login?error=true")
+        // .failureForwardUrl("/login?error=true")
+        .failureHandler(failureHandler())
+        .successHandler(successHandler())
         // .defaultSuccessUrl("/", true)
-        .usernameParameter("email")
+        // .usernameParameter("email")
+        .usernameParameter("username")
         .passwordParameter("password")
         .permitAll()
         .and()
@@ -180,7 +184,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public AuthenticationFailureHandler failureHandler() {
     log.info("===============================Security-Config-failureHandler=====================================");
-    return new SimpleUrlAuthenticationFailureHandler("/user/go/login?error=true");
+    return new SimpleUrlAuthenticationFailureHandler("/login?error=true");
   }
 
   @Bean

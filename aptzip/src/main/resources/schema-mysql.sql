@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS tb_notice;
 DROP TABLE IF EXISTS tb_user;
 DROP TABLE IF EXISTS tb_role;
 DROP TABLE IF EXISTS tb_apt;
+DROP TABLE IF EXISTS tb_category;
 
 CREATE TABLE tb_role (
 	role	VARCHAR(128) NOT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE tb_user (
 	email					VARCHAR(128)	NOT NULL UNIQUE,
 	password			VARCHAR(256)	NOT NULL,
 	phone					VARCHAR(128),
-	username			VARCHAR(128)	NOT NULL,
+	username			VARCHAR(128)	NOT NULL UNIQUE,
 	address				VARCHAR(128),
 	gender				VARCHAR(1),
 	introduction	TEXT,
@@ -47,7 +48,7 @@ CREATE TABLE tb_board (
   board_title		VARCHAR(256)	NOT NULL,
   board_content	TEXT					NOT NULL,
 	attachment		VARCHAR(100),
-  category			VARCHAR(10),
+  category_id		INTEGER,
   board_status	VARCHAR(1)	DEFAULT 'Y',
   create_date		TIMESTAMP		DEFAULT NOW()	NOT NULL,
   update_date		TIMESTAMP		DEFAULT NOW()	NOT NULL,
@@ -92,4 +93,10 @@ CREATE TABLE persistent_logins (
   series VARCHAR(64) PRIMARY KEY,
   token VARCHAR(64) NOT NULL,
   last_used timestamp NOT NULL
+);
+
+CREATE TABLE tb_category (
+	category_id	BIGINT	NOT NULL	AUTO_INCREMENT,
+	category_name	VARCHAR(128)	NOT NULL,
+	PRIMARY KEY (category_id)
 );

@@ -1,8 +1,10 @@
 package com.example.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.user.AptzipUserEntity;
@@ -13,14 +15,17 @@ import com.example.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,16 +42,6 @@ public class UserController {
 	@Autowired
 	private BoardRepository boardRepository;
 	
-	@GetMapping(value = "/go/login")
-	public String login() {
-		return "user/page-login";
-	}
-	
-	@GetMapping(value = "/go/signup")
-	public String signup() {
-		return "user/page-signup";
-	}
-	
 	@PostMapping(value = "/signup")
 	public String insertUser(@ModelAttribute UserRequestDto userForm, RedirectAttributes redirectAttributes) {
 		log.info("=============================SIGN UP================================");
@@ -56,17 +51,17 @@ public class UserController {
     } catch (DataIntegrityViolationException e) {
 			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("error", true);
-			return "redirect:go/signup";
+			return "redirect:/join";
     }
 		redirectAttributes.addFlashAttribute("success", true);
-		return "redirect:go/login";
+		return "redirect:/login";
 	}
 
 	@Deprecated
 	@GetMapping("/info")
 	public ModelAndView deprecatedInfo(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
 		// Principal principal = request.getUserPrincipal();
-		List<BoardEntity> list = boardRepository.findByUserId(principal.getId());
+		List<BoardEntity> list = boardRepository.findByUserIdOrderByIdDesc(principal.getId());
 		log.info(list.toString());
 		
 		mv.addObject("principal", principal)
@@ -75,9 +70,9 @@ public class UserController {
 		return mv;
 	}
 
-	@GetMapping("/info/{id}")
+	@GetMapping("/{id}/info")
 	public ModelAndView info(@PathVariable("id") Long id, ModelAndView mv) {
-		List<BoardEntity> list = boardRepository.findByUserId(id);
+		List<BoardEntity> list = boardRepository.findByUserIdOrderByIdDesc(id);
 		AptzipUserEntity user = userService.findById(id);
 		log.info(list.toString());
 		
@@ -87,11 +82,23 @@ public class UserController {
 		return mv;
 	}
 
-	@ResponseBody
-	@GetMapping("/edit")
-	public String updateUser(HttpServletRequest request, UserRequestDto user) {
-		// userService.updateUser(user);
-		return "";
+	// @ResponseBody // -> 415 error
+	@Transactional
+	@PutMapping("/edit")
+	public ResponseEntity<List<String>> updateUser(@RequestBody UserRequestDto user, HttpServletRequest request) {
+		log.info("user : " + user);
+		log.info("request : " + request);
+
+		// request.getSession().setAttribute("msg", "비번변경");
+		// ServerRequest request -> java.lang.NoSuchMethodException: org.springframework.web.servlet.function.ServerRequest.<init>()
+		// request.session().setAttribute("msg", "비밀번호가 변경되었습니다. 다시 로그인해주세요.");
+
+		return new ResponseEntity<>(Arrays.asList("success"), HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}/message")
+	public String message() {
+		return "user/messages-page";
 	}
 
 	// @PostMapping("/users/{userId}")

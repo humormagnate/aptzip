@@ -53,16 +53,19 @@ function deletePost(BOARD_ID) {
 
 function updatePost(BOARD_ID, boardTitle, boardContent) {
   // http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#javascript-inlining
+  console.log(BOARD_ID);
+  console.log(boardTitle);
+  console.log(boardContent);
   $.ajax({
     url: "/board/" + BOARD_ID,
     method: "put",
-    headers:{
-      "Content-Type":"application/json",
-      "X-HTTP-Method-Override":"PUT"
-    },
+    // headers:{
+      // "Content-Type":"application/json",
+      // "X-HTTP-Method-Override":"PUT"
+    // },
     data: {
-      boardTitle: boardTitle,
-      boardContent: boardContent
+      "boardTitle": boardTitle,
+      "boardContent": boardContent
     },
     success: function(data) {
       alert(data);
@@ -76,18 +79,53 @@ function updatePost(BOARD_ID, boardTitle, boardContent) {
 }
 
 /*
+  Basic WebSocket
+*/
+let ws = null;
+function connectWS() {
+
+  let socket = new WebSocket("ws://localhost:8888/ws/comment");
+  ws = socket;
+
+  ws.onopen = function() {
+    // console.log('Info : connection opened');
+  }
+  
+  ws.onmessage = function(event) {
+    // console.log("ws.onmessage : ", event.data + '\n');
+    $('.alert-trigger').trigger('click');
+    $('#alertContent').text(event.data);
+    $('#alertBadge').text('comment');
+    // console.log($alert);
+  }
+  
+  ws.onclose = function(event) {
+    // console.log('Info : connection closed');
+  }
+  
+  ws.onerror = function(event) {
+    // console.log('Info : connection error and close')
+    // setTimeout(function(){
+    //   connect();
+    // }, 1000); // retry conntection
+  }
+
+}
+
+/*
   STOMP
 */
-let socket = null;
+let stomp = null;
 window.onload = function() {
+  this.connectWS();
   // closure 적용할 수 있을까?
-  socket = new SockJS("/alert"); // endpoint
-  let client = Stomp.over(socket);
+  stomp = new SockJS("/ws/message"); // endpoint
+  let client = Stomp.over(stomp);
   // isStomp = true;
-  socket = client;
+  stomp = client;
 
   client.connect({}, function(frame) {
-    console.log("Connected stompTest!" + frame);
+    console.log("Connected stomp!" + frame);
     // Controller's MessageMapping, header, message(자유형식)
     // client.send("/nba", {}, "msg: string");
 

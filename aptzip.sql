@@ -2,12 +2,14 @@ drop table aptzip.tb_apt;
 drop table aptzip.tb_user;
 drop table aptzip.tb_role;
 drop table aptzip.tb_board;
+drop table aptzip.tb_category;
 drop table aptzip.persistent_logins;
 
 rollback;
 
 select * from aptzip.tb_user;
 select * from aptzip.tb_board;
+select * from aptzip.tb_category;
 select * from aptzip.tb_comment;
 select * from aptzip.tb_role;
 select * from aptzip.tb_apt;

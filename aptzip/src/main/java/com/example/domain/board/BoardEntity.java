@@ -44,7 +44,11 @@ public class BoardEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "board_id")
 	private Long id;
-	private String category;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private CategoryEntity category;
+	// private String category;
 
   @Column(name = "board_title")
 	private String boardTitle;
