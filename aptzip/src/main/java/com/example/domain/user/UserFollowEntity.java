@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -45,24 +48,28 @@ public class UserFollowEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // StackOverFlow Error -> QueryDSL?
+  // https://pasudo123.tistory.com/350
+  // https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+  // Infinite recursion (StackOverflowError)
+  @JsonBackReference(value = "following")
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "following")
-  @ManyToOne
   private AptzipUserEntity following;
   
+  @JsonBackReference(value = "follower")
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "follower")
-  @ManyToOne
   private AptzipUserEntity follower;
 
+  @CreationTimestamp
+  @Column(name = "create_date")
+  private LocalDateTime createDate;
+  
   // @Column(name = "from_user_id")
   // private Long fromUserId;
   
   // @Column(name = "to_user_id")
   // private Long toUserId;
-
-  @CreationTimestamp
-  @Column(name = "create_date")
-  private LocalDateTime createDate;
 
   // @PrePersist
   // public void prePersist() {

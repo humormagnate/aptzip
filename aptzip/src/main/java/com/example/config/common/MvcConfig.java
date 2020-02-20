@@ -33,7 +33,7 @@ public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/go/login");
+		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/login");
 	}
 
 }

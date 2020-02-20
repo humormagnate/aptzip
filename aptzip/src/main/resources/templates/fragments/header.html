@@ -36,7 +36,7 @@
         <div class="tt-desktop-menu">
           <nav>
             <ul>
-              <li>
+              <!-- <li>
                 <a href="/categories"><span>Categories</span></a>
                 <ul>
                   <li><a href="#">Common</a></li>
@@ -46,7 +46,7 @@
                   <li><a href="#">Question</a></li>
                   <li><a href="#">Gallery</a></li>
                 </ul>
-              </li>
+              </li> -->
               <li>
                 <a sec:authorize="isAuthenticated()" th:href="'/apt/' + ${#authentication.principal.apt.id}"><span>Apt</span></a>
               </li>

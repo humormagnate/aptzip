@@ -11,11 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.example.domain.common.AptEntity;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.Transient;
@@ -37,6 +40,7 @@ import lombok.ToString;
 @ToString(exclude = {"following", "follower"})
 @NoArgsConstructor
 @AllArgsConstructor
+// @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class) //=> Id 값이 원하는대로 나오지 않음
 public class AptzipUserEntity {
 
   //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -75,12 +79,12 @@ public class AptzipUserEntity {
 
   // cascade = CascadeType.ALL
   // -> User 객체를 insert 하는 순간 UserRole 객체도 insert 하려니까 Unique 제약조건 위배 (ConstraintViolationException)
-  @Transient
+  // @Transient
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
   
-  @Transient
+  // @Transient
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_id")
   private AptEntity apt;
@@ -96,18 +100,20 @@ public class AptzipUserEntity {
   // ->com.example.domain.user.UserFollowerEntity["from"]
   // ->com.example.domain.user.AptzipUserEntity$HibernateProxy$89TzX5Jf["following"]
   // java.lang.StackOverflowError
-  // Follow 객체 따로
-
+  // https://pasudo123.tistory.com/350
+  // https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+  // Infinite recursion (StackOverflowError)
   // following.from -> me
   // following.to -> following
+  @JsonIgnore
+  // @JsonManagedReference(value = "following")
   @OneToMany(mappedBy = "following", fetch = FetchType.LAZY)
   private List<UserFollowEntity> following;
-
-  // @ManyToMany
-  // private List<AptzipUserEntity> following;
-
+  
   // follwer.from -> follower
   // follwer.to -> me
+  @JsonIgnore
+  // @JsonManagedReference(value = "follower")
   @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
   private List<UserFollowEntity> follower;
 

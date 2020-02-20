@@ -62,11 +62,20 @@ public class CommentEntity {
   @Column(name = "comment_status")
   private String commentStatus;
 
+  // JSON string에서 제외
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
   private BoardEntity board;
   
+  // com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
+  // No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor
+  // and no properties discovered to create BeanSerializer
+  // (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
+  // (through reference chain: java.util.ArrayList[0]
+  // ->com.example.domain.board.CommentEntity["user"]
+  // ->com.example.domain.user.AptzipUserEntity$HibernateProxy$34IWdfwG["hibernateLazyInitializer"])]
+  // => EAGER로 지정
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private AptzipUserEntity user;

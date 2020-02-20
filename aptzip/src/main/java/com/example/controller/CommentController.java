@@ -47,10 +47,10 @@ public class CommentController {
 
     BoardEntity board = new BoardEntity();
     board.setId(boardId);
-
+    
     return new ResponseEntity<>(getCommentList(board), HttpStatus.OK);
   }
-
+  
   // @RequestBody error
   // nested exception is com.fasterxml.jackson.core.JsonParseException:
   // Unrecognized token 'commentContent': was expecting (JSON String, Number,
@@ -59,24 +59,29 @@ public class CommentController {
   @Transactional
   @PostMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
-      @RequestBody CommentEntity comment, @AuthenticationPrincipal UserResponseDto principal) {
+  @RequestBody CommentEntity comment, @AuthenticationPrincipal UserResponseDto principal) {
     log.info("/comment/post//////////////////////////////////////////////////////////");
     log.info(comment.toString());
     BoardEntity board = new BoardEntity();
     board.setId(boardId);
-
+    
+    log.info("debug0");
     comment.setUser(principal.toEntity());
     comment.setBoard(board);
     comment.setCommentStatus("Y");
+    log.info("debug1");
     commentRepo.save(comment);
-
+    log.info("debug2");
+    
     // log.info(board.toString());
     // log.info(comment.toString());
     // log.info(principal.toString());
-
-    return new ResponseEntity<>(getCommentList(board), HttpStatus.CREATED);
+    List<CommentEntity> entity = getCommentList(board);
+    log.info("entity : {}", entity);
+    log.info("debug3");
+    return new ResponseEntity<>(entity, HttpStatus.CREATED);
   }
-
+  
   @Transactional
   @DeleteMapping("/{boardId}/{commentId}")
   public ResponseEntity<List<CommentEntity>> commentDelete(@PathVariable("boardId") Long boardId,
