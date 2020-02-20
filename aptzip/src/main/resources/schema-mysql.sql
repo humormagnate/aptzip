@@ -1,9 +1,12 @@
-DROP TABLE IF EXISTS tb_board_comments CASCADE;
-DROP TABLE IF EXISTS tb_comment CASCADE;
-DROP TABLE IF EXISTS tb_board	CASCADE;
+DROP TABLE IF EXISTS tb_board_comments;
+DROP TABLE IF EXISTS tb_comment;
+DROP TABLE IF EXISTS tb_favorite;
 DROP TABLE IF EXISTS persistent_logins CASCADE;
 DROP TABLE IF EXISTS tb_notice;
-DROP TABLE IF EXISTS tb_user;
+DROP TABLE IF EXISTS tb_user_follow;
+DROP TABLE IF EXISTS tb_user_following;
+DROP TABLE IF EXISTS tb_board	CASCADE;
+DROP TABLE IF EXISTS tb_user CASCADE;
 DROP TABLE IF EXISTS tb_role;
 DROP TABLE IF EXISTS tb_apt;
 DROP TABLE IF EXISTS tb_category;
@@ -20,6 +23,12 @@ CREATE TABLE tb_apt (
 	apt_city      VARCHAR(128) NOT NULL,
 	apt_town      VARCHAR(128) NOT NULL,
 	PRIMARY KEY (apt_id)
+);
+
+CREATE TABLE tb_category (
+	category_id		INTEGER				NOT NULL	AUTO_INCREMENT,
+	category_name	VARCHAR(128)	NOT NULL,
+	PRIMARY KEY (category_id)
 );
 
 CREATE TABLE tb_user (
@@ -42,6 +51,16 @@ CREATE TABLE tb_user (
 );
 ALTER TABLE tb_user ADD CONSTRAINT FOREIGN KEY (role) REFERENCES tb_role (role);
 
+CREATE TABLE tb_user_follow (
+	follow_id			BIGINT		NOT NULL	AUTO_INCREMENT,
+	following			BIGINT		NOT NULL,
+	follower			BIGINT		NOT NULL,
+	create_date		TIMESTAMP	NOT NULL,
+	-- PRIMARY KEY (from_user, to_user),
+	PRIMARY KEY (follow_id),
+	FOREIGN KEY (following) REFERENCES tb_user (user_id),
+	FOREIGN KEY (follower) REFERENCES tb_user (user_id)
+);
 
 CREATE TABLE tb_board (
 	board_id			BIGINT				NOT NULL	AUTO_INCREMENT,
@@ -57,7 +76,8 @@ CREATE TABLE tb_board (
   apt_id				INTEGER				NOT NULL,
 	PRIMARY KEY (board_id),
   FOREIGN KEY (user_id)	REFERENCES tb_user (user_id),
-	FOREIGN KEY (apt_id) REFERENCES tb_apt (apt_id)
+	FOREIGN KEY (apt_id) 	REFERENCES tb_apt (apt_id),
+	FOREIGN KEY (category_id)	REFERENCES tb_category (category_id)
 );
 -- ALTER TABLE tb_board ADD CONSTRAINT FOREIGN KEY (apt_id) REFERENCES tb_apt (apt_id);
 
@@ -84,7 +104,7 @@ CREATE TABLE tb_comment (
   user_id					BIGINT				NOT NULL,
 	PRIMARY KEY (comment_id),
   FOREIGN KEY (board_id)	REFERENCES tb_board (board_id),
-  FOREIGN KEY (user_id)	REFERENCES tb_user (user_id)
+  FOREIGN KEY (user_id)		REFERENCES tb_user (user_id)
 );
 -- ALTER TABLE tb_comment ADD CONSTRAINT FOREIGN KEY (user_id) REFERENCES tb_user (user_id);
 
@@ -95,8 +115,11 @@ CREATE TABLE persistent_logins (
   last_used timestamp NOT NULL
 );
 
-CREATE TABLE tb_category (
-	category_id	BIGINT	NOT NULL	AUTO_INCREMENT,
-	category_name	VARCHAR(128)	NOT NULL,
-	PRIMARY KEY (category_id)
+CREATE TABLE tb_favorite (
+	board_id			BIGINT			NOT NULL,
+	user_id				BIGINT			NOT NULL,
+	create_date		TIMESTAMP		DEFAULT NOW() NOT NULL,
+	PRIMARY KEY (board_id, user_id),
+  FOREIGN KEY (board_id)	REFERENCES tb_board (board_id),
+  FOREIGN KEY (user_id)		REFERENCES tb_user (user_id)
 );

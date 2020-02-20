@@ -158,8 +158,8 @@
 
       <div class="col-auto ml-auto">
         <div class="tt-account-btn" sec:authorize="isAnonymous()">
-          <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-primary">Log in</a>
-          <a sec:authorize="isAnonymous()" th:href="@{/join}" class="btn btn-secondary">Sign up</a>
+          <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-primary">Login</a>
+          <a sec:authorize="isAnonymous()" th:href="@{/join}" class="btn btn-secondary">Signup</a>
         </div>
 
         <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
@@ -174,7 +174,7 @@
             <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
           </div>
           <div class="tt-btn-icon">
-            <a th:href="@{/user/logout}" class="btn btn-secondary">Log out</a>
+            <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
           </div>
         </div>
       </div>

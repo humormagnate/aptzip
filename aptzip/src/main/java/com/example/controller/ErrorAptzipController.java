@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
 // @RequestMapping({"${server.error.path:${error.path:/error}}"})
+@Controller
 public class ErrorAptzipController implements ErrorController {
 
   @GetMapping(value = "/error/{statusCode}")

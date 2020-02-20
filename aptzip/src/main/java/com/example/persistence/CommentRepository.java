@@ -17,4 +17,6 @@ public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
         +"order by c.id asc")
   public List<CommentEntity> getCommentsByBoardId(BoardEntity board);
 
+  public List<CommentEntity> findByUserIdOrderByIdDesc(Long id);
+  
 }

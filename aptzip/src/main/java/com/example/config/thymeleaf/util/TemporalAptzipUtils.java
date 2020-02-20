@@ -26,7 +26,7 @@ public final class TemporalAptzipUtils {
 
   public boolean isItOneHourAgo(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
-    log.info(now + "");
+    // log.info(now + "");
     // log.info(time + "");
     // log.info(ChronoUnit.MILLIS.between(time, now) + "");
 

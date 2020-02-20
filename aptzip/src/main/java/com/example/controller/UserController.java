@@ -7,18 +7,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.example.domain.board.BoardEntity;
+import com.example.domain.board.CommentEntity;
+import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipUserEntity;
+import com.example.domain.user.UserFollowEntity;
 import com.example.domain.user.UserRequestDto;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
+import com.example.persistence.CommentRepository;
+import com.example.persistence.FollowRepository;
 import com.example.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,30 +31,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RequiredArgsConstructor
 @RequestMapping("/user")
+@Controller
 public class UserController {
 	
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private BoardRepository boardRepository;
+	private final UserService userService;
+	private final BoardRepository boardRepo;
+	private final FollowRepository followRepo;
+	// private final FollowQueryRepository followQuery;
+	private final CommentRepository commentRepo;
 	
+	/**
+	 * create
+	 * @param userForm
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PostMapping(value = "/signup")
-	public String insertUser(@ModelAttribute UserRequestDto userForm, RedirectAttributes redirectAttributes) {
+	public String insertUser(@ModelAttribute UserRequestDto userForm, RedirectAttributes redirectAttributes, String aptId) {
 		log.info("=============================SIGN UP================================");
 		// @Valid -> 400 error 페이지로 이동중 SecurityContext 에서 계속 405 error로 바뀐다. Why?
 		try {
+			Long apt = Long.valueOf(aptId);
+			userForm.setApt(AptEntity.builder().id(apt).build());
 			userService.save(userForm);
-    } catch (DataIntegrityViolationException e) {
+    // } catch (DataIntegrityViolationException e) {
+    } catch (Exception e) {
 			e.printStackTrace();
+			log.info(e.getMessage());
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/join";
     }
@@ -57,11 +75,14 @@ public class UserController {
 		return "redirect:/login";
 	}
 
+	/**
+	 * @deprecated
+	 */
 	@Deprecated
 	@GetMapping("/info")
 	public ModelAndView deprecatedInfo(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
 		// Principal principal = request.getUserPrincipal();
-		List<BoardEntity> list = boardRepository.findByUserIdOrderByIdDesc(principal.getId());
+		List<BoardEntity> list = boardRepo.findByUserIdOrderByIdDesc(principal.getId());
 		log.info(list.toString());
 		
 		mv.addObject("principal", principal)
@@ -70,19 +91,45 @@ public class UserController {
 		return mv;
 	}
 
+	/**
+	 * retrieve
+	 * @param id
+	 * @param mv
+	 * @return
+	 */
 	@GetMapping("/{id}/info")
-	public ModelAndView info(@PathVariable("id") Long id, ModelAndView mv) {
-		List<BoardEntity> list = boardRepository.findByUserIdOrderByIdDesc(id);
-		AptzipUserEntity user = userService.findById(id);
-		log.info(list.toString());
-		
-		mv.addObject("list", list)
-			.addObject("infouser", user)
-			.setViewName("user/page-single-user");
-		return mv;
-	}
+	public String info(@PathVariable("id") Long id, Model model) {
+		List<BoardEntity> boards = boardRepo.findByUserIdOrderByIdDesc(id);
+		List<CommentEntity> comments = commentRepo.findByUserIdOrderByIdDesc(id);
+		// List<AptzipUserEntity> following = followQuery.following(id, 10L, 0L);
+		List<UserFollowEntity> followings = followRepo.findAllByFollowing(id);
+		List<UserFollowEntity> followers = followRepo.findAllByFollower(id);
+		// List<UserFollowEntity> following = followRepo.findAllByFrom(AptzipUserEntity.builder().id(id).build());
+		// List<UserFollowEntity> follower = followRepo.findAllByTo(AptzipUserEntity.builder().id(id).build());
 
+		AptzipUserEntity user = userService.findById(id);
+		log.info("boards : {}", boards.toString());
+		log.info("comments : {}", comments.toString());
+		log.info("infouser : {}", user);
+		log.info("followings : {}", followings);
+		// log.info("followers : {}", followers);
+		
+		model.addAttribute("boards", boards)
+				 .addAttribute("comments", comments)
+				 .addAttribute("infouser", user)
+				 .addAttribute("followings", followings)
+				 .addAttribute("followers", followers);
+		return "user/page-single-user";
+	}
+	
+	/**
+	 * update
+	 * @param user
+	 * @param request
+	 * @return
+	 */
 	// @ResponseBody // -> 415 error
+	// @PreAuthorize("#updateUser.email == authentication.name")
 	@Transactional
 	@PutMapping("/edit")
 	public ResponseEntity<List<String>> updateUser(@RequestBody UserRequestDto user, HttpServletRequest request) {
@@ -96,25 +143,39 @@ public class UserController {
 		return new ResponseEntity<>(Arrays.asList("success"), HttpStatus.OK);
 	}
 
-	@GetMapping("/{id}/message")
-	public String message() {
-		return "user/messages-page";
+	/**
+	 * delete
+	 */
+	@Transactional
+	@DeleteMapping
+	public void deleteUser() {
+
 	}
 
-	// @PostMapping("/users/{userId}")
-	// @PreAuthorize("#updateUser.email == authentication.name")
-	// public String update(@PathVariable("userId") Long id, @ModelAttribute @Valid UserRequestDto updateUser, Model model) {
-	// 	AptzipUserEntity currentUser = userService.findOne(id);
-	// 	if (!passwordEncoder.matches(updateUser.getPassword(), currentUser.getPassword())){
-	// 		throw new RuntimeException("Not password equals...");
-	// 	}
-	// 	return "";
-	// }
+	@Transactional
+	@ResponseBody
+	@PostMapping("/{id}/follow")
+	public String insertFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserResponseDto principal) {
+		log.info("target id : {}", id);
+		log.info("login user : {}", principal.toString());
+		
+		// followRepo.save(new UserFollowerEntity(FollowKey.builder()
+		// 																								.from(principal.toEntity())
+		// 																								.to(AptzipUserEntity.builder().id(id).build())
+		// 																								.build()));
 
-	// @GetMapping(value = "/{test}")
-	// public ModelAndView test(@PathVariable("test") String test, ModelAndView mv) {
-	// 	mv.addObject("test", test).setViewName("error404");
-	// 	return mv;
-	// }
+		followRepo.save(UserFollowEntity.builder()
+																		.following(AptzipUserEntity.builder().id(id).build())
+																		.follower(principal.toEntity())
+																		.build());
+
+		return "success";
+	}
+
+	@Transactional
+	@DeleteMapping("/{id}/leave")
+	public void deleteFollow() {
+
+	}
 
 }

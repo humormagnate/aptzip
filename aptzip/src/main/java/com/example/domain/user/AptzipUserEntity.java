@@ -1,6 +1,7 @@
 package com.example.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+
+import com.example.domain.common.AptEntity;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,10 +30,11 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "tb_user")
+@EqualsAndHashCode(of = "id")
 @Builder
-@Table(name = "TB_USER")
-@ToString
+// @Table(name = "TB_USER")
+@ToString(exclude = {"following", "follower"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class AptzipUserEntity {
@@ -68,12 +75,40 @@ public class AptzipUserEntity {
 
   // cascade = CascadeType.ALL
   // -> User 객체를 insert 하는 순간 UserRole 객체도 insert 하려니까 Unique 제약조건 위배 (ConstraintViolationException)
+  @Transient
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
-
+  
+  @Transient
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_id")
   private AptEntity apt;
   
+  // @OneToMany(mappedBy = "follow.from")
+  // private List<UserFollowerEntity> following;
+
+  // @OneToMany(mappedBy = "follow.to")
+  // private List<UserFollowerEntity> follower;
+
+  // com.example.domain.user.AptzipUserEntity$HibernateProxy$89TzX5Jf["following"]
+  // ->org.hibernate.collection.internal.PersistentBag[0]
+  // ->com.example.domain.user.UserFollowerEntity["from"]
+  // ->com.example.domain.user.AptzipUserEntity$HibernateProxy$89TzX5Jf["following"]
+  // java.lang.StackOverflowError
+  // Follow 객체 따로
+
+  // following.from -> me
+  // following.to -> following
+  @OneToMany(mappedBy = "following", fetch = FetchType.LAZY)
+  private List<UserFollowEntity> following;
+
+  // @ManyToMany
+  // private List<AptzipUserEntity> following;
+
+  // follwer.from -> follower
+  // follwer.to -> me
+  @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
+  private List<UserFollowEntity> follower;
+
 }

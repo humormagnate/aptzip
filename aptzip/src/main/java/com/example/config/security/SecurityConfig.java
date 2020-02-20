@@ -30,30 +30,30 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  // private final PasswordEncoder passwordEncoder;
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  
+  // private PasswordEncoder passwordEncoder;
+  // private UserService userService;
+  // private DataSource dataSource;
+  // public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService, DataSource dataSource) {
+  //   this.passwordEncoder = passwordEncoder;
+  //   this.userService = userService;
+  //   this.dataSource = dataSource;
+  // }
 
-  @Autowired
-  private UserService userService;
-
-  @Autowired
-  private DataSource dataSource;
-
-  @Autowired
-  public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
-    this.passwordEncoder = passwordEncoder;
-    this.userService = userService;
-  }
-
+  private final PasswordEncoder passwordEncoder;
+  private final UserService userService;
+  private final DataSource dataSource;
+    
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**");
@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Allows restricting access based upon the HttpServletRequest using
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/info/*", "/board/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+        .antMatchers("/user/*/info/**", "/board/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
         // production
         // .antMatchers("/user/info/*", "/board/edit/**", "/").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
         .antMatchers("/board/write/**", "/categories", "/zip").authenticated()
@@ -134,8 +134,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .and()
       .logout()
-        .logoutUrl("/user/logout")
-        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout", "GET")) // 로그아웃은 POST로 처리하는 것이 안전하다.
+        .logoutUrl("/logout")
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // 로그아웃은 POST로 처리하는 것이 안전하다.
         // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
         .clearAuthentication(true)
         .invalidateHttpSession(true)

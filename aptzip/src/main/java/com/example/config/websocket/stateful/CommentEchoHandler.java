@@ -54,7 +54,7 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     log.info("payload {}", msg);
 
     if (StringUtils.isNotEmpty(msg)) {
-      String[] strs = msg.split(",");
+      String[] strs = msg.split("|");
 
       if (strs != null && strs.length == 3 && session.getPrincipal() != null) {
         log.info("strs is not null");

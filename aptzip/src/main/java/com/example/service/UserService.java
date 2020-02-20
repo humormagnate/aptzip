@@ -11,7 +11,6 @@ import com.example.domain.user.UserResponseDto;
 import com.example.domain.user.UserRole;
 import com.example.persistence.UserJpaRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,17 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
-  @Autowired
-  private UserJpaRepository userJpaRepository;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final UserJpaRepository userJpaRepository;
+  private final PasswordEncoder passwordEncoder;
 
   
   // 제약조건 : Controller 에서 Auth를 점검할 때, UserResponseDto(User 구현체)로 받아야 함.
@@ -81,24 +79,26 @@ public class UserService implements UserDetailsService {
     }
     
     UserResponseDto urd = new UserResponseDto(
-                                user.getId()
-                              , user.getUsername()
-                              , user.getPassword()
-                              , enabled
-                              , accountNonExpired
-                              , credentialsNonExpired
-                              , accountNonLocked
-                              , UserRole.USER.getGrantedAuthorities()
-                              , user.getEmail()
-                              , user.getAddress()
-                              , user.getPhone()
-                              , user.getGender()
-                              , user.getIntroduction()
-                              , user.getSignupDate()
-                              , user.getReported()
-                              , null
-                              , UserRole.USER.getPrivileges()
-                              , user.getApt()
+                                user.getId(),
+                                user.getUsername(),
+                                user.getPassword(),
+                                enabled,
+                                accountNonExpired,
+                                credentialsNonExpired,
+                                accountNonLocked,
+                                UserRole.USER.getGrantedAuthorities(),
+                                user.getEmail(),
+                                user.getAddress(),
+                                user.getPhone(),
+                                user.getGender(),
+                                user.getIntroduction(),
+                                user.getSignupDate(),
+                                user.getReported(),
+                                null,
+                                UserRole.USER.getPrivileges(),
+                                user.getApt(),
+                                user.getFollowing(),
+                                user.getFollower()
                               );
     
     // authorization

@@ -6,21 +6,21 @@ import com.example.domain.board.BoardEntity;
 import com.example.persistence.BoardRepository;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
+@RequiredArgsConstructor
 // @Commit
 public class BoardRepositoryTest {
 
-  @Autowired
-  private BoardRepository boardRepo;
+  private final BoardRepository boardRepo;
 
   @Test
   @Transactional

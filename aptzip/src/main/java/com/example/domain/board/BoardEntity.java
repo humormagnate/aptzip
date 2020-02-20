@@ -16,7 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import com.example.domain.user.AptEntity;
+import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipUserEntity;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -67,7 +67,9 @@ public class BoardEntity {
 	@CreationTimestamp
   @Column(name = "create_date")
 	private LocalDateTime createDate;
-	@UpdateTimestamp
+
+	// 조회수 update할 때도 변경됨
+	// @UpdateTimestamp
   @Column(name = "update_date")
 	private LocalDateTime updateDate;
 	

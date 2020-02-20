@@ -7,6 +7,7 @@
  * Basic(Pure) WebSocket notification
  */
 let ws = null;
+let wsConnnectInterval = null;
 function connectWS() {
 
   let socket = new WebSocket("ws://localhost:8888/ws/comment");
@@ -15,6 +16,10 @@ function connectWS() {
   ws.onopen = function(event) {
     console.log('Info : ws connection opened\n', event.currentTarget);
 
+    if (wsConnnectInterval != null) {
+      clearInterval(wsConnnectInterval);
+    }
+    
     ws.onmessage = function(event) {
       // console.log("ws.onmessage : ", event.data + '\n');
       $('.alert-trigger').trigger('click');
@@ -29,10 +34,10 @@ function connectWS() {
   }
   
   ws.onerror = function(event) {
-    // console.log('Info : connection error and close')
-    // setTimeout(function(){
-    //   connectWS();
-    // }, 1000); // retry conntection
+    console.log('Info : connection error and close')
+    wsConnnectInterval = setTimeout(function(){
+      connectWS();
+    }, 1000); // retry conntection
   }
   
 }

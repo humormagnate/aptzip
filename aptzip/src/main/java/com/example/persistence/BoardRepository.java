@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.QBoardEntity;
-import com.example.domain.user.AptEntity;
+import com.example.domain.common.AptEntity;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
@@ -23,7 +23,9 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
   @Transactional
   @Modifying
   @Query("update BoardEntity b" +
-         "   set b.boardTitle = :title, b.boardContent = :content" +
+         "   set b.boardTitle = :title," +
+         "       b.boardContent = :content," +
+         "       b.updateDate = CURRENT_TIMESTAMP" +
          " where b.id = :id")
   public void updateById(@Param("id") Long id,
                          @Param("title") String title,

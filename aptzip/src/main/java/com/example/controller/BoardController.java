@@ -1,15 +1,14 @@
 package com.example.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.domain.board.BoardEntity;
-import com.example.domain.board.CategoryEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 import com.example.persistence.CategoryRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -28,17 +27,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Controller
-@RequestMapping("/board/")
 @Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/board/")
+@Controller
 public class BoardController {
 
-	@Autowired private BoardRepository boardRepo;
-	@Autowired private CategoryRepository categoryRepo;
-	@Autowired private SimpMessageSendingOperations smso;
+	private final BoardRepository boardRepo;
+	private final CategoryRepository categoryRepo;
+	private final SimpMessageSendingOperations smso;
 
 	@Deprecated
 	@GetMapping("/list")
@@ -68,22 +69,35 @@ public class BoardController {
 	// UserDetails를 구현한 UserRequestDto는 @AuthenticationPrincipal 이 안먹히고
 	// UserDetails를 구현한 User를 상속한 UserResponseDto는 먹힌다. Why?
 	@PostMapping("/write")
-	public String writePost(BoardEntity board, @AuthenticationPrincipal UserResponseDto principal, RedirectAttributes rttr, String categoryName) {
+	public String writePost(BoardEntity board, @AuthenticationPrincipal UserResponseDto principal, RedirectAttributes rttr, String categoryName)
+		throws Exception {
 		
 		log.info("/board/write/post////////////////////////////////////////////////////////////////////////////");
 		log.info(board.toString());
 		log.info(principal.toString());
+		
+		if ("".equals(board.getBoardTitle())) {
+			return "";
+		}
 
-		CategoryEntity category = categoryRepo.findByName(categoryName).get();
-		board.setCategory(category);
-		board.setBoardStatus("Y");
-		board.setUser(principal.toEntity());
-		board.setApt(board.getUser().getApt());
+		if ("".equals(categoryName) && categoryName == null) {
+			return "";
+		}
 
-		log.info(board.toString());
-		log.info(board.getUser().getApt().toString());
+		// categoryName 대신 번호로 받기
+		// 글쓸 때마다 db를 2번 감
+		categoryRepo.findByName(categoryName).ifPresent(category -> {
+			board.setCategory(category);
+			board.setBoardStatus("Y");
+			board.setUser(principal.toEntity());
+			board.setApt(board.getUser().getApt());
+			board.setUpdateDate(LocalDateTime.now());
 
-		boardRepo.save(board);
+			log.info(board.toString());
+			log.info(board.getUser().getApt().toString());
+	
+			boardRepo.save(board);
+		});
 
 		/*
 			Post-Redirect-Get 방식
@@ -123,8 +137,15 @@ public class BoardController {
 
 	@ResponseBody
 	@PutMapping("/{id}")
-	public String put(@PathVariable("id") Long id, @ModelAttribute BoardEntity board) {
+	public String put(@PathVariable("id") Long id, @ModelAttribute BoardEntity board, String categoryName) {
 		log.info("====================================Put Mapping=================================");
+
+		if ("".equals(categoryName) && categoryName == null) {
+			return "";
+		}
+		// categoryName 대신 번호로 받기
+		// 글쓸 때마다 db를 2번 감
+
 		log.info(id.toString());
 		log.info(board.toString());
 		

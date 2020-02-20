@@ -3,8 +3,8 @@
 */
 function selectCategoryTypes(input) {
   input.addEventListener("click", function(event) {
-    console.log(input);
-    console.log(event);
+    // console.log(input);
+    // console.log(event);
     hiddenCategoryTypes.value = this.childNodes.item(3).textContent;
   });
 }
@@ -76,4 +76,46 @@ function updatePost(BOARD_ID, boardTitle, boardContent) {
       console.log("ajax error");
     }
   });
+}
+
+function userFollow() {
+  console.log('follow test');
+  event.preventDefault();
+
+  $.ajax({
+    url: "/user/" + TARGET_ID + "/follow",
+    method: "post",
+    // data: {
+    //   "userId": USER_ID
+    // },
+    success: function(data) {
+      $('#userFollowBtn').removeClass('btn-secondary');
+      $('#userFollowBtn').addClass('btn-primary');
+      console.log('팔로우 성공');
+    },
+    error: function(){
+      console.log('ajax error');
+    }
+  })
+}
+
+function validateForm(event) {
+  // console.log('form event');
+  const boardContent = document.getElementById('boardContent');
+  
+  if (BOARD_TITLE.value == '') {
+    BOARD_TITLE.focus();
+    alert('제목을 입력해주세요.');
+    event.preventDefault();
+  }
+  if (hiddenCategoryTypes.value == '') {
+    alert('카테고리를 선택해주세요.');
+    event.preventDefault();
+  }
+  if (boardContent.value == '') {
+    boardContent.focus({preventScroll:false});
+    alert('내용을 입력해주세요.');
+    event.preventDefault();
+  }
+  return true;
 }

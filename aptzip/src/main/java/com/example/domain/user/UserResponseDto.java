@@ -2,6 +2,9 @@ package com.example.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
+
+import com.example.domain.common.AptEntity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,7 +15,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"following", "follower"})
 // @EqualsAndHashCode(of = "id") -> User에 구현되어 있음
 public class UserResponseDto extends User {
 
@@ -34,6 +37,9 @@ public class UserResponseDto extends User {
   private UserRole role;
   private Collection<UserPrivilege> privilege;
   private AptEntity apt;
+  private List<UserFollowEntity> following;
+  private List<UserFollowEntity> follower;
+  // private List<AptzipUserEntity> following;
   
   public UserResponseDto(
                     long id
@@ -53,7 +59,10 @@ public class UserResponseDto extends User {
                   , int reported
                   , UserRole role
                   , Collection<UserPrivilege> privilege
-                  , AptEntity apt) {
+                  , AptEntity apt,
+                    List<UserFollowEntity> following,
+                    List<UserFollowEntity> follower
+                    ) {
     super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     this.id = id;
     this.username = username;
@@ -68,6 +77,8 @@ public class UserResponseDto extends User {
     this.role = role;
     this.privilege = privilege;
     this.apt = apt;
+    this.following = following;
+    this.follower = follower;
   }
 
   public AptzipUserEntity toEntity() {
@@ -85,6 +96,8 @@ public class UserResponseDto extends User {
                            .reported(reported)
                            .role(new AptzipRoleEntity(role.name()))
                            .apt(apt)
+                           .following(following)
+                           .follower(follower)
                            .build();
 	}
 

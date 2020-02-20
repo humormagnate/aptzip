@@ -9,20 +9,21 @@ import com.example.domain.board.BoardEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class CommonController {
 	
-	@Autowired
-	private BoardRepository boardRepo;
+	private final BoardRepository boardRepo;
 
 	// @Secured({ "ROLE_ADMIN" })
 	@GetMapping("/")
@@ -66,7 +67,10 @@ public class CommonController {
 	public void signup() {}
 
 	@GetMapping("/zip")
-	public void zip() {}
+	public void zip(Model model) {
+		
+		model.addAttribute("");
+	}
 
 	@GetMapping("/categories")
 	public void categories() {}

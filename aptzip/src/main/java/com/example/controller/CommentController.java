@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,7 +10,6 @@ import com.example.domain.board.CommentEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.CommentRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,18 +22,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
+@RequiredArgsConstructor
 @RequestMapping("/comment/")
+@RestController
 public class CommentController {
 
-  @Autowired
-  private CommentRepository commentRepo;
+  private final CommentRepository commentRepo;
 
   public List<CommentEntity> getCommentList(BoardEntity board) throws RuntimeException {
-    log.info("/comment/get//////////////////////////////////////////////////////////");
+    log.info("/getCommentList//////////////////////////////////////////////////////////");
+    // list.forEach(consumer -> consumer.getCommentContent().replace(System.lineSeparator(), "<br>"));
     return commentRepo.getCommentsByBoardId(board);
   }
 

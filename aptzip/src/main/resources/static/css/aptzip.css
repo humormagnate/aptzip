@@ -123,3 +123,10 @@
     width: 100%;
   }
 }
+
+.humormagnate-email {
+  background: linear-gradient(transparent 45%, #f6303e 46%, #f6303e 85%, transparent 86%);
+  color: #2b2b2b;
+  font-size: 26px;
+  font-weight: bold;
+}

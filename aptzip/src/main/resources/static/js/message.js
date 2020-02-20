@@ -8,13 +8,10 @@ window.onload = function() {
   }
 }
 
-/**
- * 자동으로 닫아줌
- */
-// window.onbeforeunload = function(){
-//   ws.close();
-//   stomp.close();
-// }
+window.onbeforeunload = function(){
+  ws.close();
+  stomp.close();
+}
 
 /**
  * STOMP (topic subscription) : chat room subscription
@@ -64,7 +61,7 @@ function connectSockJS(){
   let socket = new SockJS("/ws/message");
   socket.onopen = function() {
     console.log('Info : connection opened');
-    socket.send('hi,test,hello');
+    socket.send('hi|test|hello');
 
     socket.onmessage = function(event) {
       console.log(event.data + '\n');

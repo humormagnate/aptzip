@@ -15,14 +15,15 @@
 >[Spring Data JPA 2.2.4(Hibernate, MySQL)](/study/SpringDataJPA.md)<br>
 >[Spring Security 5.2.1](./study/SpringSecurity.md)<br>
 >[Spring Websocket 5.2.3(Web Socket Protocol, SocketJS, STOMP, SSE와의 차이)](./study/WebSocket.md)<br>
->Spring WebFlux<br>
->Spring Cloud<br>
->Netty<br>
+>Spring Data Redis (Remote Dictionary Server, 적용 예정)<br>
 >[Thymeleaf 3.0.11](./study/ThymeLeaf.md)<br>
 >[REST API](./study/REST-API.md)<br>
 >[Java 8](./study/Java8.md)<br>
->RxJava (Java 9)<br>
->Swagger<br>
+>Swagger (적용 예정)<br>
+>Spring WebFlux (적용 예정)<br>
+>Spring Cloud (적용 예정)<br>
+>Netty (적용 예정)<br>
+>RxJava (Java 9) (적용 예정)<br>
 
 ```
 Context Root (localhost:XXXX/aptzip)

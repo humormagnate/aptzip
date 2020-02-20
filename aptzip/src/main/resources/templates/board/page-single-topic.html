@@ -340,10 +340,15 @@
 				const obj = { boardId:BOARD_ID, commentContent:COMMENT_CONTENT };
 				comment.create(obj, function(list) {
 					// console.log(list);
-
+					
+					// https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
+					// 0	CONNECTING	Socket has been created. The connection is not yet open.
+					// 1	OPEN	The connection is open and ready to communicate.
+					// 2	CLOSING	The connection is in the process of closing.
+					// 3	CLOSED	The connection is closed or couldn't be opened.
 			    if (ws.readyState === 1) {
 						// console.log('comment alert');
-						let msg = COMMENT_CONTENT + "," + "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.username} : '']]" + "," + "[[${ board.user.username }]]";
+						let msg = COMMENT_CONTENT + "|" + "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.username} : '']]" + "|" + "[[${ board.user.username }]]";
 						ws.send(msg);
 					}
 

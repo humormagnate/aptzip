@@ -2,11 +2,14 @@ package com.example.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
+
+import com.example.domain.common.AptEntity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +24,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@ToString
+@ToString(exclude = {"following", "follower"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDto implements UserDetails {
@@ -54,6 +57,9 @@ public class UserRequestDto implements UserDetails {
 	private int reported;
 	private AptzipRoleEntity role;
 	private AptEntity apt;
+	// private List<AptzipUserEntity> following;
+	private List<UserFollowEntity> following;
+	private List<UserFollowEntity> follower;
 
 	public UserRequestDto(AptzipUserEntity user) {
 		this.id = user.getId();
@@ -62,7 +68,9 @@ public class UserRequestDto implements UserDetails {
 	}
 
 	public AptzipUserEntity toEntity() {
-		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt);
+		// return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt);
+		// return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt, following);
+		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt, following, follower);
 	}
 
 	@Override
