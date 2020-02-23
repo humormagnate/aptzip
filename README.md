@@ -26,6 +26,36 @@ Context Root (localhost:XXXX/)
 - FE : Bootstrap, Thymeleaf, Handlebars<br>
 - SCM : Git Bash, GitHub<br>
 
+## API
+
+### Rest
+
+| Path  | Method | Description |
+| ------------- | ------------- | ------------- |
+|```USER```|||
+| /login | (Spring Security) | 로그인 |
+| /user/signup | POST | 회원 가입 |
+| /user/{id} | GET | 회원 정보 조회 |
+| /user/{id} | DELETE | 회원 탈퇴 |
+| /user/{id}/pw | PATCH | 비밀번호 변경 |
+| /user/{id}/follow | POST | 회원 팔로우/취소 |
+|```BOARD```|||
+| /board/write | GET | 게시글 작성 페이지 이동 |
+| /board/write | POST | 게시글 작성 |
+| /board/{id} | GET | 게시글 조회 |
+| /board/{id} | DELETE | 게시글 삭제 |
+| /board/{id}/edit | GET | 게시글 수정 페이지 이동 |
+| /board/{id} | PUT | 게시글 수정 |
+|```COMMENT```|||
+| /comment/{id} | POST | 댓글 작성 |
+| /comment/{id} | GET | 댓글 조회 |
+| /comment/{id} | DELETE | 댓글 삭제 |
+| /comment/{id} | PUT | 댓글 수정 |
+|```APT```|||
+| /apt/{id} | GET | 현재 로그인 중인 회원의 아파트 게시물 조회 |
+
+
+
 ## Authors
 
 * **임창수** - [humormagnate](https://github.com/humormagnate)
