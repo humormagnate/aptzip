@@ -18,7 +18,7 @@
 						<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
 						<!-- <input type="hidden" th:if="${#strings.contains(#request.getRequestURI(), '/board/edit')}" name="_method" value="put"/> -->
 						<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
-						<input type="hidden" name="categoryName" th:value="${ board } ? ${ board.category } : ''">
+						<input type="hidden" name="categoryName" th:value="${ board } ? ${ board.category.name } : ''">
 
 						<div class="form-group">
 							<label for="inputTopicTitle">Post Title</label>
@@ -34,66 +34,18 @@
 							<label>Post Type</label>
 							<div class="tt-js-active-btn tt-wrapper-btnicon">
 								<div class="row tt-w410-col-02 topic-type">
-									<div class="col-4 col-lg-3 col-xl-2">
-										<a href="#" class="tt-button-icon">
+
+									<div class="col-4 col-lg-3 col-xl-2" th:each="category : ${categories}">
+										<a href="#" class="tt-button-icon" th:classappend="${board.category.id} eq ${category.id} ? 'active' : ''">
 											<span class="tt-icon">
 												<svg>
-													<use xlink:href="#icon-discussion"></use>
+													<use th:attr="'xlink:href'='#icon-' + ${ category.name }"></use>
 												</svg>
 											</span>
-											<span class="tt-text">Discussion</span>
+											<span class="tt-text">[[${category.name}]]</span>
 										</a>
 									</div>
-									<div class="col-4 col-lg-3 col-xl-2">
-										<a href="#" class="tt-button-icon">
-											<span class="tt-icon">
-												<svg>
-													<use xlink:href="#Question"></use>
-												</svg>
-											</span>
-											<span class="tt-text">Question</span>
-										</a>
-									</div>
-									<div class="col-4 col-lg-3 col-xl-2">
-										<a href="#" class="tt-button-icon">
-											<span class="tt-icon">
-												<svg>
-													<use xlink:href="#Poll"></use>
-												</svg>
-											</span>
-											<span class="tt-text">Poll</span>
-										</a>
-									</div>
-									<div class="col-4 col-lg-3 col-xl-2">
-										<a href="#" class="tt-button-icon">
-											<span class="tt-icon">
-												<svg>
-													<use xlink:href="#icon-gallery"></use>
-												</svg>
-											</span>
-											<span class="tt-text">Gallery</span>
-										</a>
-									</div>
-									<div class="col-4 col-lg-3 col-xl-2">
-										<a href="#" class="tt-button-icon">
-											<span class="tt-icon">
-												<svg>
-													<use xlink:href="#Video"></use>
-												</svg>
-											</span>
-											<span class="tt-text">Media</span>
-										</a>
-									</div>
-									<div class="col-4 col-lg-3 col-xl-2">
-										<a href="#" class="tt-button-icon">
-											<span class="tt-icon">
-												<svg>
-													<use xlink:href="#Others"></use>
-												</svg>
-											</span>
-											<span class="tt-text">Common</span>
-										</a>
-									</div>
+
 								</div>
 							</div>
 						</div>
@@ -228,48 +180,49 @@
 	</div>
 		
 	<script layout:fragment="script">
-			const BOARD_ID = document.getElementById('boardId');
-			const BOARD_TITLE = document.getElementById('boardTitle');
+		const BOARD_ID = document.getElementById('boardId');
+		const BOARD_TITLE = document.getElementById('boardTitle');
 
-			const DELETE_POST_BTN = document.getElementById('deletePostBtn');
-			const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
+		const DELETE_POST_BTN = document.getElementById('deletePostBtn');
+		const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
 
-			// window.onload는 javascript
-			// document.ready는 jquery
-			window.onload = loadCalcRestTitle();
-			BOARD_TITLE.addEventListener('keyup', function () {
-				keyUpCalcRestTitle()
+		// window.onload는 javascript
+		// document.ready는 jquery
+		window.onload = loadCalcRestTitle();
+
+		BOARD_TITLE.addEventListener('keyup', function () {
+			keyUpCalcRestTitle()
+		}, false);
+
+		const categoryTypes = document.querySelectorAll('.tt-button-icon');
+		const hiddenCategoryTypes = document.querySelector('input[name=categoryName]');
+		categoryTypes.forEach(function (input) {
+			selectCategoryTypes(input);
+		});
+
+		if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
+			DELETE_POST_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				deletePost(BOARD_ID.value);
 			}, false);
+		}
 
-			const categoryTypes = document.querySelectorAll('.tt-button-icon');
-			const hiddenCategoryTypes = document.querySelector('input[name=categoryName]');
-			categoryTypes.forEach(function (input) {
-				selectCategoryTypes(input, hiddenCategoryTypes);
-			});
+		if (UPDATE_POST_BTN != undefined && UPDATE_POST_BTN != null) {
+			UPDATE_POST_BTN.addEventListener('click', function (event) {
+				event.preventDefault();
+				event.stopPropagation();
+				const NEW_BOARD_TITLE = document.getElementById('boardTitle');
+				const NEW_BOARD_CONTENT = document.getElementById('boardContent');
+				// console.log(NEW_BOARD_TITLE.value);
+				// console.log(NEW_BOARD_CONTENT.value);
+				updatePost(BOARD_ID.value, NEW_BOARD_TITLE.value, NEW_BOARD_CONTENT.value);
+			}, false);
+		}
 
-			if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
-				DELETE_POST_BTN.addEventListener('click', function (event) {
-					event.preventDefault();
-					event.stopPropagation();
-					deletePost(BOARD_ID.value);
-				}, false);
-			}
+		const writeForm = document.getElementById('form-create-topic');
+		writeForm.addEventListener('submit', validateForm);
 
-			if (UPDATE_POST_BTN != undefined && UPDATE_POST_BTN != null) {
-				UPDATE_POST_BTN.addEventListener('click', function (event) {
-					event.preventDefault();
-					event.stopPropagation();
-					const NEW_BOARD_TITLE = document.getElementById('boardTitle');
-					const NEW_BOARD_CONTENT = document.getElementById('boardContent');
-					console.log(NEW_BOARD_TITLE.value);
-					console.log(NEW_BOARD_CONTENT.value);
-					updatePost(BOARD_ID.value, NEW_BOARD_TITLE.value, NEW_BOARD_CONTENT.value);
-				}, false);
-			}
-
-			const writeForm = document.getElementById('form-create-topic');
-			writeForm.addEventListener('submit', validateForm);
-
-		</script>
+	</script>
 
 </html>

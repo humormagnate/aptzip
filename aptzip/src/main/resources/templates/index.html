@@ -30,7 +30,7 @@
             <div class="tt-col-topic">Topic</div>
             <div class="tt-col-category">Category</div>
             <div class="tt-col-value hide-mobile">Likes</div>
-            <div class="tt-col-value hide-mobile">Replies</div>
+            <div class="tt-col-value hide-mobile">Comments</div>
             <div class="tt-col-value hide-mobile">Views</div>
             <div class="tt-col-value">Activity</div>
           </div>
@@ -94,9 +94,9 @@
                   <div class="col-11">
                     <ul class="tt-list-badge">
                       <li class="show-mobile">
-                        <a href="#"
-                          ><span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }">[[${not #strings.isEmpty(board?.category)} ? ${board?.category?.name} : 'Common']]</span></a
-                        >
+                        <a href="#">
+                          <span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }">[[${not #strings.isEmpty(board?.category)} ? ${board?.category?.name} : 'Common']]</span>
+                        </a>
                       </li>
                     </ul>
                   </div>

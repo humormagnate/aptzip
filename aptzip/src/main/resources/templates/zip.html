@@ -49,7 +49,7 @@
                   <div class="row">
 
                     <div class="col-6 col-md-4 col-lg-3" th:each="admin : ${admins}">
-                      <a th:href="@{ ~/user/{id}/info(id=${admin.id}) }" class="tt-avatar">
+                      <a th:href="@{ ~/user/{id}(id=${admin.id}) }" class="tt-avatar">
                         <div class="tt-col-icon">
                           <svg class="tt-icon">
                             <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(admin.username, 0, 1) }"></use>
@@ -76,22 +76,22 @@
                     <tr>
                       <th>Topic</th>
                       <th>All Time</th>
-                      <th>Last 30</th>
-                      <th>Last 7</th>
+                      <!-- <th>Last 30</th> -->
+                      <!-- <th>Last 7</th> -->
                     </tr>
                   </thead>
                   <tbody class="table-zebra">
                     <tr>
                       <td>Posts</td>
-                      <td>624k</td>
-                      <td>15.4k</td>
-                      <td>3.9k</td>
+                      <td>[[${boardSize}]]</td>
+                      <!-- <td>15.4k</td> -->
+                      <!-- <td>3.9k</td> -->
                     </tr>
                     <tr>
                       <td>Comments</td>
-                      <td>51.8k</td>
-                      <td>1.2k</td>
-                      <td>263</td>
+                      <td>[[${commentSize}]]</td>
+                      <!-- <td>1.2k</td> -->
+                      <!-- <td>263</td> -->
                     </tr>
                   </tbody>
                 </table>

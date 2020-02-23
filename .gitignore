@@ -34,5 +34,6 @@ build/
 .metadata/
 
 ### Security ###
-.yml
-.properties
+# *.yml
+# *.properties
+# *.bak

@@ -16,8 +16,6 @@ delete from aptzip.tb_category where category_id = 7;
 
 select * from aptzip.tb_user;
 select * from aptzip.tb_user_follow;
-insert into aptzip.tb_user_follow (from_user_id, to_user_id, create_date) values (2, 1, now());
-insert into aptzip.tb_user_follow (from_user_id, to_user_id, create_date) values (1, 2, now());
 select * from aptzip.tb_board;
 select * from aptzip.tb_category;
 select * from aptzip.tb_comment;

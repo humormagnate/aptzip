@@ -164,7 +164,7 @@
 
         <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
           <div class="tt-avatar-icon tt-size-md">
-            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}/info(id=${#authentication.principal.id})}">
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}(id=${#authentication.principal.id})}">
               <i class="tt-icon">
                 <svg>
                   <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.username, 0, 1) }"></use>

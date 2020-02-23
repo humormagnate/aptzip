@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -36,9 +36,24 @@ public class CommentController {
   public List<CommentEntity> getCommentList(BoardEntity board) throws RuntimeException {
     log.info("/getCommentList//////////////////////////////////////////////////////////");
     // list.forEach(consumer -> consumer.getCommentContent().replace(System.lineSeparator(), "<br>"));
-    return commentRepo.getCommentsByBoardId(board);
+    
+    List<CommentEntity> list = commentRepo.getCommentsByBoardId(board);
+    // list.forEach(comment -> {
+    //   comment.setCommentContent(comment.getCommentContent().replace(System.lineSeparator(), "<br>"));
+    // });
+    if (list != null && list.size() > 0) {
+      log.info("comment list is not null");
+      log.info("list : {}", list);
+      list.get(0).setCommentContent(list.get(0).getCommentContent().replace(System.lineSeparator(), "<br>"));
+  
+      log.info("transformed comment : {}", list);
+    }
+    
+    // return commentRepo.getCommentsByBoardId(board);
+    return list;
   }
 
+  // comment.js retrieveList
   // @Secured({ "ROLE_ADMIN" }) -> ajax 가 안되는 건지, RestController가 안되는 건지.
   @GetMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> commentGet(@PathVariable("boardId") Long boardId) {
@@ -47,8 +62,21 @@ public class CommentController {
 
     BoardEntity board = new BoardEntity();
     board.setId(boardId);
+
+    List<CommentEntity> list = getCommentList(board);
+    if (list != null && list.size() > 0) {
+      log.info("comment list is not null");
+      list.forEach(comment -> {
+        // board는 저장하는 객체를 바로 변경하니까 System.lineSeparator()에서도 변경되지만,
+        // comment는 MySQL에서 가져오기 때문에 "\n" 지정해줘야함.
+        // (리눅스 환경에서도 가능할지 문제, "\r"은 안됨: 어차피 리눅스는 "\n", 윈도가 "\r\n")
+        comment.setCommentContent(comment.getCommentContent().replace("\n", "<br>"));
+      });
+    }
+
+    log.info("transformed comment : {}", list);
     
-    return new ResponseEntity<>(getCommentList(board), HttpStatus.OK);
+    return new ResponseEntity<>(list, HttpStatus.OK);
   }
   
   // @RequestBody error
@@ -59,7 +87,7 @@ public class CommentController {
   @Transactional
   @PostMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
-  @RequestBody CommentEntity comment, @AuthenticationPrincipal UserResponseDto principal) {
+      @RequestBody CommentEntity comment, @AuthenticationPrincipal UserResponseDto principal) {
     log.info("/comment/post//////////////////////////////////////////////////////////");
     log.info(comment.toString());
     BoardEntity board = new BoardEntity();
@@ -104,6 +132,7 @@ public class CommentController {
     log.info("/comment/put//////////////////////////////////////////////////////");
     log.info(boardId.toString());
     log.info(comment.toString());
+
     commentRepo.findById(comment.getId()).ifPresent(origin -> {
       origin.setCommentContent(comment.getCommentContent());
       commentRepo.save(origin);

@@ -1,44 +1,30 @@
 # 앞집 (apt-zip)
 
-아파트 무료 커뮤니티 사이트
+아파트 중심 무료 커뮤니티 사이트
 
 ## Getting Started
-
-
 
 ### TEST 계정
 >ID : wwwww<br>
 >PW : qwe<br>
 
+>ID : qqqqq<br>
+>PW : qwe<br>
+
 ### Focus on
 >Spring Boot 2.2.4 (Spring 5.2.3)<br>
->[Spring Data JPA 2.2.4(Hibernate, MySQL)](/study/SpringDataJPA.md)<br>
->[Spring Security 5.2.1](./study/SpringSecurity.md)<br>
->[Spring Websocket 5.2.3(Web Socket Protocol, SocketJS, STOMP, SSE와의 차이)](./study/WebSocket.md)<br>
->Spring Data Redis (Remote Dictionary Server, 적용 예정)<br>
->[Thymeleaf 3.0.11](./study/ThymeLeaf.md)<br>
->[REST API](./study/REST-API.md)<br>
->[Java 8](./study/Java8.md)<br>
-
-### To-do
->Swagger <br>
->Spring WebFlux <br>
->Spring Cloud <br>
->Netty <br>
->RxJava (Java 9) <br>
->Docker <br>
+>[STUDY](/study/study.md)<br>
 
 ```
-Context Root (localhost:XXXX/aptzip)
+Context Root (localhost:XXXX/)
 ```
-
->FE : Bootstrap, Thymeleaf, Handlebars<br>
->SCM : Git Bash, GitHub, VS Code<br>
->IDE : VS Code<br>
 
 ## Built With
 
-* [Maven](https://maven.apache.org/) - Dependency Management
+- Maven<br>
+- VS Code<br>
+- FE : Bootstrap, Thymeleaf, Handlebars<br>
+- SCM : Git Bash, GitHub<br>
 
 ## Authors
 

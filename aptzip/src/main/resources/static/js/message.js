@@ -10,7 +10,7 @@ window.onload = function() {
 
 window.onbeforeunload = function(){
   ws.close();
-  stomp.close();
+  stomp.disconnect();
 }
 
 /**
@@ -27,8 +27,8 @@ function connetSTOMP() {
 
   client.connect({}, function(frame) {
     // console.log(frame);
-    console.log("Connected stomp!\n" + frame);
     // console.log("Connected stomp!\n", frame);
+    // console.log("Connected stomp!\n" + frame);
     
     // Controller's MessageMapping, header, message(자유형식)
     // client.send("/nba", {}, "msg: string");
@@ -48,7 +48,7 @@ function connetSTOMP() {
 
     // 해당 토픽을 구독한다.
     client.subscribe("/topic/message", function(event) {
-      console.log("topic >>\n" + event);
+      // console.log("topic >>\n" + event);
     });
   });
 };
@@ -60,11 +60,11 @@ let socket = null;
 function connectSockJS(){
   let socket = new SockJS("/ws/message");
   socket.onopen = function() {
-    console.log('Info : connection opened');
+    // console.log('Info : connection opened');
     socket.send('hi|+|test|+|hello');
 
     socket.onmessage = function(event) {
-      console.log(event.data + '\n');
+      // console.log(event.data + '\n');
     }
   }
 }

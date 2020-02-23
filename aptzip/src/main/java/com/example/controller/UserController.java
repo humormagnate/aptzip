@@ -1,9 +1,7 @@
 package com.example.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.example.domain.board.BoardEntity;
@@ -26,13 +24,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
@@ -44,8 +41,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class UserController {
 	
-	private final UserService userService;
 	private final BoardRepository boardRepo;
+	private final UserService userService;
 	private final FollowRepository followRepo;
 	// private final FollowQueryRepository followQuery;
 	private final CommentRepository commentRepo;
@@ -76,28 +73,12 @@ public class UserController {
 	}
 
 	/**
-	 * @deprecated
-	 */
-	@Deprecated
-	@GetMapping("/info")
-	public ModelAndView deprecatedInfo(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
-		// Principal principal = request.getUserPrincipal();
-		List<BoardEntity> list = boardRepo.findByUserIdOrderByIdDesc(principal.getId());
-		log.info(list.toString());
-		
-		mv.addObject("principal", principal)
-			.addObject("list", list)
-			.setViewName("user/page-single-user");
-		return mv;
-	}
-
-	/**
 	 * retrieve
 	 * @param id
 	 * @param mv
 	 * @return
 	 */
-	@GetMapping("/{id}/info")
+	@GetMapping("/{id}")
 	public String info(@PathVariable("id") Long id, Model model) {
 		List<BoardEntity> boards = boardRepo.findByUserIdOrderByIdDesc(id);
 		List<CommentEntity> comments = commentRepo.findByUserIdOrderByIdDesc(id);
@@ -130,28 +111,27 @@ public class UserController {
 	 */
 	// @ResponseBody // -> 415 error
 	// @PreAuthorize("#updateUser.email == authentication.name")
+	// https://www.baeldung.com/http-put-patch-difference-spring
+	// PATCH method
 	@Transactional
-	@PutMapping("/edit")
-	public ResponseEntity<List<String>> updateUser(@RequestBody UserRequestDto user, HttpServletRequest request) {
+	@PatchMapping("/{id}/pw")
+	public ResponseEntity<String> updateUserPassword(@RequestBody UserRequestDto user) {
 		log.info("user : " + user);
-		log.info("request : " + request);
-
-		// request.getSession().setAttribute("msg", "비번변경");
-		// ServerRequest request -> java.lang.NoSuchMethodException: org.springframework.web.servlet.function.ServerRequest.<init>()
-		// request.session().setAttribute("msg", "비밀번호가 변경되었습니다. 다시 로그인해주세요.");
-
-		return new ResponseEntity<>(Arrays.asList("success"), HttpStatus.OK);
+		userService.updatePassword(user);
+		return ResponseEntity.ok("success");
 	}
-
+	
 	/**
 	 * delete
 	 */
 	@Transactional
-	@DeleteMapping
-	public void deleteUser() {
-
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
+		userService.delete(id);
+		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
 
+	// TODO: post와 delete 나누기
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/follow")
@@ -173,14 +153,7 @@ public class UserController {
 																			.build());
 		}
 
-
 		return "save";
-	}
-
-	@Transactional
-	@DeleteMapping("/{id}/leave")
-	public void deleteFollow() {
-
 	}
 
 }

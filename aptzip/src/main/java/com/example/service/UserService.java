@@ -40,6 +40,7 @@ public class UserService implements UserDetailsService {
 
   @Transactional(rollbackFor = Exception.class)
   public void save(UserRequestDto userRequestDto) {
+    log.info("save user/////////////////////////////////////////////////////");
     userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
     userRequestDto.setRole(new AptzipRoleEntity(UserRole.USER.name()));
     AptzipUserEntity entity = userRequestDto.toEntity();
@@ -90,9 +91,6 @@ public class UserService implements UserDetailsService {
                                 accountNonLocked,
                                 UserRole.USER.getGrantedAuthorities(),
                                 user.getEmail(),
-                                user.getAddress(),
-                                user.getPhone(),
-                                user.getGender(),
                                 user.getIntroduction(),
                                 user.getSignupDate(),
                                 user.getReported(),
@@ -127,6 +125,15 @@ public class UserService implements UserDetailsService {
     // AptzipUserEntity user = optional.get();
     // return Optional.ofNullable(findById(id)).filter(value -> value != null).map();
     return userJpaRepo.findById(id).orElse(new AptzipUserEntity());
+  }
+
+  public void delete(Long id) {
+    userJpaRepo.deleteById(id);
+  }
+
+  public void updatePassword(UserRequestDto user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    userJpaRepo.updatePasswordById(user.getPassword(), user.getId());
   }
 
 }

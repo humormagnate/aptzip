@@ -53,9 +53,9 @@ function deletePost(BOARD_ID) {
 
 function updatePost(BOARD_ID, boardTitle, boardContent) {
   // http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#javascript-inlining
-  console.log(BOARD_ID);
-  console.log(boardTitle);
-  console.log(boardContent);
+  // console.log(BOARD_ID);
+  // console.log(boardTitle);
+  // console.log(boardContent);
   $.ajax({
     url: "/board/" + BOARD_ID,
     method: "put",
@@ -128,3 +128,4 @@ function validateForm(event) {
   }
   return true;
 }
+

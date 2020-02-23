@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 // https://stackoverflow.com/questions/24661289/spring-boot-not-serving-static-content
 // @EnableWebMvc on your class will disable org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.
-// @EnableWebMvc	// 해당 어노테이션을 달 경우 기본 경로("/") 무시됨
+// @EnableWebMvc	// 해당 어노테이션을 달 경우 auto configuration 기본 경로("/") 무시됨
 @Configuration
 public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 

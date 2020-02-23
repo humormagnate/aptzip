@@ -23,8 +23,7 @@ const comment = (function(){
 
   const retrieveList = function(obj, callback) {
     // console.log('retrieve comment~~~');
-
-    $.getJSON('/comment/' + obj, callback);
+    $.getJSON('/comment/' + obj.boardId, callback);
   };
 
   const update = function(obj, callback) {

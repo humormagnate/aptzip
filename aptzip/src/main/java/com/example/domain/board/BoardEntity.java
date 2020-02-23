@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -18,10 +19,10 @@ import javax.persistence.Table;
 
 import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipUserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -35,7 +36,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "TB_BOARD")
 @EqualsAndHashCode(of = "id")
-@ToString
+@ToString(exclude = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardEntity {
@@ -44,7 +45,7 @@ public class BoardEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
 	// private String category;
@@ -72,12 +73,14 @@ public class BoardEntity {
   @Column(name = "update_date")
 	private LocalDateTime updateDate;
 	
+  // JSON string에서 제외
+  @JsonIgnore
 	// mappedBy 안하면 tb_board_comments 테이블도 생김 (양방향 정규화)
 	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
 	@OrderBy("id asc")
 	private List<CommentEntity> comments;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private AptzipUserEntity user;
 

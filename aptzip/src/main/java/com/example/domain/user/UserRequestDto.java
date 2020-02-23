@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
 
+import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -39,7 +40,7 @@ public class UserRequestDto implements UserDetails {
 
 	// @NotBlank(message = "전화번호를 작성해주세요.")
 	// @Pattern(regexp = "[0-9]{10,11}", message = "10~11자리의 숫자만 입력가능합니다")
-	private String phone;
+	// private String phone;
 
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	@Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문자만 입력가능합니다")
@@ -48,13 +49,13 @@ public class UserRequestDto implements UserDetails {
 	@NotBlank(message = "비밀번호를 입력해주세요")
 	private String password;
 
-	private String address;
-	private String gender;
 	private String introduction;
 	private LocalDateTime signUpDate;
 
 	@PositiveOrZero
 	private int reported;
+	
+	private List<BoardEntity> board;
 	private AptzipRoleEntity role;
 	private AptEntity apt;
 	// private List<AptzipUserEntity> following;
@@ -68,9 +69,19 @@ public class UserRequestDto implements UserDetails {
 	}
 
 	public AptzipUserEntity toEntity() {
-		// return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt);
-		// return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt, following);
-		return new AptzipUserEntity(id, email, phone, password, username, address, gender, introduction, signUpDate, reported, role, apt, following, follower);
+		return new AptzipUserEntity(
+			id,
+			email,
+			password,
+			username,
+			introduction,
+			signUpDate,
+			reported,
+			board,
+			role,
+			apt,
+			following,
+			follower);
 	}
 
 	@Override

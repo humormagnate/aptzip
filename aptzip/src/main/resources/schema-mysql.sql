@@ -1,10 +1,8 @@
 DROP TABLE IF EXISTS persistent_logins CASCADE;
-DROP TABLE IF EXISTS tb_board_comments;
 DROP TABLE IF EXISTS tb_comment;
 DROP TABLE IF EXISTS tb_favorite;
-DROP TABLE IF EXISTS tb_notice;
+-- DROP TABLE IF EXISTS tb_notice;
 DROP TABLE IF EXISTS tb_user_follow;
-DROP TABLE IF EXISTS tb_user_following;
 DROP TABLE IF EXISTS tb_board	CASCADE;
 DROP TABLE IF EXISTS tb_user CASCADE;
 DROP TABLE IF EXISTS tb_role;
@@ -35,10 +33,7 @@ CREATE TABLE tb_user (
 	id				BIGINT				NOT NULL	AUTO_INCREMENT,
 	email					VARCHAR(128)	NOT NULL UNIQUE,
 	password			VARCHAR(256)	NOT NULL,
-	phone					VARCHAR(128),
 	username			VARCHAR(128)	NOT NULL UNIQUE,
-	address				VARCHAR(128),
-	gender				VARCHAR(1),
 	introduction	TEXT,
 	signup_date		TIMESTAMP			DEFAULT	NOW(),
 	reported			INTEGER				DEFAULT '0' 	NOT NULL,
@@ -75,7 +70,7 @@ CREATE TABLE tb_board (
   user_id				BIGINT				NOT NULL,
   apt_id				INTEGER				NOT NULL,
 	PRIMARY KEY (id),
-  FOREIGN KEY (user_id)	REFERENCES tb_user (id),
+  -- FOREIGN KEY (user_id)	REFERENCES tb_user (id),
 	FOREIGN KEY (apt_id) 	REFERENCES tb_apt (id),
 	FOREIGN KEY (category_id)	REFERENCES tb_category (id)
 );

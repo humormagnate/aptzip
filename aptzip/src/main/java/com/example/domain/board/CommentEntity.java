@@ -32,7 +32,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@ToString(exclude = "board")
+// @ToString(exclude = "board")
+@ToString
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -61,7 +62,7 @@ public class CommentEntity {
   @Column(name = "comment_status")
   private String commentStatus;
 
-  // JSON string에서 제외
+  // UserController 에서는 json 말고 model 반환할 것
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")

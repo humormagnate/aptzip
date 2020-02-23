@@ -3,15 +3,19 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.example.config.thymeleaf.expression.TemporalsAptzip;
 import com.example.domain.board.BoardEntity;
+import com.example.domain.board.CommentEntity;
 import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipRoleEntity;
 import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserResponseDto;
-import com.example.domain.user.UserRole;
 import com.example.persistence.BoardRepository;
+import com.example.persistence.CommentRepository;
 import com.example.persistence.UserJpaRepository;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonController {
 	
 	private final BoardRepository boardRepo;
+	private final CommentRepository commentRepo;
 	private final UserJpaRepository userRepo;
 
 	// @Secured({ "ROLE_ADMIN" })
@@ -82,7 +87,18 @@ public class CommonController {
 																	 new AptzipRoleEntity("ADMIN"));
 		log.info("admins : {}", admins);
 
-		model.addAttribute("admins", admins);
+		// https://www.baeldung.com/java-iterable-to-collection
+		List<CommentEntity> comments =
+			StreamSupport.stream(commentRepo.findAll().spliterator(), false)
+									 .collect(Collectors.toList());
+		
+		List<BoardEntity> boards =
+			StreamSupport.stream(boardRepo.findAll().spliterator(), false)
+									 .collect(Collectors.toList());
+		
+		model.addAttribute("admins", admins)
+				 .addAttribute("boardSize", boards.size())
+				 .addAttribute("commentSize", comments.size());
 	}
 
 	@GetMapping("/categories")

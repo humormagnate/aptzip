@@ -14,7 +14,7 @@ logging:
     org:
       springframework:
         # security: debug
-        web: debug
+        # web: debug
       # hibernate: debug
 
 spring:
@@ -23,7 +23,17 @@ spring:
   devtools:
     livereload:
       enabled: false
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    # show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
+    # initialization-mode: always
     # url: jdbc:h2:mem:testdb
     # username: sa
     # password: test
@@ -32,7 +42,6 @@ spring:
     url: jdbc:mysql://localhost:3306/aptzip?serverTimezone=Asia/Seoul
     username: aptzip
     password: aptziproot
-    # initialization-mode: always
     tomcat:
       initial-size: 151
     dbcp2:
@@ -52,15 +61,6 @@ spring:
   #     path: /h2-console
   #     settings:
   #       web-allow-others: true
-  jpa:
-    # generate-ddl: true
-    # hibernate:
-    #   ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
   http:
     log-request-details: true
   thymeleaf:

@@ -23,7 +23,7 @@ public class MessageController {
     Thread.sleep(1000); // simulated delay
     return alertMessage;
   }
-
+  
   /**
 	 * message
 	 * @return

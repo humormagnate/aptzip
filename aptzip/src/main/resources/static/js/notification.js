@@ -14,7 +14,7 @@ function connectWS() {
   ws = socket;
 
   ws.onopen = function(event) {
-    console.log('Info : ws connection opened\n', event.currentTarget);
+    // console.log('Info : ws connection opened\n', event.currentTarget);
 
     if (wsConnnectInterval != null) {
       clearInterval(wsConnnectInterval);

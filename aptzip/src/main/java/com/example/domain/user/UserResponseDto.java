@@ -28,9 +28,6 @@ public class UserResponseDto extends User {
 	private String username;
 	private String password;
 	private String email;
-	private String address;
-	private String phone;
-	private String gender;
 	private String introduction;
 	private LocalDateTime signupDate;
 	private int reported;
@@ -51,9 +48,6 @@ public class UserResponseDto extends User {
                   , boolean accountNonLocked
                   , Collection<? extends GrantedAuthority> authorities
                   , String email
-                  , String address
-                  , String phone
-                  , String gender
                   , String introduction
                   , LocalDateTime signupDate
                   , int reported
@@ -68,9 +62,6 @@ public class UserResponseDto extends User {
     this.username = username;
     this.password = password;
     this.email = email;
-    this.phone = phone;
-    this.address = address;
-    this.gender = gender;
     this.introduction = introduction;
     this.signupDate = signupDate;
     this.reported = reported;
@@ -88,9 +79,6 @@ public class UserResponseDto extends User {
                            .username(username)
                            .password(password)
                            .email(email)
-                           .phone(phone)
-                           .address(address)
-                           .gender(gender)
                            .introduction(introduction)
                            .signupDate(signupDate)
                            .reported(reported)

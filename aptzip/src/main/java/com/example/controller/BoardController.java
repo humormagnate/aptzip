@@ -1,10 +1,12 @@
 package com.example.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.example.domain.board.BoardEntity;
+import com.example.domain.board.CategoryEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 import com.example.persistence.CategoryRepository;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
@@ -40,21 +41,6 @@ public class BoardController {
 	private final BoardRepository boardRepo;
 	private final CategoryRepository categoryRepo;
 	private final SimpMessageSendingOperations smso;
-
-	@Deprecated
-	@GetMapping("/list")
-	public ModelAndView list(ModelAndView mv) {
-		List<BoardEntity> list = new ArrayList<BoardEntity>();
-		for (BoardEntity str : boardRepo.findAll()) {
-			list.add(str);
-		}
-		log.info(list.toString());
-		
-		mv.addObject("list", list)
-			.setViewName("board/list");
-		
-		return mv;
-	}
 
 	@GetMapping("/write")
 	public void writeGet() {}
@@ -118,6 +104,8 @@ public class BoardController {
 			boardRepo.save(board);
 
 			board.setBoardContent(board.getBoardContent().replace(System.lineSeparator(), "<br>"));
+
+			log.info("board : {}", board);
 			model.addAttribute("board", board);
 		});
 		
@@ -154,22 +142,16 @@ public class BoardController {
 	}
 
 	@Secured(value={"ROLE_USER", "ROLE_ADMIN"})
-	@GetMapping("/edit/{id}")
+	@GetMapping("/{id}/edit")
 	public String editGet(Model model, @PathVariable("id") Long id) {
 		boardRepo.findById(id).ifPresent(value -> model.addAttribute("board", value));
-		return "board/write";
-	}
 
-	@Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
-	@PutMapping("/edit/{id}")
-	public String editPut(@PathVariable("id") Long id, BoardEntity board) {
-			boardRepo.findById(id).ifPresent(origin -> {
-				origin.setCategory(board.getCategory());
-				origin.setBoardTitle(board.getBoardTitle());
-				origin.setBoardContent(board.getBoardContent());
-				boardRepo.save(origin);
-			});
-			return "redirect:/board/" + id;
+		List<CategoryEntity> categories =
+			StreamSupport.stream(categoryRepo.findAll().spliterator(), false)
+    							 .collect(Collectors.toList());
+		model.addAttribute("categories", categories);
+
+		return "board/write";
 	}
 
 	/*
@@ -177,7 +159,7 @@ public class BoardController {
 		서버는 @SendTo 로 response
 	*/
 	// return String
-	@MessageMapping("/nbax") // 전역 RequestMapping(여기서 '/board')에 적용되지 않는다. -> 따로 컨트롤러를 두자
+	@MessageMapping("/nbax") // 전역 RequestMapping(여기서 '/board')에 적용되지 않는다. -> 따로 컨트롤러를 두자(MessageController)
 	@SendTo("/topic/messagexx")	// publishing
 	public String newBoardAlertx(String message) throws Exception {
 		log.info("STOMP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + message);

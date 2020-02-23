@@ -3,6 +3,7 @@ package com.example.domain.user;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +15,9 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,7 +39,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id")
 @Builder
 // @Table(name = "TB_USER")
-@ToString(exclude = {"following", "follower"})
+@ToString(exclude = {"following", "follower", "board"})
 @NoArgsConstructor
 @AllArgsConstructor
 // @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class) //=> Id 값이 원하는대로 나오지 않음
@@ -51,20 +54,12 @@ public class AptzipUserEntity {
   @Column(length = 30, nullable = false, unique = true)
   private String email;
 
-  @Column(length = 20)
-  private String phone;
-
   @Column(nullable = false)
   private String password;
 
   @Column(nullable = false, unique = true)
   private String username;
 
-  private String address;
-  
-  @Column(length = 1)
-  private String gender;
-  
   @Lob
   private String introduction;
   
@@ -76,10 +71,19 @@ public class AptzipUserEntity {
   @Column(nullable = false)
   private int reported;
 
+  // https://homoefficio.github.io/2019/04/28/JPA-%EC%9D%BC%EB%8C%80%EB%8B%A4-%EB%8B%A8%EB%B0%A9%ED%96%A5-%EB%A7%A4%ED%95%91-%EC%9E%98%EB%AA%BB-%EC%82%AC%EC%9A%A9%ED%95%98%EB%A9%B4-%EB%B2%8C%EC%96%B4%EC%A7%80%EB%8A%94-%EC%9D%BC/
+  // JPA 일대다 단방향 매핑 잘못 사용하면 벌어지는 일
+  // @Transient
+  // @JoinColumn(name = "user")
+  // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<BoardEntity> board;
+
   // cascade = CascadeType.ALL
   // -> User 객체를 insert 하는 순간 UserRole 객체도 insert 하려니까 Unique 제약조건 위배 (ConstraintViolationException)
   // @Transient
-  @OneToOne(fetch = FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
   
@@ -106,14 +110,14 @@ public class AptzipUserEntity {
   // following.to -> following
   @JsonIgnore
   // @JsonManagedReference(value = "following")
-  @OneToMany(mappedBy = "following", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> following;
   
   // follwer.from -> follower
   // follwer.to -> me
   @JsonIgnore
   // @JsonManagedReference(value = "follower")
-  @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> follower;
 
 }
