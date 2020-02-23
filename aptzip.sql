@@ -1,9 +1,13 @@
-drop table aptzip.tb_apt;
-drop table aptzip.tb_user;
-drop table aptzip.tb_role;
-drop table aptzip.tb_board;
-drop table aptzip.tb_category;
-drop table aptzip.persistent_logins;
+drop table aptzip.persistent_logins cascade;
+drop table aptzip.tb_user_follow cascade;
+drop table aptzip.tb_comment cascade;
+drop table aptzip.tb_favorite cascade;
+drop table aptzip.tb_board cascade;
+drop table aptzip.tb_user cascade;
+drop table aptzip.tb_notice cascade;
+drop table aptzip.tb_apt cascade;
+drop table aptzip.tb_role cascade;
+drop table aptzip.tb_category cascade;
 
 rollback;
 commit;

@@ -41,7 +41,6 @@ import lombok.ToString;
 public class CommentEntity {
 
   @Id
-  @Column(name = "comment_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 

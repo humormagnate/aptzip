@@ -79,7 +79,7 @@ function updatePost(BOARD_ID, boardTitle, boardContent) {
 }
 
 function userFollow() {
-  console.log('follow test');
+  // console.log('follow test');
   event.preventDefault();
 
   $.ajax({
@@ -91,7 +91,13 @@ function userFollow() {
     success: function(data) {
       $('#userFollowBtn').removeClass('btn-secondary');
       $('#userFollowBtn').addClass('btn-primary');
-      console.log('팔로우 성공');
+      if (data === "save") {
+        alert('팔로우 성공');
+      } else if (data === "delete"){
+        alert('팔로우 취소');
+      } else {
+        console.log('server error');
+      }
     },
     error: function(){
       console.log('ajax error');
@@ -104,18 +110,21 @@ function validateForm(event) {
   const boardContent = document.getElementById('boardContent');
   
   if (BOARD_TITLE.value == '') {
-    BOARD_TITLE.focus();
+    BOARD_TITLE.focus({preventScroll:false});
     alert('제목을 입력해주세요.');
     event.preventDefault();
+    return false;
   }
   if (hiddenCategoryTypes.value == '') {
     alert('카테고리를 선택해주세요.');
     event.preventDefault();
+    return false;
   }
   if (boardContent.value == '') {
     boardContent.focus({preventScroll:false});
     alert('내용을 입력해주세요.');
     event.preventDefault();
+    return false;
   }
   return true;
 }

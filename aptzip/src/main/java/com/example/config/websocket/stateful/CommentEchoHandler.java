@@ -54,9 +54,13 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     log.info("payload {}", msg);
 
     if (StringUtils.isNotEmpty(msg)) {
-      String[] strs = msg.split("|");
+      // "|"(pipe)로만 하면 1글자씩 전부 나눠버림
+      // "+"(plus)가 포함되어 있으면 dangling meta character '+' near index 에러
+      String[] strs = msg.split("\\|\\+\\|");
 
-      if (strs != null && strs.length == 3 && session.getPrincipal() != null) {
+      if (strs != null
+          && strs.length == 3
+          && session.getPrincipal() != null) {
         log.info("strs is not null");
         String comment = strs[0];
         String commentUser = strs[1];

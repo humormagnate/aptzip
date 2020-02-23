@@ -20,9 +20,9 @@ INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUE
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('aaa@aaa.aaa', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'aaaaa', 'ADMIN', 2);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('sss@sss.sss', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'sssss', 'USER', 2);
 INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ddd@ddd.ddd', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'ddddd', 'USER', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('zzz@zzz.zzz', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'zzzzz', 'ADMIN', 3);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('xxx@xxx.xxx', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'xxxxx', 'USER', 3);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ccc@ccc.ccc', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'ccccc', 'USER', 3);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('zzz@zzz.zzz', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'zzzzz', 'ADMIN', 3);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('xxx@xxx.xxx', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'xxxxx', 'USER', 3);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ccc@ccc.ccc', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'ccccc', 'USER', 3);
 
 --INSERT INTO TB_BOARD (category, board_title, board_content, board_status, view_count, create_date, update_date) VALUES ('01', 'first title', 'first content', DEFAULT, DEFAULT, NOW(), NOW());
 --INSERT INTO TB_BOARD (category, board_title, board_content, board_status, view_count, create_date, update_date) VALUES ('02', 'second title', 'second content', DEFAULT, DEFAULT, NOW(), NOW());

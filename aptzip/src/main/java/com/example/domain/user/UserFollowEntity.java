@@ -44,7 +44,6 @@ public class UserFollowEntity {
   // private FollowKey follow;
 
   @Id
-  @Column(name = "follow_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 

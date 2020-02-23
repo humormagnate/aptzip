@@ -159,17 +159,22 @@ public class UserController {
 		log.info("target id : {}", id);
 		log.info("login user : {}", principal.toString());
 		
-		// followRepo.save(new UserFollowerEntity(FollowKey.builder()
-		// 																								.from(principal.toEntity())
-		// 																								.to(AptzipUserEntity.builder().id(id).build())
-		// 																								.build()));
+		AptzipUserEntity following = AptzipUserEntity.builder().id(id).build();
+		AptzipUserEntity follower = principal.toEntity();
+		UserFollowEntity relationship = followRepo.findByFollowingAndFollower(following, follower);
 
-		followRepo.save(UserFollowEntity.builder()
-																		.following(AptzipUserEntity.builder().id(id).build())
-																		.follower(principal.toEntity())
-																		.build());
+		if (relationship != null) {
+			followRepo.delete(relationship);
+			return "delete";
+		} else {
+			followRepo.save(UserFollowEntity.builder()
+																			.following(following)
+																			.follower(follower)
+																			.build());
+		}
 
-		return "success";
+
+		return "save";
 	}
 
 	@Transactional

@@ -6,8 +6,13 @@ import java.util.Locale;
 
 import com.example.config.thymeleaf.expression.TemporalsAptzip;
 import com.example.domain.board.BoardEntity;
+import com.example.domain.common.AptEntity;
+import com.example.domain.user.AptzipRoleEntity;
+import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserResponseDto;
+import com.example.domain.user.UserRole;
 import com.example.persistence.BoardRepository;
+import com.example.persistence.UserJpaRepository;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonController {
 	
 	private final BoardRepository boardRepo;
+	private final UserJpaRepository userRepo;
 
 	// @Secured({ "ROLE_ADMIN" })
 	@GetMapping("/")
@@ -67,9 +73,16 @@ public class CommonController {
 	public void signup() {}
 
 	@GetMapping("/zip")
-	public void zip(Model model) {
+	public void zip(@AuthenticationPrincipal UserResponseDto principal, Model model) {
 		
-		model.addAttribute("");
+		Long aptId = principal.getApt().getId();
+
+		List<AptzipUserEntity> admins =
+			userRepo.findAllByAptAndRole(AptEntity.builder().id(aptId).build(),
+																	 new AptzipRoleEntity("ADMIN"));
+		log.info("admins : {}", admins);
+
+		model.addAttribute("admins", admins);
 	}
 
 	@GetMapping("/categories")

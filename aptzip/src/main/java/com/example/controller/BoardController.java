@@ -172,30 +172,6 @@ public class BoardController {
 			return "redirect:/board/" + id;
 	}
 
-	// @Deprecated
-	// @PostMapping("/edit/{id}")
-	// public String editPost(BoardEntity board, RedirectAttributes rttr) {
-	// 	boardRepository.findById(board.getId()).ifPresent(origin -> {
-	// 		origin.setCategory(board.getCategory());
-	// 		origin.setBoardTitle(board.getBoardTitle());
-	// 		origin.setBoardContent(board.getBoardContent());
-	// 		boardRepository.save(origin);
-	// 	});
-	// 	return "redirect:/board/" + board.getId();
-	// }
-
-	@Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
-	@GetMapping("/del")
-	public String delGET(Long id) {
-		boardRepo.deleteById(id);
-		return "redirect:/";
-	}
-
-	// @PostMapping(value="/search")
-	// public ModelAndView retrieve(ModelAndView mv) {
-	// 	return mv;
-	// }
-
 	/*
 		클라이언트는 @MessageMapping 으로 request
 		서버는 @SendTo 로 response

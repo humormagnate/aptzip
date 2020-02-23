@@ -19,7 +19,9 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
     
 		// not redirect signup page, login page again
 		String referrer = request.getHeader("Referer");
-		if (!referrer.endsWith("sign") && !referrer.endsWith("login")) {
+    if (referrer != null &&
+        !referrer.endsWith("join") &&
+        !referrer.endsWith("login")) {
       request.getSession().setAttribute("prevPage", referrer);
       log.info("LoginCheckInterceptor prehandle save referer");
     }

@@ -42,7 +42,7 @@
             
             <!-- new post -->
             <div th:if="${ newBoard ne 0 and index.index eq 0}" class="tt-topic-alert tt-alert-default" role="alert">
-              <a th:href="${'/board/' + board.id}" target="_blank">[[${ newBoard }]] new posts</a>
+              <a th:href="@{/board/{id}(id=${board.id})}" target="_blank">[[${ newBoard }]] new posts</a>
               are added recently, click here to load the most recent one.
             </div>
 
@@ -71,8 +71,8 @@
             
             <!-- new board -->
             <div class="tt-item" th:classappend="${#aptzip.isItOneHourAgo(board?.createDate)} ? 'tt-itemselect' : ''">
-              <!-- <div>[[${ board?.user }]]</div> -->
               <!-- <div>[[${ board }]]</div> -->
+              <!-- <div>[[${ board?.user }]]</div> -->
               <div class="tt-col-avatar">
                 <svg class="tt-icon">
                   <use
@@ -82,7 +82,7 @@
               </div>
               <div class="tt-col-description">
                 <h6 class="tt-title">
-                  <a th:href="${'/board/' + board.id }">
+                  <a th:href="@{/board/{id}(id=${board.id})}">
                     <!-- <svg class="tt-icon">
                       <use xlink:href="#icon-pinned"></use>
                     </svg> -->
@@ -142,7 +142,7 @@
       <!-- container end -->
     </main>
     
-  	<a href="/board/write" class="tt-btn-create-topic">
+  	<a th:href="@{/board/write}" class="tt-btn-create-topic">
   		<span class="tt-icon">
   			<svg>
   				<use xlink:href="#icon-create_new"></use>

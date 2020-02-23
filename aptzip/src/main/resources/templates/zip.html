@@ -47,19 +47,21 @@
                 </h3>
                 <div class="tt-list-avatar">
                   <div class="row">
-                    <div class="col-6 col-md-4 col-lg-3">
-                      <a href="#" class="tt-avatar">
+
+                    <div class="col-6 col-md-4 col-lg-3" th:each="admin : ${admins}">
+                      <a th:href="@{ ~/user/{id}/info(id=${admin.id}) }" class="tt-avatar">
                         <div class="tt-col-icon">
                           <svg class="tt-icon">
-                            <use xlink:href="#icon-ava-n"></use>
+                            <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(admin.username, 0, 1) }"></use>
                           </svg>
                         </div>
                         <div class="tt-col-description">
-                          <h6 class="tt-title">Nitish</h6>
-                          <div class="tt-value">@nitish92</div>
+                          <h6 class="tt-title">[[${admin.username}]]</h6>
+                          <div class="tt-value">@[[${admin.username}]]</div>
                         </div>
                       </a>
                     </div>
+
                   </div>
                 </div>
                 <!-- admin list end -->
@@ -74,40 +76,22 @@
                     <tr>
                       <th>Topic</th>
                       <th>All Time</th>
-                      <th>Last 7</th>
                       <th>Last 30</th>
+                      <th>Last 7</th>
                     </tr>
                   </thead>
                   <tbody class="table-zebra">
                     <tr>
-                      <td>Topics</td>
-                      <td>51.8k</td>
-                      <td>263</td>
-                      <td>1.2k</td>
-                    </tr>
-                    <tr>
                       <td>Posts</td>
                       <td>624k</td>
-                      <td>3.9k</td>
                       <td>15.4k</td>
+                      <td>3.9k</td>
                     </tr>
                     <tr>
-                      <td>Users</td>
-                      <td>123k</td>
-                      <td>698</td>
-                      <td>3.3k</td>
-                    </tr>
-                    <tr>
-                      <td>Active Users</td>
-                      <td>--</td>
-                      <td>2.8k</td>
-                      <td>7.2k</td>
-                    </tr>
-                    <tr>
-                      <td>Likes</td>
-                      <td>224k</td>
-                      <td>2.5k</td>
-                      <td>9.2k</td>
+                      <td>Comments</td>
+                      <td>51.8k</td>
+                      <td>1.2k</td>
+                      <td>263</td>
                     </tr>
                   </tbody>
                 </table>

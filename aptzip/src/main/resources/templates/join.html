@@ -26,8 +26,8 @@
 		<div class="container">
 			<div class="tt-loginpages-wrapper">
 				<div class="tt-loginpages">
-					<a href="/" class="tt-block-title">
-						<img src="/images/logo.png" alt="">
+					<a th:href="@{/}" class="tt-block-title">
+						<img th:src="@{/images/logo.png}" alt="">
 						<div class="tt-title">
 							Welcome to apt-zip
 						</div>
@@ -89,7 +89,7 @@
 								</div>
 							</div>
 						</div>
-						<p>Already have an account? <a href="/login" class="tt-underline">Login here</a></p>
+						<p>Already have an account? <a th:href="@{/login}" class="tt-underline">Login here</a></p>
 						<div class="tt-notes">
 							By signing up, signing in or continuing, I agree to
 							aptzip’s <a href="#" class="tt-underline">Terms of Use</a> and <a href="#" class="tt-underline">Privacy

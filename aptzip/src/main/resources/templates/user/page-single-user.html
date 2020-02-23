@@ -89,7 +89,7 @@
 								</div>
 								<div class="tt-col-description">
 									<h6 class="tt-title">
-										<a th:href="${'/board/' + board.id }">
+										<a th:href="@{/board/{id}(id=${board.id})}">
 											[[${ board.boardTitle }]]
 										</a>
 									</h6>
@@ -98,17 +98,12 @@
 											<ul class="tt-list-badge">
 												<li class="show-mobile">
 													<a href="#">
-														<span class="tt-color05 tt-badge">
-															[[${ board.category } ? 'common' : ${ board.category }]]
+														<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">
+															[[${ board.category } ? ${ board.category.name } : 'common']]
 														</span>
 													</a>
 												</li>
 											</ul>
-											<a href="#" class="tt-btn-icon show-mobile">
-												<i class="tt-icon"><svg>
-														<use xlink:href="#icon-reply"></use>
-													</svg></i>
-											</a>
 										</div>
 										<div class="col-3 ml-auto show-mobile">
 											<div class="tt-value">1h</div>
@@ -116,7 +111,7 @@
 									</div>
 								</div>
 								<div class="tt-col-category tt-col-value-large hide-mobile">
-									<span class="tt-color05 tt-badge">[[${ board.category } ? 'common' : ${ board.category }]]</span>
+									<span class="tt-color05 tt-badge">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
 								</div>
 								<div class="tt-col-value-large hide-mobile">
 									<a href="#" class="tt-btn-icon">
@@ -165,9 +160,11 @@
 									<div class="row align-items-center no-gutters">
 										<div class="col-11">
 											<ul class="tt-list-badge">
-												<li class="show-mobile"><a href="#"><span class="tt-color01 tt-badge">politics</span></a></li>
-												<li><a href="#"><span class="tt-badge">contests</span></a></li>
-												<li><a href="#"><span class="tt-badge">authors</span></a></li>
+												<li class="show-mobile">
+													<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
+												</li>
+												<li>
+												</li>
 											</ul>
 										</div>
 										<div class="col-1 ml-auto show-mobile">
@@ -175,8 +172,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="tt-col-category"><span class="tt-color01 tt-badge">[[${ board.category } ? 'common' : ${
-										board.category }]]</span></div>
+								<div class="tt-col-category"><span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span></div>
 								<div class="tt-col-value hide-mobile">0</div>
 								<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
 								<div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
@@ -212,7 +208,7 @@
 								</div>
 								<div class="tt-col-description">
 									<h6 class="tt-title"><a href="#">
-											[[${comment.commentContent}]]
+											[[${comment.user.username}]]
 										</a></h6>
 									<div class="row align-items-center no-gutters hide-desktope">
 										<div class="col-9">
@@ -225,7 +221,7 @@
 										</div>
 									</div>
 									<div class="tt-content">
-										[[${comment}]]
+										[[${comment.commentContent}]]
 									</div>
 								</div>
 								<div class="tt-col-category"><a href="#"><span class="tt-color06 tt-badge">movies</span></a></div>

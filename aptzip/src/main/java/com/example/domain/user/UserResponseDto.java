@@ -25,11 +25,11 @@ public class UserResponseDto extends User {
   private static final long serialVersionUID = 1L;
 
   private long id;
-	private String email;
-	private String phone;
-	private String password;
 	private String username;
+	private String password;
+	private String email;
 	private String address;
+	private String phone;
 	private String gender;
 	private String introduction;
 	private LocalDateTime signupDate;

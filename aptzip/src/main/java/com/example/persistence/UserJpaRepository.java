@@ -1,11 +1,15 @@
 package com.example.persistence;
 
 
+import java.util.List;
 import java.util.Optional;
 
+import com.example.domain.common.AptEntity;
+import com.example.domain.user.AptzipRoleEntity;
 import com.example.domain.user.AptzipUserEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 // Entitymanager
@@ -19,6 +23,9 @@ public interface UserJpaRepository extends JpaRepository<AptzipUserEntity, Long>
 	Optional<AptzipUserEntity> findByEmail(String email);
 	
 	Optional<AptzipUserEntity> findByUsername(String username);
+
+	@Query("SELECT u FROM AptzipUserEntity AS u WHERE u.apt = :apt AND u.role = :role")
+	List<AptzipUserEntity> findAllByAptAndRole(AptEntity apt, AptzipRoleEntity role);
 	
 	// No property updateUser found for type AptzipUserEntity!
 	// Optional<AptzipUserEntity> updateUser(UserDetails user);

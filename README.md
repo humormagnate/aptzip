@@ -19,11 +19,14 @@
 >[Thymeleaf 3.0.11](./study/ThymeLeaf.md)<br>
 >[REST API](./study/REST-API.md)<br>
 >[Java 8](./study/Java8.md)<br>
->Swagger (적용 예정)<br>
->Spring WebFlux (적용 예정)<br>
->Spring Cloud (적용 예정)<br>
->Netty (적용 예정)<br>
->RxJava (Java 9) (적용 예정)<br>
+
+### To-do
+>Swagger <br>
+>Spring WebFlux <br>
+>Spring Cloud <br>
+>Netty <br>
+>RxJava (Java 9) <br>
+>Docker <br>
 
 ```
 Context Root (localhost:XXXX/aptzip)

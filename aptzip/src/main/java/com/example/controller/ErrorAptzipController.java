@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 
+// https://www.baeldung.com/spring-boot-application-configuration
 @Slf4j
 // @RequestMapping({"${server.error.path:${error.path:/error}}"})
 @Controller

@@ -8,10 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomContainer implements
-  WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
+  WebServerFactoryCustomizer<TomcatServletWebServerFactory> { // ConfigurableServletWebServerFactory
   
   @Override
   public void customize(TomcatServletWebServerFactory factory) {
+    // java.lang.IllegalArgumentException: ContextPath must start with '/' and not end with '/'
+    // factory.setContextPath("/aptzip");
+    // Root ContextPath must be specified using an empty string
     factory.setContextPath("");
     factory.setPort(8888);
     factory.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST, "/error/400"));

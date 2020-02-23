@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserService implements UserDetailsService {
 
-  private final UserJpaRepository userJpaRepository;
+  private final UserJpaRepository userJpaRepo;
   private final PasswordEncoder passwordEncoder;
 
   
@@ -43,13 +43,13 @@ public class UserService implements UserDetailsService {
     userRequestDto.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
     userRequestDto.setRole(new AptzipRoleEntity(UserRole.USER.name()));
     AptzipUserEntity entity = userRequestDto.toEntity();
-    userJpaRepository.save(entity);
+    userJpaRepo.save(entity);
   }
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @Transactional(readOnly = true)
   public List<UserRequestDto> findAll() {
-    return userJpaRepository.findAll().stream()
+    return userJpaRepo.findAll().stream()
                             .map(UserRequestDto::new)
                             .collect(Collectors.toList());
   }
@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
     log.info("username : {}", username);
 
     // return type이 Optional<T>
-    Optional<AptzipUserEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
+    Optional<AptzipUserEntity> userEntityWrapper = userJpaRepo.findByUsername(username);
     // Optional<T>에서 get()을 통해 T 반환
     AptzipUserEntity user = userEntityWrapper.get();
     
@@ -77,6 +77,8 @@ public class UserService implements UserDetailsService {
     if (user == null) {
       throw new UsernameNotFoundException("Not found " + username);
     }
+
+    // AptzipRoleEntity role = new AptzipRoleEntity(user.getRole().getRole());
     
     UserResponseDto urd = new UserResponseDto(
                                 user.getId(),
@@ -94,7 +96,7 @@ public class UserService implements UserDetailsService {
                                 user.getIntroduction(),
                                 user.getSignupDate(),
                                 user.getReported(),
-                                null,
+                                UserRole.USER,
                                 UserRole.USER.getPrivileges(),
                                 user.getApt(),
                                 user.getFollowing(),
@@ -124,7 +126,7 @@ public class UserService implements UserDetailsService {
     // Optional<AptzipUserEntity> user = Optional.ofNullable(optional);
     // AptzipUserEntity user = optional.get();
     // return Optional.ofNullable(findById(id)).filter(value -> value != null).map();
-    return userJpaRepository.findById(id).orElse(new AptzipUserEntity());
+    return userJpaRepo.findById(id).orElse(new AptzipUserEntity());
   }
 
 }

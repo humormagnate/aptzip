@@ -13,15 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.example.domain.common.AptEntity;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +31,8 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Entity(name = "tb_user")
+@Entity // (name = "tb_user") 만약 Entity에 테이블명을 줬으면 JPQL에서 tb_user 사용
+@Table(name = "tb_user")  // Table에 테이블명을 줬으면 JPQL에서 클래스명(AptzipUserEntity) 사용
 @EqualsAndHashCode(of = "id")
 @Builder
 // @Table(name = "TB_USER")
@@ -46,7 +45,6 @@ public class AptzipUserEntity {
   //@GeneratedValue(strategy = GenerationType.AUTO)
 	//@GenericGenerator(name = "system-uuid", strategy = "uuid")
   @Id
-  @Column(name = "user_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 	
@@ -74,6 +72,7 @@ public class AptzipUserEntity {
   @CreationTimestamp
   private LocalDateTime signupDate;
 
+  @ColumnDefault(value = "0")
   @Column(nullable = false)
   private int reported;
 

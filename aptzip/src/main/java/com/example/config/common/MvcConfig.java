@@ -15,6 +15,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+// https://stackoverflow.com/questions/24661289/spring-boot-not-serving-static-content
+// @EnableWebMvc on your class will disable org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.
+// @EnableWebMvc	// 해당 어노테이션을 달 경우 기본 경로("/") 무시됨
 @Configuration
 public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
@@ -35,5 +38,10 @@ public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/login");
 	}
+
+	// @Override
+	// public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	// 	registry.addResourceHandler("/aptzip/**").addResourceLocations("classpath:/static/");
+	// }
 
 }

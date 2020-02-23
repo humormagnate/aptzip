@@ -5,16 +5,20 @@
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>aptzip</title>
-  <link rel="shortcut icon" href="/favicon/favicon.ico">
-  <meta name="keywords" content="HTML5 Template" />
-  <meta name="description" content="Forum - Responsive HTML5 Template" />
-  <meta name="author" content="Forum" />
+  <link rel="shortcut icon" type="image/png" th:href="@{/favicon/favicon.ico}">
+  <meta name="keywords" content="Spring Study" />
+  <meta name="description" content="Personal Project" />
+  <meta name="author" content="humormagnate" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <link rel="stylesheet" href="/css/style.css" />
+  <!-- https://www.thymeleaf.org/doc/articles/standardurlsyntax.html -->
+  <!-- context-relative URLs -->
+  <!-- thymeleaf의 @{}가 자동으로 context path를 prefix로 넣어줌 -->
   <!-- css/style.css = /user/css/style.css, /css/style.css = /css/style.css -->
-  <link rel="stylesheet" href="/css/magnific-popup.css" />
-  <link rel="stylesheet" href="/css/aptzip.css" />
+  <!-- <link rel="stylesheet" href="/css/style.css" /> -->
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/css/magnific-popup.css}" />
+  <link rel="stylesheet" th:href="@{/css/aptzip.css}" />
 
   <!-- Web Socket -->
   <script
