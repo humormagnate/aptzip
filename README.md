@@ -33,12 +33,13 @@ Context Root (localhost:XXXX/)
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |
 |```USER```|||
-| /login | (Spring Security) | 로그인 |
+| /login | GET | 로그인 페이지 이동 (Spring Security) |
+| /signin | POST | 로그인 (Spring Security) |
 | /user/signup | POST | 회원 가입 |
 | /user/{id} | GET | 회원 정보 조회 |
 | /user/{id} | DELETE | 회원 탈퇴 |
 | /user/{id}/pw | PATCH | 비밀번호 변경 |
-| /user/{id}/follow | POST | 회원 팔로우/취소 |
+| /user/{id}/follow | POST | 회원 팔로우/취소 (추후 수정 필요) |
 |```BOARD```|||
 | /board/write | GET | 게시글 작성 페이지 이동 |
 | /board/write | POST | 게시글 작성 |
@@ -46,13 +47,15 @@ Context Root (localhost:XXXX/)
 | /board/{id} | DELETE | 게시글 삭제 |
 | /board/{id}/edit | GET | 게시글 수정 페이지 이동 |
 | /board/{id} | PUT | 게시글 수정 |
+|```LIKE```|||
+| /like/{id} | POST | 게시글 좋아요/취소 (추후 수정 필요) |
 |```COMMENT```|||
 | /comment/{id} | POST | 댓글 작성 |
 | /comment/{id} | GET | 댓글 조회 |
 | /comment/{id} | DELETE | 댓글 삭제 |
 | /comment/{id} | PUT | 댓글 수정 |
 |```APT```|||
-| /apt/{id} | GET | 현재 로그인 중인 회원의 아파트 게시물 조회 |
+| /apt/{id} | GET | 현재 로그인 중인 회원의 아파트 게시글 조회 |
 
 
 

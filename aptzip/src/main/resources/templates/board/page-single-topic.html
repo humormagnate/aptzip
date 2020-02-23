@@ -64,10 +64,12 @@
 						</div>
 						<div class="tt-item-info info-bottom">
 							<div class="col-separator"></div>
-							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-									<use xlink:href="#icon-favorite"></use>
-								</svg></i>
+							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent" id="likeBtn">
+								<i class="tt-icon">
+									<svg id="iconLike">
+										<use xlink:href="#icon-favorite"></use>
+									</svg>
+								</i>
 							</a>
 							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent" id="iconReply">
 								<i class="tt-icon"><svg>
@@ -448,6 +450,17 @@
 					
 				});
 			}
+		}
+
+		const likeBtn = document.getElementById('likeBtn');
+		if (likeBtn != undefined && likeBtn != null) {
+			likeBtn.addEventListener('click', function(event) {
+				event.preventDefault();
+				let like = new Like();
+				if (USER_ID == '') location.href = '/login';
+				const obj = { type:1, boardId:BOARD_ID };
+				like.insert(obj);
+			});
 		}
 
 

@@ -15,7 +15,7 @@ const comment = (function(){
       contentType: 'application/json',
       success: callback,
       error: function() {
-        alert('ajax error');
+        console.error('ajax error');
       }
     });
 
@@ -38,7 +38,7 @@ const comment = (function(){
       contentType: 'application/json',
       success: callback,
       error: function() {
-        alert('ajax error');
+        console.error('ajax error');
       }
     });
   };
@@ -54,7 +54,7 @@ const comment = (function(){
       contentType: 'application/json',
       success: callback,
       error: function() {
-        alert('ajax error');
+        console.error('ajax error');
       }
     });
   };

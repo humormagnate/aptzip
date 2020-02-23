@@ -110,11 +110,11 @@ CREATE TABLE persistent_logins (
   last_used timestamp NOT NULL
 );
 
-CREATE TABLE tb_favorite (
-	board_id			BIGINT			NOT NULL,
-	user_id				BIGINT			NOT NULL,
-	create_date		TIMESTAMP		DEFAULT NOW() NOT NULL,
-	PRIMARY KEY (board_id, user_id),
-  FOREIGN KEY (board_id)	REFERENCES tb_board (id),
-  FOREIGN KEY (user_id)		REFERENCES tb_user (id)
-);
+-- CREATE TABLE tb_favorite (
+-- 	board_id			BIGINT			NOT NULL,
+-- 	user_id				BIGINT			NOT NULL,
+-- 	create_date		TIMESTAMP		DEFAULT NOW() NOT NULL,
+-- 	PRIMARY KEY (board_id, user_id),
+--   FOREIGN KEY (board_id)	REFERENCES tb_board (id),
+--   FOREIGN KEY (user_id)		REFERENCES tb_user (id)
+-- );

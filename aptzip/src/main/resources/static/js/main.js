@@ -46,7 +46,7 @@ function deletePost(BOARD_ID) {
       window.location.replace("/");
     },
     error: function() {
-      console.log("ajax error");
+      console.error("ajax error");
     }
   });
 }
@@ -73,7 +73,7 @@ function updatePost(BOARD_ID, boardTitle, boardContent) {
       window.location.replace("/");
     },
     error: function() {
-      console.log("ajax error");
+      console.error("ajax error");
     }
   });
 }
@@ -96,11 +96,11 @@ function userFollow() {
       } else if (data === "delete"){
         alert('팔로우 취소');
       } else {
-        console.log('server error');
+        console.error('server error');
       }
     },
     error: function(){
-      console.log('ajax error');
+      console.error('ajax error');
     }
   })
 }

@@ -1,7 +1,7 @@
 drop table aptzip.persistent_logins cascade;
 drop table aptzip.tb_user_follow cascade;
 drop table aptzip.tb_comment cascade;
-drop table aptzip.tb_favorite cascade;
+drop table aptzip.tb_like cascade;
 drop table aptzip.tb_board cascade;
 drop table aptzip.tb_user cascade;
 drop table aptzip.tb_notice cascade;
@@ -15,6 +15,7 @@ commit;
 delete from aptzip.tb_category where category_id = 7;
 
 select * from aptzip.tb_user;
+select * from aptzip.tb_like;
 select * from aptzip.tb_user_follow;
 select * from aptzip.tb_board;
 select * from aptzip.tb_category;

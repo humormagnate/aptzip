@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Allows restricting access based upon the HttpServletRequest using
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/**", "/board/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+        .antMatchers("/user/**", "/board/*/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
         // production
         // .antMatchers("/user/info/*", "/board/edit/**", "/").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
         .antMatchers("/board/write/**", "/categories", "/zip").authenticated()

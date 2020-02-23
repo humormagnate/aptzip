@@ -13,9 +13,18 @@ import com.example.domain.user.AptzipUserEntity;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
-@Table(name = "tb_favorite")
-public class FavoriteEntity {
+@Table(name = "tb_like")
+public class LikeEntity {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
