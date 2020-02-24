@@ -8,7 +8,7 @@ const comment = (function(){
     // console.log('create comment~~~');
 
     $.ajax({
-      url: '/comment/' + obj.boardId,
+      url: obj.url,
       method: 'post',
       data: JSON.stringify(obj),
       dataType: 'json',
@@ -23,7 +23,7 @@ const comment = (function(){
 
   const retrieveList = function(obj, callback) {
     // console.log('retrieve comment~~~');
-    $.getJSON('/comment/' + obj.boardId, callback);
+    $.getJSON(obj.url, callback);
   };
 
   const update = function(obj, callback) {
@@ -31,7 +31,7 @@ const comment = (function(){
     // console.log('update comment~~~');
 
     $.ajax({
-      url: '/comment/' + obj.boardId,
+      url: obj.url,
       method: 'put',
       data: JSON.stringify(obj),
       dataType: 'json',
@@ -48,7 +48,7 @@ const comment = (function(){
     // console.log('remove comment~~~');
 
     $.ajax({
-      url: '/comment/' + obj.boardId + '/' + obj.commentId,
+      url: obj.url,
       method: 'delete',
       dataType: 'json',
       contentType: 'application/json',
@@ -75,7 +75,8 @@ function deletePopup(event) {
 
 // todo : transform into mustache template
 function renderComment(list, container, USER_ID) {
-  // todo : transform into mustache template
+  // todo : transform into mustache template -> done
+  // console.log(list);
   hbs('comments-template', list, container, USER_ID);
   editBtn();
   

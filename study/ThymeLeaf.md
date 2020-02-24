@@ -5,7 +5,7 @@
 ```html
 <div>[[${ model }]]</div>
 ```
-2. 사용자가 로그인 인증을 하지 않았다면
+2. 사용자가 로그인 인증을 하지 않았다면 : spring security
 ```html
 <tag sec:authorize="isAnonymous()"></tag>
 ```

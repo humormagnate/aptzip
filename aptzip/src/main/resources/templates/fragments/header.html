@@ -48,7 +48,7 @@
                 </ul>
               </li> -->
               <li>
-                <a sec:authorize="isAuthenticated()" th:href="'/apt/' + ${#authentication.principal.apt.id}"><span>Apt</span></a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>Apt</span></a>
               </li>
               <li>
                 <a th:href="@{/zip}"><span>Zip</span></a>

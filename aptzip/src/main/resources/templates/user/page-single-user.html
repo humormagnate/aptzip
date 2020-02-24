@@ -223,8 +223,8 @@
 								</div>
 								<div class="tt-col-description">
 									<h6 class="tt-title">
-										<a href="#">
-											[[${comment.user.username}]]
+										<a th:href="@{/board/{id}(id=${comment.board.id})}">
+											[[${comment.commentContent}]]
 										</a>
 									</h6>
 									<div class="row align-items-center no-gutters hide-desktope">
@@ -246,7 +246,9 @@
 										</div>
 									</div>
 									<div class="tt-content">
-										[[${comment.commentContent}]]
+										<a th:href="@{/user/{id}(id=${comment.user.id})}">
+											[[${comment.user.username}]]
+										</a>
 									</div>
 								</div>
 								<div class="tt-col-category">
@@ -291,7 +293,9 @@
 										</svg>
 									</div>
 									<div class="tt-col-description">
-										<h6 class="tt-title"><a href="#">[[${follower.follower.username}]]</a></h6>
+										<h6 class="tt-title">
+											<a th:href="@{/user/{id}(id=${follower.follower.id})}">[[${follower.follower.username}]]</a>
+										</h6>
 										<ul>
 											<li><a th:href="'mailto:' + ${follower.follower.email}">@[[${follower.follower.username}]]</a></li>
 										</ul>
@@ -329,7 +333,7 @@
 									</div>
 									<div class="tt-col-description">
 										<h6 class="tt-title">
-											<a th:href="@{ ~/user/{id}(id=${following.following.id}) }">[[${following.following.username}]]</a>
+											<a th:href="@{/user/{id}(id=${following.following.id}) }">[[${following.following.username}]]</a>
 										</h6>
 										<ul>
 											<li><a th:href="'mailto:' + ${following.following.email}">@[[${following.following.username}]]</a></li>

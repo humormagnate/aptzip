@@ -23,7 +23,8 @@
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
-									<a th:href="@{ ~/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
+									<!-- <a th:href="@{ ~/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a> -->
+									<a th:href="@{/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardId" th:value="${ board.id }">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.id}">
 								</div>
@@ -104,7 +105,7 @@
 									<i class="tt-icon"><svg>
 											<use xlink:href="#icon-favorite"></use>
 										</svg></i>
-									<span class="tt-text">0</span>
+									<span class="tt-text">[[${#lists.size(likes)}]]</span>
 								</span>
 							</div>
 							<div class="tt-item">
@@ -128,7 +129,7 @@
 						<hr>
 
 						<div class="row-object-inline form-default">
-							<h6 class="tt-title">Sort replies by:</h6>
+							<h6 class="tt-title">Sort comments by:</h6>
 							<ul class="tt-list-badge tt-size-lg">
 								<li><a href="#"><span class="tt-color02 tt-badge">Recent</span></a></li>
 								<li><a href="#"><span class="tt-badge">Most Liked</span></a></li>
@@ -152,6 +153,7 @@
 							<input type="hidden" th:value="${ comment.id }">
 
 							<div class="tt-item-header pt-noborder">
+
 								<div class="tt-item-info info-top">
 									<div class="tt-avatar-icon">
 										<i class="tt-icon"><svg>
@@ -159,7 +161,7 @@
 											</svg></i>
 									</div>
 									<div class="tt-avatar-title">
-										<a th:href="@{ /user/info/{id}(id=${comment.user.id}) }">[[${ comment.user.username }]]</a>
+										<a th:href="@{/user/{id}(id=${comment.user.id}) }">[[${ comment.user.username }]]</a>
 									</div>
 									<span class="tt-info-time">
 										<i class="tt-icon"><svg>
@@ -167,6 +169,7 @@
 											</svg></i>[[${ #temporals.format(comment.updateDate, 'yyyy-MM-dd') }]]
 									</span>
 								</div>
+								
 							</div>
 
 							<div class="tt-item-description">
@@ -244,7 +247,7 @@
 			<!-- comment form start -->
 			<div sec:authorize="isAuthenticated()" th:if="${board.apt.id} eq ${#authentication.principal.apt.id}" class="tt-wrapper-inner">
 				<div class="pt-editor form-default">
-					<h6 class="pt-title">Post Your Reply</h6>
+					<h6 class="pt-title">Post Your Comment</h6>
 					
 					<div class="form-group">
 						<textarea name="message" id="commentContent" class="form-control" rows="5" placeholder="Lets get started"></textarea>
@@ -252,6 +255,7 @@
 					
 					<div class="pt-row">
 						<div class="col-auto">
+							<!-- 
 							<div class="checkbox-group">
 								<input type="checkbox" id="checkBox21" name="checkbox" checked="">
 								<label for="checkBox21">
@@ -260,6 +264,7 @@
 									<span class="tt-text">Subscribe to this topic.</span>
 								</label>
 							</div>
+							 -->
 						</div>
 						<div class="col-auto">
 							<a href="#" id="createReplyBtn" class="btn btn-secondary btn-width-lg">Comment</a>
@@ -331,15 +336,42 @@
 
 		const CREATE_COMMENT_BTN = document.getElementById('createReplyBtn');
 		let commentList = document.getElementById('commentList');
+		let likeflag = true;
 
 		$(document).ready(function(){
-			const obj = { boardId:BOARD_ID };
+			const URL = '[[@{/comment}]]/' + BOARD_ID;
+			const obj = { boardId:BOARD_ID, url:URL };
 			// console.log(commentList);
 			// console.log(USER_ID);
+			
 			comment.retrieveList(obj, function(list){
 				renderComment(list, commentList, USER_ID);
 			});
+
+			const like = '[[${like}]]';
+			if (like !== '') {
+				document.getElementById('iconLike').style.fill ='#ff5722';
+				likeflag = false;
+			}
+
 		}, false);
+
+		const likeBtn = document.getElementById('likeBtn');
+		if (likeBtn != undefined && likeBtn != null) {
+			likeBtn.addEventListener('click', function(event) {
+				event.preventDefault();
+				let like = new Like();
+				if (USER_ID == '') location.href = '[[@{/login}]]]';
+				const URL = '[[@{/like}]]/' + BOARD_ID;
+				const obj = { type:1, boardId:BOARD_ID, url:URL };
+				if (likeflag) {
+					like.insert(obj);
+				} else {
+					like.insert(obj);	// 우선 flag로 처리
+					// like.delete(obj);
+				}
+			});
+		}
 
 		if (CREATE_COMMENT_BTN != undefined && CREATE_COMMENT_BTN != null) {
 			CREATE_COMMENT_BTN.addEventListener('click', function (event) {
@@ -347,8 +379,8 @@
 				event.stopPropagation();
 				const COMMENT_CONTENT = document.getElementById('commentContent').value;
 				// createReply(BOARD_ID, COMMENT_CONTENT);
-
-				const obj = { boardId:BOARD_ID, commentContent:COMMENT_CONTENT };
+				const URL = '[[@{/comment}]]/' + BOARD_ID;
+				const obj = { boardId:BOARD_ID, commentContent:COMMENT_CONTENT, url:URL };
 				comment.create(obj, function(list) {
 					// console.log(list);
 					
@@ -384,7 +416,8 @@
 
 				if (confirm('정말 삭제하시겠습니까?')) {
 					const commentId = document.getElementById('commentHiddenId').value;
-					const obj = { boardId:BOARD_ID, commentId:commentId };
+					const URL = '[[@{/comment}]]/' + BOARD_ID + '/' + commentId;
+					const obj = { boardId:BOARD_ID, commentId:commentId, url:URL };
 	
 					comment.remove(obj, function(list) {
 						// console.log(list);
@@ -410,8 +443,9 @@
 
 				const COMMENT_ID = document.getElementById('commentHiddenId').value;
 				const COMMENT_CONTENT = document.getElementById('updateCommentContent').value;
+				const URL = '[[@{/comment}]]/' + BOARD_ID;
 				
-				const obj = { boardId:BOARD_ID, id:COMMENT_ID, commentContent:COMMENT_CONTENT };
+				const obj = { boardId:BOARD_ID, id:COMMENT_ID, commentContent:COMMENT_CONTENT, url:URL };
 
 				comment.update(obj, function(list) {
 					alert('댓글이 성공적으로 수정되었습니다.');
@@ -447,18 +481,6 @@
 				});
 			}
 		}
-
-		const likeBtn = document.getElementById('likeBtn');
-		if (likeBtn != undefined && likeBtn != null) {
-			likeBtn.addEventListener('click', function(event) {
-				event.preventDefault();
-				let like = new Like();
-				if (USER_ID == '') location.href = '/login';
-				const obj = { type:1, boardId:BOARD_ID };
-				like.insert(obj);
-			});
-		}
-
 
 		/*
 			!!! popup !!! remove

@@ -68,4 +68,6 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
     return builder;
   }
 
+  public List<BoardEntity> findAllByApt(AptEntity apt);
+
 }

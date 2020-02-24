@@ -31,10 +31,10 @@ function keyUpCalcRestTitle() {
   write - delete, put ajax method
   https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#attr-fs-method
 */
-function deletePost(BOARD_ID) {
+function deletePost(URL) {
   // http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#javascript-inlining
   $.ajax({
-    url: "/board/" + BOARD_ID,
+    url: URL,
     method: "delete",
     headers:{
       "Content-Type":"application/json",
@@ -43,7 +43,7 @@ function deletePost(BOARD_ID) {
     success: function(data) {
       alert(data);
       // window.location.href='/';
-      window.location.replace("/");
+      window.location.replace(HOME_URL);
     },
     error: function() {
       console.error("ajax error");
@@ -51,13 +51,13 @@ function deletePost(BOARD_ID) {
   });
 }
 
-function updatePost(BOARD_ID, boardTitle, boardContent) {
+function updatePost(URL, boardTitle, boardContent) {
   // http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#javascript-inlining
   // console.log(BOARD_ID);
   // console.log(boardTitle);
   // console.log(boardContent);
   $.ajax({
-    url: "/board/" + BOARD_ID,
+    url: URL,
     method: "put",
     // headers:{
       // "Content-Type":"application/json",
@@ -70,7 +70,7 @@ function updatePost(BOARD_ID, boardTitle, boardContent) {
     success: function(data) {
       alert(data);
       // window.location.href='/';
-      window.location.replace("/");
+      window.location.replace(HOME_URL);
     },
     error: function() {
       console.error("ajax error");

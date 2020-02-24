@@ -104,6 +104,16 @@ public class CommentController {
     // log.info(comment.toString());
     // log.info(principal.toString());
     List<CommentEntity> entity = getCommentList(board);
+    if (entity != null && entity.size() > 0) {
+      log.info("comment list is not null");
+      entity.forEach(consumer -> {
+        // board는 저장하는 객체를 바로 변경하니까 System.lineSeparator()에서도 변경되지만,
+        // comment는 MySQL에서 가져오기 때문에 "\n" 지정해줘야함.
+        // (리눅스 환경에서도 가능할지 문제, "\r"은 안됨: 어차피 리눅스는 "\n", 윈도가 "\r\n")
+        comment.setCommentContent(comment.getCommentContent().replace("\n", "<br>"));
+      });
+    }
+
     log.info("entity : {}", entity);
     log.info("debug3");
     return new ResponseEntity<>(entity, HttpStatus.CREATED);

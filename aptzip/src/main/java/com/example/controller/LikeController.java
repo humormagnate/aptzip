@@ -38,7 +38,7 @@ public class LikeController {
     BoardEntity board = new BoardEntity();
     board.setId(Long.valueOf(id));
 
-    LikeEntity existLike = likeRepo.findByBoardAndUser(board, principal.toEntity());
+    LikeEntity existLike = likeRepo.findByBoardAndUser(board, principal.toEntity()).orElse(null);
     log.info("exist like : {}", existLike);
 
     if (existLike != null) {

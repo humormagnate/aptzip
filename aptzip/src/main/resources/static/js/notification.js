@@ -8,9 +8,10 @@
  */
 let ws = null;
 let wsConnnectInterval = null;
-function connectWS() {
+function connectWS(URL) {
 
-  let socket = new WebSocket("ws://localhost:8888/ws/comment");
+  // let socket = new WebSocket("ws://localhost:8888/ws/comment");
+  let socket = new WebSocket("ws://localhost:8888" + URL);
   ws = socket;
 
   ws.onopen = function(event) {
@@ -37,7 +38,7 @@ function connectWS() {
     console.log('Info : connection error and close')
     wsConnnectInterval = setTimeout(function(){
       connectWS();
-    }, 1000); // retry conntection
+    }, 1000 * 60); // retry conntection
   }
   
 }

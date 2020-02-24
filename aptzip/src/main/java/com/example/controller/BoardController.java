@@ -7,9 +7,11 @@ import java.util.stream.StreamSupport;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.CategoryEntity;
+import com.example.domain.board.LikeEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.BoardRepository;
 import com.example.persistence.CategoryRepository;
+import com.example.persistence.LikeRepository;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -39,6 +41,7 @@ public class BoardController {
 
 	private final BoardRepository boardRepo;
 	private final CategoryRepository categoryRepo;
+	private final LikeRepository likeRepo;
 	// private final SimpMessageSendingOperations smso;
 
 	@GetMapping("/write")
@@ -99,7 +102,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/{id}")
-	public String read(Model model, @PathVariable("id") Long id) {
+	public String read(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal UserResponseDto principal) {
 		log.info("/boardGet/////////////////////////////////////////////////////////////////");
 
 		boardRepo.findById(id).ifPresent(board -> {
@@ -108,12 +111,19 @@ public class BoardController {
 			boardRepo.save(board);
 
 			board.setBoardContent(board.getBoardContent().replace(System.lineSeparator(), "<br>"));
-
 			log.info("board : {}", board);
 			model.addAttribute("board", board);
+
+			List<LikeEntity> likes = likeRepo.findAllByBoard(board);
+			model.addAttribute("likes", likes);
+
+			if (principal != null) {
+				likeRepo.findByBoardAndUser(board, principal.toEntity()).ifPresent(consumer -> {
+					model.addAttribute("like", consumer);
+				});
+			}
 		});
-		
-		model.addAttribute("newLineChar", "\r");
+
 
 		return "board/page-single-topic";
 	}

@@ -1,7 +1,7 @@
 function Like() {
   this.insert = function(obj) {
     $.ajax({
-      url: '/like/' + obj.boardId,
+      url: obj.url,
       method: 'post',
       data: JSON.stringify(obj),
       // client -> server
@@ -10,10 +10,8 @@ function Like() {
       dataType: 'text',
       success: function(data) {
         if (data === 'insert') {
-          console.log('좋아요!');
           document.getElementById('iconLike').style.fill = '#ff5722';
         } else if (data === 'delete') {
-          console.log('좋아요 취소');
           document.getElementById('iconLike').style.fill = '#666f74';
         } else {
           console.error('server error');

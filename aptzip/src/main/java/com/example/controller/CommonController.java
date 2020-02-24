@@ -80,24 +80,25 @@ public class CommonController {
 	public void zip(@AuthenticationPrincipal UserResponseDto principal, Model model) {
 		
 		Long aptId = principal.getApt().getId();
+		AptEntity apt = AptEntity.builder().id(aptId).build();
 
 		List<AptzipUserEntity> admins =
-			userRepo.findAllByAptAndRole(AptEntity.builder().id(aptId).build(),
+			userRepo.findAllByAptAndRole(apt,
 																	 new AptzipRoleEntity("ADMIN"));
 		log.info("admins : {}", admins);
 
 		// https://www.baeldung.com/java-iterable-to-collection
-		List<CommentEntity> comments =
-			StreamSupport.stream(commentRepo.findAll().spliterator(), false)
-									 .collect(Collectors.toList());
-		
 		List<BoardEntity> boards =
-			StreamSupport.stream(boardRepo.findAll().spliterator(), false)
-									 .collect(Collectors.toList());
+		StreamSupport.stream(boardRepo.findAllByApt(apt).spliterator(), false)
+		.collect(Collectors.toList());
+		
+		// List<CommentEntity> comments =
+		// 	StreamSupport.stream(commentRepo.findAllByApt(apt).spliterator(), false)
+		// 							 .collect(Collectors.toList());
 		
 		model.addAttribute("admins", admins)
-				 .addAttribute("boardSize", boards.size())
-				 .addAttribute("commentSize", comments.size());
+				//  .addAttribute("commentSize", comments.size())
+				 .addAttribute("boardSize", boards.size());
 	}
 
 	@GetMapping("/categories")

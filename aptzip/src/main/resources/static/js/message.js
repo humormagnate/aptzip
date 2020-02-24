@@ -1,25 +1,10 @@
-window.onload = function() {
-  if ('WebSocket' in window) {
-    connectWS();
-    // connectSockJS();
-    connetSTOMP();
-  } else {
-    alert('Not support websocket');
-  }
-}
-
-window.onbeforeunload = function(){
-  ws.close();
-  stomp.disconnect();
-}
-
 /**
  * STOMP (topic subscription) : chat room subscription
  */
 let stomp = null;
-function connetSTOMP() {
+function connetSTOMP(URL) {
   // closure 적용할 수 있을까?
-  stomp = new SockJS("/ws/message"); // endpoint
+  stomp = new SockJS(URL); // endpoint
   let client = Stomp.over(stomp);
   // isStomp = true;
   stomp = client;
@@ -57,8 +42,8 @@ function connetSTOMP() {
  * SockJS : Basic(Pure) WebSocket과 같지만 IE 8부터 지원
  */
 let socket = null;
-function connectSockJS(){
-  let socket = new SockJS("/ws/message");
+function connectSockJS(URL){
+  let socket = new SockJS(URL);
   socket.onopen = function() {
     // console.log('Info : connection opened');
     socket.send('hi|+|test|+|hello');
