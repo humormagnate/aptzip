@@ -1,13 +1,13 @@
 server:
-  # port: 8888
-  # servlet:
-  #   context-path: /
+  port: 8888
+  servlet:
+    context-path: /
   error:
-    whitelabel:
-      enabled: false
+    # whitelabel:
+    #   enabled: true
     path: /error
-    include-exception: false
-    include-stacktrace: always
+    # include-exception: true
+    # include-stacktrace: always
 
 logging:
   level:
@@ -28,7 +28,7 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+    # show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -75,13 +75,15 @@ spring:
   #   static-locations:
   #   - classpath:/static/
   #   add-mappings: true
-  autoconfigure:
-    exclude:
-    - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+  # autoconfigure:
+  #   exclude:
+  #   - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
 
 env:
   aptzip:
-    test: test용 글자입니다.
+    test: https://frontbackend.com/thymeleaf/thymeleaf-default-spring-boot-application-properties
+    test2: https://www.baeldung.com/properties-with-spring
+    test3: https://www.thymeleaf.org/doc/articles/springmvcaccessdata.html
 ---
 server:
   error:

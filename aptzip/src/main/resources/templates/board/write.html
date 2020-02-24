@@ -36,7 +36,7 @@
 								<div class="row tt-w410-col-02 topic-type">
 
 									<div class="col-4 col-lg-3 col-xl-2" th:each="category : ${categories}">
-										<a href="#" class="tt-button-icon" th:classappend="${board.category.id} eq ${category.id} ? 'active' : ''">
+										<a href="#" class="tt-button-icon" th:classappend="${board} ne null and ${board.category.id} eq ${category.id} ? 'active' : ''">
 											<span class="tt-icon">
 												<svg>
 													<use th:attr="'xlink:href'='#icon-' + ${ category.name }"></use>

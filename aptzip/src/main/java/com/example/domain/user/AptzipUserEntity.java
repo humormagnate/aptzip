@@ -15,7 +15,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;

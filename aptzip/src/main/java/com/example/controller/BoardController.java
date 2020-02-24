@@ -13,7 +13,6 @@ import com.example.persistence.CategoryRepository;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -40,10 +39,15 @@ public class BoardController {
 
 	private final BoardRepository boardRepo;
 	private final CategoryRepository categoryRepo;
-	private final SimpMessageSendingOperations smso;
+	// private final SimpMessageSendingOperations smso;
 
 	@GetMapping("/write")
-	public void writeGet() {}
+	public void writeGet(Model model) {
+		List<CategoryEntity> categories =
+			StreamSupport.stream(categoryRepo.findAll().spliterator(), false)
+    							 .collect(Collectors.toList());
+		model.addAttribute("categories", categories);
+	}
 
 	// AuthenticationPrincipal은 Context에 있기 때문에 계속 보내줄 필요 없음
 	// public ModelAndView writeGet(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {

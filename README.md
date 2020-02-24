@@ -28,7 +28,7 @@ Context Root (localhost:XXXX/)
 
 ## API
 
-### Rest
+### REST
 
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |

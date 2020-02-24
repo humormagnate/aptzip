@@ -39,9 +39,12 @@ public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 		registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/login");
 	}
 
+	// 	// add 하지 않을 경우
+	// 	// SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler ["classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/", "/"]
 	// @Override
 	// public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	// 	registry.addResourceHandler("/aptzip/**").addResourceLocations("classpath:/static/");
+	// 	// SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler ["classpath:/templates/"]
+	// 	registry.addResourceHandler("/**").addResourceLocations("classpath:/templates/");
 	// }
 
 }

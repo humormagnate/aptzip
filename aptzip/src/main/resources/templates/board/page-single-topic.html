@@ -23,7 +23,7 @@
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
-									<a th:href="@{ ~/user/{id}/info(id=${board.user.id}) }">[[${ board.user.username }]]</a>
+									<a th:href="@{ ~/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardId" th:value="${ board.id }">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.id}">
 								</div>
@@ -132,14 +132,10 @@
 							<ul class="tt-list-badge tt-size-lg">
 								<li><a href="#"><span class="tt-color02 tt-badge">Recent</span></a></li>
 								<li><a href="#"><span class="tt-badge">Most Liked</span></a></li>
-								<li><a href="#"><span class="tt-badge">Longest</span></a></li>
-								<li><a href="#"><span class="tt-badge">Shortest</span></a></li>
 							</ul>
 							<select class="tt-select form-control">
 								<option value="Recent">Recent</option>
 								<option value="Most Liked">Most Liked</option>
-								<option value="Longest">Longest</option>
-								<option value="Shortest">Shortest</option>
 							</select>
 						</div>
 					</div>

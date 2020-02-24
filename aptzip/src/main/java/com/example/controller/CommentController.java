@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.transaction.Transactional;
