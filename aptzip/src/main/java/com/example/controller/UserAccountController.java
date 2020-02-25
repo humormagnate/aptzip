@@ -10,14 +10,15 @@ import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserFollowEntity;
 import com.example.domain.user.UserRequestDto;
 import com.example.domain.user.UserResponseDto;
-import com.example.persistence.BoardRepository;
-import com.example.persistence.CommentRepository;
-import com.example.persistence.FollowRepository;
-import com.example.service.UserService;
+import com.example.persistence.board.BoardRepository;
+import com.example.persistence.board.CommentRepository;
+import com.example.persistence.user.FollowRepository;
+import com.example.service.UserAccountService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,13 +37,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @Controller
-public class UserController {
+public class UserAccountController {
 	
 	private final BoardRepository boardRepo;
-	private final UserService userService;
+	private final UserAccountService userService;
 	private final FollowRepository followRepo;
 	// private final FollowQueryRepository followQuery;
 	private final CommentRepository commentRepo;
+  private final PasswordEncoder passwordEncoder;
 
 	/**
 	 * retrieve
@@ -89,6 +91,7 @@ public class UserController {
 	@PatchMapping("/{id}/pw")
 	public ResponseEntity<String> updateUserPassword(@RequestBody UserRequestDto user) {
 		log.info("user : " + user);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userService.updatePassword(user);
 		return ResponseEntity.ok("success");
 	}

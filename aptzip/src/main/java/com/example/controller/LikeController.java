@@ -3,7 +3,7 @@ package com.example.controller;
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.LikeEntity;
 import com.example.domain.user.UserResponseDto;
-import com.example.persistence.LikeRepository;
+import com.example.persistence.board.LikeRepository;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;

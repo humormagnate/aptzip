@@ -32,7 +32,7 @@ Context Root (localhost:XXXX/)
 | ------------- | ------------- | ------------- |
 |```USER```|||
 | /login | GET | 로그인 페이지 이동 (Spring Security) |
-| /signin | POST | 로그인 (Spring Security) |
+| /login | POST | 로그인 (Spring Security) |
 | /user/signup | POST | 회원 가입 |
 | /user/{id} | GET | 회원 정보 조회 |
 | /user/{id} | DELETE | 회원 탈퇴 |

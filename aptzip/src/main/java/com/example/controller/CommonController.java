@@ -11,20 +11,15 @@ import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipRoleEntity;
 import com.example.domain.user.AptzipUserEntity;
-import com.example.domain.user.UserRequestDto;
 import com.example.domain.user.UserResponseDto;
-import com.example.persistence.BoardRepository;
-import com.example.persistence.UserJpaRepository;
-import com.example.service.UserService;
+import com.example.persistence.board.BoardRepository;
+import com.example.persistence.user.UserJpaRepository;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +31,6 @@ public class CommonController {
 	
 	private final BoardRepository boardRepo;
 	private final UserJpaRepository userRepo;
-	private final UserService userService;
 
 	// @Secured({ "ROLE_ADMIN" })
 	@GetMapping("/")
@@ -73,38 +67,6 @@ public class CommonController {
 		return mv;
 	}
 	
-	@GetMapping("/login")
-	public void login() {}
-	
-	@GetMapping("/join")
-	public void signup() {}
-	
-	/**
-	 * create
-	 * @param userForm
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@PostMapping(value = "/signup")
-	public String insertUser(@ModelAttribute UserRequestDto userForm, RedirectAttributes redirectAttributes, String aptId) {
-		log.info("=============================SIGN UP================================");
-		// @Valid -> 400 error 페이지로 이동중 SecurityContext 에서 계속 405 error로 바뀐다. Why?
-		try {
-			log.info("userForm : {}", userForm);
-			Long apt = Long.valueOf(aptId);
-			userForm.setApt(AptEntity.builder().id(apt).build());
-			userService.save(userForm);
-    // } catch (DataIntegrityViolationException e) {
-    } catch (Exception e) {
-			e.printStackTrace();
-			log.info(e.getMessage());
-			redirectAttributes.addFlashAttribute("error", true);
-			return "redirect:/join";
-    }
-		redirectAttributes.addFlashAttribute("success", true);
-		return "redirect:/login";
-	}
-
 	@GetMapping("/zip")
 	public void zip(@AuthenticationPrincipal UserResponseDto principal, Model model) {
 		

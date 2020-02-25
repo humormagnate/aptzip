@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+// TODO: validation
+// https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
 @Getter
 @Setter
 @Builder
@@ -46,21 +48,17 @@ public class UserRequestDto implements UserDetails {
 	@Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문자만 입력가능합니다")
 	private String username;
 
-	@NotBlank(message = "비밀번호를 입력해주세요")
-	private String password;
-
+	@NotBlank(message = "비밀번호를 입력해주세요") private String password;
 	private String introduction;
 	private LocalDateTime signUpDate;
-
-	@PositiveOrZero
-	private int reported;
-	
+	@PositiveOrZero private int reported;
 	private List<BoardEntity> board;
 	private AptzipRoleEntity role;
 	private AptEntity apt;
 	// private List<AptzipUserEntity> following;
 	private List<UserFollowEntity> following;
 	private List<UserFollowEntity> follower;
+	private boolean isEnabled;
 
 	public UserRequestDto(AptzipUserEntity user) {
 		this.id = user.getId();
@@ -81,7 +79,9 @@ public class UserRequestDto implements UserDetails {
 			role,
 			apt,
 			following,
-			follower);
+			follower,
+			isEnabled
+		);
 	}
 
 	@Override

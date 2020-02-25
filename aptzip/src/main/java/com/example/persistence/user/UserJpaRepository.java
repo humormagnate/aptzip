@@ -1,4 +1,4 @@
-package com.example.persistence;
+package com.example.persistence.user;
 
 
 import java.util.List;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserJpaRepository extends JpaRepository<AptzipUserEntity, Long> {
 	
-	Optional<AptzipUserEntity> findByEmail(String email);
+	Optional<AptzipUserEntity> findByEmailIgnoreCase(String email);
 	
 	Optional<AptzipUserEntity> findByUsername(String username);
 

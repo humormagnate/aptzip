@@ -5,7 +5,7 @@ import java.util.EventListener;
 import javax.sql.DataSource;
 
 import com.example.domain.user.UserRole;
-import com.example.service.UserService;
+import com.example.service.UserAccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   // }
 
   private final PasswordEncoder passwordEncoder;
-  private final UserService userService;
+  private final UserAccountService userService;
   private final DataSource dataSource;
     
   @Override
@@ -122,8 +122,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // => userdetailsservice is required
         // (https://www.boraji.com/spring-security-5-remember-me-authentication-example-with-hibernate-5)
       .formLogin()
+        // login vs. signin
+        // https://miretia.tistory.com/477
+        // https://ux.stackexchange.com/questions/1080/using-sign-in-vs-using-log-in?newreg=69abd36f2952491f89f6bc7500a4e379
+        // https://web.archive.org/web/20130416031325/http://0xtc.com/2009/06/25/login-logout-vs-sign-in-sign-out-vs-log-in-sign-out-a-short-roundup.xhtml/
         .loginPage("/login")
-        .loginProcessingUrl("/signin")
+        // loginProcessingUrl -> UsernamePasswordAuthenticationFilter
+        .loginProcessingUrl("/login")
         .failureUrl("/login?error=true")
         // .failureForwardUrl("/login?error=true")
         .failureHandler(failureHandler())

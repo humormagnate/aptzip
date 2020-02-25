@@ -119,4 +119,5 @@ public class AptzipUserEntity {
   @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> follower;
 
+  private boolean isEnabled;
 }

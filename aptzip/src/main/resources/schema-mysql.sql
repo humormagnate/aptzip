@@ -1,5 +1,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS persistent_logins;
+DROP TABLE IF EXISTS tb_confirmation_token;
 DROP TABLE IF EXISTS to_like;
 DROP TABLE IF EXISTS tb_comment;
 DROP TABLE IF EXISTS tb_favorite;
@@ -42,6 +43,7 @@ CREATE TABLE tb_user (
 	reported			INTEGER				DEFAULT '0' 	NOT NULL,
 	role					VARCHAR(128)	DEFAULT 'USER',
 	apt_id				BIGINT,
+	is_enabled		BIT(1)				NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (apt_id)	REFERENCES tb_apt (id)
 	--UNIQUE (email)

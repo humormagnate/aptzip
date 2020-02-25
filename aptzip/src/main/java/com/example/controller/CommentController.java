@@ -2,13 +2,12 @@ package com.example.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.CommentEntity;
 import com.example.domain.user.UserResponseDto;
-import com.example.persistence.CommentRepository;
+import com.example.persistence.board.CommentRepository;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -226,7 +226,7 @@
 					</div>
 					<div class="tt-col-btn">
 						<a th:href="@{/login}" class="btn btn-primary">Log in</a>
-						<a th:href="@{/join}" class="btn btn-secondary">Sign up</a>
+						<a th:href="@{/signup}" class="btn btn-secondary">Sign up</a>
 						<button type="button" class="btn-icon" id="removePopup">
 							<svg class="tt-icon">
 								<use xlink:href="#icon-cancel"></use>
@@ -318,7 +318,7 @@
 
 	</main>
 
-	<a href="/board/write" class="tt-btn-create-topic">
+	<a th:href="@{/board/write}" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
 				<use xlink:href="#icon-create_new"></use>

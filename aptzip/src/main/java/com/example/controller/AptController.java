@@ -8,7 +8,7 @@ import com.example.config.thymeleaf.expression.TemporalsAptzip;
 import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;
 import com.example.domain.user.UserResponseDto;
-import com.example.persistence.BoardRepository;
+import com.example.persistence.board.BoardRepository;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

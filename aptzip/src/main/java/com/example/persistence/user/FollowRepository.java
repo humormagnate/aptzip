@@ -1,4 +1,4 @@
-package com.example.persistence;
+package com.example.persistence.user;
 
 import java.util.List;
 

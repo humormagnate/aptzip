@@ -19,15 +19,15 @@ INSERT INTO TB_CATEGORY (category_name) VALUES ('Gallery');
 INSERT INTO TB_CATEGORY (category_name) VALUES ('Media');
 INSERT INTO TB_CATEGORY (category_name) VALUES ('Common');
 
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('qqq@qqq.qqq', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'qqqqq', 'ADMIN', 1);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('www@www.www', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'wwwww', 'USER', 1);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('eee@eee.eee', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'eeeee', 'USER', 1);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('aaa@aaa.aaa', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'aaaaa', 'ADMIN', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('sss@sss.sss', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'sssss', 'USER', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ddd@ddd.ddd', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'ddddd', 'USER', 2);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('zzz@zzz.zzz', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'zzzzz', 'ADMIN', 3);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('xxx@xxx.xxx', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'xxxxx', 'USER', 3);
-INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id) VALUES ('ccc@ccc.ccc', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'ccccc', 'USER', 3);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('qqq@qqq.qqq', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'qqqqq', 'ADMIN', 1, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('www@www.www', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'wwwww', 'USER', 1, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('eee@eee.eee', '$2a$10$FUGG6CFHmsptQ0KXebvv2.J9DM7lFpJSUWJtVUKyeq0bkQehdcUMq', NOW(), 'eeeee', 'USER', 1, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('aaa@aaa.aaa', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'aaaaa', 'ADMIN', 2, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('sss@sss.sss', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'sssss', 'USER', 2, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('ddd@ddd.ddd', '$2a$10$oAuT9QNVZe2e5nIZlkqAUOoYgsJDtX5WeYPRmQ5m.eSien2cca/he', NOW(), 'ddddd', 'USER', 2, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('zzz@zzz.zzz', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'zzzzz', 'ADMIN', 3, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('xxx@xxx.xxx', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'xxxxx', 'USER', 3, 1);
+INSERT INTO TB_USER (email, password, signup_date, username, role, apt_id, is_enabled) VALUES ('ccc@ccc.ccc', '$2a$10$uPnIU4ALeQ/RmOxDrUAvVejQ0m.XgReaSUzoZIlqJD/rD2DZHKAu6', NOW(), 'ccccc', 'USER', 3, 1);
 
 INSERT INTO TB_BOARD (category_id, user_id, apt_id, board_title, board_content, board_status, view_count, create_date, update_date) VALUES ('1', '1', '1', '위하여, 얼음과 아름답고 있는 인간의 웅대한 인생에 봄바람이다. 이것을 전인 보배를 이상의 인간의 이것이다. 원대하고, 청춘의 열매를 불러 안고, ', '주는 가는 청춘에서만 위하여 못할 석가는 피가 없는 피다.\r\n\r\n되려니와, 현저하게 천지는 듣는다. 두기 유소년에게서 가는 이상의 날카로우나 이상의 아니다. 이상은 위하여서, 청춘은 현저하게 끓는 아니다. 굳세게 실현에 살았으며, 피고, 이상, 예수는 안고, 봄바람이다. 곳으로 불어 피어나기 그들의 교향악이다. 청춘 밝은 위하여, 부패뿐이다. 모래뿐일 있는 황금시대의 두손을 쓸쓸한 그들의 끓는다. 가진 새가 전인 불어 낙원을 아름다우냐?', DEFAULT, DEFAULT, NOW(), NOW());
 INSERT INTO TB_BOARD (category_id, user_id, apt_id, board_title, board_content, board_status, view_count, create_date, update_date) VALUES ('2', '4', '2', '천지는 충분히 같이, 천하를 청춘의 인생의 있는가?', 'second content', DEFAULT, DEFAULT, NOW(), NOW());

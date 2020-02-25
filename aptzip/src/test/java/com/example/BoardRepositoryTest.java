@@ -3,7 +3,7 @@ package com.example;
 import javax.transaction.Transactional;
 
 import com.example.domain.board.BoardEntity;
-import com.example.persistence.BoardRepository;
+import com.example.persistence.board.BoardRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

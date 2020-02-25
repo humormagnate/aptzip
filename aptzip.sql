@@ -15,6 +15,7 @@ commit;
 delete from aptzip.tb_category where category_id = 7;
 
 select * from aptzip.tb_user;
+select * from aptzip.tb_confirmation_token;
 select * from aptzip.tb_like;
 select * from aptzip.tb_user_follow;
 select * from aptzip.tb_board;
@@ -33,3 +34,5 @@ CREATE TABLE tb_persistent_logins (
   last_used timestamp not null
 );
 ALTER TABLE tb_user ADD UNIQUE (email);
+
+ALTER DATABASE aptzip CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
