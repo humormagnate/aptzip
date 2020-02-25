@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.CommentEntity;
-import com.example.domain.common.AptEntity;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

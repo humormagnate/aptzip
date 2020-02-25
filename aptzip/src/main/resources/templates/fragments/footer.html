@@ -8,17 +8,17 @@
   <script type="text/javascript" th:src="@{/js/handlebars.helper.js}"></script>
   <script type="text/javascript" th:src="@{/js/comment.js}"></script>
   <script type="text/javascript" th:src="@{/js/notification.js}"></script>
-  <script type="text/javascript" th:src="@{/js/message.js}"></script>
+  <!-- <script type="text/javascript" th:src="@{/js/message.js}"></script> -->
   <script type="text/javascript" th:src="@{/js/like.js}"></script>
   <script>
     window.onload = function() {
       const WS_URL = '[[@{/ws/comment}]]';
       // const STOMP_URL = '[[@{/ws/message}]]';
-      const STOMP_URL = '[[@{/ws/message}]]';
+      // const STOMP_URL = '[[@{/ws/message}]]';
       if ('WebSocket' in window) {
         connectWS(WS_URL);
         // connectSockJS(SOCK_URL);
-        connetSTOMP(STOMP_URL);
+        // connectSTOMP(STOMP_URL);
       } else {
         alert('Not support websocket');
       }
@@ -26,7 +26,7 @@
 
     window.onbeforeunload = function(){
       ws.close();
-      stomp.disconnect();
+      // stomp.disconnect();
     }
   </script>
 

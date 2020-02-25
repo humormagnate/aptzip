@@ -2,7 +2,7 @@
  * STOMP (topic subscription) : chat room subscription
  */
 let stomp = null;
-function connetSTOMP(URL) {
+function connectSTOMP(URL) {
   // closure 적용할 수 있을까?
   stomp = new SockJS(URL); // endpoint
   let client = Stomp.over(stomp);

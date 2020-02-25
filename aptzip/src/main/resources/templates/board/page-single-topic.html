@@ -245,12 +245,17 @@
 			</script>
 			 -->
 			<!-- comment form start -->
-			<div sec:authorize="isAuthenticated()" th:if="${board.apt.id} eq ${#authentication.principal.apt.id}" class="tt-wrapper-inner">
+			<div sec:authorize="isAuthenticated()" class="tt-wrapper-inner">
 				<div class="pt-editor form-default">
 					<h6 class="pt-title">Post Your Comment</h6>
 					
 					<div class="form-group">
-						<textarea name="message" id="commentContent" class="form-control" rows="5" placeholder="Lets get started"></textarea>
+						<th:block th:if="${board.apt.id} eq ${#authentication.principal.apt.id}">
+							<textarea name="message" id="commentContent" class="form-control" rows="5" placeholder="Lets get started"></textarea>
+						</th:block>
+						<th:block th:if="${board.apt.id} ne ${#authentication.principal.apt.id}">
+							<textarea name="message" id="commentContent" class="form-control" rows="5" placeholder="같은 아파트 단지의 주민만 댓글을 입력하실 수 있습니다." disabled></textarea>
+						</th:block>
 					</div>
 					
 					<div class="pt-row">
@@ -266,7 +271,7 @@
 							</div>
 							 -->
 						</div>
-						<div class="col-auto">
+						<div class="col-auto" th:if="${board.apt.id} eq ${#authentication.principal.apt.id}">
 							<a href="#" id="createReplyBtn" class="btn btn-secondary btn-width-lg">Comment</a>
 						</div>
 					</div>
@@ -332,6 +337,8 @@
 		// 사용자가 devtool로 DOM 조작으로 삭제할 수 없도록
 		const USER_ID = "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.id} : '']]";
 		const BOARD_ID = document.getElementById('boardId').value;
+		const BOARD_APT_ID = "[[${board.apt.id}]]";
+		const USER_APT_ID = "[[${#authentication.principal} ne 'anonymousUser' ? ${#authentication.principal.apt.id} : '']]";
 		// const COMMENT_USER = document.getElementById('commentUser');
 
 		const CREATE_COMMENT_BTN = document.getElementById('createReplyBtn');
@@ -361,7 +368,7 @@
 			likeBtn.addEventListener('click', function(event) {
 				event.preventDefault();
 				let like = new Like();
-				if (USER_ID == '') location.href = '[[@{/login}]]]';
+				if (USER_ID == '') location.href = '[[@{/login}]]';
 				const URL = '[[@{/like}]]/' + BOARD_ID;
 				const obj = { type:1, boardId:BOARD_ID, url:URL };
 				if (likeflag) {
@@ -502,7 +509,14 @@
 
 		document.getElementById('iconReply').addEventListener('click', function(event) {
 			event.preventDefault();
-			document.getElementById('commentContent').focus();
+			if (USER_ID != '') {
+				if (BOARD_APT_ID != USER_APT_ID) {
+					alert('같은 아파트 단지의 주민만 댓글을 입력하실 수 있습니다.');
+				}
+				document.getElementById('commentContent').focus();
+			} else {
+				location.href = '[[@{/login}]]';
+			}
 		});
 
 	</script>
@@ -525,15 +539,15 @@
 								</i>
 	            </div>
 	 	          <div class="tt-avatar-title">
-	 		          <a href="/user/{{this.user.id}}/info">{{{this.user.username}}}</a>
+	 		          <a href="/aptzip/user/{{this.user.id}}">{{{this.user.username}}}</a>
 			        </div>
- 			        <a href="#" class="tt-info-time">
+ 			        <span class="tt-info-time">
  					      <i class="tt-icon">
 									<svg>
 										<use xlink:href="#icon-time"></use>
 									</svg>
 								</i>{{moment this.updateDate}}
-							</a>
+							</span>
  				    </div>
  			    </div>
 		
@@ -543,6 +557,7 @@
           </div>
 
 		 			<div class="tt-item-info info-bottom">
+						<!--
 						<a href="#" class="tt-icon-btn">
 							<i class="tt-icon">
 								<svg>
@@ -551,6 +566,7 @@
 							</i>
 							<span class="tt-text">0</span>
 						</a>
+						-->
 						<div class="col-separator"></div>
 						<!-- {{{../login}}} {{this.user.id}} -->
 						{{#ifCond ../login '==' this.user.id}}
@@ -562,6 +578,7 @@
 							</i>
 						</a>
 						{{/ifCond}}
+						<!--
 						<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
 							<i class="tt-icon">
 								<svg>
@@ -569,6 +586,7 @@
 								</svg>
 							</i>
 						</a>
+						-->
 					</div>
 	   		</div>
 	 		</div>

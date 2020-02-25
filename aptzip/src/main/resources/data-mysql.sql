@@ -1,5 +1,10 @@
-INSERT INTO TB_ROLE (role) VALUES ('ADMIN');
-INSERT INTO TB_ROLE (role) VALUES ('USER');
+-- mysql table names are case sensitive in MySQL.
+-- Database and table names are not case sensitive in Windows,
+-- and case sensitive in most varieties of Unix.
+-- INSERT INTO TB_ROLE (role) VALUES ('ADMIN');
+INSERT INTO tb_role (role) VALUES ('ADMIN');
+INSERT INTO tb_role (role) VALUES ('USER');
+--> lower_case_table_names=1
 
 INSERT INTO TB_APT (apt_name, apt_province, apt_city, apt_town) VALUES ('주공', '서울특별시', '강남구', '대치동');
 INSERT INTO TB_APT (apt_name, apt_province, apt_city, apt_town) VALUES ('래미안', '서울특별시', '동작구', '사당동');

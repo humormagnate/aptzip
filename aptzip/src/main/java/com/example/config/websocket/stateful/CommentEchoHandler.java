@@ -56,17 +56,20 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     if (StringUtils.isNotEmpty(msg)) {
       // "|"(pipe)로만 하면 1글자씩 전부 나눠버림
       // "+"(plus)가 포함되어 있으면 dangling meta character '+' near index 에러
+      log.info("split");
       String[] strs = msg.split("\\|\\+\\|");
+      log.info("comment {} / commentUser {} / boardUser {}", strs[0], strs[1], strs[2]);
+      log.info("strs.length : {}", strs.length);
+      log.info("session.getPrincipal() : {}", session.getPrincipal());
 
       if (strs != null
-          && strs.length == 3
-          && session.getPrincipal() != null) {
+          // && session.getPrincipal() != null
+          && strs.length == 3) {
         log.info("strs is not null");
         String comment = strs[0];
         String commentUser = strs[1];
         String boardUser = strs[2];
         if (commentUser.equals(boardUser)) return;
-        log.info("comment {} / commentUser {} / boardUser {}", strs[0], strs[1], strs[2]);
 
         WebSocketSession boardSocketSession = userSessions.get(boardUser);
         if (boardSocketSession != null) {
@@ -99,7 +102,7 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     // SockJsClient
     // UsernamePasswordAuthenticationToken.principal -> final field
     Principal principal = session.getPrincipal();
-    // log.info("principal : {}", principal);
+    log.info("principal : {}", principal);
     // log.info("principal.getName() : {}", principal.getName());
     
     // Authentication auth = (Authentication)session.getPrincipal();

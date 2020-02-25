@@ -20,6 +20,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     // pure websocket (standard) > IE 10
     registry.addHandler(new CommentEchoHandler(), "/ws/comment")
             .setAllowedOrigins("*");
+            // .setHandshakeHandler();
 
     // Use SockJS Library > IE 8
     // client js 라이브러리 필요(cdn || webjar)

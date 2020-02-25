@@ -1,10 +1,10 @@
 server:
   port: 8888
   servlet:
-    context-path: /aptzip
+    context-path: /
   error:
-    # whitelabel:
-    #   enabled: true
+    whitelabel:
+      enabled: false
     path: /error
     # include-exception: true
     # include-stacktrace: always
@@ -33,13 +33,13 @@ spring:
       hibernate:
         format_sql: true
   datasource:
-    # initialization-mode: always
+    initialization-mode: always
     # url: jdbc:h2:mem:testdb
     # username: sa
     # password: test
     # driver-class-name: org.h2.Driver
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/aptzip?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/aptzip?serverTimezone=Asia/Seoul&useUnicode=true
     username: aptzip
     password: aptziproot
     tomcat:
@@ -84,63 +84,65 @@ env:
     test: https://frontbackend.com/thymeleaf/thymeleaf-default-spring-boot-application-properties
     test2: https://www.baeldung.com/properties-with-spring
     test3: https://www.thymeleaf.org/doc/articles/springmvcaccessdata.html
----
-server:
-  error:
-    whitelabel:
-      enabled: false
-    path: /error
-    include-exception: false
-    include-stacktrace: always
 
-logging:
-  level:
-    org:
-      springframework:
-        security: debug
-        web: debug
-      hibernate: debug
+# ---
+# server:
+#   port: 8888
+#   servlet:
+#     context-path: /aptzip
+#   error:
+#     whitelabel:
+#       enabled: false
+#     path: /error
 
-spring:
-  profiles:
-  - server
-  devtools:
-    livereload:
-      enabled: false
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/aptzip?serverTimezone=Asia/Seoul
-    username: aptzip
-    password: aptziproot
-    initialization-mode: embedded
-    tomcat:
-      initial-size: 151
-    dbcp2:
-      remove-abandoned-on-borrow: true
-      remove-abandoned-timeout: 60
-      log-abandoned: true
-    platform: mysql
-  batch:
-    initialize-schema: never
-  session:
-    store-type: none
-  jpa:
-    generate-ddl: true
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-  http:
-    log-request-details: true
-  thymeleaf:
-    enabled: true
-    cache: false
-    encoding: UTF-8
-    mode: HTML
-    check-template-location: true
-  autoconfigure:
-    exclude:
-    - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+# logging:
+#   level:
+#     org:
+#       springframework:
+#         security: debug
+#         web: debug
+#       hibernate: debug
+
+# spring:
+#   profiles:
+#   - server
+#   devtools:
+#     livereload:
+#       enabled: false
+#   datasource:
+#     driver-class-name: com.mysql.cj.jdbc.Driver
+#     url: jdbc:mysql://localhost:3306/aptzip?serverTimezone=Asia/Seoul
+#     username: aptzip
+#     password: aptziproot
+#     initialization-mode: always
+#     tomcat:
+#       initial-size: 151
+#     dbcp2:
+#       remove-abandoned-on-borrow: true
+#       remove-abandoned-timeout: 60
+#       log-abandoned: true
+#     platform: mysql
+#   batch:
+#     initialize-schema: never
+#   session:
+#     store-type: none
+#   jpa:
+#     generate-ddl: true
+#     hibernate:
+#       ddl-auto: validate
+#     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#     show-sql: true
+#     properties:
+#       hibernate:
+#         format_sql: true
+#   http:
+#     log-request-details: true
+#   thymeleaf:
+#     enabled: true
+#     cache: false
+#     encoding: UTF-8
+#     mode: HTML
+#     check-template-location: true
+#   autoconfigure:
+#     exclude:
+#     - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration

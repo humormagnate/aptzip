@@ -41,7 +41,7 @@
 								</svg>
 							</a>
 							<!-- <a th:href="@{ ~/user/{id}/message(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
-							<a href="#" class="btn btn-primary">Message</a>
+							<!-- <a href="#" class="btn btn-primary">Message</a> -->
 							<a th:if="${#authentication.principal.id} ne ${ infouser.id }" href="#" id="userFollowBtn" class="btn btn-secondary">Follow</a>
 						</div>
 					</div>
@@ -304,7 +304,7 @@
 								<div class="tt-col-value-large hide-mobile">[[${#temporals.format(follower.follower.signupDate, 'yyyy-MM-dd')}]]</div>
 								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] hours ago</div>
 								<div class="tt-col-value">
-									<span th:class="${follower.follower.role.role eq 'ADMIN'} ? tt-color16 : tt-color-19" th:classappend="tt-badge">
+									<span th:class="${follower.follower.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
 										[[${follower.follower.role.role}]]
 									</span>
 								</div>
@@ -518,7 +518,7 @@
 	</div>
 	<!-- popup-settings end -->
 
-	<a href="/board/write" class="tt-btn-create-topic">
+	<a th:href="@{/board/write}" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
 				<use xlink:href="#icon-create_new"></use>
@@ -542,7 +542,7 @@
 			const obj = { id:USER_ID, password:NEW_PASSWORD };
 
 			$.ajax({
-	      url: '/user/edit/pw',
+	      url: '[[@{/user/edit/pw}]]',
 	      method: 'patch',
 				data: JSON.stringify(obj),
 				// client -> server
@@ -552,7 +552,7 @@
 	      success: function(data){
 					if (data === 'success') {
 						alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
-						location.href='/logout';
+						location.href='[[@{/logout}]]';
 					} else {
 						console.error('server error');
 					}
@@ -569,7 +569,8 @@
 	if (userFollowBtn != null) {
 		userFollowBtn.addEventListener('click', function(event){
 			event.preventDefault();
-			userFollow();
+			const URL = '[[@{/user}]]/' + TARGET_ID + '/follow';
+			userFollow(URL);
 		}, false);
 	}
 
@@ -577,7 +578,7 @@
 	userLeave.addEventListener('click', function(event) {
 		event.preventDefault();
 		$.ajax({
-			url: '/user/' + USER_ID,
+			url: '[[@{/user/}]]' + USER_ID,
 			method: 'delete',
 			data: {
 				id: USER_ID
@@ -585,7 +586,7 @@
 			success: function(data) {
 				if (data === 'success') {
 					alert('탈퇴되었습니다.');
-					location.href='/logout';
+					location.href='[[@{/logout}]]';
 				} else {
 					console.error('server error');
 				}

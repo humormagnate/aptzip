@@ -18,6 +18,7 @@ public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfi
 		registry.addEndpoint("/ws/message")
 						.setAllowedOrigins("*")
 						.withSockJS();
+						// .setClientLibraryUrl("https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js");
   }
   
 	/**

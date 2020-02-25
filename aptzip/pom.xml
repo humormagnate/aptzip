@@ -40,7 +40,6 @@
     <dependency>
       <groupId>nz.net.ultraq.thymeleaf</groupId>
       <artifactId>thymeleaf-layout-dialect</artifactId>
-      <!-- <version>2.4.1</version> -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -99,12 +98,10 @@
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
-      <!-- <version>4.2.1</version> -->
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
-      <!-- <version>4.2.1</version> -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -116,41 +113,11 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.9</version>
     </dependency>
-    <!-- <dependency>
-      <groupId>pl.allegro.tech.boot</groupId>
-      <artifactId>handlebars-spring-boot-starter</artifactId>
-      <version>0.3.0</version>
-    </dependency> -->
-    <!-- helper
     <dependency>
-        <groupId>com.github.jknack</groupId>
-        <artifactId>handlebars-helpers</artifactId>
-        <version>4.1.2</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+      <scope>compile</scope>
     </dependency>
-    <dependency>
-        <groupId>com.github.jknack</groupId>
-        <artifactId>handlebars-jackson2</artifactId>
-        <version>4.1.2</version>
-    </dependency>
-    <dependency>
-        <groupId>com.github.jknack</groupId>
-        <artifactId>handlebars-humanize</artifactId>
-        <version>4.1.2</version>
-    </dependency>
-    <dependency>
-        <groupId>com.github.jknack</groupId>
-        <artifactId>handlebars-markdown</artifactId>
-        <version>4.1.2</version>
-    </dependency>
-    -->
-    <!-- webjar -->
-    <!--     
-    <dependency>
-      <groupId>org.webjars.npm</groupId>
-      <artifactId>handlebars</artifactId>
-      <version>4.7.3</version>
-    </dependency>
-    -->
   </dependencies>
   <build>
     <plugins>

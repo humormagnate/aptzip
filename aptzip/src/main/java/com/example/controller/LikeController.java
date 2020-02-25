@@ -34,7 +34,7 @@ public class LikeController {
     
     // No default constructor for entity
     // => NoArgsConstructor
-
+    
     BoardEntity board = new BoardEntity();
     board.setId(Long.valueOf(id));
 

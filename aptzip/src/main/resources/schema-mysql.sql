@@ -1,13 +1,16 @@
-DROP TABLE IF EXISTS persistent_logins CASCADE;
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS persistent_logins;
+DROP TABLE IF EXISTS to_like;
 DROP TABLE IF EXISTS tb_comment;
 DROP TABLE IF EXISTS tb_favorite;
 -- DROP TABLE IF EXISTS tb_notice;
 DROP TABLE IF EXISTS tb_user_follow;
-DROP TABLE IF EXISTS tb_board	CASCADE;
-DROP TABLE IF EXISTS tb_user CASCADE;
+DROP TABLE IF EXISTS tb_board;
+DROP TABLE IF EXISTS tb_user;
 DROP TABLE IF EXISTS tb_role;
 DROP TABLE IF EXISTS tb_apt;
 DROP TABLE IF EXISTS tb_category;
+SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE tb_role (
 	role	VARCHAR(128) NOT NULL,
@@ -15,7 +18,7 @@ CREATE TABLE tb_role (
 );
 
 CREATE TABLE tb_apt (
-	id 			      INTEGER      NOT NULL	AUTO_INCREMENT,
+	id 			      BIGINT      NOT NULL	AUTO_INCREMENT,
 	apt_name      VARCHAR(128) NOT NULL,
 	apt_province  VARCHAR(128) NOT NULL,
 	apt_city      VARCHAR(128) NOT NULL,
@@ -38,7 +41,7 @@ CREATE TABLE tb_user (
 	signup_date		TIMESTAMP			DEFAULT	NOW(),
 	reported			INTEGER				DEFAULT '0' 	NOT NULL,
 	role					VARCHAR(128)	DEFAULT 'USER',
-	apt_id				INTEGER,
+	apt_id				BIGINT,
 	PRIMARY KEY (id),
 	FOREIGN KEY (apt_id)	REFERENCES tb_apt (id)
 	--UNIQUE (email)
@@ -68,7 +71,7 @@ CREATE TABLE tb_board (
   update_date		TIMESTAMP		DEFAULT NOW()	NOT NULL,
   view_count		INTEGER			DEFAULT '0'	NOT NULL,
   user_id				BIGINT				NOT NULL,
-  apt_id				INTEGER				NOT NULL,
+  apt_id				BIGINT				NOT NULL,
 	PRIMARY KEY (id),
   -- FOREIGN KEY (user_id)	REFERENCES tb_user (id),
 	FOREIGN KEY (apt_id) 	REFERENCES tb_apt (id),
@@ -90,7 +93,7 @@ CREATE TABLE tb_board (
 
 CREATE TABLE tb_comment (
 	id			BIGINT				NOT NULL	AUTO_INCREMENT,
-  comment_content	TEXT					NOT NULL,
+  comment_content	TEXT					NOT NULL ,
   ip_address			VARCHAR(128),	--NOT NULL,
   create_date			TIMESTAMP		DEFAULT NOW()	NOT NULL,
   update_date			TIMESTAMP		DEFAULT NOW()	NOT NULL,

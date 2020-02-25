@@ -78,12 +78,12 @@ function updatePost(URL, boardTitle, boardContent) {
   });
 }
 
-function userFollow() {
+function userFollow(URL) {
   // console.log('follow test');
   event.preventDefault();
 
   $.ajax({
-    url: "/user/" + TARGET_ID + "/follow",
+    url: URL,
     method: "post",
     // data: {
     //   "userId": USER_ID

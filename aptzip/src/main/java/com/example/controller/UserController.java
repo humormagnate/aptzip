@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import com.example.domain.board.BoardEntity;
 import com.example.domain.board.CommentEntity;
-import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserFollowEntity;
 import com.example.domain.user.UserRequestDto;
@@ -23,14 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,31 +43,6 @@ public class UserController {
 	private final FollowRepository followRepo;
 	// private final FollowQueryRepository followQuery;
 	private final CommentRepository commentRepo;
-	
-	/**
-	 * create
-	 * @param userForm
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@PostMapping(value = "/signup")
-	public String insertUser(@ModelAttribute UserRequestDto userForm, RedirectAttributes redirectAttributes, String aptId) {
-		log.info("=============================SIGN UP================================");
-		// @Valid -> 400 error 페이지로 이동중 SecurityContext 에서 계속 405 error로 바뀐다. Why?
-		try {
-			Long apt = Long.valueOf(aptId);
-			userForm.setApt(AptEntity.builder().id(apt).build());
-			userService.save(userForm);
-    // } catch (DataIntegrityViolationException e) {
-    } catch (Exception e) {
-			e.printStackTrace();
-			log.info(e.getMessage());
-			redirectAttributes.addFlashAttribute("error", true);
-			return "redirect:/join";
-    }
-		redirectAttributes.addFlashAttribute("success", true);
-		return "redirect:/login";
-	}
 
 	/**
 	 * retrieve
