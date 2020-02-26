@@ -17,8 +17,9 @@
           <h6 class="tt-title">
             <span>ERROR[[${code} ? ' ' + ${code} : '']]</span>
           </h6>
-          <p>Sorry we can’t find what you are looking for, here’s some<br>
-            <a th:href="@{/}" class="tt-color-dark tt-underline-02">suggested topics</a> for you.</p>
+          <p th:text="${msg} ? ${msg} : 'Sorry we can’t find what you are looking for.'">
+            <!-- <a th:href="@{/}" class="tt-color-dark tt-underline-02">suggested topics</a> for you. -->
+          </p>
         </div>
       </div>
     </main>
