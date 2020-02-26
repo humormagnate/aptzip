@@ -27,8 +27,24 @@ public final class TemporalsAptzip {
     return temporalAptzipUtils.minusOneHour();
   }
 
-  public Long betweenNowAndTime(LocalDateTime time) {
+  public String betweenNowAndTime(LocalDateTime time) {
     return temporalAptzipUtils.betweenNowAndTime(time);
+  }
+
+  public Long betweenNowAndTimeHour(LocalDateTime time) {
+    return temporalAptzipUtils.betweenNowAndTimeHour(time);
+  }
+
+  public Long betweenNowAndTimeDay(LocalDateTime time) {
+    return temporalAptzipUtils.betweenNowAndTimeDay(time);
+  }
+
+  public Long betweenNowAndTimeMonth(LocalDateTime time) {
+    return temporalAptzipUtils.betweenNowAndTimeMonth(time);
+  }
+
+  public Long betweenNowAndTimeYear(LocalDateTime time) {
+    return temporalAptzipUtils.betweenNowAndTimeYear(time);
   }
 
   public boolean isItOneHourAgo(LocalDateTime time) {

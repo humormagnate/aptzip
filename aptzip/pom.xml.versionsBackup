@@ -75,27 +75,18 @@
       <artifactId>spring-boot-starter-websocket</artifactId>
     </dependency>
     <!-- spring-social start -->
-    <!-- core 안에 web, config 포함되어 있지만 최신 버전 사용을 위해 명시적으로 추가 -->
     <dependency>
       <groupId>org.springframework.social</groupId>
       <artifactId>spring-social-core</artifactId>
       <version>${spring-social.version}</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>org.springframework.social</groupId>
       <artifactId>spring-social-web</artifactId>
       <version>${spring-social.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.social</groupId>
-      <artifactId>spring-social-config</artifactId>
-      <version>${spring-social.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.social</groupId>
-      <artifactId>spring-social-security</artifactId>
-      <version>${spring-social.version}</version>
-    </dependency>
+    -->
     <dependency>
       <groupId>org.springframework.social</groupId>
       <artifactId>spring-social-facebook</artifactId>
@@ -142,7 +133,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>28.2-jre</version>
+      <version>28.1-jre</version>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>

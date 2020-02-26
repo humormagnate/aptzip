@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"
+			xmlns:th="http://www.thymeleaf.org"
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/noheader.html}">
+
+  <div layout:fragment="content">
+	<!-- tt-mobile menu -->
+	<nav class="panel-menu" id="mobile-menu">
+		<ul>
+
+		</ul>
+		<div class="mm-navbtn-names">
+			<div class="mm-closebtn">
+				Close
+				<div class="tt-icon">
+					<svg>
+						<use xlink:href="#icon-cancel"></use>
+					</svg>
+				</div>
+			</div>
+			<div class="mm-backbtn">Back</div>
+		</div>
+	</nav>
+	<main id="tt-pageContent" class="tt-offset-none">
+		<div class="container">
+			<div class="tt-loginpages-wrapper">
+				<div class="tt-loginpages">
+					<a th:href="@{/}" class="tt-block-title">
+						<img th:src="@{/images/logo.png}" alt="">
+						<div class="tt-title">
+							Welcome to apt-zip
+						</div>
+						<div class="tt-description">
+							facebook!
+						</div>
+					</a>
+					
+					<div class="tt-notes">
+						<p>Already have an account? <a th:href="@{/login}" class="tt-underline">Login here</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+</div>
+
+</html>

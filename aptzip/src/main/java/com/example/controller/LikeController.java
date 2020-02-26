@@ -24,7 +24,7 @@ public class LikeController {
 
   private final LikeRepository likeRepo;
 
-  // TODO: post와 delete 나누기
+  // TODO post와 delete 나누기
   @PostMapping("/{id}")
   public String insertLike(@PathVariable("id") String id, @RequestBody LikeEntity like, @AuthenticationPrincipal UserResponseDto principal) {
     log.info("like>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");

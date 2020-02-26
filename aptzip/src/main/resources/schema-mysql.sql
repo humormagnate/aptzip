@@ -1,5 +1,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS persistent_logins;
+DROP TABLE IF EXISTS UserConnection;
 DROP TABLE IF EXISTS tb_confirmation_token;
 DROP TABLE IF EXISTS to_like;
 DROP TABLE IF EXISTS tb_comment;
@@ -123,3 +124,22 @@ CREATE TABLE persistent_logins (
 --   FOREIGN KEY (board_id)	REFERENCES tb_board (id),
 --   FOREIGN KEY (user_id)		REFERENCES tb_user (id)
 -- );
+
+-- https://docs.spring.io/spring-social/docs/2.0.0.M4/reference/htmlsingle/#section_jdbcConnectionFactory
+-- https://github.com/mihajul/spring-social/commit/48d49d806571385fd0b68777376b77fadfcb23c6
+-- 
+create table UserConnection (
+	userId 					varchar(255) 	not null,
+  providerId 			varchar(255) 	not null,
+  providerUserId	varchar(255),
+  `rank` 						integer				not null, --> rank == keyword
+  displayName 		varchar(255),
+  profileUrl 			varchar(512),
+  imageUrl 				varchar(512),
+  accessToken 		varchar(255) 	not null,
+  secret 					varchar(255),
+  refreshToken 		varchar(255),
+  expireTime 			bigint,
+  primary key (userId, providerId, providerUserId)
+);
+create unique index UserConnectionRank on UserConnection(userId, providerId, `rank`);

@@ -76,11 +76,41 @@
 						<div class="form-group">
 							<button type="submit" class="btn btn-secondary btn-block">Log in</button>
 						</div>
-						 
-						<div class="tt-notes">
-							<p>Don’t have an account? <a th:href="@{/signup}" class="tt-underline">Signup here</a></p>
-						</div>						
 					</form>
+					<!-- org.springframework.social.connect.web.ConnectController -->
+<!--
+				<p>Or login with social network</p>
+				<div class="row">
+					<div class="col">
+						<div class="form-group">
+							<form th:action="@{/connect/facebook}" th:method="post">
+								<a href="#" class="btn btn-color01 btn-secondary btn-block">
+									<i>
+										<svg class="icon">
+											<use xlink:href="#facebook-f-brands"></use>
+										</svg>
+									</i>
+									<input type="submit">Facebook
+								</a>
+							</form>
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group">
+							<a href="#" class="btn btn-color02 btn-block">
+								<i>
+									<svg class="icon">
+										<use xlink:href="#twitter-brands"></use>
+									</svg>
+								</i>
+								Twitter
+							</a>
+						</div>
+					</div>
+-->
+					<div class="tt-notes">
+						<p>Don’t have an account? <a th:href="@{/signup}" class="tt-underline">Signup here</a></p>
+					</div>
 				</div>
 			</div>
 		</div>

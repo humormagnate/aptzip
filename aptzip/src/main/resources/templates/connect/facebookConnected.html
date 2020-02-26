@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"
+			xmlns:th="http://www.thymeleaf.org"
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/noheader.html}">
+
+  <div layout:fragment="content">
+	<!-- tt-mobile menu -->
+	<nav class="panel-menu" id="mobile-menu">
+		<ul>
+
+		</ul>
+		<div class="mm-navbtn-names">
+			<div class="mm-closebtn">
+				Close
+				<div class="tt-icon">
+					<svg>
+						<use xlink:href="#icon-cancel"></use>
+					</svg>
+				</div>
+			</div>
+			<div class="mm-backbtn">Back</div>
+		</div>
+	</nav>
+	<main id="tt-pageContent" class="tt-offset-none">
+		<div class="container">
+			<div class="tt-loginpages-wrapper">
+				<div class="tt-loginpages">
+					<a th:href="@{/}" class="tt-block-title">
+						<img th:src="@{/images/logo.png}" alt="">
+						<div class="tt-title">
+							Welcome to apt-zip
+						</div>
+						<div class="tt-description">
+							Connected successfully with facebook!
+						</div>
+					</a>
+					
+					<form action="#" class="form-default" th:action="@{/signup}" method="post">
+						<!-- org.springframework.social.connect.support.OAuth2Connection => ConnectionData -->
+						<!-- <input type="hidden" th:value="${connections.get(0).createData()}" name="connection"> -->
+						<div class="tt-description" th:each="connection : ${connections}">
+							<div th:object="${connection.createData()}">
+								<input type="hidden" th:value="*{providerId}" name="providerId">
+								<input type="hidden" th:value="*{providerUserId}" name="providerUserId">
+							</div>
+						</div>
+						<!-- <input type ="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+						<div th:if="${error}">
+							<div class="alert alert-danger" role="alert">
+								Failed to registered.
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="loginUserName">Username</label>
+							<input type="text" name="username" class="form-control" id="loginUserName" placeholder="your name">
+						</div>
+						<div class="form-group">
+							<label for="loginUserEmail">Email</label>
+							<input type="text" name="email" class="form-control" id="loginUserEmail" placeholder="sample@aptzip.com">
+						</div>
+						<div class="form-group">
+							<label for="loginUserPassword">Password</label>
+							<input type="password" name="password" class="form-control" id="loginUserPassword" placeholder="************">
+						</div>
+						<div class="form-group">
+							<label for="loginUserApartment">Apartment</label>
+							<input type="text" name="aptId" class="form-control" id="loginUserApartment" placeholder="1-5 사이의 값을 입력해주세요">
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-secondary btn-block">Create my account</button>
+						</div>
+					</form>
+					
+					<div class="tt-notes">
+						<p>Already have an account? <a th:href="@{/login}" class="tt-underline">Login here</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+</div>
+
+</html>

@@ -5,6 +5,7 @@ import java.util.EventListener;
 import javax.sql.DataSource;
 
 import com.example.domain.user.UserRole;
+import com.example.service.SocialUserAccountService;
 import com.example.service.UserAccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+// https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-1/
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -211,4 +213,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
   }
 
+  @Bean
+	public SocialUserAccountService socialUsersDetailService() {
+		return new SocialUserAccountService(userService);
+  }
+  
 }

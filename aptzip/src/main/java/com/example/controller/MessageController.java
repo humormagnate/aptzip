@@ -30,6 +30,6 @@ public class MessageController {
 	 */
 	@GetMapping("/{id}/message")
 	public String message() {
-		return "user/messages-page";
+		return "user/page-messages";
 	}
 }

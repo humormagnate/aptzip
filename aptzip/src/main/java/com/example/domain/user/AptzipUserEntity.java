@@ -120,4 +120,9 @@ public class AptzipUserEntity {
   private List<UserFollowEntity> follower;
 
   private boolean isEnabled;
+
+  private String providerId;
+  
+  private String providerUserId;
+
 }

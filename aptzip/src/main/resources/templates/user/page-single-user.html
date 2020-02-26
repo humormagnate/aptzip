@@ -127,7 +127,7 @@
 									</a>
 								</div>
 								<div class="tt-col-value-large hide-mobile">
-									[[${#aptzip.betweenNowAndTime(board.createDate)}]]h
+									[[${#aptzip.betweenNowAndTime(board.createDate)}]]
 								</div>
 							</div>
 
@@ -190,7 +190,7 @@
 								<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
 								<div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
 								<div class="tt-col-value hide-mobile">
-									[[${#aptzip.betweenNowAndTime(board.createDate)}]]h
+									[[${#aptzip.betweenNowAndTime(board.createDate)}]]
 								</div>
 							</div>
 
@@ -259,7 +259,7 @@
 									</a>
 								</div>
 								<div class="tt-col-value-large hide-mobile">
-									[[${#aptzip.betweenNowAndTime(comment.updateDate)}]]h
+									[[${#aptzip.betweenNowAndTime(comment.updateDate)}]]
 								</div>
 							</div>
 
@@ -302,7 +302,7 @@
 									</div>
 								</div>
 								<div class="tt-col-value-large hide-mobile">[[${#temporals.format(follower.follower.signupDate, 'yyyy-MM-dd')}]]</div>
-								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] hours ago</div>
+								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] ago</div>
 								<div class="tt-col-value">
 									<span th:class="${follower.follower.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
 										[[${follower.follower.role.role}]]
@@ -341,7 +341,7 @@
 									</div>
 								</div>
 								<div class="tt-col-value-large hide-mobile">[[${#temporals.format(following.following.signupDate, 'yyyy-MM-dd')}]]</div>
-								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createDate)}]] hours ago</div>
+								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createDate)}]] ago</div>
 								<div class="tt-col-value">
 									<span th:class="${following.following.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
 										[[${following.following.role.role}]]

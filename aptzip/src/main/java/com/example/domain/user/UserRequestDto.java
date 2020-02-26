@@ -13,7 +13,7 @@ import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.security.SocialUserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// TODO: validation
+// TODO validation
 // https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
 @Getter
 @Setter
@@ -30,7 +30,7 @@ import lombok.ToString;
 @ToString(exclude = {"following", "follower"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto implements UserDetails {
+public class UserRequestDto implements SocialUserDetails {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +59,8 @@ public class UserRequestDto implements UserDetails {
 	private List<UserFollowEntity> following;
 	private List<UserFollowEntity> follower;
 	private boolean isEnabled;
+  private String providerId;
+  private String providerUserId;
 
 	public UserRequestDto(AptzipUserEntity user) {
 		this.id = user.getId();
@@ -80,7 +82,9 @@ public class UserRequestDto implements UserDetails {
 			apt,
 			following,
 			follower,
-			isEnabled
+			isEnabled,
+			providerId,
+			providerUserId
 		);
 	}
 
@@ -111,6 +115,11 @@ public class UserRequestDto implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String getUserId() {
+		return providerUserId;
 	}
 
 }

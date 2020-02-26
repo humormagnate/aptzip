@@ -106,7 +106,7 @@ public class UserAccountController {
 		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
 
-	// TODO: post와 delete 나누기
+	// TODO post와 delete 나누기
 	@Transactional
 	@ResponseBody
 	@PostMapping("/{id}/follow")

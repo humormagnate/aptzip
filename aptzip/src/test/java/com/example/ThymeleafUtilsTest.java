@@ -36,17 +36,39 @@ public class ThymeleafUtilsTest {
   }
 
   @Test
-  public void testBetweenNowAndTime() {
+  public void testBetweenNowAndTimeHour() {
     int currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) - 1;
     LocalTime local = LocalTime.of(currentTime, 59);
     log.info(currentTime + "");
     log.info(local.toString());
+    
+    Long result = temporals.betweenNowAndTimeHour(LocalDateTime.of(LocalDate.now(), local));
+    log.info("result : {}", result);
 
-    Long result = temporals.betweenNowAndTime(LocalDateTime.of(LocalDate.now(), local));
     assertNotNull(result);
     assertTrue(result instanceof Long);
 
     assertEquals(result, 1L);
+  }
+  
+  @Test
+  public void testBetweenNowAndTime() {
+    // int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond
+    String resultHour0 = temporals.betweenNowAndTime(LocalDateTime.of(2020, 2, 27, 3, 30, 1, 1));
+    log.info("resultHour0 : {}", resultHour0);
+    String resultHour1 = temporals.betweenNowAndTime(LocalDateTime.of(2020, 2, 27, 3, 5, 1, 1));
+    log.info("resultHour1 : {}", resultHour1);
+    String resultDay = temporals.betweenNowAndTime(LocalDateTime.of(2020, 2, 26, 4, 1, 1, 1));
+    log.info("resultDay : {}", resultDay);
+    String resultMonth = temporals.betweenNowAndTime(LocalDateTime.of(2020, 1, 26, 4, 1, 1, 1));
+    log.info("resultMonth : {}", resultMonth);
+    String resultYear = temporals.betweenNowAndTime(LocalDateTime.of(2019, 2, 25, 4, 1, 1, 1));
+    log.info("resultYear : {}", resultYear);
+
+    assertNotNull(resultHour0);
+    assertTrue(resultHour0 instanceof String);
+
+    assertEquals(resultHour0, "0h");
   }
 
   @Test
