@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 class AptzipApplicationTests {
 
 	private final PasswordEncoder passwordEncoder;
-	// private final BoardRepository boardRepository;
-	// private final CommentRepository commentRepository;
 
 	@Test
 	public void password() {
@@ -28,16 +26,4 @@ class AptzipApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
-	// @Test
-	// public void insertDummy(){
-	// 	IntStream.range(1, 200).forEach(i -> {
-	// 		BoardEntity board = new BoardEntity();
-	// 		board.setBoardTitle("Title..." + i);
-	// 		board.setBoardContent("Content..." + i);
-	// 		board.setUserId(AptzipUserEntity.builder().id(2).build());
-	// 		board.setAptId(AptEntity.builder().aptId(3).build());
-	// 		boardRepository.save(board);
-	// 	});
-	// }
 }

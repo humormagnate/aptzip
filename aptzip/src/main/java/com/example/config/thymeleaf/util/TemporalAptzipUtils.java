@@ -28,12 +28,12 @@ public final class TemporalAptzipUtils {
       result = hour + "h";
     } else if (hour < (24L * 30L)) {
       result = (hour / 24L) + "d";
+      log.info("betweenNowAndTime result : {}", result);
     } else if (hour < (24L * 365L)) {
       result = (hour / 24L / 30L) + "m";
     } else {
       result = (hour / 24L / 365L) + "y";
     }
-
     return result;
   }
 
@@ -63,7 +63,7 @@ public final class TemporalAptzipUtils {
 
   public boolean isItOneHourAgo(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
-    log.info(now + "");
+    // log.info("now : {}", now);
     // log.info(time + "");
     // log.info(ChronoUnit.MILLIS.between(time, now) + "");
 

@@ -33,11 +33,13 @@ public class AptController {
     // apt id를 받아 해당 아파트의 thread만 받음
     log.info(principal + "=========================================================");
 
-    List<BoardEntity> list = new ArrayList<BoardEntity>();
     AptEntity apt = new AptEntity(id);
+
+    // TODO makePredicate에 Apt 객체에 대한 조건 검사도 추가 필요
 		Iterable<BoardEntity> board = boardRepo.findAllByAptOrderByIdDesc(apt);
 		int newBoard = 0;
-
+    
+    List<BoardEntity> list = new ArrayList<BoardEntity>();
 		for (BoardEntity str : board) {
 			list.add(str);
 			if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {

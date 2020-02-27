@@ -39,7 +39,7 @@
 
 
           <!-- board-list start -->
-          <th:block th:each="board, index : ${ list }">
+          <th:block th:each="board, index : ${ list.result }">
             
             <!-- new post -->
             <div th:if="${ newBoard ne 0 and index.index eq 0}" class="tt-topic-alert tt-alert-default" role="alert">
@@ -128,6 +128,33 @@
           </th:block>
           <!-- board-list end -->
 
+          <!-- paging start -->
+          <div class="pagination-container">
+            <nav>
+              <!-- [[${list}]] -->
+              <ul class="pagination justify-content-center">
+                <li class="page-item" th:if="${list.prevPage}">
+                  <a th:href="@{?page={prev}(prev=${list.prevPage.pageNumber+1})}" class="page-link">
+                    <!-- [[${list.prevPage}]] -->
+                    &laquo;
+                  </a>
+                </li>
+                <li class="page-item" th:each="p:${list.pageList}" th:classappend="${p.pageNumber eq list.currentPageNum-1} ? active : ''">
+                  <a th:href="@{?page={c}(c=${p.pageNumber+1})}" class="page-link">
+                    [[${p.pageNumber} + 1]]
+                  </a>
+                </li>
+                <li class="page-item" th:if="${list.nextPage}">
+                  <a th:href="@{?page={next}(next=${list.nextPage.pageNumber+1})}" class="page-link">
+                    <!-- [[${list.nextPage}]] -->
+                    &raquo;
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <!-- paging end -->
+
           <!-- row-btn start -->
           <div class="tt-row-btn">
             <button type="button" class="btn-icon js-topiclist-showmore">
@@ -137,6 +164,7 @@
             </button>
           </div>
           <!-- row-btn end -->
+
         </div>
         <!-- topic-list end -->
       </div>
@@ -151,6 +179,7 @@
   		</span>
   	</a>
   </div>
+
   <script layout:fragment="script">
     const REMOVE_POPUP_BTN = document.getElementById('removePopup');
     if (REMOVE_POPUP_BTN != null && REMOVE_POPUP_BTN != undefined) {

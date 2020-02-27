@@ -39,7 +39,7 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
 
   public List<BoardEntity> findAllByAptOrderByIdDesc(AptEntity apt);
 
-  // Java 8 can add code by adding a default method to the interface. 
+  // Java 8 can add methods to interfaces by adding a 'default' keyword to methods.
   public default Predicate makePredicate(String type, String keyword) {
 
     BooleanBuilder builder = new BooleanBuilder();
@@ -54,13 +54,13 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
     }
 
     switch (type) {
-    case "t":
+    case "title":
       builder.and(board.boardTitle.like("%" + keyword + "%"));
       break;
-    case "c":
+    case "content":
       builder.and(board.boardContent.like("%" + keyword + "%"));
       break;
-    case "w":
+    case "writer":
       builder.and(board.user.username.like("%" + keyword + "%"));
       break;
     }
