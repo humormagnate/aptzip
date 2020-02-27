@@ -71,8 +71,7 @@
           
           <form class="search-wrapper">
             <div class="search-form">
-              <input type="hidden" name="type" id="search-type" value="title">
-              <input type="text" name="keyword" id="search-keyword" class="tt-search__input" placeholder="Search" />
+              <input type="text" name="query" id="search-query" class="tt-search__input" placeholder="Search" />
               <button class="tt-search__btn" type="submit">
                 <svg class="tt-icon">
                   <use xlink:href="#icon-search"></use>
@@ -89,7 +88,7 @@
               <div class="tt-search-scroll">
                 <ul>
                   <li>
-                    <a th:href="@{/}">
+                    <a th:href="@{/board/1}">
                       <h6 class="tt-title">GUIDE</h6>
                       <div class="tt-description">
                         안내서

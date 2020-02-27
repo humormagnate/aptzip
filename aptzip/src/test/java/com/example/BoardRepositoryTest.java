@@ -1,6 +1,9 @@
 package com.example;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import javax.transaction.Transactional;
@@ -10,6 +13,8 @@ import com.example.domain.board.CategoryEntity;
 import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipUserEntity;
 import com.example.persistence.board.BoardRepository;
+import com.example.service.BoardService;
+import com.example.vo.PageVo;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,8 +38,9 @@ public class BoardRepositoryTest {
   
   // final로 지정할 경우 ParameterResolver 필요 (JUnit5)
   // @Autowired 지정하지 않을 경우 NullPointerException
-  @Autowired
-  private BoardRepository boardRepository;
+  // @Autowired private BoardRepositoryImpl boardRepositoryImpl;
+  @Autowired private BoardRepository boardRepository;
+  @Autowired private BoardService boardService;
 
   @Test
   @Transactional
@@ -84,6 +90,59 @@ public class BoardRepositoryTest {
       log.info("board : {}", board);
       boardRepository.save(board);
     });
+  }
+  
+  @Test
+  public void testListByDynamicQuery() {
+    // given
+
+    // when
+    // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
+    PageVo pageVo = PageVo.builder()
+                          .page(1)
+                          .size(10)
+                          .query("1")
+                          .username("q")
+                          .category("Discussion")
+                          .date("")
+                          .build();
+
+    Page<BoardEntity> content = boardService.findBoardByDynamicQuery(pageVo.makePageable(0, "id"), pageVo);
+    log.info("content : {}", content);
+    log.info("content.getTotalPages() : {}", content.getTotalPages());
+    List<BoardEntity> list = content.getContent();
+
+    // then
+    if (list.size() > 0) {
+      list.forEach(board -> {
+        log.info("boardEntities : {}", board.getBoardTitle());
+      });
+      log.info("boardEntities.size() : {}", list.size());
+    }
+    assertTrue(list.size() > 1);
+  }
+
+  @Test
+  public void testListByDynamicQueryWithNull() {
+    // given
+
+    // when
+    // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
+    PageVo pageVo = new PageVo();
+
+    Page<BoardEntity> content = boardService.findBoardByDynamicQuery(pageVo.makePageable(0, "id"), pageVo);
+    log.info("content : {}", content);
+    log.info("content.getTotalPages() : {}", content.getTotalPages());
+    List<BoardEntity> list = content.getContent();
+
+    // then
+    if (list.size() > 0) {
+      list.forEach(board -> {
+        log.info("boardEntities : {}", board.getBoardTitle());
+      });
+      log.info("boardEntities.size() : {}", list.size());
+    }
+    assertTrue(list.size() > 1);
   }
 
 }

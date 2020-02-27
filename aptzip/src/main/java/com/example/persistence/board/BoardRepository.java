@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Changsu Im
  */
-public interface BoardRepository extends CrudRepository<BoardEntity, Long>, QuerydslPredicateExecutor<BoardEntity> {
+public interface BoardRepository extends CrudRepository<BoardEntity, Long>,
+                                          QuerydslPredicateExecutor<BoardEntity>,
+                                          BoardRepositoryCustom {
 
   @Transactional
   @Modifying
@@ -40,7 +42,7 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
   public List<BoardEntity> findAllByAptOrderByIdDesc(AptEntity apt);
 
   // Java 8 can add methods to interfaces by adding a 'default' keyword to methods.
-  public default Predicate makePredicate(String type, String keyword) {
+  public default Predicate makePredicate(String type, String query) {
 
     BooleanBuilder builder = new BooleanBuilder();
     QBoardEntity board = QBoardEntity.boardEntity;
@@ -55,13 +57,13 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long>, Quer
 
     switch (type) {
     case "title":
-      builder.and(board.boardTitle.like("%" + keyword + "%"));
+      builder.and(board.boardTitle.like("%" + query + "%"));
       break;
     case "content":
-      builder.and(board.boardContent.like("%" + keyword + "%"));
+      builder.and(board.boardContent.like("%" + query + "%"));
       break;
     case "writer":
-      builder.and(board.user.username.like("%" + keyword + "%"));
+      builder.and(board.user.username.like("%" + query + "%"));
       break;
     }
 

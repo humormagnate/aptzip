@@ -1,11 +1,9 @@
 package com.example.controller;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.example.config.thymeleaf.expression.TemporalsAptzip;
 import com.example.domain.board.BoardEntity;
 import com.example.domain.common.AptEntity;
 import com.example.domain.user.AptzipRoleEntity;
@@ -13,6 +11,7 @@ import com.example.domain.user.AptzipUserEntity;
 import com.example.domain.user.UserResponseDto;
 import com.example.persistence.board.BoardRepository;
 import com.example.persistence.user.UserJpaRepository;
+import com.example.service.BoardService;
 import com.example.vo.PageMaker;
 import com.example.vo.PageVo;
 
@@ -33,8 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CommonController {
 	
-	private final BoardRepository boardRepoistory;
 	private final UserJpaRepository userRepository;
+	private final BoardRepository boardRepository;
+	private final BoardService boardService;
 
 	// @Secured({ "ROLE_ADMIN" })
 	// @GetMapping("/")	// /aptzip?page=3 -> /aptzip/?page=3
@@ -60,26 +60,27 @@ public class CommonController {
 
 		// Iterable<BoardEntity> board = boardRepoistory.findAllByOrderByIdDesc();
 		// QuerydslJpaRepository<T>
-		Page<BoardEntity> boards = boardRepoistory.findAll(boardRepoistory.makePredicate(pageVo.getType(), pageVo.getKeyword()), page);
+		// Page<BoardEntity> boards = boardRepoistory.findAll(boardRepoistory.makePredicate(pageVo.getType(), pageVo.getQuery()), page);
+		Page<BoardEntity> boards = boardService.findBoardByDynamicQuery(page, pageVo);
 		log.info("Page<BoardEntity> : {}", boards);
 		
 		log.info("TOTAL PAGE NUMBER : {}", boards.getTotalPages());
 
+		PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);
+		log.info("PageMaker : {}", list);
+		
 		// 작성한지 한 시간이 안 된 게시글들 카운트
 		// List<BoardEntity> list = new ArrayList<BoardEntity>();
 		int newBoard = 0;
-		for (BoardEntity board : boards) {
-			// list.add(board);
-			if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(board.getCreateDate())) {
-				newBoard++;
-			}
-			log.info("board list : {}", board);
-		}
-		// log.info("page : " + page.toString());
-		// log.info("list.size() : " + list.size());
-		// log.info("list : " + list.toString());
-		PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);
-		log.info("PageMaker : {}", list);
+		// if (list.getCurrentPageNum() == 1) {
+		// 	for (BoardEntity board : boards) {
+		// 		// list.add(board);
+		// 		if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(board.getCreateDate())) {
+		// 			newBoard++;
+		// 		}
+		// 		log.info("board list : {}", board);
+		// 	}
+		// }
 		
 		mv.addObject("principal", principal)
 			.addObject("list", list)
@@ -103,7 +104,7 @@ public class CommonController {
 
 		// https://www.baeldung.com/java-iterable-to-collection
 		List<BoardEntity> boards =
-		StreamSupport.stream(boardRepoistory.findAllByApt(apt).spliterator(), false)
+		StreamSupport.stream(boardRepository.findAllByApt(apt).spliterator(), false)
 		.collect(Collectors.toList());
 		
 		// List<CommentEntity> comments =

@@ -1,19 +1,18 @@
 package com.example.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import com.example.config.thymeleaf.expression.TemporalsAptzip;
 import com.example.domain.board.BoardEntity;
-import com.example.domain.common.AptEntity;
 import com.example.domain.user.UserResponseDto;
-import com.example.persistence.board.BoardRepository;
+import com.example.service.BoardService;
+import com.example.vo.PageMaker;
+import com.example.vo.PageVo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -26,33 +25,49 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class AptController {
 
-  private final BoardRepository boardRepo;
+	private final BoardService boardService;
 
   @GetMapping("/{id}")
-  public String thread(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserResponseDto principal) {
+  public String thread(
+    @PathVariable("id") Long id,
+    @AuthenticationPrincipal UserResponseDto principal,
+		@ModelAttribute("PageVo") PageVo pageVo,
+    Model model
+  ) {
     // apt id를 받아 해당 아파트의 thread만 받음
-    log.info(principal + "=========================================================");
+		log.info("principal : {} =============================================================", principal);
 
-    AptEntity apt = new AptEntity(id);
+		Pageable page = pageVo.makePageable(0, "id");
+    log.info("page : {}", page);
+    
+    // AptEntity apt = new AptEntity(id);
+    pageVo.setAptId(id);
 
     // TODO makePredicate에 Apt 객체에 대한 조건 검사도 추가 필요
-		Iterable<BoardEntity> board = boardRepo.findAllByAptOrderByIdDesc(apt);
-		int newBoard = 0;
+    // Iterable<BoardEntity> board = boardRepo.findAllByAptOrderByIdDesc(apt);
+    Page<BoardEntity> boards = boardService.findBoardByDynamicQuery(page, pageVo);
     
-    List<BoardEntity> list = new ArrayList<BoardEntity>();
-		for (BoardEntity str : board) {
-			list.add(str);
-			if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {
-				newBoard++;
-			}
-		}
-		log.info("list.size() : " + list.size());
-		log.info("list : " + list.toString());
+		log.info("Page<BoardEntity> : {}", boards);
+		
+		log.info("TOTAL PAGE NUMBER : {}", boards.getTotalPages());
+
+		PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);
+    log.info("PageMaker : {}", list);
+    
+		int newBoard = 0;
+    // List<BoardEntity> list = new ArrayList<BoardEntity>();
+		// for (BoardEntity str : board) {
+		// 	list.add(str);
+		// 	if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {
+		// 		newBoard++;
+		// 	}
+		// }
 		
     model.addAttribute("principal", principal)
          .addAttribute("list", list)
+         .addAttribute("pageVo", pageVo)
          .addAttribute("newBoard", newBoard);
 		
-		return "index";
+		return "apt";
   }
 }

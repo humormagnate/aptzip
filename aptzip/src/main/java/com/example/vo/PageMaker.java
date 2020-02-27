@@ -36,11 +36,11 @@ public class PageMaker<T> {
 
   private void calcPages() {
     int tempEndNum = (int)(Math.ceil(this.currentPageNum/3.0)*3);  // 해당 page의 끝번호
-    log.info("tempEndNum : {}", tempEndNum);
+    // log.info("tempEndNum : {}", tempEndNum);
     int startNum = tempEndNum - 2;  // 해당 page의 시작번호
-    log.info("startNum : {}", startNum);
+    // log.info("startNum : {}", startNum);
     Pageable startPage = this.currentPage;
-    log.info("startPage : {}", startPage);
+    // log.info("startPage : {}", startPage);
 
     // move to start Pageable
     for (int i = startNum; i < this.currentPageNum; i++) {
@@ -48,9 +48,9 @@ public class PageMaker<T> {
     }
     this.prevPage = startPage.getPageNumber() <= 0 ? null : startPage.previousOrFirst();
 
-    log.info("startPage.getPageNumber() : {}", startPage.getPageNumber());
-    log.info("prevPage : {}", prevPage);
-    log.info("total : {}", totalPageNum);
+    // log.info("startPage.getPageNumber() : {}", startPage.getPageNumber());
+    // log.info("prevPage : {}", prevPage);
+    log.info("totalPageNum : {}", totalPageNum);
 
     if (this.totalPageNum < tempEndNum) {
       tempEndNum = this.totalPageNum;
@@ -61,7 +61,8 @@ public class PageMaker<T> {
       pageList.add(startPage);
       startPage = startPage.next();
     }
-    this.nextPage = startPage.getPageNumber() + 1 < totalPageNum ? startPage : null;
+    this.nextPage = startPage.getPageNumber() < totalPageNum ? startPage : null;
+    // log.info("startPage.getPageNumber() : {}", startPage.getPageNumber() + 1);
   }
   
 }
