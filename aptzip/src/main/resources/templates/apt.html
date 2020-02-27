@@ -158,14 +158,6 @@
           </div>
           <!-- paging end -->
 
-          <!-- query start -->
-          <form id="query" th:action="@{/apt/{id}(id=${#authentication.principal.apt.id})}" th:method="get">
-            <input type="hidden" th:name="page" th:value="${list.currentPageNum}">
-            <input type="hidden" th:name="size" th:value="${list.currentPage.pageSize}">
-            <input type="hidden" th:name="query" th:value="${pageVo.query}">
-          </form>
-          <!-- query end -->
-
           <!-- row-btn start -->
           <!--
           <div class="tt-row-btn">
@@ -194,32 +186,6 @@
   </div>
 
   <script layout:fragment="script">
-    $(document).ready(function(){
-      const $queryForm = $("#query");
-
-      $(".pagination a").click(function(event){
-        event.preventDefault();
-        $queryForm.find("[name='page']").val($(this).attr("href"));
-        $queryForm.submit();
-      });
-
-      $(".tt-search__btn").click(function(event){
-        event.preventDefault();
-        const $query = $("#search-query").val();
-
-        $queryForm.find("[name='query']").val($query);
-        $queryForm.find("[name='page']").val("1");
-        $queryForm.submit();
-      });
-
-      const $advancedQuery = $("#advancedSearch");
-      $("#advancedSearchSubmit").on("click", function(event){
-        event.preventDefault();
-        
-        $advancedQuery.submit();
-      });
-    });
-
     const REMOVE_POPUP_BTN = document.getElementById('removePopup');
     if (REMOVE_POPUP_BTN != null && REMOVE_POPUP_BTN != undefined) {
       REMOVE_POPUP_BTN.addEventListener('click', function(event){

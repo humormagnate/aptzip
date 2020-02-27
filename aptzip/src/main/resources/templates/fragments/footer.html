@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
 <footer th:fragment="footer">
+  
+  <!-- query start -->
+  <form id="query" th:action="@{/}" th:method="get">
+    <th:block>
+      <input type="hidden" th:name="page" th:value="${list ne null} ? ${list.currentPageNum} : ''">
+      <input type="hidden" th:name="size" th:value="${list ne null} ? ${list.currentPage.pageSize} : 10">
+      <input type="hidden" th:name="query" th:value="${pageVo ne null} ? ${pageVo.query} : ''">
+    </th:block>
+  </form>
+  <!-- query end -->
+
   <script type="text/javascript" th:src="@{/js/bundle.min.js}"></script>
   <script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
   <script type="text/javascript" th:src="@{/js/main.js}"></script>
@@ -28,6 +39,31 @@
       ws.close();
       // stomp.disconnect();
     }
+
+    $(document).ready(function(){
+      const $queryForm = $("#query");
+
+      $(".pagination a").click(function(event){
+        event.preventDefault();
+        $queryForm.find("[name='page']").val($(this).attr("href"));
+        $queryForm.submit();
+      });
+
+      $(".tt-search__btn").click(function(event){
+        event.preventDefault();
+        const $query = $("#search-query").val();
+
+        $queryForm.find("[name='query']").val($query);
+        $queryForm.find("[name='page']").val("1");
+        $queryForm.submit();
+      });
+
+      const $advancedQuery = $("#advancedSearch");
+      $("#advancedSearchSubmit").on("click", function(event){
+        event.preventDefault();
+        $advancedQuery.submit();
+      });
+    });
   </script>
 
   <!-- svg symbol start -->
