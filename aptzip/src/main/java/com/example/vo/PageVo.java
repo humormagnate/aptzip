@@ -23,7 +23,6 @@ public class PageVo {
 		this.size = DEFAULT_SIZE;
 	}
 	
-
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}

@@ -63,7 +63,6 @@
 
         <!-- tt-search -->
         <div class="tt-search">
-          <!--
           <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
             <svg class="tt-icon">
               <use xlink:href="#icon-search"></use>
@@ -72,7 +71,8 @@
           
           <form class="search-wrapper">
             <div class="search-form">
-              <input type="text" class="tt-search__input" placeholder="Search" />
+              <input type="hidden" name="type" id="search-type" value="title">
+              <input type="text" name="keyword" id="search-keyword" class="tt-search__input" placeholder="Search" />
               <button class="tt-search__btn" type="submit">
                 <svg class="tt-icon">
                   <use xlink:href="#icon-search"></use>
@@ -84,73 +84,26 @@
                 </svg>
               </button>
             </div>
+
             <div class="search-results">
               <div class="tt-search-scroll">
                 <ul>
                   <li>
-                    <a href="page-single-topic.html">
-                      <h6 class="tt-title">Rdr2 secret easter eggs</h6>
+                    <a th:href="@{/}">
+                      <h6 class="tt-title">GUIDE</h6>
                       <div class="tt-description">
-                        Here’s what I’ve found in Red Dead Redem..
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="page-single-topic.html">
-                      <h6 class="tt-title">
-                        Top 10 easter eggs in Red Dead Rede..
-                      </h6>
-                      <div class="tt-description">
-                        You can find these easter eggs in Red Dea..
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="page-single-topic.html">
-                      <h6 class="tt-title">
-                        Red Dead Redemtion: Arthur Morgan..
-                      </h6>
-                      <div class="tt-description">
-                        Here’s what I’ve found in Red Dead Redem..
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="page-single-topic.html">
-                      <h6 class="tt-title">Rdr2 secret easter eggs</h6>
-                      <div class="tt-description">
-                        Here’s what I’ve found in Red Dead Redem..
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="page-single-topic.html">
-                      <h6 class="tt-title">
-                        Top 10 easter eggs in Red Dead Rede..
-                      </h6>
-                      <div class="tt-description">
-                        You can find these easter eggs in Red Dea..
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="page-single-topic.html">
-                      <h6 class="tt-title">
-                        Red Dead Redemtion: Arthur Morgan..
-                      </h6>
-                      <div class="tt-description">
-                        Here’s what I’ve found in Red Dead Redem..
+                        안내서
                       </div>
                     </a>
                   </li>
                 </ul>
               </div>
-              <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch">
+              <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch" style="padding:1px 6px;">
                 Advanced Search
               </button>
             </div>
           </form>
-          -->
+
         </div>
         <!-- tt-search end -->
       </div>

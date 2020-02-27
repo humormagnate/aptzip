@@ -26,24 +26,15 @@
                   <use xlink:href="#icon-search"></use>
                 </svg>
               </i>
-              <input type="text" name="name" class="form-control pt-customInputSearch" id="searchForum"
-                placeholder="Search all forums" />
+              <input type="text" name="name" class="form-control pt-customInputSearch" id="searchForum" placeholder="Search all Topics" />
             </div>
             <div class="form-group">
               <label for="searchName">Posted by</label>
               <input type="text" name="name" class="form-control" id="searchName" placeholder="Username" />
             </div>
             <div class="form-group">
-              <label for="searchCategory">In Category</label>
-              <input type="text" name="name" class="form-control" id="searchCategory" placeholder="Add Category" />
-            </div>
-            <div class="checkbox-group">
-              <input type="checkbox" id="searcCheckBox01" name="checkbox" />
-              <label for="searcCheckBox01">
-                <span class="check"></span>
-                <span class="box"></span>
-                <span class="tt-text">Include all tags</span>
-              </label>
+              <label for="searchTitle">In Title</label>
+              <input type="text" name="name" class="form-control" id="searchTitle" placeholder="Add Title" />
             </div>
             <div class="form-group">
               <label>Only return topics/posts that...</label>
@@ -55,38 +46,14 @@
                   <span class="tt-text">I liked</span>
                 </label>
               </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="searcCheckBox03" name="checkbox" />
-                <label for="searcCheckBox03">
-                  <span class="check"></span>
-                  <span class="box"></span>
-                  <span class="tt-text">are in my messages</span>
-                </label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="searcCheckBox04" name="checkbox" />
-                <label for="searcCheckBox04">
-                  <span class="check"></span>
-                  <span class="box"></span>
-                  <span class="tt-text">I’ve read</span>
-                </label>
-              </div>
-            </div>
-            <div class="form-group">
-              <select class="form-control" id="searchTop">
-                <option>any</option>
-                <option>value 01</option>
-                <option>value 02</option>
-                <option>value 03</option>
-              </select>
             </div>
             <div class="form-group">
               <label for="searchaTopics">Where topics</label>
               <select class="form-control" id="searchaTopics">
                 <option>any</option>
-                <option>value 01</option>
-                <option>value 02</option>
-                <option>value 03</option>
+                <option>Common</option>
+                <option>Discussion</option>
+                <option>Poll</option>
               </select>
             </div>
             <div class="form-group">
@@ -95,13 +62,13 @@
                 <div class="col-6">
                   <select class="form-control">
                     <option>any</option>
-                    <option>value 01</option>
-                    <option>value 02</option>
-                    <option>value 03</option>
+                    <option>1 day</option>
+                    <option>1 month</option>
+                    <option>1 year</option>
                   </select>
                 </div>
                 <div class="col-6">
-                  <input type="text" name="name" class="form-control" id="searchAdvTime" placeholder="dd-mm-yyyy" />
+                  <input type="text" name="name" class="form-control" id="searchAdvTime" placeholder="yyyy-mm-dd" />
                 </div>
               </div>
             </div>
@@ -121,7 +88,7 @@
               </select>
             </div>
             <div class="form-group">
-              <a href="#" class="btn btn-secondary btn-block">Search</a>
+              <a th:href="@{/}" class="btn btn-secondary btn-block">Search</a>
             </div>
           </form>
         </div>

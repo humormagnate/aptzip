@@ -22,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,8 @@ public class CommonController {
   //public ModelAndView home(Principal principal, ModelAndView mv) {
 	public ModelAndView home(
 		@AuthenticationPrincipal UserResponseDto principal,
-		ModelAndView mv,
-		PageVo pageVo
+		@ModelAttribute("PageVo") PageVo pageVo,
+		ModelAndView mv
 	) {
 		// @PageableDefault(
 		// 	direction = Sort.Direction.DESC,
@@ -59,7 +60,7 @@ public class CommonController {
 
 		// Iterable<BoardEntity> board = boardRepoistory.findAllByOrderByIdDesc();
 		// QuerydslJpaRepository<T>
-		Page<BoardEntity> boards = boardRepoistory.findAll(boardRepoistory.makePredicate(null, null), page);
+		Page<BoardEntity> boards = boardRepoistory.findAll(boardRepoistory.makePredicate(pageVo.getType(), pageVo.getKeyword()), page);
 		log.info("Page<BoardEntity> : {}", boards);
 		
 		log.info("TOTAL PAGE NUMBER : {}", boards.getTotalPages());
@@ -82,6 +83,7 @@ public class CommonController {
 		
 		mv.addObject("principal", principal)
 			.addObject("list", list)
+			.addObject("pageVo", pageVo)
 			.addObject("newBoard", newBoard)
 			.setViewName("index");
 		

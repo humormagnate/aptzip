@@ -134,18 +134,21 @@
               <!-- [[${list}]] -->
               <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${list.prevPage}">
-                  <a th:href="@{?page={prev}(prev=${list.prevPage.pageNumber+1})}" class="page-link">
+                  <!-- <a th:href="@{?page={prev}(prev=${list.prevPage.pageNumber+1})}" class="page-link"> -->
+                  <a th:href="${list.prevPage.pageNumber+1}" class="page-link">
                     <!-- [[${list.prevPage}]] -->
                     &laquo;
                   </a>
                 </li>
                 <li class="page-item" th:each="p:${list.pageList}" th:classappend="${p.pageNumber eq list.currentPageNum-1} ? active : ''">
-                  <a th:href="@{?page={c}(c=${p.pageNumber+1})}" class="page-link">
+                  <!-- <a th:href="@{?page={c}(c=${p.pageNumber+1})}" class="page-link"> -->
+                  <a th:href="${p.pageNumber+1}" class="page-link">
                     [[${p.pageNumber} + 1]]
                   </a>
                 </li>
                 <li class="page-item" th:if="${list.nextPage}">
-                  <a th:href="@{?page={next}(next=${list.nextPage.pageNumber+1})}" class="page-link">
+                  <!-- <a th:href="@{?page={next}(next=${list.nextPage.pageNumber+1})}" class="page-link"> -->
+                  <a th:href="${list.nextPage.pageNumber+1}" class="page-link">
                     <!-- [[${list.nextPage}]] -->
                     &raquo;
                   </a>
@@ -154,6 +157,15 @@
             </nav>
           </div>
           <!-- paging end -->
+
+          <!-- query start -->
+          <form id="query" th:actiojn="@{/}" th:method="get">
+            <input type="hidden" th:name="page" th:value="${list.currentPageNum}">
+            <input type="hidden" th:name="size" th:value="${list.currentPage.pageSize}">
+            <input type="hidden" th:name="type" th:value="${pageVo.type}">
+            <input type="hidden" th:name="keyword" th:value="${pageVo.keyword}">
+          </form>
+          <!-- query end -->
 
           <!-- row-btn start -->
           <div class="tt-row-btn">
@@ -181,6 +193,28 @@
   </div>
 
   <script layout:fragment="script">
+    $(document).ready(function(){
+      const queryForm = $("#query");
+
+      $(".pagination a").click(function(event){
+        event.preventDefault();
+        queryForm.find("[name='page']").val($(this).attr("href"));
+        queryForm.submit();
+      });
+
+      $(".tt-search__btn").click(function(event){
+        event.preventDefault();
+        const $type = $("#search-type").val();
+        const $keyword = $("#search-keyword").val();
+        console.log($type + "" + $keyword);
+
+        queryForm.find("[name='type']").val($type);
+        queryForm.find("[name='keyword']").val($keyword);
+        queryForm.find("[name='page']").val("1");
+        queryForm.submit();
+      });
+    });
+
     const REMOVE_POPUP_BTN = document.getElementById('removePopup');
     if (REMOVE_POPUP_BTN != null && REMOVE_POPUP_BTN != undefined) {
       REMOVE_POPUP_BTN.addEventListener('click', function(event){
