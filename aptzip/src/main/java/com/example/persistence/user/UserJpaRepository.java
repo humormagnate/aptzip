@@ -30,6 +30,10 @@ public interface UserJpaRepository extends JpaRepository<AptzipUserEntity, Long>
 	List<AptzipUserEntity> findAllByAptAndRole(AptEntity apt, AptzipRoleEntity role);
 
 	@Modifying
+	@Query("UPDATE AptzipUserEntity u SET u.isEnabled = 0 WHERE u.id = :id")
+	void disabledUserById(@Param("id") Long id);
+
+	@Modifying
 	@Query("UPDATE AptzipUserEntity u SET u.password = :password WHERE u.id = :id")
 	void updatePasswordById(@Param("password") String password, @Param("id") Long id);
 	

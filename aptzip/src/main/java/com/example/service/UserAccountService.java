@@ -89,7 +89,7 @@ public class UserAccountService implements UserDetailsService {
     if (!user.isEnabled()) {
       // AuthenticationException : abstract class -> Cannot instantiate the type ...
       // throw new AuthenticationException("asd");
-      throw new AuthenticationCredentialsNotFoundException("This account requires email verification.");
+      throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
 
     // AptzipRoleEntity role = new AptzipRoleEntity(user.getRole().getRole());
@@ -140,8 +140,8 @@ public class UserAccountService implements UserDetailsService {
     return userJpaRepository.findById(id).orElse(new AptzipUserEntity());
   }
 
-  public void delete(Long id) {
-    userJpaRepository.deleteById(id);
+  public void disabledUser(Long id) {
+    userJpaRepository.disabledUserById(id);
   }
 
   public void updatePassword(UserRequestDto user) {

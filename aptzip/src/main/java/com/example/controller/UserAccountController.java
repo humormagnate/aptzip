@@ -100,9 +100,9 @@ public class UserAccountController {
 	 * delete
 	 */
 	@Transactional
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
-		userService.delete(id);
+	@PatchMapping("/{id}")
+	public ResponseEntity<String> disabledUser(@PathVariable("id") Long id) {
+		userService.disabledUser(id);
 		return new ResponseEntity<>("success", HttpStatus.OK);
 	}
 

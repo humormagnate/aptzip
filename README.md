@@ -35,7 +35,7 @@ Context Root (localhost:XXXX/)
 | /login | POST | 로그인 (Spring Security) |
 | /user/signup | POST | 회원 가입 |
 | /user/{id} | GET | 회원 정보 조회 |
-| /user/{id} | DELETE | 회원 탈퇴 |
+| /user/{id} | PATCH | 회원 탈퇴 |
 | /user/{id}/pw | PATCH | 비밀번호 변경 |
 | /user/{id}/follow | POST | 회원 팔로우/취소 (추후 수정 필요) |
 |```BOARD```|||

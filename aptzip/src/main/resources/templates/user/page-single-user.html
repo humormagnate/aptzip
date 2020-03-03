@@ -579,7 +579,7 @@
 		event.preventDefault();
 		$.ajax({
 			url: '[[@{/user/}]]' + USER_ID,
-			method: 'delete',
+			method: 'patch',
 			data: {
 				id: USER_ID
 			},

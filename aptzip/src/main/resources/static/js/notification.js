@@ -11,11 +11,11 @@ let wsConnnectInterval = null;
 function connectWS(URL) {
 
   // local
-  let socket = new WebSocket("ws://localhost:8888" + URL);
+  // let socket = new WebSocket("ws://localhost:8888" + URL);
   // let socket = new WebSocket("ws://localhost:8888/ws/comment");
 
   // server
-  // let socket = new WebSocket("wss://markruler.com:443" + URL);
+  let socket = new WebSocket("wss://markruler.com:443" + URL);
   ws = socket;
 
   ws.onopen = function(event) {
