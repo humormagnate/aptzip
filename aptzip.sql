@@ -15,6 +15,8 @@ commit;
 delete from aptzip.tb_category where category_id = 7;
 
 select * from aptzip.tb_user;
+select * from aptzip.userconnection;
+select * from aptzip.persistent_logins;
 select * from aptzip.tb_confirmation_token;
 select * from aptzip.tb_like;
 select * from aptzip.tb_user_follow;
@@ -24,7 +26,6 @@ select * from aptzip.tb_comment;
 select * from aptzip.tb_role;
 select * from aptzip.tb_apt;
 select * from aptzip.tb_notice;
-select * from aptzip.persistent_logins;
 
 
 CREATE TABLE tb_persistent_logins (

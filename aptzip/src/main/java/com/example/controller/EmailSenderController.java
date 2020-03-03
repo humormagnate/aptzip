@@ -96,7 +96,7 @@ public class EmailSenderController {
       mailMessage.setSubject("Complete Registration!");
       mailMessage.setFrom("noreply@markruler.com");
       mailMessage.setText("To confirm your account, please click here : "
-          + "http://localhost:8888/aptzip/confirm-account?token=" + confirmationToken.getConfirmationToken());
+          + "https://markruler.com/aptzip/confirm-account?token=" + confirmationToken.getConfirmationToken());
 
       emailSenderService.sendEmail(mailMessage);
       log.info("email : {}", user.getEmail());
@@ -163,7 +163,7 @@ public class EmailSenderController {
       mailMessage.setSubject("Complete Password Reset!");
       mailMessage.setFrom("markrulerofficial@gmail.com");
       mailMessage.setText("To complete the password reset process, please click here: "
-          + "http://localhost:8888/aptzip/confirm-reset?token=" + confirmationToken.getConfirmationToken());
+          + "https://markruler.com/aptzip/confirm-reset?token=" + confirmationToken.getConfirmationToken());
 
       // Send the email
       emailSenderService.sendEmail(mailMessage);
