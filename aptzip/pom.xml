@@ -13,7 +13,8 @@
     <relativePath/>
   </parent>
 
-  <groupId>com.example</groupId>
+  <!-- https://maven.apache.org/guides/mini/guide-naming-conventions.html -->
+  <groupId>com.markruler</groupId>
   <artifactId>aptzip</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>

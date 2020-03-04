@@ -67,7 +67,7 @@ data class Member(
 # To-Do
 
 - DAO와 Repository의 차이
-- Caused by: org.hibernate.LazyInitializationException: could not initialize proxy [com.example.domain.user.AptEntity#1] - no Session
+- Caused by: org.hibernate.LazyInitializationException: could not initialize proxy [com.markruler.domain.user.AptEntity#1] - no Session
   - https://jojoldu.tistory.com/146
   - https://m.blog.naver.com/inho1213/220689443632
   - https://stackoverflow.com/questions/15568112/using-proxy-target-class-true-with-spring-beans

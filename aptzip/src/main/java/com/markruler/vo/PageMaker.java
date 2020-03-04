@@ -1,0 +1,68 @@
+package com.markruler.vo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Getter
+@Setter
+@ToString(exclude = "pageList")
+public class PageMaker<T> {
+  private int currentPageNum;
+  private int totalPageNum;
+
+  private Page<T> result;
+  private Pageable prevPage;
+  private Pageable nextPage;
+  private Pageable currentPage;
+  private List<Pageable> pageList;  // 페이지 번호의 Pageable들을 저장할 리스트
+
+  public PageMaker(Page<T> result) {
+    this.result = result;
+    this.currentPage = result.getPageable();
+    this.currentPageNum = currentPage.getPageNumber() + 1;
+    this.totalPageNum = result.getTotalPages();
+    this.pageList = new ArrayList<>();
+    calcPages();
+  }
+
+  private void calcPages() {
+    int tempEndNum = (int)(Math.ceil(this.currentPageNum/3.0)*3);  // 해당 page의 끝번호
+    // log.info("tempEndNum : {}", tempEndNum);
+    int startNum = tempEndNum - 2;  // 해당 page의 시작번호
+    // log.info("startNum : {}", startNum);
+    Pageable startPage = this.currentPage;
+    // log.info("startPage : {}", startPage);
+
+    // move to start Pageable
+    for (int i = startNum; i < this.currentPageNum; i++) {
+      startPage = startPage.previousOrFirst();
+    }
+    this.prevPage = startPage.getPageNumber() <= 0 ? null : startPage.previousOrFirst();
+
+    // log.info("startPage.getPageNumber() : {}", startPage.getPageNumber());
+    // log.info("prevPage : {}", prevPage);
+    log.info("totalPageNum : {}", totalPageNum);
+
+    if (this.totalPageNum < tempEndNum) {
+      tempEndNum = this.totalPageNum;
+      this.nextPage = null;
+    }
+
+    for (int i = startNum; i <= tempEndNum; i++) {
+      pageList.add(startPage);
+      startPage = startPage.next();
+    }
+    this.nextPage = startPage.getPageNumber() < totalPageNum ? startPage : null;
+    // log.info("startPage.getPageNumber() : {}", startPage.getPageNumber() + 1);
+  }
+  
+}
