@@ -1,109 +1,61 @@
 <!DOCTYPE html>
 <html>
-<div th:fragment="search">
-  <div class="modal fade" id="modalAdvancedSearch" tabindex="-1" role="dialog" aria-label="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="tt-modal-advancedSearch">
-          <div class="tt-modal-title">
-            <i class="pt-icon">
-              <svg>
-                <use xlink:href="#icon-advanced_search"></use>
-              </svg>
-            </i>
-            Advanced Search
-            <a class="pt-close-modal" href="#" data-dismiss="modal">
-              <svg class="icon">
-                <use xlink:href="#icon-cancel"></use>
-              </svg>
-            </a>
-          </div>
-
-          <form class="form-default" id="advancedSearch" th:action="@{/}" th:method="get">
-            <div class="form-group">
-              <i class="pt-customInputIcon">
-                <svg class="tt-icon">
-                  <use xlink:href="#icon-search"></use>
+  <div th:fragment="search">
+    <div class="modal fade" id="modalAdvancedSearch" tabindex="-1" role="dialog" aria-label="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="tt-modal-advancedSearch">
+            <div class="tt-modal-title">
+              <i class="pt-icon">
+                <svg>
+                  <use xlink:href="#icon-advanced_search"></use>
                 </svg>
               </i>
-              <input type="text" name="query" class="form-control pt-customInputSearch" id="searchForum" placeholder="Search in title or content" />
+              Advanced Search
+              <a class="pt-close-modal" href="#" data-dismiss="modal">
+                <svg class="icon">
+                  <use xlink:href="#icon-cancel"></use>
+                </svg>
+              </a>
             </div>
 
-            <div class="form-group">
-              <label for="searchName">Posted by</label>
-              <input type="text" name="username" class="form-control" id="searchName" placeholder="Username" />
-            </div>
-
-            <!--
-            <div class="form-group">
-              <label>Only return topics/posts that...</label>
-              <div class="checkbox-group">
-                <input type="checkbox" id="searcCheckBox02" name="liked" />
-                <label for="searcCheckBox02">
-                  <span class="check"></span>
-                  <span class="box"></span>
-                  <span class="tt-text">I liked</span>
-                </label>
+            <form class="form-default" id="advancedSearch" th:action="@{/}" th:method="get">
+              <div class="form-group">
+                <i class="pt-customInputIcon">
+                  <svg class="tt-icon">
+                    <use xlink:href="#icon-search"></use>
+                  </svg>
+                </i>
+                <input type="text" name="query" class="form-control pt-customInputSearch" id="searchForum" placeholder="Search in title or content" />
               </div>
-            </div>
-            -->
 
-            <div class="form-group">
-              <label for="searchaTopics">Where topics</label>
-              <select class="form-control" id="searchaTopics" name="category">
-                <option value="">any</option>
-                <option>Discussion</option>
-                <option>Question</option>
-                <option>Poll</option>
-                <option>Gallery</option>
-                <option>Media</option>
-                <option>Common</option>
-              </select>
-            </div>
-            <!--
-            <div class="form-group">
-              <label for="searchAdvTime">Posted</label>
-              <div class="row">
-                <div class="col-6">
-                  <select class="form-control">
-                    <option>any</option>
-                    <option>1 day</option>
-                    <option>1 month</option>
-                    <option>1 year</option>
-                  </select>
-                </div>
-                <div class="col-6">
-                  <input type="text" name="date" class="form-control" id="searchAdvTime" placeholder="yyyy-mm-dd" />
-                </div>
+              <div class="form-group">
+                <label for="searchName">Posted by</label>
+                <input type="text" name="username" class="form-control" id="searchName" placeholder="Username" />
               </div>
-            </div>
-            -->
-            <!--
-            <div class="form-group">
-              <label for="minPostCount">Minimum Post Count</label>
-              <select class="form-control" id="minPostCount" name="limit">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option selected>10</option>
-              </select>
-            </div>
-            -->
-            <div class="form-group">
-              <a href="#" id="advancedSearchSubmit" class="btn btn-secondary btn-block">Search</a>
-            </div>
-          </form>
+
+              <div class="form-group">
+                <label for="searchaTopics">Where topics</label>
+                <select class="form-control" id="searchaTopics" name="category">
+                  <option value="">any</option>
+                  <option>Discussion</option>
+                  <option>Question</option>
+                  <option>Poll</option>
+                  <option>Gallery</option>
+                  <option>Media</option>
+                  <option>Common</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <a href="#" id="advancedSearchSubmit" class="btn btn-secondary btn-block">Search</a>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 </html>

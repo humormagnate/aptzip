@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/apt/")  // 공통으로 PathVariable을 줄 수 없음(ex. "/apt/{id}")
+@RequestMapping("/apt/")  // 공통으로 id PathVariable을 줄 수 없음(ex. "/apt/{id}")
 @Controller
 public class AptController {
 
@@ -34,21 +34,15 @@ public class AptController {
 		@ModelAttribute("PageVo") PageVo pageVo,
     Model model
   ) {
-    // apt id를 받아 해당 아파트의 thread만 받음
 		log.info("principal : {} =============================================================", principal);
 
 		Pageable page = pageVo.makePageable(0, "id");
     log.info("page : {}", page);
     
-    // AptEntity apt = new AptEntity(id);
+    // apt id를 받아 해당 아파트의 thread만 받음
     pageVo.setAptId(id);
-
-    // TODO makePredicate에 Apt 객체에 대한 조건 검사도 추가 필요
-    // Iterable<BoardEntity> board = boardRepo.findAllByAptOrderByIdDesc(apt);
     Page<BoardEntity> boards = boardService.findBoardByDynamicQuery(page, pageVo);
-    
 		log.info("Page<BoardEntity> : {}", boards);
-		
 		log.info("TOTAL PAGE NUMBER : {}", boards.getTotalPages());
 
 		PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);

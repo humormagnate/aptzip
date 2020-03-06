@@ -20,8 +20,8 @@ public class PageVo {
 	private static final int DEFAULT_SIZE = 10;
 	private static final int DEFAULT_MAX_SIZE = 50;
 
-	private int page;	// 현재 페이지 - 1
-	private int size;	// 한 페이지당 게시글 개수
+	private int page;					// 현재 페이지 - 1
+	private int size;					// 한 페이지당 게시글 개수
 	
 	private String query;			// 검색어
 	private String username;	// 작성자

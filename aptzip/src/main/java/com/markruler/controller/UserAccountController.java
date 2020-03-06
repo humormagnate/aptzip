@@ -21,7 +21,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,18 +55,14 @@ public class UserAccountController {
 	public String info(@PathVariable("id") Long id, Model model) {
 		List<BoardEntity> boards = boardRepo.findByUserIdOrderByIdDesc(id);
 		List<CommentEntity> comments = commentRepo.findByUserIdOrderByIdDesc(id);
-		// List<AptzipUserEntity> following = followQuery.following(id, 10L, 0L);
 		List<UserFollowEntity> followings = followRepo.findAllByFollowing(id);
 		List<UserFollowEntity> followers = followRepo.findAllByFollower(id);
-		// List<UserFollowEntity> following = followRepo.findAllByFrom(AptzipUserEntity.builder().id(id).build());
-		// List<UserFollowEntity> follower = followRepo.findAllByTo(AptzipUserEntity.builder().id(id).build());
 
 		AptzipUserEntity user = userService.findById(id);
 		log.info("boards : {}", boards.toString());
 		log.info("comments : {}", comments.toString());
 		log.info("infouser : {}", user);
 		log.info("followings : {}", followings);
-		// log.info("followers : {}", followers);
 		
 		model.addAttribute("boards", boards)
 				 .addAttribute("comments", comments)
@@ -83,10 +78,6 @@ public class UserAccountController {
 	 * @param request
 	 * @return
 	 */
-	// @ResponseBody // -> 415 error
-	// @PreAuthorize("#updateUser.email == authentication.name")
-	// https://www.baeldung.com/http-put-patch-difference-spring
-	// PATCH method
 	@Transactional
 	@PatchMapping("/{id}/pw")
 	public ResponseEntity<String> updateUserPassword(@RequestBody UserRequestDto user) {
@@ -127,7 +118,6 @@ public class UserAccountController {
 																			.follower(follower)
 																			.build());
 		}
-
 		return "save";
 	}
 

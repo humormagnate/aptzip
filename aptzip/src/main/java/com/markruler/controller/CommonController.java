@@ -36,51 +36,25 @@ public class CommonController {
 	private final BoardRepository boardRepository;
 	private final BoardService boardService;
 
-	// @Secured({ "ROLE_ADMIN" })
-	// @GetMapping("/")	// /aptzip?page=3 -> /aptzip/?page=3
-	@GetMapping	// /aptzip?page=3 -> /aptzip/?page=3
-  //public ModelAndView home(Principal principal, ModelAndView mv) {
+	@GetMapping
 	public ModelAndView home(
 		@AuthenticationPrincipal UserResponseDto principal,
 		@ModelAttribute("PageVo") PageVo pageVo,
 		ModelAndView mv
 	) {
-		// @PageableDefault(
-		// 	direction = Sort.Direction.DESC,
-		// 	sort = "id",
-		// 	size = 10,
-		// 	page = 0) Pageable page) {
-
-		// https://itstory.tk/entry/Spring-Security-%ED%98%84%EC%9E%AC-%EB%A1%9C%EA%B7%B8%EC%9D%B8%ED%95%9C-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%A0%95%EB%B3%B4-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0
-		// https://lemontia.tistory.com/602
 		log.info("principal : {} =============================================================", principal);
 
 		Pageable page = pageVo.makePageable(0, "id");
 		log.info("page : {}", page);
 
-		// Iterable<BoardEntity> board = boardRepoistory.findAllByOrderByIdDesc();
-		// QuerydslJpaRepository<T>
-		// Page<BoardEntity> boards = boardRepoistory.findAll(boardRepoistory.makePredicate(pageVo.getType(), pageVo.getQuery()), page);
 		Page<BoardEntity> boards = boardService.findBoardByDynamicQuery(page, pageVo);
 		log.info("Page<BoardEntity> : {}", boards);
-		
 		log.info("TOTAL PAGE NUMBER : {}", boards.getTotalPages());
 
 		PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);
 		log.info("PageMaker : {}", list);
 		
-		// 작성한지 한 시간이 안 된 게시글들 카운트
-		// List<BoardEntity> list = new ArrayList<BoardEntity>();
 		int newBoard = 0;
-		// if (list.getCurrentPageNum() == 1) {
-		// 	for (BoardEntity board : boards) {
-		// 		// list.add(board);
-		// 		if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(board.getCreateDate())) {
-		// 			newBoard++;
-		// 		}
-		// 		log.info("board list : {}", board);
-		// 	}
-		// }
 		
 		mv.addObject("principal", principal)
 			.addObject("list", list)
@@ -97,22 +71,14 @@ public class CommonController {
 		Long aptId = principal.getApt().getId();
 		AptEntity apt = AptEntity.builder().id(aptId).build();
 
-		List<AptzipUserEntity> admins =
-			userRepository.findAllByAptAndRole(apt,
-																	 new AptzipRoleEntity("ADMIN"));
+		List<AptzipUserEntity> admins = userRepository.findAllByAptAndRole(apt, new AptzipRoleEntity("ADMIN"));
 		log.info("admins : {}", admins);
 
-		// https://www.baeldung.com/java-iterable-to-collection
 		List<BoardEntity> boards =
 		StreamSupport.stream(boardRepository.findAllByApt(apt).spliterator(), false)
-		.collect(Collectors.toList());
-		
-		// List<CommentEntity> comments =
-		// 	StreamSupport.stream(commentRepo.findAllByApt(apt).spliterator(), false)
-		// 							 .collect(Collectors.toList());
+								 .collect(Collectors.toList());
 		
 		model.addAttribute("admins", admins)
-				//  .addAttribute("commentSize", comments.size())
 				 .addAttribute("boardSize", boards.size());
 	}
 

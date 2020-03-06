@@ -18,6 +18,7 @@ public final class TemporalAptzipUtils {
     return LocalTime.now().minusHours(1L);
   }
 
+  // 타임리프에서 24시간이 지날 경우 d 단위로, 30일이 지날 경우 m 단위로, 12개월이 지날 경우 y 단위로 수정
   public String betweenNowAndTime(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
     Long hour = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L;
@@ -63,15 +64,6 @@ public final class TemporalAptzipUtils {
 
   public boolean isItOneHourAgo(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
-    // log.info("now : {}", now);
-    // log.info(time + "");
-    // log.info(ChronoUnit.MILLIS.between(time, now) + "");
-
-    // ChronoUnit.HOURS.between 같은 경우 '시'만 보고 계산함
-    // 03시 59분 - 02시 00분 : 1시간 차이
-    // 그렇다면 밀리초단위로?
-    // 2020-02-18T03:58:24.086
-    // Done!
     return ChronoUnit.MILLIS.between(time, now) <= (1 * 1000 * 60 * 60);
   }
 }

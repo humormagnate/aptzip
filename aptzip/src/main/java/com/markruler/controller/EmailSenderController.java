@@ -48,10 +48,6 @@ public class EmailSenderController {
     return modelAndView;
   }
 
-  // https://www.baeldung.com/spring-email
-  // https://stackabuse.com/how-to-send-emails-in-java/
-  // https://stackabuse.com/spring-security-email-verification-registration/
-  // https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
   @PostMapping(value = "/signup")
   public String registerUser(AptzipUserEntity user, RedirectAttributes redirectAttributes, String aptId, ConnectionData connection) {
     log.info("=============================SIGN UP================================");
@@ -61,7 +57,6 @@ public class EmailSenderController {
     if (existingUser != null) {
       log.info("existingUser is not null");
 
-      // modelAndView.addObject("message", "This email already exists!");
       redirectAttributes.addFlashAttribute("error", true);
       return "redirect:/signup";
     } else {
@@ -96,14 +91,11 @@ public class EmailSenderController {
       mailMessage.setSubject("Complete Registration!");
       mailMessage.setFrom("noreply@markruler.com");
       mailMessage.setText("To confirm your account, please click here : "
-          + "https://markruler.com/aptzip/confirm-account?token=" + confirmationToken.getConfirmationToken());
+                        + "https://markruler.com/aptzip/confirm-account?token=" + confirmationToken.getConfirmationToken());
 
       emailSenderService.sendEmail(mailMessage);
-      log.info("email : {}", user.getEmail());
-      // modelAndView.addObject("emailId", user.getEmail());
       redirectAttributes.addFlashAttribute("email", user.getEmail());
 
-      // return "redirect:user/page-register";  // -> SecurityConfig에서 /user/* 페이지에 권한을 요구하기 때문에 로그인 페이지로 redirect...
       return "redirect:/register";
     }
   }
@@ -125,39 +117,29 @@ public class EmailSenderController {
 
       user.setEnabled(true);
       userJpaRepository.save(user);
-      // redirect하면 model attribute는 포함되지 않음.
-      // model.addAttribute("success", true);
       redirectAttributes.addFlashAttribute("success", true);
       return "redirect:/login";
     } else {
-      // modelAndView.addObject("message", "The link is invalid or broken!");
-      // model.addAttribute("msg", "The link is invalid or broken!");
       redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
     }
     return "redirect:/error";
   }
 
-  // https://stackabuse.com/spring-security-forgot-password-functionality/
-  // Display the form
   @GetMapping(value = "/forgot")
   public String displayResetPassword(Model model, AptzipUserEntity user) {
     model.addAttribute("user", user);
     return "user/page-forgot-password";
   }
 
-  // Receive the address and send an email
   @PostMapping(value = "/forgot")
   public String forgotUserPassword(RedirectAttributes redirectAttributes, AptzipUserEntity user) {
     log.info("================================= /forgot =================================");
     AptzipUserEntity existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail()).orElse(null);
-    if (existingUser != null) {
-      // Create token
-      ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
 
-      // Save it
+    if (existingUser != null) {
+      ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
       confirmationTokenRepository.save(confirmationToken);
 
-      // Create the email
       SimpleMailMessage mailMessage = new SimpleMailMessage();
       mailMessage.setTo(existingUser.getEmail());
       mailMessage.setSubject("Complete Password Reset!");
@@ -165,10 +147,8 @@ public class EmailSenderController {
       mailMessage.setText("To complete the password reset process, please click here: "
           + "https://markruler.com/aptzip/confirm-reset?token=" + confirmationToken.getConfirmationToken());
 
-      // Send the email
       emailSenderService.sendEmail(mailMessage);
 
-      // modelAndView.addObject("message", "Request to reset password received. Check your inbox for the reset link.");
       redirectAttributes.addFlashAttribute("email", user.getEmail());
       return "redirect:/confirm";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     } else {
@@ -182,8 +162,6 @@ public class EmailSenderController {
     return "user/page-confirm-reset";
   }
 
-  // Endpoint to confirm the token
-  // handles the verification of the token and on success will redirect the user to the next endpoint
   @RequestMapping(value = "/confirm-reset", method = { RequestMethod.GET, RequestMethod.POST })
   public String validateResetToken(RedirectAttributes redirectAttributes, @RequestParam("token") String confirmationToken) {
     log.info("================================= reset : validate reset token =================================");
@@ -208,23 +186,18 @@ public class EmailSenderController {
     return "user/page-reset-password";
   }
 
-  // Endpoint to update a user's password
-  // displays the form above, receives the new credentials, and update them in the database
   @PostMapping(value = "/reset")
   public String resetUserPassword(RedirectAttributes redirectAttributes, AptzipUserEntity user) {
     log.info("================================= reset-password =================================");
     log.info("user : {}", user);
 
     if (user.getEmail() != null) {
-      // Use email to find user
       AptzipUserEntity tokenUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail()).orElse(null);
       tokenUser.setPassword(passwordEncoder.encode(user.getPassword()));
       userJpaRepository.save(tokenUser);
-      // modelAndView.addObject("message", "Password successfully reset. You can now log in with the new credentials.");
       redirectAttributes.addFlashAttribute("success", true);
       return "redirect:/login";
     } else {
-      // modelAndView.addObject("message", "The link is invalid or broken!");
       redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
       return "redirect:/error";
     }

@@ -5,8 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-// https://d2.naver.com/helloworld/318732
-// 안전한 패스워드 저장 (one-way hash function)
+/**
+ * https://d2.naver.com/helloworld/318732
+ */
 @Configuration
 public class PasswordConfig {
 	@Bean

@@ -14,11 +14,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-// Entitymanager
-// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpd.misc.cdi-integration
-
-// NamedQuery
-// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
 @Repository
 public interface UserJpaRepository extends JpaRepository<AptzipUserEntity, Long> {
 	
@@ -37,6 +32,4 @@ public interface UserJpaRepository extends JpaRepository<AptzipUserEntity, Long>
 	@Query("UPDATE AptzipUserEntity u SET u.password = :password WHERE u.id = :id")
 	void updatePasswordById(@Param("password") String password, @Param("id") Long id);
 	
-	// No property updateUser found for type AptzipUserEntity!
-	// Optional<AptzipUserEntity> updateUser(UserDetails user);
 }

@@ -22,7 +22,7 @@ public class SocialImplicitSignUp implements ConnectionSignUp {
 
     // (#100) Tried accessing nonexisting field (bio) on node type (User)
     // -> access_token problem
-    // 일단 ConnectController로 구현하자
+    // -> ConnectController
     UserProfile profile = connection.fetchUserProfile();
     log.info("profile : {}", profile);
     
@@ -32,7 +32,6 @@ public class SocialImplicitSignUp implements ConnectionSignUp {
         .username(profile.getUsername())
         .email(profile.getEmail())
         .build();
-      // connection.getImageUrl()
     userJpaRepository.save(user);
     
     log.info("user : {}", user);

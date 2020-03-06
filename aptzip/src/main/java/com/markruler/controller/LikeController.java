@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-// 실수로 RestController에 매핑값 넣으면 전부 오류남
 @RequestMapping("/like")
 @RestController
 @RequiredArgsConstructor
@@ -31,9 +30,6 @@ public class LikeController {
     log.info("id : {}", id);
     log.info("like : {}", like);
     log.info("like principal : {}", principal);
-    
-    // No default constructor for entity
-    // => NoArgsConstructor
     
     BoardEntity board = new BoardEntity();
     board.setId(Long.valueOf(id));

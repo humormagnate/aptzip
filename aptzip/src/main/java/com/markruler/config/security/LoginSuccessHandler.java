@@ -24,12 +24,16 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, 
                                               Authentication authentication) throws ServletException, IOException {
       
-    // log.info(getClientIp(request));
     log.info(request.toString());
     log.info("===============================LoginSuccessHandler-onAuthenticationSuccess=====================================");
     // ((SecurityMember)authentication.getPrincipal()).setIp(getClientIp(request));
     
     HttpSession session = request.getSession();
+
+    /**
+     * 로그인에 성공할 경우
+     * LoginCheckInterceptor에서 지정한 페이지로 리다이렉트됩니다.
+     */
     if (session != null) {
         String redirectUrl = (String) session.getAttribute("prevPage");
         if (redirectUrl != null) {

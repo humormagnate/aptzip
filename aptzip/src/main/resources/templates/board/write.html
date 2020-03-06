@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="ko"
 			xmlns:th="http://www.thymeleaf.org"
 			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 			layout:decorate="~{layout/layout.html}">
@@ -12,12 +12,9 @@
 					<h1 class="tt-title-border">
 						[[${ board } ? 'Update Post' : 'Create New Post' ]]
 					</h1>
-					<!-- <div>[[${#request.getRequestURI()}]]</div> -->
 					<form class="form-default form-create-topic" id="form-create-topic" action="write" method="post">
 						<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
 						<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
-						<!-- <input type="hidden" th:if="${#strings.contains(#request.getRequestURI(), '/board/edit')}" name="_method" value="put"/> -->
-						<!-- <div>[[${ #authentication.principal.getUsername() }]]</div> -->
 						<input type="hidden" name="categoryName" th:value="${ board } ? ${ board.category.name } : ''">
 
 						<div class="form-group">
@@ -59,41 +56,22 @@
 								<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
 									placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
 							</div>
-							<!--
-							<div class="row">
-								<div class="col-md-4">
-									<div class="form-group">
-										<label for="inputTopicTitle">Tags</label>
-										<select class="form-control">
-											<option value="Select">Select</option>
-											<option value="Value 01">Value 01</option>
-											<option value="Value 02">Value 02</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-8">
-									<div class="form-group">
-										<label for="inputTopicTags">Selected</label>
-										<input type="text" name="tag" class="form-control" id="inputTopicTags"
-											placeholder="Select Tags" disabled>
-									</div>
-								</div>
-							</div>
-							-->
 							<div class="row">
 								<div class="col-auto ml-md-auto">
-									<button th:if="${ board }" id="deletePostBtn" class="btn btn-secondary btn-width-lg">
-										Delete Post
-									</button>
-									<!-- <button type="submit" class="btn btn-secondary btn-width-lg">
-										[[${ board } ? 'Update Post' : 'Create Post' ]]
-									</button> -->
-									<button th:if="${ board }" id="updatePostBtn" class="btn btn-secondary btn-width-lg">
-										Update Post
-									</button>
+
+									<th:block th:if="${ board }">
+										<button th:if="${ board }" id="deletePostBtn" class="btn btn-secondary btn-width-lg">
+											Delete Post
+										</button>
+										<button th:if="${ board }" id="updatePostBtn" class="btn btn-secondary btn-width-lg">
+											Update Post
+										</button>
+									</th:block>
+
 									<button th:if="${#strings.contains(#request.getRequestURI(), '/board/write')}" type="submit" class="btn btn-secondary btn-width-lg">
 										Create Post
 									</button>
+
 								</div>
 							</div>
 						</div>
@@ -118,8 +96,6 @@
 		const DELETE_POST_BTN = document.getElementById('deletePostBtn');
 		const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
 
-		// window.onload는 javascript
-		// document.ready는 jquery
 		window.onload = loadCalcRestTitle();
 
 		BOARD_TITLE.addEventListener('keyup', function () {
@@ -148,8 +124,6 @@
 				const NEW_BOARD_TITLE = document.getElementById('boardTitle');
 				const NEW_BOARD_CONTENT = document.getElementById('boardContent');
 				const URL = "[[@{/board/}]]" + BOARD_ID.value;
-				// console.log(NEW_BOARD_TITLE.value);
-				// console.log(NEW_BOARD_CONTENT.value);
 				updatePost(URL, NEW_BOARD_TITLE.value, NEW_BOARD_CONTENT.value);
 			}, false);
 		}

@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import javax.transaction.Transactional;
-
 import com.markruler.domain.board.BoardEntity;
 import com.markruler.domain.board.CategoryEntity;
 import com.markruler.domain.common.AptEntity;
@@ -21,8 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -42,29 +38,6 @@ public class BoardRepositoryTest {
   @Autowired private BoardRepository boardRepository;
   @Autowired private BoardService boardService;
 
-  @Test
-  @Transactional
-  public void testList() {
-    PageRequest pageRequest = PageRequest.of(0, 10, Direction.DESC, "id");
-    
-    Page<BoardEntity> result = boardRepository.findAll(boardRepository.makePredicate(null, null), pageRequest.first());
-
-    log.info("PAGE : " + result.getPageable());
-    log.info("////////////////////////////////////////////////////////////////////");
-    result.getContent().forEach(board -> log.info("" + board));
-  }
-
-  @Test
-  @Transactional
-  public void testListByKeyword() {
-    PageRequest pageRequest = PageRequest.of(0, 10, Direction.DESC, "id");
-    
-    Page<BoardEntity> result = boardRepository.findAll(boardRepository.makePredicate("title", "2"), pageRequest.first());
-
-    log.info("PAGE : {}", result.getPageable());
-    log.info("////////////////////////////////////////////////////////////////////");
-    result.getContent().forEach(board -> log.info("board : {}", board));
-  }
 
   @Test
   public void insertBoardDummies() {

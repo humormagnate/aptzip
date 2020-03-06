@@ -36,17 +36,6 @@
         <div class="tt-desktop-menu">
           <nav>
             <ul>
-              <!-- <li>
-                <a href="/categories"><span>Categories</span></a>
-                <ul>
-                  <li><a href="#">Common</a></li>
-                  <li><a href="#">Discussion</a></li>
-                  <li><a href="#">Poll</a></li>
-                  <li><a href="#">Media</a></li>
-                  <li><a href="#">Question</a></li>
-                  <li><a href="#">Gallery</a></li>
-                </ul>
-              </li> -->
               <li>
                 <a sec:authorize="isAuthenticated()" th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>Apt</span></a>
               </li>

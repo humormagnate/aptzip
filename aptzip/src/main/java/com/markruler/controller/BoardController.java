@@ -51,16 +51,7 @@ public class BoardController {
     							 .collect(Collectors.toList());
 		model.addAttribute("categories", categories);
 	}
-
-	// AuthenticationPrincipal은 Context에 있기 때문에 계속 보내줄 필요 없음
-	// public ModelAndView writeGet(@AuthenticationPrincipal UserResponseDto principal, ModelAndView mv) {
-	// 	mv.addObject("principal", principal)
-	// 		.setViewName("board/page-create-topic");
-	// 	return mv;
-	// }
 	
-	// UserDetails를 구현한 UserRequestDto는 @AuthenticationPrincipal 이 안먹히고
-	// UserDetails를 구현한 User를 상속한 UserResponseDto는 먹힌다. Why?
 	@PostMapping("/write")
 	public String writePost(BoardEntity board, @AuthenticationPrincipal UserResponseDto principal, RedirectAttributes rttr, String categoryName)
 		throws Exception {
@@ -69,16 +60,9 @@ public class BoardController {
 		log.info(board.toString());
 		log.info(principal.toString());
 		
-		if ("".equals(board.getBoardTitle())) {
-			return "";
-		}
+		if (("".equals(board.getBoardTitle())) || ("".equals(categoryName) && categoryName == null)) return "";
 
-		if ("".equals(categoryName) && categoryName == null) {
-			return "";
-		}
-
-		// categoryName 대신 번호로 받기
-		// 글쓸 때마다 db를 2번 감
+		// TODO: 글쓸 때마다 db를 2번 감. 수정 필요.
 		categoryRepo.findByName(categoryName).ifPresent(category -> {
 			board.setCategory(category);
 			board.setBoardStatus("Y");
@@ -123,8 +107,6 @@ public class BoardController {
 				});
 			}
 		});
-
-
 		return "board/page-single-topic";
 	}
 
@@ -141,13 +123,7 @@ public class BoardController {
 	@PutMapping("/{id}")
 	public String put(@PathVariable("id") Long id, @ModelAttribute BoardEntity board, String categoryName) {
 		log.info("====================================Put Mapping=================================");
-
-		if ("".equals(categoryName) && categoryName == null) {
-			return "";
-		}
-		// categoryName 대신 번호로 받기
-		// 글쓸 때마다 db를 2번 감
-
+		if ("".equals(categoryName) && categoryName == null) return "";
 		log.info(id.toString());
 		log.info(board.toString());
 		
@@ -168,11 +144,10 @@ public class BoardController {
 		return "board/write";
 	}
 
-	/*
-		클라이언트는 @MessageMapping 으로 request
-		서버는 @SendTo 로 response
-	*/
-	// return String
+	/**
+	 * 클라이언트는 @MessageMapping 으로 request
+	 * 서버는 @SendTo 로 response
+	 */
 	@MessageMapping("/nbax") // 전역 RequestMapping(여기서 '/board')에 적용되지 않는다. -> 따로 컨트롤러를 두자(MessageController)
 	@SendTo("/topic/messagexx")	// publishing
 	public String newBoardAlertx(String message) throws Exception {
@@ -180,7 +155,6 @@ public class BoardController {
 		return message;
 	}
 	
-	// return Object
 	@MessageMapping("/nbaxx")
 	@SendTo("/topic/messagexx")	// publishing
 	public String newBoardAlertxx(String message) throws Exception {

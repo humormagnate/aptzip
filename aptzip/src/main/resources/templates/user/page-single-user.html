@@ -1,148 +1,78 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="ko"
 			xmlns:th="http://www.thymeleaf.org"
 			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 			layout:decorate="~{layout/layout.html}">
 
   <div layout:fragment="content">
 
-	<main id="tt-pageContent" class="tt-offset-small">
-		<div class="tt-wrapper-section">
-			<div class="container">
-				<div class="tt-user-header">
-					<div class="tt-col-avatar">
-						<div class="tt-icon">
-							<svg class="tt-icon">
-								<!-- Get First Letter of Name -->
-								<!-- <use sec:authorize="isAuthenticated()" th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use> -->
-								<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(infouser.getUsername(), 0, 1) }"></use>
-							</svg>
-						</div>
-					</div>
-					<div class="tt-col-title">
-						<div class="tt-title">
-							<!-- <a href="#"><span th:text="${ #authentication.principal } ? ${ #authentication.principal.getUsername() } : ''"></span></a> -->
-							<a th:href="@{mailto:{email}(email=${infouser.getEmail()})}">
-								<span th:text="${ infouser.getUsername() }"></span>
-							</a>
-						</div>
-						<ul class="tt-list-badge">
-							<li>
-								<span th:class="${infouser.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge" th:text="${ infouser.getRole().getRole() }"></span>
-							</li>
-						</ul>
-					</div>
-					<div class="tt-col-btn">
-						<div class="tt-list-btn">
-							<a sec:authorize="isAuthenticated()" th:if="${ infouser.getId() == #authentication.principal.getId() }"
-								href="#" class="tt-btn-icon" id="js-settings-btn">
+		<main id="tt-pageContent" class="tt-offset-small">
+			<div class="tt-wrapper-section">
+				<div class="container">
+					<div class="tt-user-header">
+						<div class="tt-col-avatar">
+							<div class="tt-icon">
 								<svg class="tt-icon">
-									<use xlink:href="#icon-settings_fill"></use>
+									<!-- Get First Letter of Name -->
+									<!-- <use sec:authorize="isAuthenticated()" th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use> -->
+									<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(infouser.getUsername(), 0, 1) }"></use>
 								</svg>
-							</a>
-							<!-- <a th:href="@{ ~/user/{id}/message(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
-							<!-- <a href="#" class="btn btn-primary">Message</a> -->
-							<a th:if="${#authentication.principal.id} ne ${ infouser.id }" href="#" id="userFollowBtn" class="btn btn-secondary">Follow</a>
+							</div>
+						</div>
+						<div class="tt-col-title">
+							<div class="tt-title">
+								<!-- <a href="#"><span th:text="${ #authentication.principal } ? ${ #authentication.principal.getUsername() } : ''"></span></a> -->
+								<a th:href="@{mailto:{email}(email=${infouser.getEmail()})}">
+									<span th:text="${ infouser.getUsername() }"></span>
+								</a>
+							</div>
+							<ul class="tt-list-badge">
+								<li>
+									<span th:class="${infouser.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge" th:text="${ infouser.getRole().getRole() }"></span>
+								</li>
+							</ul>
+						</div>
+						<div class="tt-col-btn">
+							<div class="tt-list-btn">
+								<a sec:authorize="isAuthenticated()" th:if="${ infouser.getId() == #authentication.principal.getId() }"
+									href="#" class="tt-btn-icon" id="js-settings-btn">
+									<svg class="tt-icon">
+										<use xlink:href="#icon-settings_fill"></use>
+									</svg>
+								</a>
+								<!-- <a th:href="@{ ~/user/{id}/message(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
+								<!-- <a href="#" class="btn btn-primary">Message</a> -->
+								<a th:if="${#authentication.principal.id} ne ${ infouser.id }" href="#" id="userFollowBtn" class="btn btn-secondary">Follow</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="container">
-			<div class="tt-tab-wrapper">
-				<div class="tt-wrapper-inner">
-					<ul class="nav nav-tabs pt-tabs-default" role="tablist">
-						<!-- <li class="nav-item show">
-							<a class="nav-link active" data-toggle="tab" href="#tt-tab-01" role="tab"><span>Activity</span></a>
-						</li> -->
-						<li class="nav-item show">
-							<a class="nav-link active" data-toggle="tab" href="#tt-tab-02" role="tab"><span>Threads</span></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#tt-tab-03" role="tab"><span>Comments</span></a>
-						</li>
-						<li class="nav-item tt-hide-xs">
-							<a class="nav-link" data-toggle="tab" href="#tt-tab-04" role="tab"><span>[[${followers} ? ${#lists.size(followers)} : '0' ]] Followers</span></a>
-						</li>
-						<li class="nav-item tt-hide-md">
-							<a class="nav-link" data-toggle="tab" href="#tt-tab-05" role="tab"><span>[[${followings} ? ${#lists.size(followings)} : '0']] Following</span></a>
-						</li>
-						<li class="nav-item tt-hide-md">
-							<!-- <a class="nav-link" data-toggle="tab" href="#tt-tab-06" role="tab"><span>Categories</span></a> -->
-						</li>
-					</ul>
-				</div>
-				
-				<!--/*/
-				<div class="tab-content">
-					<div class="tab-pane tt-indent-none" id="tt-tab-01" role="tabpanel">
-						<div class="tt-topic-list">
-							<div class="tt-list-header">
-								<div class="tt-col-topic">Topic</div>
-								<div class="tt-col-value-large hide-mobile">Category</div>
-								<div class="tt-col-value-large hide-mobile">Status</div>
-								<div class="tt-col-value-large hide-mobile">Activity</div>
-							</div>
-
-							<div class="tt-item" th:each="board : ${ boards }">
-								<div class="tt-col-avatar">
-									<svg class="tt-icon">
-										<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.getUsername(), 0, 1) }">
-										</use>
-									</svg>
-								</div>
-								<div class="tt-col-description">
-									<h6 class="tt-title">
-										<a th:href="@{/board/{id}(id=${board.id})}">
-											[[${ board.boardTitle }]]
-										</a>
-									</h6>
-									<div class="row align-items-center no-gutters hide-desktope">
-										<div class="col-9">
-											<ul class="tt-list-badge">
-												<li class="show-mobile">
-													<a href="#">
-														<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">
-															[[${ board.category } ? ${ board.category.name } : 'common']]
-														</span>
-													</a>
-												</li>
-											</ul>
-										</div>
-										<div class="col-3 ml-auto show-mobile">
-											<div class="tt-value">
-												[[${ #temporals.format(board.createDate, 'HH:mm') }]]
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tt-col-category tt-col-value-large hide-mobile">
-									<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
-								</div>
-								<div class="tt-col-value-large hide-mobile">
-									<a href="#" class="tt-btn-icon">
-										<i class="tt-icon"><svg>
-												<use xlink:href="#icon-like"></use>
-											</svg></i>
-									</a>
-								</div>
-								<div class="tt-col-value-large hide-mobile">
-									[[${#aptzip.betweenNowAndTime(board.createDate)}]]
-								</div>
-							</div>
-
-							<div class="tt-row-btn">
-								<button type="button" class="btn-icon js-topiclist-showmore">
-									<svg class="tt-icon">
-										<use xlink:href="#icon-load_lore_icon"></use>
-									</svg>
-								</button>
-							</div>
-
-						</div>
+			<div class="container">
+				<div class="tt-tab-wrapper">
+					<div class="tt-wrapper-inner">
+						<ul class="nav nav-tabs pt-tabs-default" role="tablist">
+							<!-- <li class="nav-item show">
+								<a class="nav-link active" data-toggle="tab" href="#tt-tab-01" role="tab"><span>Activity</span></a>
+							</li> -->
+							<li class="nav-item show">
+								<a class="nav-link active" data-toggle="tab" href="#tt-tab-02" role="tab"><span>Threads</span></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tt-tab-03" role="tab"><span>Comments</span></a>
+							</li>
+							<li class="nav-item tt-hide-xs">
+								<a class="nav-link" data-toggle="tab" href="#tt-tab-04" role="tab"><span>[[${followers} ? ${#lists.size(followers)} : '0' ]] Followers</span></a>
+							</li>
+							<li class="nav-item tt-hide-md">
+								<a class="nav-link" data-toggle="tab" href="#tt-tab-05" role="tab"><span>[[${followings} ? ${#lists.size(followings)} : '0']] Following</span></a>
+							</li>
+							<li class="nav-item tt-hide-md">
+								<!-- <a class="nav-link" data-toggle="tab" href="#tt-tab-06" role="tab"><span>Categories</span></a> -->
+							</li>
+						</ul>
 					</div>
-					/*/-->
-
+					
 					<div class="tab-pane tt-indent-none show active" id="tt-tab-02" role="tabpanel">
 						<div class="tt-topic-list">
 							<div class="tt-list-header">
@@ -348,8 +278,6 @@
 									</span>
 								</div>
 							</div>
-							
-
 						</div>
 					</div>
 					<!-- tab 05 following end -->
@@ -400,22 +328,22 @@
 											</button>
 										</div>
 									</div>
-
-								</div> <!-- row end -->
-
-							</div> <!-- list end -->
-						</div><!-- wrapper-inner end -->
-
+								</div>
+								<!-- row end -->
+							</div>
+							<!-- list end -->
+						</div>
+						<!-- wrapper-inner end -->
 					</div>
 					<!-- tab 06 categories end -->
-
 				</div>
 				<!-- tab-content end -->
 			</div>
 			<!-- tt-tab-wrapper end -->
-		</div>
-		<!-- container end -->
-	</main>
+		</main>
+
+	</div>
+	<!-- container end -->
 
 	<!-- popup-settings start -->
 	<div id="js-popup-settings" class="tt-popup-settings">
@@ -473,44 +401,6 @@
 				<input type="text" name="apt" class="form-control" id="settingsUserLocation" placeholder="APT Complex"
 					th:value="${ #authentication.principal.getApt().getAptName() }" disabled>
 			</div>
-			<!-- 
-			<div class="form-group">
-				<label for="settingsUserWebsite">Website</label>
-				<input type="text" name="name" class="form-control" id="settingsUserWebsite" placeholder="Not yet" disabled>
-			</div>
-			<div class="form-group">
-				<label for="settingsUserAbout">About</label>
-				<textarea name="introduction" placeholder="Few words about you" class="form-control" id="settingsUserAbout"
-					th:value="${ #authentication.principal.getIntroduction() }"></textarea>
-			</div>
-			<div class="form-group">
-				<label for="settingsUserAbout">Notify me via Email</label>
-				<div class="checkbox-group">
-					<input type="checkbox" id="settingsCheckBox01" name="checkbox">
-					<label for="settingsCheckBox01">
-						<span class="check"></span>
-						<span class="box"></span>
-						<span class="tt-text">When someone comments to my thread</span>
-					</label>
-				</div>
-				<div class="checkbox-group">
-					<input type="checkbox" id="settingsCheckBox02" name="checkbox">
-					<label for="settingsCheckBox02">
-						<span class="check"></span>
-						<span class="box"></span>
-						<span class="tt-text">When someone likes my thread or comment</span>
-					</label>
-				</div>
-				<div class="checkbox-group">
-					<input type="checkbox" id="settingsCheckBox03" name="checkbox">
-					<label for="settingsCheckBox03">
-						<span class="check"></span>
-						<span class="box"></span>
-						<span class="tt-text">When someone mentions me</span>
-					</label>
-				</div>
-			</div>
-			-->
 			<div class="form-group">
 				<button type="button" id="userInfoSaveButn" class="btn btn-secondary">Save</button>
 			</div>

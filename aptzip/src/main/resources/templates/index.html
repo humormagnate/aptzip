@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="ko"
 			xmlns:th="http://www.thymeleaf.org"
 			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 			layout:decorate="~{layout/layout.html}">
@@ -8,24 +8,8 @@
     <main id="tt-pageContent" class="tt-offset-small">
       <!-- container start -->
       <div class="container">
-        
-        <!-- Id<p th:text="${#authentication.principal.getId()}"></p>
-			Email<p th:text="${#authentication.principal.getEmail()}"></p>
-			autho<p th:text="${#authentication.principal.getAuthorities()}"></p>
-			name<p th:text="${#authentication.principal.getUsername()}"></p>
-      password<p th:text="${#authentication.principal.getPassword()}"></p> -->
-      
-        <!-- <th:block th:with="auth=${#authentication.getPrincipal()}">
-        <span th:text="${auth}"></span>
-        </th:block> -->
-
-        <!-- <div>
-          <input type="text" name="" id="messagetest"><br>
-          <button id="sockettest">sockettest</button>
-        </div> -->
         <!-- topic-list start -->
         <div class="tt-topic-list">
-          <!-- <div>[[${@environment.getProperty('env.aptzip.test3')} ?: '']]</div> -->
           <!-- list-header start -->
           <div class="tt-list-header">
             <div class="tt-col-topic">Topic</div>
@@ -72,8 +56,6 @@
             
             <!-- new board -->
             <div class="tt-item" th:classappend="${#aptzip.isItOneHourAgo(board?.createDate)} ? 'tt-itemselect' : ''">
-              <!-- <div>[[${ board }]]</div> -->
-              <!-- <div>[[${ board?.user }]]</div> -->
               <div class="tt-col-avatar">
                 <svg class="tt-icon">
                   <use
@@ -84,9 +66,6 @@
               <div class="tt-col-description">
                 <h6 class="tt-title">
                   <a th:href="@{/board/{id}(id=${board.id})}">
-                    <!-- <svg class="tt-icon">
-                      <use xlink:href="#icon-pinned"></use>
-                    </svg> -->
                     [[${ board?.boardTitle }]]
                   </a>
                 </h6>
@@ -106,9 +85,7 @@
                   </div>
                 </div>
               </div>
-              <!-- 3항 연산자 단축 표현 -->
               <div class="tt-col-category">
-                <!-- https://webfirewood.tistory.com/94 -->
                 <span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }">
                   [[${not #strings.isEmpty(board?.category)} ? ${board?.category?.name} : 'Common']]
                 </span>
@@ -122,7 +99,6 @@
               </div>
               <div class="tt-col-value hide-mobile">
                 [[${#aptzip.betweenNowAndTime(board.createDate)}]]
-                <!-- [[${ #temporals.format(board.createDate, 'HH:mm') }]] -->
               </div>
             </div>
           </th:block>
@@ -131,25 +107,19 @@
           <!-- paging start -->
           <div class="pagination-container">
             <nav>
-              <!-- [[${list}]] -->
               <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${list.prevPage}">
-                  <!-- <a th:href="@{?page={prev}(prev=${list.prevPage.pageNumber+1})}" class="page-link"> -->
                   <a th:href="${list.prevPage.pageNumber+1}" class="page-link">
-                    <!-- [[${list.prevPage}]] -->
                     &laquo;
                   </a>
                 </li>
                 <li class="page-item" th:each="p:${list.pageList}" th:classappend="${p.pageNumber eq list.currentPageNum-1} ? active : ''">
-                  <!-- <a th:href="@{?page={c}(c=${p.pageNumber+1})}" class="page-link"> -->
                   <a th:href="${p.pageNumber+1}" class="page-link">
                     [[${p.pageNumber} + 1]]
                   </a>
                 </li>
                 <li class="page-item" th:if="${list.nextPage}">
-                  <!-- <a th:href="@{?page={next}(next=${list.nextPage.pageNumber+1})}" class="page-link"> -->
                   <a th:href="${list.nextPage.pageNumber+1}" class="page-link">
-                    <!-- [[${list.nextPage}]] -->
                     &raquo;
                   </a>
                 </li>
@@ -157,19 +127,6 @@
             </nav>
           </div>
           <!-- paging end -->
-          
-          <!-- row-btn start -->
-          <!--
-          <div class="tt-row-btn">
-            <button type="button" class="btn-icon js-topiclist-showmore">
-              <svg class="tt-icon">
-                <use xlink:href="#icon-load_lore_icon"></use>
-              </svg>
-            </button>
-          </div>
-          -->
-          <!-- row-btn end -->
-
         </div>
         <!-- topic-list end -->
       </div>

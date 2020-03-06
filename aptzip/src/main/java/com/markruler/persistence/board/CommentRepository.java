@@ -19,6 +19,4 @@ public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
 
   public List<CommentEntity> findByUserIdOrderByIdDesc(Long id);
 
-  // public List<CommentEntity> findAllByApt(AptEntity apt);
-  
 }

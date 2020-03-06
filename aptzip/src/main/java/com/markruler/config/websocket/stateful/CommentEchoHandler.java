@@ -20,14 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CommentEchoHandler extends TextWebSocketHandler {
 
-  // all user
+  // broadcast
   private final List<WebSocketSession> sessionList = new ArrayList<>();
-
-  // specific user
+  // unicast
   private final Map<String, WebSocketSession> userSessions = new HashMap<>();
 
-  // Invoked after WebSocket negotiation has succeeded
-  // and the WebSocket connection is opened and ready for use.
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     log.info("afterConnectionEstablished >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {}", session);
@@ -36,28 +33,27 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     userSessions.put(senderId, session);
 	}
 
-  // Invoked when a new WebSocket message arrives.
   @Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
     log.info("handleTextMessage >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>{}:{}", session, message);
     
-    // broadcasting
+    // broadcast
     // String senderId = getId(session);
     // for (WebSocketSession webSocketSession : sessionList) {
     //   webSocketSession.sendMessage(new TextMessage(senderId + " : " + message.getPayload()));
     //   log.info("broadcasting test success");
     // }
     
-    // unicasting?
-    // protocol : 댓글, 작성자, 게시글작성자, 게시글번호 (comment, comment_user_id, board_user_id, board_id)
-    String msg = message.getPayload();
-    log.info("payload {}", msg);
+    // unicast
+    // 댓글, 작성자, 게시글작성자, 게시글번호 (comment, comment_user_id, board_user_id, board_id)
+    String payload = message.getPayload();
+    log.info("payload {}", payload);
 
-    if (StringUtils.isNotEmpty(msg)) {
+    if (StringUtils.isNotEmpty(payload)) {
       // "|"(pipe)로만 하면 1글자씩 전부 나눠버림
       // "+"(plus)가 포함되어 있으면 dangling meta character '+' near index 에러
       log.info("split");
-      String[] strs = msg.split("\\|\\+\\|");
+      String[] strs = payload.split("\\|\\+\\|");
       log.info("comment {} / commentUser {} / boardUser {}", strs[0], strs[1], strs[2]);
       log.info("strs.length : {}", strs.length);
       log.info("session.getPrincipal() : {}", session.getPrincipal());
@@ -72,16 +68,13 @@ public class CommentEchoHandler extends TextWebSocketHandler {
         if (commentUser.equals(boardUser)) return;
 
         WebSocketSession boardSocketSession = userSessions.get(boardUser);
-        if (boardSocketSession != null) {
-          log.info("boardSocketSession : {}", boardSocketSession);
-          log.info("boardSocketSession.getHandshakeHeaders() : {}", boardSocketSession.getHandshakeHeaders());
-          log.info("boardSocketSession.getPrincipal().getName() : {}", boardSocketSession.getPrincipal().getName());
-        }
-        // if ("comment".equals(comment) && boardSocketSession != null) {
         
         log.info("unicasting test success");
         if (boardSocketSession != null) {
           log.info("boardSocketSession is not null");
+          log.info("boardSocketSession : {}", boardSocketSession);
+          log.info("boardSocketSession.getHandshakeHeaders() : {}", boardSocketSession.getHandshakeHeaders());
+          log.info("boardSocketSession.getPrincipal().getName() : {}", boardSocketSession.getPrincipal().getName());
           TextMessage tm = new TextMessage(commentUser + "님이 댓글을 달았습니다! " + comment);
           boardSocketSession.sendMessage(tm);
         }
@@ -91,33 +84,11 @@ public class CommentEchoHandler extends TextWebSocketHandler {
   }
   
   private String getId(WebSocketSession session) {
-    // Map<String, Object> httpSession = session.getAttributes();
-    
-    // if (!(auth instanceof AnonymousAuthenticationToken)) {
-    //   String currentUserName = auth.getName();
-    //   return currentUserName;
-    // }
-    
     // WebSocketServerSockJsSession
     // SockJsClient
     // UsernamePasswordAuthenticationToken.principal -> final field
     Principal principal = session.getPrincipal();
     log.info("principal : {}", principal);
-    // log.info("principal.getName() : {}", principal.getName());
-    
-    // Authentication auth = (Authentication)session.getPrincipal();
-    // log.info("auth : {}", auth);
-    // log.info("auth.getName() : {}", auth.getName());
-
-    // log.info("user service : {}", service);
-    // UserDetailsByNameServiceWrapper<Authentication> wrap = new UserDetailsByNameServiceWrapper<>(service);
-    // UserResponseDto user = (UserResponseDto)wrap.loadUserDetails(auth);
-    // log.info("user : {}", user);
-
-    // UserService userService = new UserService();
-    // UserResponseDto user = (UserResponseDto)userService.loadUserByUsername(auth.getName());
-    // log.info("user : {}", user);
-    
     if (principal == null) {
       return session.getId();
     } else {
@@ -125,11 +96,6 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     }
   }
 
-  // Invoked after the WebSocket connection has been closed by either side,
-  // or after a transport error has occurred.
-  //
-  // Although the session may technically still be open, depending on the underlying implementation,
-  // sending messages at this point is discouraged and most likely will not succeed.
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
     log.info("afterConnectionClosed >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {} : {}", session, status);

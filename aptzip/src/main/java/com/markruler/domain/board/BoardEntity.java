@@ -48,15 +48,12 @@ public class BoardEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
-	// private String category;
 
   @Column(name = "board_title")
 	private String boardTitle;
   @Column(name = "board_content")
 	private String boardContent;
 	
-	// @ColumnDefault("Y")
-	// Column 'board_status' cannot be null -> Why? default 값도 전혀 적용안된다.
 	@Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
 	private String boardStatus;
 	
@@ -68,14 +65,10 @@ public class BoardEntity {
   @Column(name = "create_date")
 	private LocalDateTime createDate;
 
-	// 조회수 update할 때도 변경됨
-	// @UpdateTimestamp
   @Column(name = "update_date")
 	private LocalDateTime updateDate;
 	
-  // JSON string에서 제외
   @JsonIgnore
-	// mappedBy 안하면 tb_board_comments 테이블도 생김 (양방향 정규화)
 	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
 	@OrderBy("id asc")
 	private List<CommentEntity> comments;

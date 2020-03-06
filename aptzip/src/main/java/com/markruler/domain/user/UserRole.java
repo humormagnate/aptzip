@@ -23,7 +23,6 @@ public enum UserRole {
 
   private final Set<UserPrivilege> privileges;
   
-  //https://www.baeldung.com/spring-security-granted-authority-vs-role
   public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
     Set<SimpleGrantedAuthority> privileges = getPrivileges().stream()
             .map(permission -> new SimpleGrantedAuthority(permission.getPrivileges()))

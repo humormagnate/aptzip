@@ -27,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class AptEntity {
   @Id
-  @NonNull // Long이 아닌 long으로 지정할 경우 @NonNull is meaningless on a primitive : 하지만 어차피 Required를 위한 것.
+  @NonNull
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 

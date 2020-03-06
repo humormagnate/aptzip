@@ -33,28 +33,15 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
     log.info("pageable : {}", pageable);
     log.info("pageVo : {}", pageVo);
 
-    // https://jojoldu.tistory.com/372
-    // https://jojoldu.tistory.com/394
-    // Dynamic Query
     JPQLQuery<BoardEntity> query =
       queryFactory
         .selectFrom(boardEntity)
         .where(
-          // null 이면 or 메소드 호출할 때 nullpointer
           containsTitle(pageVo.getQuery()), //.or(containsContent(pageVo.getQuery())),
           containsWriter(pageVo.getUsername()),
           containsCategory(pageVo.getCategory()),
           eqApt(pageVo.getAptId())
         );
-        // .orderBy(orderby)
-        // .limit(limit)
-        // .offset(offset)
-    // JPQLQuery<BoardEntity> query =
-    //   from(boardEntity)
-    //   .where(
-    //     containsTitle(pageVo.getQuery()).or(containsContent(pageVo.getQuery())),
-    //     containsWriter(pageVo.getUsername())
-    //   );
     
     // QuerydslRepositorySupport
     List<BoardEntity> content = getQuerydsl().applyPagination(pageable, query).fetch();
@@ -62,9 +49,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 
     return new PageImpl<>(content, pageable, total);
   }
-
-  // https://cherrypick.co.kr/querydsl-difference-like-contains/
-  // Querydsl like, contains 차이
 
   private BooleanExpression containsTitle(String title) {
     if (StringUtils.isEmpty(title)) {

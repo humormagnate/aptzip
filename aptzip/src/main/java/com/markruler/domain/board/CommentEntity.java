@@ -27,12 +27,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// 답글, 답장 : reply
-// 댓글 : comment
 @Getter
 @Setter
 @Builder
-// @ToString(exclude = "board")
 @ToString
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
@@ -62,20 +59,11 @@ public class CommentEntity {
   @Column(name = "comment_status")
   private String commentStatus;
 
-  // UserController 에서는 json 말고 model 반환할 것
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
   private BoardEntity board;
   
-  // com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
-  // No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor
-  // and no properties discovered to create BeanSerializer
-  // (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
-  // (through reference chain: java.util.ArrayList[0]
-  // ->com.markruler.domain.board.CommentEntity["user"]
-  // ->com.markruler.domain.user.AptzipUserEntity$HibernateProxy$34IWdfwG["hibernateLazyInitializer"])]
-  // => EAGER로 지정
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private AptzipUserEntity user;

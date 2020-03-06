@@ -16,7 +16,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
      * 도메인이 다른 서버에서도 접속 가능하도록 CORS
      * setAllowedOrigins("*")
      */
-
     // pure websocket (standard) > IE 10
     registry.addHandler(new CommentEchoHandler(), "/ws/comment")
             .setAllowedOrigins("*");

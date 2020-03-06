@@ -3,7 +3,6 @@ package com.markruler.domain.user;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +37,6 @@ public class ConfirmationToken {
   @CreationTimestamp
   private LocalDateTime createdDate;
 
-  // @OneToOne(targetEntity = AptzipUserEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", nullable = true)
   private AptzipUserEntity user;

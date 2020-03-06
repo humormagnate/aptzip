@@ -50,8 +50,6 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
 	@Override
 	public UserIdSource getUserIdSource() {
-		// TO:DO Auto-generated method stub
-		// return super.getUserIdSource();
     return new SessionUserIdSource();
 	}
 
@@ -60,10 +58,10 @@ public class SocialConfig extends SocialConfigurerAdapter {
 		return new SocialSignInAdapter(userJpaRepository);
 	}
 
-  // rank가 MySQL 8 version 부터 reserved -> Override 필요
+  // rank가 MySQL 8 version 부터 예약어 -> Override 필요
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-		// JdbcUsersConnectionRepository 커스터마이징해서 ConnectionRepository 에서 rank -> `rank` 고칠 것
+		// JdbcUsersConnectionRepository 커스터마이징해서 ConnectionRepository 에서 rank -> `rank` 수정
 		NewJdbcUsersConnectionRepository repository = new NewJdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
 		repository.setConnectionSignUp(new SocialImplicitSignUp(userJpaRepository));
     log.info("getUsersConnectionRepository : {}", repository);

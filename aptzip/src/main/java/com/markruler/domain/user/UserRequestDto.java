@@ -23,7 +23,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 // TODO validation
-// https://www.baeldung.com/registration-with-spring-mvc-and-spring-security
 @Getter
 @Setter
 @Builder
@@ -40,10 +39,6 @@ public class UserRequestDto implements SocialUserDetails {
 	@Email(message = "메일 양식을 지켜주세요.")
 	private String email;
 
-	// @NotBlank(message = "전화번호를 작성해주세요.")
-	// @Pattern(regexp = "[0-9]{10,11}", message = "10~11자리의 숫자만 입력가능합니다")
-	// private String phone;
-
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	@Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문자만 입력가능합니다")
 	private String username;
@@ -55,7 +50,6 @@ public class UserRequestDto implements SocialUserDetails {
 	private List<BoardEntity> board;
 	private AptzipRoleEntity role;
 	private AptEntity apt;
-	// private List<AptzipUserEntity> following;
 	private List<UserFollowEntity> following;
 	private List<UserFollowEntity> follower;
 	private boolean isEnabled;

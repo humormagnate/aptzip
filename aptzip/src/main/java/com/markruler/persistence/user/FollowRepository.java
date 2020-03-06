@@ -20,12 +20,4 @@ public interface FollowRepository extends JpaRepository<UserFollowEntity, Long> 
 
   UserFollowEntity findByFollowingAndFollower(AptzipUserEntity following, AptzipUserEntity follower);
 
-  // public List<UserFollowEntity> findAllByToUserId(Long id);
-
-  // @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END FROM UserFollowEntity f WHERE f.fromUserId = :fromId")
-  // public Boolean existsByUserId(Long fromId);
-
-  // public Boolean existsByToUserId(Long toId);
-
-  // public Boolean existsByFromUserIdAndToUserId(Long fromId, Long toId);
 }

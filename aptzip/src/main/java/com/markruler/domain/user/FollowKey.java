@@ -19,9 +19,6 @@
 // @Builder
 // @Embeddable
 // public class FollowKey implements Serializable {
-//   /**
-//    *
-//    */
 //   private static final long serialVersionUID = 1L;
 
 //   @ManyToOne(fetch = FetchType.LAZY)

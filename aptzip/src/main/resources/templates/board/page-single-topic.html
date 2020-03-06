@@ -1,18 +1,15 @@
 <!doctype html>
-<html lang="en"
+<html lang="ko"
 			xmlns:th="http://www.thymeleaf.org"
 			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 			layout:decorate="~{layout/layout.html}">
 
 <div layout:fragment="content">
 	<main id="tt-pageContent">
-		<!-- <div>[[${ board.comments }]]</div> -->
-		<!-- <input type="hidden" th:value="${board.user}" id="hiddenBoardUsername"> -->
 		<div class="container">
 			<div class="tt-single-topic-list">
 
 				<!-- board content start -->
-				<!-- <div>[[${board}]]</div> -->
 				<div class="tt-item">
 					<div class="tt-single-topic">
 						<div class="tt-item-header">
@@ -23,7 +20,6 @@
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
-									<!-- <a th:href="@{ ~/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a> -->
 									<a th:href="@{/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardId" th:value="${ board.id }">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser" th:value="${#authentication.principal.id}">
@@ -55,10 +51,6 @@
 							</div>
 						</div>
 						<div class="tt-item-description">
-							<!-- html 태그의 내용으로 출력하는 경우와 속성의 값으로 출력하는 경우 th:text -->
-							<!-- html 태그가 포함된 내용을 출력할 때는 unescaped text를 출력해 주는 th:utext -->
-							<!-- <p th:utext="${#strings.replace(board.boardContent, '\n', '&lt;br /&gt;')}"> -->
-							<!-- <p th:utext="${#strings.replace( #strings.escapeXml( board.boardContent ),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}"> -->
 							<p th:utext="${board.boardContent}">
 							<!-- <p th:text="${board.boardContent}"> -->
 							</p>
@@ -77,11 +69,6 @@
 									<use xlink:href="#icon-reply"></use>
 								</svg></i>
 							</a>
-							<!-- <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-share"></use>
-									</svg></i>
-							</a> -->
 						</div>
 					</div>
 				</div>
@@ -116,14 +103,6 @@
 									<span class="tt-text" id="replyCount">[[${#lists.size(board.comments)}]]</span>
 								</span>
 							</div>
-							<!-- <div class="tt-item">
-								<span href="#" class="tt-icon-btn tt-position-bottom">
-									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-share"></use>
-										</svg></i>
-									<span class="tt-text">0</span>
-								</span>
-							</div> -->
 						</div>
 
 						<hr>
@@ -132,11 +111,9 @@
 							<h6 class="tt-title">Sort comments by:</h6>
 							<ul class="tt-list-badge tt-size-lg">
 								<li><a href="#"><span class="tt-color02 tt-badge">Recent</span></a></li>
-								<!-- <li><a href="#"><span class="tt-badge">Most Liked</span></a></li> -->
 							</ul>
 							<select class="tt-select form-control">
 								<option value="Recent">Recent</option>
-								<!-- <option value="Most Liked">Most Liked</option> -->
 							</select>
 						</div>
 					</div>
@@ -144,8 +121,6 @@
 				<!-- tt-info-box end -->
 
 				<!-- comment-list start -->
-				<!-- <div class="tt-item" th:each="comment : ${ #lists.sort(board.comments) }"> -->
-				<!-- <div>[[${board.comments}]]</div> -->
 				<div class="tt-single-topic-list" id="commentList">
 					<th:block th:if="${false}">
 					<div class="tt-item" th:each="comment : ${ board.comments }">
@@ -200,16 +175,10 @@
 					</div>
 					</th:block>
 				</div>
-				<!-- https://www.w3schools.com/howto/howto_css_social_media_buttons.asp -->
-				<!-- <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-					<i class="tt-icon"><svg>
-							<use xlink:href="#icon-share"></use>
-						</svg></i>
-				</a> -->
-				<!-- comment-list end -->
 			</div>
-			
+			<!-- comment-list end -->
 
+			<!-- login-message start -->
 			<div class="tt-wrapper-inner">
 				<h4 class="tt-title-separator"><span>You’ve reached the end of replies</span></h4>
 			</div>
@@ -235,15 +204,8 @@
 					</div>
 				</div>
 			</div>
-<!-- 
-			<button id="asd">asd</button>
-			<script>
-				var asd = document.getElementById('asd');
-				asd.addEventListener('click', function(){
-					console.log('[[${board}]]');
-				}, false);
-			</script>
-			 -->
+			<!-- login-message end -->
+			
 			<!-- comment form start -->
 			<div sec:authorize="isAuthenticated()" class="tt-wrapper-inner">
 				<div class="pt-editor form-default">
@@ -259,22 +221,11 @@
 					</div>
 					
 					<div class="pt-row">
-						<div class="col-auto">
-							<!-- 
-							<div class="checkbox-group">
-								<input type="checkbox" id="checkBox21" name="checkbox" checked="">
-								<label for="checkBox21">
-									<span class="check"></span>
-									<span class="box"></span>
-									<span class="tt-text">Subscribe to this topic.</span>
-								</label>
-							</div>
-							 -->
-						</div>
 						<div class="col-auto" th:if="${board.apt.id} eq ${#authentication.principal.apt.id}">
 							<a href="#" id="createReplyBtn" class="btn btn-secondary btn-width-lg">Comment</a>
 						</div>
 					</div>
+
 				</div>
 			</div>
 			<!-- comment form end -->
@@ -313,7 +264,7 @@
 			<!-- comment edit popup end -->
 
 		</div>
-		<!-- container ner -->
+		<!-- container end-->
 		<div class="tt-row-btn"></div>
 
 	</main>
@@ -330,16 +281,10 @@
 
 
 	<script layout:fragment="script">
-	// <script th:inline="javascript">
-	// th:inline 으로 작성할 경우 thymeleaf 변수에 ''를 감싸지 않아도 자동으로 문자열 처리된다.
-	// 하지만 편집기에서 계속 경고 표시가 나오니 ''로 감싸자... 주석처리해도 parsing 된다.
-		
-		// 사용자가 devtool로 DOM 조작으로 삭제할 수 없도록
 		const USER_ID = "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.id} : '']]";
 		const BOARD_ID = document.getElementById('boardId').value;
 		const BOARD_APT_ID = "[[${board.apt.id}]]";
 		const USER_APT_ID = "[[${#authentication.principal} ne 'anonymousUser' ? ${#authentication.principal.apt.id} : '']]";
-		// const COMMENT_USER = document.getElementById('commentUser');
 
 		const CREATE_COMMENT_BTN = document.getElementById('createReplyBtn');
 		let commentList = document.getElementById('commentList');
@@ -348,9 +293,6 @@
 		$(document).ready(function(){
 			const URL = '[[@{/comment}]]/' + BOARD_ID;
 			const obj = { boardId:BOARD_ID, url:URL };
-			// console.log(commentList);
-			// console.log(USER_ID);
-			
 			comment.retrieveList(obj, function(list){
 				renderComment(list, commentList, USER_ID);
 			});
@@ -389,7 +331,6 @@
 				const URL = '[[@{/comment}]]/' + BOARD_ID;
 				const obj = { boardId:BOARD_ID, commentContent:COMMENT_CONTENT, url:URL };
 				comment.create(obj, function(list) {
-					// console.log(list);
 					
 					// https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
 					// 0	CONNECTING	Socket has been created. The connection is not yet open.
@@ -397,7 +338,6 @@
 					// 2	CLOSING	The connection is in the process of closing.
 					// 3	CLOSED	The connection is closed or couldn't be opened.
 			    if (ws.readyState === 1) {
-						// console.log('comment alert');
 						let msg = COMMENT_CONTENT + "|+|" + "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.username} : '']]" + "|+|" + "[[${ board.user.username }]]";
 						ws.send(msg);
 					}
@@ -405,7 +345,6 @@
 					document.getElementById('commentContent').value = '';
 				  commentList.innerHTML = '';
 					renderComment(list, commentList, USER_ID);
-					// console.log(list.length);
     			document.getElementById('replyCount').innerText = list.length;
 
 				});
@@ -418,24 +357,16 @@
 				event.preventDefault();
 				event.stopPropagation();
 
-				// console.log(this);
-				// console.log(event.target);
-
 				if (confirm('정말 삭제하시겠습니까?')) {
 					const commentId = document.getElementById('commentHiddenId').value;
 					const URL = '[[@{/comment}]]/' + BOARD_ID + '/' + commentId;
 					const obj = { boardId:BOARD_ID, commentId:commentId, url:URL };
 	
 					comment.remove(obj, function(list) {
-						// console.log(list);
-	
 						document.getElementById('updateCommentContent').value = '';
-						
 						commentList.innerHTML = '';
 						renderComment(list, commentList, USER_ID);
 						document.getElementById('replyCount').innerText = list.length;
-						
-						// $(".tt-btn-col-close").trigger('click');
 						document.getElementsByClassName('modal-filter').item(0).click();
 					});
 				}
@@ -470,18 +401,10 @@
 			for (let i = 0; i < editComment.length; i++) {
 				editComment.item(i).addEventListener('click', function(event){
 					event.preventDefault();
-					// event.stopPropagation(); -> 다음 이벤트로 넘어가질 않는다.
-	
-					// console.log(this);
 					const commentHiddenId = document.getElementById('commentHiddenId');
-					// childNodes 같은 경우는 공백과 같은 문자열도 textNodes로 잡기 때문에
-					// 이후에 동적 생성한 객체처럼 공백이 없을 경우 node 숫자가 달라진다.
-					// children으로 사용할 것.
-					// commentHiddenId.value = this.parentElement.parentElement.childNodes.item(1).value;
 					commentHiddenId.value = this.parentElement.parentElement.children.item(0).value;
 					
 					const updateCommentContent = document.getElementById('updateCommentContent');
-					// updateCommentContent.value = this.parentElement.parentElement.childNodes.item(5).innerText;
 					updateCommentContent.value = this.parentElement.parentElement.children.item(2).innerText;
 					updateCommentContent.focus();
 					
@@ -490,20 +413,15 @@
 		}
 
 		/*
-			!!! popup !!! remove
+			popup
 		*/
 		const REMOVE_POPUP_BTN = document.getElementById('removePopup');
 		if (REMOVE_POPUP_BTN != undefined && REMOVE_POPUP_BTN != null) {
 			REMOVE_POPUP_BTN.addEventListener('click', function (event) {
-
-				// this에만 해당
 				event.preventDefault();
 				event.stopPropagation();
 
 				this.parentNode.parentNode.parentElement.remove();
-				// console.log(this);
-				// console.log(event.target);
-
 			}, false);
 		}
 
@@ -525,7 +443,6 @@
 		<!-- <div>{{login}}</div> -->
 		{{#each list}}
 			<!-- <div>{{this.user}}</div> -->
-			<!-- <div>{{this.id}}</div> -->
 			<div class="tt-item">
 				<div class="tt-single-topic">
 			 	  <input type="hidden" value="{{this.id}}">
@@ -557,18 +474,7 @@
           </div>
 
 		 			<div class="tt-item-info info-bottom">
-						<!--
-						<a href="#" class="tt-icon-btn">
-							<i class="tt-icon">
-								<svg>
-									<use xlink:href="#icon-favorite"></use>
-								</svg>
-							</i>
-							<span class="tt-text">0</span>
-						</a>
-						-->
 						<div class="col-separator"></div>
-						<!-- {{{../login}}} {{this.user.id}} -->
 						{{#ifCond ../login '==' this.user.id}}
 						<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
 							<i class="tt-icon">
@@ -578,15 +484,6 @@
 							</i>
 						</a>
 						{{/ifCond}}
-						<!--
-						<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-							<i class="tt-icon">
-								<svg>
-									<use xlink:href="#icon-reply"></use>
-								</svg>
-							</i>
-						</a>
-						-->
 					</div>
 	   		</div>
 	 		</div>
