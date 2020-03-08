@@ -15,7 +15,7 @@
 					<form class="form-default form-create-topic" id="form-create-topic" action="write" method="post">
 						<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
 						<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
-						<input type="hidden" name="categoryName" th:value="${ board } ? ${ board.category.name } : ''">
+						<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category.id } : ''">
 
 						<div class="form-group">
 							<label for="inputTopicTitle">Post Title</label>
@@ -40,6 +40,7 @@
 												</svg>
 											</span>
 											<span class="tt-text">[[${category.name}]]</span>
+											<input type="hidden" th:value="${ category.id }" />
 										</a>
 									</div>
 
@@ -103,10 +104,8 @@
 		}, false);
 
 		const categoryTypes = document.querySelectorAll('.tt-button-icon');
-		const hiddenCategoryTypes = document.querySelector('input[name=categoryName]');
-		categoryTypes.forEach(function (input) {
-			selectCategoryTypes(input);
-		});
+		const hiddenCategoryTypes = document.querySelector('input[name=categoryId]');
+		categoryTypes.forEach((input) => selectCategoryTypes(input));
 
 		if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
 			DELETE_POST_BTN.addEventListener('click', function (event) {

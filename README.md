@@ -12,8 +12,14 @@
 >PW : qwe<br>
 
 ### Focus on
->Spring Boot 2.2.4 (Spring 5.2.3)<br>
->[STUDY](/study/study.md)<br>
+>Spring Boot 2.2.4 (Spring 5.2.3)\
+>Spring Data JPA 2.2.4(Hibernate, MySQL)\
+>Spring Security 5.2.1\
+>Spring Websocket 5.2.3\
+>Thymeleaf 3.0.11\
+>REST API\
+>Java 8\
+>Maven (CLI)
 
 ```
 Context Root (localhost:XXXX/)

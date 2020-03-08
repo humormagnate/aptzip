@@ -3,9 +3,9 @@
 */
 function selectCategoryTypes(input) {
   input.addEventListener("click", function(event) {
-    // console.log(input);
-    // console.log(event);
-    hiddenCategoryTypes.value = this.childNodes.item(3).textContent;
+    console.log(this.childNodes);
+    // hiddenCategoryTypes.value = this.childNodes.item(3).textContent;
+    hiddenCategoryTypes.value = this.childNodes.item(5).value;
   });
 }
 
@@ -53,9 +53,6 @@ function deletePost(URL) {
 
 function updatePost(URL, boardTitle, boardContent) {
   // http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#javascript-inlining
-  // console.log(BOARD_ID);
-  // console.log(boardTitle);
-  // console.log(boardContent);
   $.ajax({
     url: URL,
     method: "put",
@@ -65,7 +62,8 @@ function updatePost(URL, boardTitle, boardContent) {
     // },
     data: {
       "boardTitle": boardTitle,
-      "boardContent": boardContent
+      "boardContent": boardContent,
+      "categoryId": hiddenCategoryTypes.value
     },
     success: function(data) {
       alert(data);
@@ -106,7 +104,6 @@ function userFollow(URL) {
 }
 
 function validateForm(event) {
-  // console.log('form event');
   const boardContent = document.getElementById('boardContent');
   
   if (BOARD_TITLE.value == '') {

@@ -73,349 +73,355 @@
 						</ul>
 					</div>
 					
-					<div class="tab-pane tt-indent-none show active" id="tt-tab-02" role="tabpanel">
-						<div class="tt-topic-list">
-							<div class="tt-list-header">
-								<div class="tt-col-topic">Topic</div>
-								<div class="tt-col-category">Category</div>
-								<div class="tt-col-value hide-mobile">Likes</div>
-								<div class="tt-col-value hide-mobile">Comments</div>
-								<div class="tt-col-value hide-mobile">Views</div>
-								<div class="tt-col-value">Activity</div>
-							</div>
-
-							<div class="tt-item" th:each="board : ${ boards }">
-								<div class="tt-col-avatar">
-									<svg class="tt-icon">
-										<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }"></use>
-									</svg>
+					<div class="tab-content">
+						<!-- tab 02 threads start -->
+						<div class="tab-pane tt-indent-none show active" id="tt-tab-02" role="tabpanel">
+							<div class="tt-topic-list">
+								<div class="tt-list-header">
+									<div class="tt-col-topic">Topic</div>
+									<div class="tt-col-category">Category</div>
+									<div class="tt-col-value hide-mobile">Likes</div>
+									<div class="tt-col-value hide-mobile">Comments</div>
+									<div class="tt-col-value hide-mobile">Views</div>
+									<div class="tt-col-value">Activity</div>
 								</div>
-								<div class="tt-col-description">
-									<h6 class="tt-title">
-										<a th:href="@{/board/{id}(id=${board.id})}">
-											[[${ board.boardTitle }]]
-										</a>
-									</h6>
-									<div class="row align-items-center no-gutters">
-										<div class="col-11">
-											<ul class="tt-list-badge">
-												<li class="show-mobile">
-													<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
-												</li>
-												<li>
-												</li>
-											</ul>
-										</div>
-										<div class="col-1 ml-auto show-mobile">
-											<div class="tt-value">
-												[[${ #temporals.format(board.createDate, 'HH:mm') }]]
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="tt-col-category">
-									<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
-								</div>
-								<div class="tt-col-value hide-mobile">0</div>
-								<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
-								<div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
-								<div class="tt-col-value hide-mobile">
-									[[${#aptzip.betweenNowAndTime(board.createDate)}]]
-								</div>
-							</div>
 
-
-							<div class="tt-row-btn">
-								<button type="button" class="btn-icon js-topiclist-showmore">
-									<svg class="tt-icon">
-										<use xlink:href="#icon-load_lore_icon"></use>
-									</svg>
-								</button>
-							</div>
-
-						</div>
-					</div>
-
-					<!-- tab 03 comments start -->
-					<div class="tab-pane tt-indent-none" id="tt-tab-03" role="tabpanel">
-						<div class="tt-topic-list">
-							<div class="tt-list-header">
-								<div class="tt-col-topic">Topic</div>
-								<div class="tt-col-category">Category</div>
-								<div class="tt-col-value">Activity</div>
-							</div>
-
-							<div class="tt-item" th:each="comment : ${comments}">
-								<div class="tt-col-avatar">
-									<svg class="tt-icon">
-										<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(comment.user.username, 0, 1) }"></use>
-									</svg>
-								</div>
-								<div class="tt-col-description">
-									<h6 class="tt-title">
-										<a th:href="@{/board/{id}(id=${comment.board.id})}">
-											[[${comment.commentContent}]]
-										</a>
-									</h6>
-									<div class="row align-items-center no-gutters hide-desktope">
-										<div class="col-9">
-											<ul class="tt-list-badge">
-												<li class="show-mobile">
-													<a href="#">
-														<span th:class="'tt-color0' + ${ comment?.board?.category?.id + ' tt-badge' }">
-															[[${comment.board.category.name}]]
-														</span>
-													</a>
-												</li>
-											</ul>
-										</div>
-										<div class="col-3 ml-auto show-mobile">
-											<div class="tt-value">
-												[[${#temporals.format(comment.updateDate, 'yyyy-MM-dd')}]]
-											</div>
-										</div>
-									</div>
-									<div class="tt-content">
-										<a th:href="@{/user/{id}(id=${comment.user.id})}">
-											[[${comment.user.username}]]
-										</a>
-									</div>
-								</div>
-								<div class="tt-col-category">
-									<a href="#">
-										<span th:class="'tt-color0' + ${ comment?.board?.category?.id + ' tt-badge' }">
-											[[${comment.board.category.name}]]
-										</span>
-									</a>
-								</div>
-								<div class="tt-col-value-large hide-mobile">
-									[[${#aptzip.betweenNowAndTime(comment.updateDate)}]]
-								</div>
-							</div>
-
-							<div class="tt-row-btn">
-								<button type="button" class="btn-icon js-topiclist-showmore">
-									<svg class="tt-icon">
-										<use xlink:href="#icon-load_lore_icon"></use>
-									</svg>
-								</button>
-							</div>
-
-						</div>
-					</div>
-					<!-- tab 03 comments end -->
-
-					<!-- tab 04 followers start -->
-					<div class="tab-pane tt-indent-none" id="tt-tab-04" role="tabpanel">
-						<div class="tt-followers-list">
-							<div class="tt-list-header">
-								<div class="tt-col-name">User</div>
-								<div class="tt-col-value-large hide-mobile">Signup date</div>
-								<div class="tt-col-value-large hide-mobile">Follow date</div>
-								<div class="tt-col-value">Role</div>
-							</div>
-
-							<div class="tt-item" th:each="follower : ${followers}">
-								<div class="tt-col-merged">
+								<div class="tt-item" th:each="board : ${ boards }">
 									<div class="tt-col-avatar">
 										<svg class="tt-icon">
-											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(follower.follower.username, 0, 1) }"></use>
+											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }"></use>
 										</svg>
 									</div>
 									<div class="tt-col-description">
 										<h6 class="tt-title">
-											<a th:href="@{/user/{id}(id=${follower.follower.id})}">[[${follower.follower.username}]]</a>
+											<a th:href="@{/board/{id}(id=${board.id})}">
+												[[${ board.boardTitle }]]
+											</a>
 										</h6>
-										<ul>
-											<li><a th:href="'mailto:' + ${follower.follower.email}">@[[${follower.follower.username}]]</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="tt-col-value-large hide-mobile">[[${#temporals.format(follower.follower.signupDate, 'yyyy-MM-dd')}]]</div>
-								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] ago</div>
-								<div class="tt-col-value">
-									<span th:class="${follower.follower.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
-										[[${follower.follower.role.role}]]
-									</span>
-								</div>
-							</div>
-							
-						</div>
-					</div>
-					<!-- tab 04 followers end -->
-
-					<!-- tab 05 following start -->
-					<div class="tab-pane tt-indent-none" id="tt-tab-05" role="tabpanel">
-						<div class="tt-followers-list">
-							<div class="tt-list-header">
-								<div class="tt-col-name">User</div>
-								<div class="tt-col-value-large hide-mobile">Signup date</div>
-								<div class="tt-col-value-large hide-mobile">Follow date</div>
-								<div class="tt-col-value">Role</div>
-							</div>
-							<div class="tt-item" th:each="following : ${followings}">
-								<!-- [[${followings}]] -->
-								<div class="tt-col-merged">
-									<div class="tt-col-avatar">
-										<svg class="tt-icon">
-											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(following.following.username, 0, 1) }"></use>
-										</svg>
-									</div>
-									<div class="tt-col-description">
-										<h6 class="tt-title">
-											<a th:href="@{/user/{id}(id=${following.following.id}) }">[[${following.following.username}]]</a>
-										</h6>
-										<ul>
-											<li><a th:href="'mailto:' + ${following.following.email}">@[[${following.following.username}]]</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="tt-col-value-large hide-mobile">[[${#temporals.format(following.following.signupDate, 'yyyy-MM-dd')}]]</div>
-								<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createDate)}]] ago</div>
-								<div class="tt-col-value">
-									<span th:class="${following.following.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
-										[[${following.following.role.role}]]
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- tab 05 following end -->
-
-					<!-- tab 06 categories start -->
-					<div class="tab-pane" id="tt-tab-06" role="tabpanel">
-						<div class="tt-wrapper-inner">
-							<div class="tt-categories-list">
-								<div class="row">
-
-									<div class="col-md-6 col-lg-4">
-										<div class="tt-item">
-											<div class="tt-item-header">
+										<div class="row align-items-center no-gutters">
+											<div class="col-11">
 												<ul class="tt-list-badge">
-													<li><a href="#"><span class="tt-color01 tt-badge">politics</span></a></li>
+													<li class="show-mobile">
+														<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
+													</li>
+													<li>
+													</li>
 												</ul>
-												<h6 class="tt-title"><a href="#">Threads - 1,245</a></h6>
 											</div>
-											<div class="tt-item-layout">
-												<div class="innerwrapper">
-													Lets discuss about whats happening around the world politics.
+											<div class="col-1 ml-auto show-mobile">
+												<div class="tt-value">
+													[[${ #temporals.format(board.createDate, 'HH:mm') }]]
 												</div>
-												<div class="innerwrapper">
-													<h6 class="tt-title">Similar TAGS</h6>
-													<ul class="tt-list-badge">
-														<li><a href="#"><span class="tt-badge">world politics</span></a></li>
-														<li><a href="#"><span class="tt-badge">human rights</span></a></li>
-														<li><a href="#"><span class="tt-badge">trump</span></a></li>
-														<li><a href="#"><span class="tt-badge">climate change</span></a></li>
-														<li><a href="#"><span class="tt-badge">foreign policy</span></a></li>
-													</ul>
-												</div>
-												<a href="#" class="tt-btn-icon">
-													<i class="tt-icon"><svg>
-															<use xlink:href="#icon-favorite"></use>
-														</svg></i>
-												</a>
 											</div>
 										</div>
 									</div>
-									
-									<div class="col-12">
-										<div class="tt-row-btn">
-											<button type="button" class="btn-icon js-topiclist-showmore">
-												<svg class="tt-icon">
-													<use xlink:href="#icon-load_lore_icon"></use>
-												</svg>
-											</button>
-										</div>
+									<div class="tt-col-category">
+										<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category.name } : 'common']]</span>
+									</div>
+									<div class="tt-col-value hide-mobile">0</div>
+									<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
+									<div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
+									<div class="tt-col-value hide-mobile">
+										[[${#aptzip.betweenNowAndTime(board.createDate)}]]
 									</div>
 								</div>
-								<!-- row end -->
+
+
+								<div class="tt-row-btn">
+									<button type="button" class="btn-icon js-topiclist-showmore">
+										<svg class="tt-icon">
+											<use xlink:href="#icon-load_lore_icon"></use>
+										</svg>
+									</button>
+								</div>
+
 							</div>
-							<!-- list end -->
 						</div>
-						<!-- wrapper-inner end -->
+						<!-- tab 02 threads end -->
+
+						<!-- tab 03 comments start -->
+						<div class="tab-pane tt-indent-none" id="tt-tab-03" role="tabpanel">
+							<div class="tt-topic-list">
+								<div class="tt-list-header">
+									<div class="tt-col-topic">Topic</div>
+									<div class="tt-col-category">Category</div>
+									<div class="tt-col-value">Activity</div>
+								</div>
+
+								<div class="tt-item" th:each="comment : ${comments}">
+									<div class="tt-col-avatar">
+										<svg class="tt-icon">
+											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(comment.user.username, 0, 1) }"></use>
+										</svg>
+									</div>
+									<div class="tt-col-description">
+										<h6 class="tt-title">
+											<a th:href="@{/board/{id}(id=${comment.board.id})}">
+												[[${comment.commentContent}]]
+											</a>
+										</h6>
+										<div class="row align-items-center no-gutters hide-desktope">
+											<div class="col-9">
+												<ul class="tt-list-badge">
+													<li class="show-mobile">
+														<a href="#">
+															<span th:class="'tt-color0' + ${ comment?.board?.category?.id + ' tt-badge' }">
+																[[${comment.board.category.name}]]
+															</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="col-3 ml-auto show-mobile">
+												<div class="tt-value">
+													[[${#temporals.format(comment.updateDate, 'yyyy-MM-dd')}]]
+												</div>
+											</div>
+										</div>
+										<div class="tt-content">
+											<a th:href="@{/user/{id}(id=${comment.user.id})}">
+												[[${comment.user.username}]]
+											</a>
+										</div>
+									</div>
+									<div class="tt-col-category">
+										<a href="#">
+											<span th:class="'tt-color0' + ${ comment?.board?.category?.id + ' tt-badge' }">
+												[[${comment.board.category.name}]]
+											</span>
+										</a>
+									</div>
+									<div class="tt-col-value-large hide-mobile">
+										[[${#aptzip.betweenNowAndTime(comment.updateDate)}]]
+									</div>
+								</div>
+
+								<div class="tt-row-btn">
+									<button type="button" class="btn-icon js-topiclist-showmore">
+										<svg class="tt-icon">
+											<use xlink:href="#icon-load_lore_icon"></use>
+										</svg>
+									</button>
+								</div>
+
+							</div>
+						</div>
+						<!-- tab 03 comments end -->
+
+						<!-- tab 04 followers start -->
+						<div class="tab-pane tt-indent-none" id="tt-tab-04" role="tabpanel">
+							<div class="tt-followers-list">
+								<div class="tt-list-header">
+									<div class="tt-col-name">User</div>
+									<div class="tt-col-value-large hide-mobile">Signup date</div>
+									<div class="tt-col-value-large hide-mobile">Follow date</div>
+									<div class="tt-col-value">Role</div>
+								</div>
+
+								<div class="tt-item" th:each="follower : ${followers}">
+									<div class="tt-col-merged">
+										<div class="tt-col-avatar">
+											<svg class="tt-icon">
+												<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(follower.follower.username, 0, 1) }"></use>
+											</svg>
+										</div>
+										<div class="tt-col-description">
+											<h6 class="tt-title">
+												<a th:href="@{/user/{id}(id=${follower.follower.id})}">[[${follower.follower.username}]]</a>
+											</h6>
+											<ul>
+												<li><a th:href="'mailto:' + ${follower.follower.email}">@[[${follower.follower.username}]]</a></li>
+											</ul>
+										</div>
+									</div>
+									<div class="tt-col-value-large hide-mobile">[[${#temporals.format(follower.follower.signupDate, 'yyyy-MM-dd')}]]</div>
+									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] ago</div>
+									<div class="tt-col-value">
+										<span th:class="${follower.follower.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
+											[[${follower.follower.role.role}]]
+										</span>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						<!-- tab 04 followers end -->
+
+						<!-- tab 05 following start -->
+						<div class="tab-pane tt-indent-none" id="tt-tab-05" role="tabpanel">
+							<div class="tt-followers-list">
+								<div class="tt-list-header">
+									<div class="tt-col-name">User</div>
+									<div class="tt-col-value-large hide-mobile">Signup date</div>
+									<div class="tt-col-value-large hide-mobile">Follow date</div>
+									<div class="tt-col-value">Role</div>
+								</div>
+								<div class="tt-item" th:each="following : ${followings}">
+									<!-- [[${followings}]] -->
+									<div class="tt-col-merged">
+										<div class="tt-col-avatar">
+											<svg class="tt-icon">
+												<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(following.following.username, 0, 1) }"></use>
+											</svg>
+										</div>
+										<div class="tt-col-description">
+											<h6 class="tt-title">
+												<a th:href="@{/user/{id}(id=${following.following.id}) }">[[${following.following.username}]]</a>
+											</h6>
+											<ul>
+												<li><a th:href="'mailto:' + ${following.following.email}">@[[${following.following.username}]]</a></li>
+											</ul>
+										</div>
+									</div>
+									<div class="tt-col-value-large hide-mobile">[[${#temporals.format(following.following.signupDate, 'yyyy-MM-dd')}]]</div>
+									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createDate)}]] ago</div>
+									<div class="tt-col-value">
+										<span th:class="${following.following.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
+											[[${following.following.role.role}]]
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- tab 05 following end -->
+
+						<!-- tab 06 categories start -->
+						<div class="tab-pane" id="tt-tab-06" role="tabpanel">
+							<div class="tt-wrapper-inner">
+								<div class="tt-categories-list">
+									<div class="row">
+
+										<div class="col-md-6 col-lg-4">
+											<div class="tt-item">
+												<div class="tt-item-header">
+													<ul class="tt-list-badge">
+														<li><a href="#"><span class="tt-color01 tt-badge">politics</span></a></li>
+													</ul>
+													<h6 class="tt-title"><a href="#">Threads - 1,245</a></h6>
+												</div>
+												<div class="tt-item-layout">
+													<div class="innerwrapper">
+														Lets discuss about whats happening around the world politics.
+													</div>
+													<div class="innerwrapper">
+														<h6 class="tt-title">Similar TAGS</h6>
+														<ul class="tt-list-badge">
+															<li><a href="#"><span class="tt-badge">world politics</span></a></li>
+															<li><a href="#"><span class="tt-badge">human rights</span></a></li>
+															<li><a href="#"><span class="tt-badge">trump</span></a></li>
+															<li><a href="#"><span class="tt-badge">climate change</span></a></li>
+															<li><a href="#"><span class="tt-badge">foreign policy</span></a></li>
+														</ul>
+													</div>
+													<a href="#" class="tt-btn-icon">
+														<i class="tt-icon"><svg>
+																<use xlink:href="#icon-favorite"></use>
+															</svg></i>
+													</a>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-12">
+											<div class="tt-row-btn">
+												<button type="button" class="btn-icon js-topiclist-showmore">
+													<svg class="tt-icon">
+														<use xlink:href="#icon-load_lore_icon"></use>
+													</svg>
+												</button>
+											</div>
+										</div>
+									</div>
+									<!-- row end -->
+								</div>
+								<!-- list end -->
+							</div>
+							<!-- wrapper-inner end -->
+						</div>
+						<!-- tab 06 categories end -->
 					</div>
-					<!-- tab 06 categories end -->
+					<!-- tab-content end -->
 				</div>
-				<!-- tab-content end -->
+				<!-- tt-tab-wrapper end -->
 			</div>
-			<!-- tt-tab-wrapper end -->
+			<!-- container end -->
 		</main>
 
-	</div>
-	<!-- container end -->
+		
+			<!-- popup-settings start -->
+			<div id="js-popup-settings" class="tt-popup-settings">
+				<div class="tt-btn-col-close">
+					<a href="#">
+						<span class="tt-icon-title">
+							<svg>
+								<use xlink:href="#icon-settings_fill"></use>
+							</svg>
+						</span>
+						<span class="tt-icon-text">
+							Settings
+						</span>
+						<span class="tt-icon-close">
+							<svg>
+								<use xlink:href="#icon-cancel"></use>
+							</svg>
+						</span>
+					</a>
+				</div>
+				<form class="form-default" action="/user/edit" method="post">
+					<div class="tt-form-upload">
+						<div class="row no-gutter">
+							<div class="col-auto">
+								<div class="tt-avatar">
+									<svg>
+										<use
+											th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }">
+										</use>
+									</svg>
+								</div>
+							</div>
+							<div class="col-auto ml-auto">
+								<a href="#" class="btn btn-primary" id="userLeave">Close my account</a>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="settingsUserName">Username</label>
+						<input type="text" name="username" class="form-control" id="settingsUserName" placeholder="username"
+							th:value="${ #authentication.principal.getUsername() }" disabled>
+					</div>
+					<div class="form-group">
+						<label for="settingsUserEmail">Email</label>
+						<input type="email" name="email" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com"
+							th:value="${ #authentication.principal.getEmail() }" disabled>
+					</div>
+					<div class="form-group">
+						<label for="settingsUserPassword">Password</label>
+						<input type="password" name="password" class="form-control" id="settingsUserPassword"
+							placeholder="************">
+					</div>
+					<div class="form-group">
+						<label for="settingsUserLocation">Location</label>
+						<input type="text" name="apt" class="form-control" id="settingsUserLocation" placeholder="APT Complex"
+							th:value="${ #authentication.principal.getApt().getAptName() }" disabled>
+					</div>
+					<div class="form-group">
+						<button type="button" id="userInfoSaveButn" class="btn btn-secondary">Save</button>
+					</div>
+				</form>
+			</div>
+			<!-- popup-settings end -->
 
-	<!-- popup-settings start -->
-	<div id="js-popup-settings" class="tt-popup-settings">
-		<div class="tt-btn-col-close">
-			<a href="#">
-				<span class="tt-icon-title">
+			<a th:href="@{/board/write}" class="tt-btn-create-topic">
+				<span class="tt-icon">
 					<svg>
-						<use xlink:href="#icon-settings_fill"></use>
-					</svg>
-				</span>
-				<span class="tt-icon-text">
-					Settings
-				</span>
-				<span class="tt-icon-close">
-					<svg>
-						<use xlink:href="#icon-cancel"></use>
+						<use xlink:href="#icon-create_new"></use>
 					</svg>
 				</span>
 			</a>
 		</div>
-		<form class="form-default" action="/user/edit" method="post">
-			<div class="tt-form-upload">
-				<div class="row no-gutter">
-					<div class="col-auto">
-						<div class="tt-avatar">
-							<svg>
-								<use
-									th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }">
-								</use>
-							</svg>
-						</div>
-					</div>
-					<div class="col-auto ml-auto">
-						<a href="#" class="btn btn-primary" id="userLeave">Close my account</a>
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="settingsUserName">Username</label>
-				<input type="text" name="username" class="form-control" id="settingsUserName" placeholder="username"
-					th:value="${ #authentication.principal.getUsername() }" disabled>
-			</div>
-			<div class="form-group">
-				<label for="settingsUserEmail">Email</label>
-				<input type="email" name="email" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com"
-					th:value="${ #authentication.principal.getEmail() }" disabled>
-			</div>
-			<div class="form-group">
-				<label for="settingsUserPassword">Password</label>
-				<input type="password" name="password" class="form-control" id="settingsUserPassword"
-					placeholder="************">
-			</div>
-			<div class="form-group">
-				<label for="settingsUserLocation">Location</label>
-				<input type="text" name="apt" class="form-control" id="settingsUserLocation" placeholder="APT Complex"
-					th:value="${ #authentication.principal.getApt().getAptName() }" disabled>
-			</div>
-			<div class="form-group">
-				<button type="button" id="userInfoSaveButn" class="btn btn-secondary">Save</button>
-			</div>
-		</form>
-	</div>
-	<!-- popup-settings end -->
 
-	<a th:href="@{/board/write}" class="tt-btn-create-topic">
-		<span class="tt-icon">
-			<svg>
-				<use xlink:href="#icon-create_new"></use>
-			</svg>
-		</span>
-	</a>
-</div>
+	</div>
+	<!-- container end = layout content end -->
 
 <script layout:fragment="script">
 	const TARGET_ID = '[[${ infouser.id }]]';
@@ -465,27 +471,29 @@
 	}
 
 	const userLeave = document.getElementById('userLeave');
-	userLeave.addEventListener('click', function(event) {
-		event.preventDefault();
-		$.ajax({
-			url: '[[@{/user/}]]' + USER_ID,
-			method: 'patch',
-			data: {
-				id: USER_ID
-			},
-			success: function(data) {
-				if (data === 'success') {
-					alert('탈퇴되었습니다.');
-					location.href='[[@{/logout}]]';
-				} else {
-					console.error('server error');
+	if (userLeave != null) {
+		userLeave.addEventListener('click', function(event) {
+			event.preventDefault();
+			$.ajax({
+				url: '[[@{/user/}]]' + USER_ID,
+				method: 'patch',
+				data: {
+					id: USER_ID
+				},
+				success: function(data) {
+					if (data === 'success') {
+						alert('탈퇴되었습니다.');
+						location.href='[[@{/logout}]]';
+					} else {
+						console.error('server error');
+					}
+				},
+				error: function() {
+					console.error('ajax error');
 				}
-			},
-			error: function() {
-				console.error('ajax error');
-			}
-		})
-	});
+			})
+		});
+	}
 	
 </script>
 
