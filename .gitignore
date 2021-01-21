@@ -34,7 +34,8 @@ build/
 .metadata/
 
 ### Security ###
-application-server.yml
+application-server.yaml
 # *.yml
+# *.yaml
 # *.properties
 # *.bak

@@ -1,0 +1,83 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+    # include-exception: true
+    # include-stacktrace: always
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        security: info
+        web: info
+      hibernate: info
+    com:
+      markruler: debug
+
+spring:
+  # profiles:
+  # - dev
+  devtools:
+    livereload:
+      enabled: true
+  jpa:
+    generate-ddl: true
+    # show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        format_sql: true
+      connection:
+        characterEncoding: utf-8
+        useUnicode: true
+        CharSet: utf-8
+  datasource:
+    initialization-mode: always
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/aptzip?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: testmaria
+    tomcat:
+      initial-size: 151
+    dbcp2:
+      remove-abandoned-on-borrow: true
+      remove-abandoned-timeout: 60
+      log-abandoned: true
+    platform: mysql
+  session:
+    store-type: none
+  http:
+    log-request-details: true
+  thymeleaf:
+    enabled: true
+    cache: false
+    encoding: UTF-8
+    mode: HTML
+    check-template-location: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: <email>
+    password: <password>
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+  social:
+    facebook:
+      appId: <id>
+      appSecret: <secret>

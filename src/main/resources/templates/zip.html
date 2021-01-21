@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko"
+			xmlns:th="http://www.thymeleaf.org"
+			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+			layout:decorate="~{layout/layout.html}">
+
+  <div layout:fragment="content">
+  <main id="tt-pageContent" class="tt-offset-small">
+    <div class="container">
+      <div class="tt-tab-wrapper">
+        <div class="tt-wrapper-inner">
+          <ul class="nav nav-tabs pt-tabs-default" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link show active" data-toggle="tab" href="#tt-tab-01" role="tab"><span>About</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tt-tab-02" role="tab"><span>Guidelines</span></a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- tab content start -->
+        <div class="tab-content">
+
+          <!-- tab1-about start -->
+          <div class="tab-pane show fade active" id="tt-tab-01" role="tabpanel">
+            <div class="tt-layout-tab">
+
+              <div class="tt-wrapper-inner">
+                <h2 class="tt-title">
+                  About [[${#authentication.principal.apt.aptName}]]아파트
+                </h2>
+                [[${#authentication.principal.apt.aptName}]]아파트는 좋은 아파트입니다.
+                
+                <!-- admin list start -->
+                <h3 class="tt-title">
+                  Admins
+                </h3>
+                <div class="tt-list-avatar">
+                  <div class="row">
+
+                    <div class="col-6 col-md-4 col-lg-3" th:each="admin : ${admins}">
+                      <a th:href="@{/user/{id}(id=${admin.id}) }" class="tt-avatar">
+                        <div class="tt-col-icon">
+                          <svg class="tt-icon">
+                            <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(admin.username, 0, 1) }"></use>
+                          </svg>
+                        </div>
+                        <div class="tt-col-description">
+                          <h6 class="tt-title">[[${admin.username}]]</h6>
+                          <div class="tt-value">@[[${admin.username}]]</div>
+                        </div>
+                      </a>
+                    </div>
+
+                  </div>
+                </div>
+                <!-- admin list end -->
+
+              </div>
+
+              <!-- Statistics start -->
+              <div class="table-responsive-sm tt-indent-top">
+                <table class="table-01">
+                  <caption>Site Statistics</caption>
+                  <thead>
+                    <tr>
+                      <th>Topic</th>
+                      <th>All Time</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-zebra">
+                    <tr>
+                      <td>Posts</td>
+                      <td>[[${boardSize}]]</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Statistics end -->
+
+              <div class="tt-wrapper-inner tt-indent-top">
+                <h4 class="tt-title">
+                  Contact Us
+                </h4>
+                <span class="writer-email">imcxsu@gmail.com</span>
+              </div>
+
+            </div>
+          </div>
+          <!-- tab1-about end -->
+
+          <!-- tab2-Guidelines start -->
+          <div class="tab-pane" id="tt-tab-02" role="tabpanel">
+            <div class="tt-wrapper-inner tt-layout-tab">
+              
+            </div>
+          </div>
+          <!-- tab2-Guidelines end -->
+
+        </div>
+        <!-- tab content end -->
+
+      </div>
+    </div>
+  </main>
+
+  <a href="page-create-topic.html" class="tt-btn-create-topic">
+    <span class="tt-icon">
+      <svg>
+        <use xlink:href="#icon-create_new"></use>
+      </svg>
+    </span>
+  </a>
+
+  </div>
+  <script layout:fragment="script">
+  </script>
+</html>
