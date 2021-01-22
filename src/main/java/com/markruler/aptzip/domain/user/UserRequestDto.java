@@ -3,18 +3,14 @@ package com.markruler.aptzip.domain.user;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
-
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.common.AptEntity;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.social.security.SocialUserDetails;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDto implements SocialUserDetails {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private long id;
@@ -111,6 +107,7 @@ public class UserRequestDto implements SocialUserDetails {
 		return true;
 	}
 
+  // Social Account
 	@Override
 	public String getUserId() {
 		return providerUserId;

@@ -6,11 +6,11 @@ clean:
 
 .PHONY: build
 build: clean
-	@mvn package
-
-.PHONY: build-skip-test
-build-skip-test: clean
 	@mvn package -DskipTests
+
+.PHONY: build-with-test
+build-with-test: clean
+	@mvn package
 
 .PHONY: docker
 docker:

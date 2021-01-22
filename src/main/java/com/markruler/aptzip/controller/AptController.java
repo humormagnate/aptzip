@@ -17,37 +17,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+// @lombok.extern.slf4j.Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/apt/")  // 공통으로 id PathVariable을 줄 수 없음(ex. "/apt/{id}")
+@RequestMapping("/apt/")
 @Controller
 public class AptController {
-
-	private final BoardService boardService;
+  private final BoardService boardService;
 
   @GetMapping("/{id}")
   public String thread(
+  // @formatter:off
     @PathVariable("id") Long id,
     @AuthenticationPrincipal UserResponseDto principal,
-		@ModelAttribute("PageVo") PageVo pageVo,
+    @ModelAttribute("PageVo") PageVo pageVo,
     Model model
+    // @formatter:on
   ) {
-		log.debug("principal : {} =============================================================", principal);
+    Page<BoardEntity> boards = boardService.listBoardByPage(id, pageVo);
+    PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);
 
-		Pageable page = pageVo.makePageable(0, "id");
-    log.debug("page : {}", page);
-    
-    // apt id를 받아 해당 아파트의 thread만 받음
-    pageVo.setAptId(id);
-    Page<BoardEntity> boards = boardService.findBoardByDynamicQuery(page, pageVo);
-		log.debug("Page<BoardEntity> : {}", boards);
-		log.debug("TOTAL PAGE NUMBER : {}", boards.getTotalPages());
-
-		PageMaker<BoardEntity> list = new PageMaker<BoardEntity>(boards);
-    log.debug("PageMaker : {}", list);
-    
 		int newBoard = 0;
     // List<BoardEntity> list = new ArrayList<BoardEntity>();
 		// for (BoardEntity str : board) {
@@ -55,13 +44,14 @@ public class AptController {
 		// 	if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {
 		// 		newBoard++;
 		// 	}
-		// }
-		
+    // }
+
+    // @formatter:off
     model.addAttribute("principal", principal)
          .addAttribute("list", list)
          .addAttribute("pageVo", pageVo)
          .addAttribute("newBoard", newBoard);
-		
+
 		return "apt";
   }
 }

@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Commit
 public class BoardRepositoryTest {
-  
+
   // final로 지정할 경우 ParameterResolver 필요 (JUnit5)
   // @Autowired 지정하지 않을 경우 NullPointerException
   // @Autowired private BoardRepositoryImpl boardRepositoryImpl;
@@ -59,12 +59,12 @@ public class BoardRepositoryTest {
       board.setApt(apt);
 			board.setUpdateDate(LocalDateTime.now());
       board.setBoardStatus("Y");
-      
+
       log.debug("board : {}", board);
       boardRepository.save(board);
     });
   }
-  
+
   @Test
   public void testListByDynamicQuery() {
     // given
@@ -80,7 +80,7 @@ public class BoardRepositoryTest {
                           .date("")
                           .build();
 
-    Page<BoardEntity> content = boardService.findBoardByDynamicQuery(pageVo.makePageable(0, "id"), pageVo);
+    Page<BoardEntity> content = boardService.listBoardByPage(0L, pageVo);
     log.debug("content : {}", content);
     log.debug("content.getTotalPages() : {}", content.getTotalPages());
     List<BoardEntity> list = content.getContent();
@@ -103,7 +103,7 @@ public class BoardRepositoryTest {
     // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
     PageVo pageVo = new PageVo();
 
-    Page<BoardEntity> content = boardService.findBoardByDynamicQuery(pageVo.makePageable(0, "id"), pageVo);
+    Page<BoardEntity> content = boardService.listBoardByPage(0L, pageVo);
     log.debug("content : {}", content);
     log.debug("content.getTotalPages() : {}", content.getTotalPages());
     List<BoardEntity> list = content.getContent();
