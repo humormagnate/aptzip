@@ -45,10 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final PasswordEncoder passwordEncoder;
   private final UserAccountService userService;
   private final DataSource dataSource;
-    
+
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**", "/favicon/**");
+    web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**", "*.ico");
   }
 
   @Override
@@ -174,5 +174,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public SocialUserAccountService socialUsersDetailService() {
 		return new SocialUserAccountService(userService);
   }
-  
+
 }

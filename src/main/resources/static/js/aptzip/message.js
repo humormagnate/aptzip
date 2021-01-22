@@ -3,7 +3,6 @@
  */
 let stomp = null;
 function connectSTOMP(URL) {
-  // closure 적용할 수 있을까?
   stomp = new SockJS(URL); // endpoint
   let client = Stomp.over(stomp);
   // isStomp = true;
@@ -14,7 +13,7 @@ function connectSTOMP(URL) {
     // console.log(frame);
     // console.log("Connected stomp!\n", frame);
     // console.log("Connected stomp!\n" + frame);
-    
+
     // Controller's MessageMapping, header, message(자유형식)
     // client.send("/nba", {}, "msg: string");
 

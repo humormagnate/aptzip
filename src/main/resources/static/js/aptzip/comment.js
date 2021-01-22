@@ -42,7 +42,7 @@ const comment = (function(){
       }
     });
   };
-  
+
   const remove = function(obj, callback) {
     // console.log(obj);
     // console.log('remove comment~~~');
@@ -79,7 +79,7 @@ function renderComment(list, container, USER_ID) {
   // console.log(list);
   hbs('comments-template', list, container, USER_ID);
   editBtn();
-  
+
   // let str = '';
   // let renderobj = '';
 
@@ -187,7 +187,7 @@ $(document).on("click", '.tt-btn-col-close', function(e) {
   // console.log(e.target);
   $('.edit-comment').removeClass("column-open");
   $popupEditComment.removeClass("column-open").perfectScrollbar("destroy");
-  
+
   var top = parseInt($body.css("top").replace("px", ""), 10) * -1;
   $body
     .removeAttr("style")

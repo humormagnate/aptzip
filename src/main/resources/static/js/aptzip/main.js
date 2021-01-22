@@ -2,9 +2,8 @@
   write - select category
 */
 function selectCategoryTypes(input) {
-  input.addEventListener("click", function(event) {
+  input.addEventListener("click", function (event) {
     console.log(this.childNodes);
-    // hiddenCategoryTypes.value = this.childNodes.item(3).textContent;
     hiddenCategoryTypes.value = this.childNodes.item(5).value;
   });
 }
@@ -13,7 +12,6 @@ function selectCategoryTypes(input) {
   write - typing title
 */
 const maxInputTopicTitle = 99;
-// let inputValue = parseInt(document.getElementsByClassName('tt-value-input').item(0).textContent);
 function loadCalcRestTitle() {
   document.getElementsByClassName("tt-value-input").item(0).textContent =
     maxInputTopicTitle - boardTitle.value.length;
@@ -36,18 +34,18 @@ function deletePost(URL) {
   $.ajax({
     url: URL,
     method: "delete",
-    headers:{
-      "Content-Type":"application/json",
-      "X-HTTP-Method-Override":"DELETE"
+    headers: {
+      "Content-Type": "application/json",
+      "X-HTTP-Method-Override": "DELETE",
     },
-    success: function(data) {
+    success: function (data) {
       alert(data);
       // window.location.href='/';
-      window.location.replace(HOME_URL);
+      window.location.replace('/');
     },
-    error: function() {
+    error: function () {
       console.error("ajax error");
-    }
+    },
   });
 }
 
@@ -57,22 +55,22 @@ function updatePost(URL, boardTitle, boardContent) {
     url: URL,
     method: "put",
     // headers:{
-      // "Content-Type":"application/json",
-      // "X-HTTP-Method-Override":"PUT"
+    // "Content-Type":"application/json",
+    // "X-HTTP-Method-Override":"PUT"
     // },
     data: {
-      "boardTitle": boardTitle,
-      "boardContent": boardContent,
-      "categoryId": hiddenCategoryTypes.value
+      boardTitle: boardTitle,
+      boardContent: boardContent,
+      categoryId: hiddenCategoryTypes.value,
     },
-    success: function(data) {
+    success: function (data) {
       alert(data);
       // window.location.href='/';
-      window.location.replace(HOME_URL);
+      window.location.replace('/');
     },
-    error: function() {
+    error: function () {
       console.error("ajax error");
-    }
+    },
   });
 }
 
@@ -86,43 +84,42 @@ function userFollow(URL) {
     // data: {
     //   "userId": USER_ID
     // },
-    success: function(data) {
-      $('#userFollowBtn').removeClass('btn-secondary');
-      $('#userFollowBtn').addClass('btn-primary');
+    success: function (data) {
+      $("#userFollowBtn").removeClass("btn-secondary");
+      $("#userFollowBtn").addClass("btn-primary");
       if (data === "save") {
-        alert('팔로우 성공');
-      } else if (data === "delete"){
-        alert('팔로우 취소');
+        alert("팔로우 성공");
+      } else if (data === "delete") {
+        alert("팔로우 취소");
       } else {
-        console.error('server error');
+        console.error("server error");
       }
     },
-    error: function(){
-      console.error('ajax error');
-    }
-  })
+    error: function () {
+      console.error("ajax error");
+    },
+  });
 }
 
 function validateForm(event) {
-  const boardContent = document.getElementById('boardContent');
-  
-  if (BOARD_TITLE.value == '') {
-    BOARD_TITLE.focus({preventScroll:false});
-    alert('제목을 입력해주세요.');
+  const boardContent = document.getElementById("boardContent");
+
+  if (BOARD_TITLE.value == "") {
+    BOARD_TITLE.focus({ preventScroll: false });
+    alert("제목을 입력해주세요.");
     event.preventDefault();
     return false;
   }
-  if (hiddenCategoryTypes.value == '') {
-    alert('카테고리를 선택해주세요.');
+  if (hiddenCategoryTypes.value == "") {
+    alert("카테고리를 선택해주세요.");
     event.preventDefault();
     return false;
   }
-  if (boardContent.value == '') {
-    boardContent.focus({preventScroll:false});
-    alert('내용을 입력해주세요.');
+  if (boardContent.value == "") {
+    boardContent.focus({ preventScroll: false });
+    alert("내용을 입력해주세요.");
     event.preventDefault();
     return false;
   }
   return true;
 }
-

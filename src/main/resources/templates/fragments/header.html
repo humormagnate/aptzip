@@ -1,157 +1,160 @@
-<!DOCTYPE html>
-<html>
 <header th:fragment="header">
-<!-- tt-mobile menu -->
-<nav class="panel-menu" id="mobile-menu">
-  <ul></ul>
-  <div class="mm-navbtn-names">
-    <div class="mm-closebtn">
-      Close
-      <div class="tt-icon">
-        <svg>
-          <use xlink:href="#icon-cancel"></use>
-        </svg>
-      </div>
-    </div>
-    <div class="mm-backbtn">Back</div>
-  </div>
-</nav>
-<div id="tt-header">
-  <div class="container">
-    <div class="row tt-row no-gutters">
-      <div class="col-auto">
-        <!-- toggle mobile menu -->
-        <a class="toggle-mobile-menu" href="#">
-          <svg class="tt-icon">
-            <use xlink:href="#icon-menu_icon"></use>
+  <!-- tt-mobile menu -->
+  <nav class="panel-menu" id="mobile-menu">
+    <ul></ul>
+    <div class="mm-navbtn-names">
+      <div class="mm-closebtn">
+        Close
+        <div class="tt-icon">
+          <svg>
+            <use xlink:href="#icon-cancel"></use>
           </svg>
-        </a>
-        <!-- /toggle mobile menu -->
-        <!-- logo -->
-        <div class="tt-logo">
-          <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="" /></a>
         </div>
-        <!-- /logo -->
-        <!-- desctop menu -->
-        <div class="tt-desktop-menu">
-          <nav>
-            <ul>
-              <li>
-                <a sec:authorize="isAuthenticated()" th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>Apt</span></a>
-              </li>
-              <li>
-                <a th:href="@{/zip}"><span>Zip</span></a>
-              </li>
-              <li>
-                <a th:href="@{/board/write}"><span>New</span></a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <!-- /desctop menu -->
-
-        <!-- tt-search -->
-        <div class="tt-search">
-          <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
-            <svg class="tt-icon">
-              <use xlink:href="#icon-search"></use>
-            </svg>
-          </button>
-          
-          <form class="search-wrapper">
-            <div class="search-form">
-              <input type="text" name="query" id="search-query" class="tt-search__input" placeholder="Search" />
-              <button class="tt-search__btn" type="submit">
-                <svg class="tt-icon">
-                  <use xlink:href="#icon-search"></use>
-                </svg>
-              </button>
-              <button class="tt-search__close">
-                <svg class="tt-icon">
-                  <use xlink:href="#cancel"></use>
-                </svg>
-              </button>
-            </div>
-
-            <div class="search-results">
-              <div class="tt-search-scroll">
-                <ul>
-                  <li>
-                    <a th:href="@{/board/1}">
-                      <h6 class="tt-title">GUIDE</h6>
-                      <div class="tt-description">
-                        안내서
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch" style="padding:1px 6px;">
-                Advanced Search
-              </button>
-            </div>
-          </form>
-
-        </div>
-        <!-- tt-search end -->
       </div>
+      <div class="mm-backbtn">Back</div>
+    </div>
+  </nav>
+  <div id="tt-header">
+    <div class="container">
+      <div class="row tt-row no-gutters">
+        <div class="col-auto">
+          <!-- toggle mobile menu -->
+          <a class="toggle-mobile-menu" href="#">
+            <svg class="tt-icon">
+              <use xlink:href="#icon-menu_icon"></use>
+            </svg>
+          </a>
+          <!-- /toggle mobile menu -->
+          <!-- logo -->
+          <div class="tt-logo">
+            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="" /></a>
+          </div>
+          <!-- /logo -->
+          <!-- desctop menu -->
+          <div class="tt-desktop-menu">
+            <nav>
+              <ul>
+                <li>
+                  <a sec:authorize="isAuthenticated()"
+                    th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>Apt</span></a>
+                </li>
+                <li>
+                  <a th:href="@{/zip}"><span>Zip</span></a>
+                </li>
+                <li>
+                  <a th:href="@{/board/write}"><span>New</span></a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <!-- /desctop menu -->
 
-      <div class="col-auto ml-auto">
-        <div class="tt-account-btn" sec:authorize="isAnonymous()">
-          <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-primary">Login</a>
-          <a sec:authorize="isAnonymous()" th:href="@{/signup}" class="btn btn-secondary">Signup</a>
+          <!-- tt-search -->
+          <div class="tt-search">
+            <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
+              <svg class="tt-icon">
+                <use xlink:href="#icon-search"></use>
+              </svg>
+            </button>
+
+            <form class="search-wrapper">
+              <div class="search-form">
+                <input type="text" name="query" id="search-query" class="tt-search__input" placeholder="Search" />
+                <button class="tt-search__btn" type="submit">
+                  <svg class="tt-icon">
+                    <use xlink:href="#icon-search"></use>
+                  </svg>
+                </button>
+                <button class="tt-search__close">
+                  <svg class="tt-icon">
+                    <use xlink:href="#cancel"></use>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="search-results">
+                <div class="tt-search-scroll">
+                  <ul>
+                    <li>
+                      <a th:href="@{/board/1}">
+                        <h6 class="tt-title">GUIDE</h6>
+                        <div class="tt-description">
+                          안내서
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch"
+                  style="padding:1px 6px;">
+                  Advanced Search
+                </button>
+              </div>
+            </form>
+
+          </div>
+          <!-- tt-search end -->
         </div>
 
-        <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
-          <div class="tt-avatar-icon tt-size-md">
-            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}(id=${#authentication.principal.id})}">
-              <i class="tt-icon">
-                <svg>
-                  <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.username, 0, 1) }"></use>
-                </svg>
-              </i>
-            </a>
-            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
+        <div class="col-auto ml-auto">
+          <div class="tt-account-btn" sec:authorize="isAnonymous()">
+            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-primary">Login</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/signup}" class="btn btn-secondary">Signup</a>
           </div>
-          <div class="tt-btn-icon">
-            <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+
+          <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
+            <div class="tt-avatar-icon tt-size-md">
+              <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}(id=${#authentication.principal.id})}">
+                <i class="tt-icon">
+                  <svg>
+                    <use
+                      th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.username, 0, 1) }">
+                    </use>
+                  </svg>
+                </i>
+              </a>
+              <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
+            </div>
+            <div class="tt-btn-icon">
+              <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!--
-	Modal Notification (data-pause=3000 -> test)
- -->
- <input type="hidden" class="tt-search-toggle alert-trigger" data-toggle="modal" data-target="#modalAlert">
- <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-md">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-			</div>
-			<div class="tt-modal-level-up">
-				<div class="text-center">
-					<h6 class="tt-title">
-						Notification
-					</h6>
-					<p id="alertContent"></p>
-				</div>
-				<a href="#" class="tt-option-btn" data-dismiss="modal">
-					<span class="tt-icon">
-						<svg><use xlink:href="#Level_Up"></use></svg>
-					</span>
-					<div class="tt-badge-row">
-						<span class="tt-color14 tt-badge" id="alertBadge"></span>
-					</div>
-					<span class="btn btn-primary">Awesome</span>
-				</a>
-			</div>
-		</div>
-	</div>
-</div>
+  <!--
+	  Modal Notification (data-pause=3000 -> test)
+  -->
+  <input type="hidden" class="tt-search-toggle alert-trigger" data-toggle="modal" data-target="#modalAlert">
+  <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        </div>
+        <div class="tt-modal-level-up">
+          <div class="text-center">
+            <h6 class="tt-title">
+              Notification
+            </h6>
+            <p id="alertContent"></p>
+          </div>
+          <a href="#" class="tt-option-btn" data-dismiss="modal">
+            <span class="tt-icon">
+              <svg>
+                <use xlink:href="#Level_Up"></use>
+              </svg>
+            </span>
+            <div class="tt-badge-row">
+              <span class="tt-color14 tt-badge" id="alertBadge"></span>
+            </div>
+            <span class="btn btn-primary">Awesome</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </header>
-</html>

@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<html>
-
 <head th:fragment="head">
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>aptzip</title>
-  <link rel="shortcut icon" type="image/png" th:href="@{/favicon/favicon.ico}">
-  <meta name="keywords" content="Spring Study" />
-  <meta name="description" content="Personal Project" />
-  <meta name="author" content="humormagnate" />
+  <title>앞집 APT-ZIP</title>
+  <link rel="shortcut icon" type="image/png" th:href="@{/favicon.ico}">
+  
+  <meta name="keywords" content="spring,docker" />
+  <meta name="description" content="Side Project" />
+  <meta name="author" content="Changsu" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  
   <!-- https://www.thymeleaf.org/doc/articles/standardurlsyntax.html -->
   <!-- context-relative URLs -->
-  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
   <link rel="stylesheet" th:href="@{/css/magnific-popup.css}" />
   <link rel="stylesheet" th:href="@{/css/aptzip.css}" />
-  
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-  <script th:src="@{/js/handlebars.js}"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <script th:src="@{/js/vendor/handlebars.js}"></script>
 
   <!-- Web Socket -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
-  <script>
-    const HOME_URL = '[[@{/}]]';
-  </script>
-  
 </head>
-
-</html>
