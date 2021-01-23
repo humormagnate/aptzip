@@ -1,6 +1,6 @@
 package com.markruler.aptzip.controller;
 
-import com.markruler.aptzip.domain.common.AptEntity;
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.user.AptzipRoleEntity;
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
@@ -9,7 +9,6 @@ import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 import com.markruler.aptzip.service.EmailSenderService;
 import com.markruler.aptzip.service.UserAccountService;
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.connect.ConnectionData;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

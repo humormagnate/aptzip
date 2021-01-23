@@ -1,9 +1,10 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
+// enable in development only
 const devMode = process.env.NODE_ENV !== "production";
 const plugins = [];
 if (devMode) {
-  // enable in development only
   plugins.push(
     new MiniCssExtractPlugin({
       filename: "[name].min.css",
@@ -18,14 +19,8 @@ module.exports = {
     "./src/main/resources/static/js/aptzip/main.js",
     "./src/main/resources/static/scss/forum.scss",
     "./src/main/resources/static/scss/aptzip.scss",
-    // "./node_modules/bootstrap/dist/css/bootstrap.min.css",
   ],
-  // entry: {
-  //   main: './src/main/resources/static/js/aptzip/main.js',
-  //   forum: './src/main/resources/static/scss/forum.scss',
-  //   aptzip: './src/main/resources/static/scss/aptzip.scss',
-  // },
-  target: "node", // node_modules
+  target: "node",
   output: {
     path: __dirname + "/src/main/resources/static/dist",
     filename: "[name].min.js",
@@ -40,15 +35,13 @@ module.exports = {
           loader: "url-loader",
           options: {
             name: "[name].[ext]",
-            // limit: 8192,
             encoding: false,
           },
         },
       },
-      // https://webpack.js.org/loaders/babel-loader/
       {
         test: /\.js$/i,
-        exclude: /(node_modules|bower_components)/, // Uncaught TypeError: Cannot set property 'wrap' of undefined
+        exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
           options: {
@@ -66,33 +59,23 @@ module.exports = {
         },
       },
       {
-        // https://github.com/webpack-contrib/sass-loader/
-        // https://webpack.js.org/plugins/mini-css-extract-plugin/
         test: /\.(s[ac]ss|css)$/i,
-        // test: /\.(sa|sc|c)ss$/i,
         use: [
-          // devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          // {
-          //   loader: 'style-loader',
-          //   options: {
-          //     sourceMap: true,
-          //   }
-          // },
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
               publicPath: "/src/main/resources/static/",
             },
           },
-          // Translates CSS into CommonJS
           {
+            // Translates CSS into CommonJS
             loader: "css-loader",
             options: {
               sourceMap: true,
             },
           },
-          // Compiles Sass to CSS
           {
+            // Compiles Sass to CSS
             loader: "sass-loader",
             options: {
               sourceMap: true,
@@ -100,11 +83,6 @@ module.exports = {
                 minimize: true,
                 outputStyle: "compressed",
                 indentWidth: 2,
-                includePaths: [
-                  // 'src/main/resources/static/scss/',
-                  // 'src/main/resources/static/scss/aptzip.scss',
-                  // 'src/main/resources/static/scss/forum.scss',
-                ],
               },
             },
           },
@@ -122,14 +100,6 @@ module.exports = {
           },
         },
       }),
-      // new TerserPlugin({
-      //   // Use multi-process parallel running to improve the build speed
-      //   // Default number of concurrent runs: os.cpus().length - 1
-      //   parallel: true,
-      //   // Enable file caching
-      //   cache: true,
-      //   sourceMap: true,
-      // }),
     ],
   },
 };

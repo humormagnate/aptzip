@@ -1,10 +1,8 @@
 package com.markruler.aptzip.persistence.board;
 
 import java.util.List;
-
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

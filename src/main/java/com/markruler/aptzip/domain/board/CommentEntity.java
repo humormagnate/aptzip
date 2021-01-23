@@ -1,7 +1,6 @@
 package com.markruler.aptzip.domain.board;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,13 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -63,7 +59,7 @@ public class CommentEntity {
   @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
   private BoardEntity board;
-  
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private AptzipUserEntity user;

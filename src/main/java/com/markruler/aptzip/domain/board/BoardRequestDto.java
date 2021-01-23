@@ -3,7 +3,7 @@ package com.markruler.aptzip.domain.board;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.markruler.aptzip.domain.common.AptEntity;
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

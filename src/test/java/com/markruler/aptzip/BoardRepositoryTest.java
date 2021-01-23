@@ -1,19 +1,16 @@
 package com.markruler.aptzip;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
-
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CategoryEntity;
-import com.markruler.aptzip.domain.common.AptEntity;
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 import com.markruler.aptzip.service.BoardService;
-import com.markruler.aptzip.vo.PageVo;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,7 +67,7 @@ public class BoardRepositoryTest {
 
     // when
     // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
-    PageVo pageVo = PageVo.builder()
+    CustomPage customPage = CustomPage.builder()
                           .page(1)
                           .size(10)
                           .query("1")
@@ -80,7 +76,7 @@ public class BoardRepositoryTest {
                           .date("")
                           .build();
 
-    Page<BoardEntity> content = boardService.listBoardByPage(0L, pageVo);
+    Page<BoardEntity> content = boardService.listBoardByPage(0L, customPage);
     log.debug("content : {}", content);
     log.debug("content.getTotalPages() : {}", content.getTotalPages());
     List<BoardEntity> list = content.getContent();
@@ -97,13 +93,10 @@ public class BoardRepositoryTest {
 
   @Test
   public void testListByDynamicQueryWithNull() {
-    // given
-
-    // when
     // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
-    PageVo pageVo = new PageVo();
+    CustomPage customPage = new CustomPage();
 
-    Page<BoardEntity> content = boardService.listBoardByPage(0L, pageVo);
+    Page<BoardEntity> content = boardService.listBoardByPage(0L, customPage);
     log.debug("content : {}", content);
     log.debug("content.getTotalPages() : {}", content.getTotalPages());
     List<BoardEntity> list = content.getContent();

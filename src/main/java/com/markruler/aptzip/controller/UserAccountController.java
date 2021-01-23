@@ -1,8 +1,6 @@
 package com.markruler.aptzip.controller;
 
 import javax.transaction.Transactional;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
-import com.markruler.aptzip.domain.user.UserFollowEntity;
 import com.markruler.aptzip.domain.user.UserRequestDto;
 import com.markruler.aptzip.domain.user.UserResponseDto;
 import com.markruler.aptzip.service.UserAccountService;

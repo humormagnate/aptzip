@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "TB_CATEGORY")
 public class CategoryEntity {
-  
+
   @Id
   @NonNull
   @GeneratedValue(strategy = GenerationType.IDENTITY)

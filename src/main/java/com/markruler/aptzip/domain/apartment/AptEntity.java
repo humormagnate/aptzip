@@ -1,4 +1,4 @@
-package com.markruler.aptzip.domain.common;
+package com.markruler.aptzip.domain.apartment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,10 +32,13 @@ public class AptEntity {
 
   @Column(name = "apt_name")
   private String aptName;
+
   @Column(name = "apt_province")
   private String aptProvince;
+
   @Column(name = "apt_city")
   private String aptCity;
+
   @Column(name = "apt_town")
   private String aptTown;
 }

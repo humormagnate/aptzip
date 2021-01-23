@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.common.AptEntity;
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.user.AptzipRoleEntity;
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import com.markruler.aptzip.domain.user.UserFollowEntity;

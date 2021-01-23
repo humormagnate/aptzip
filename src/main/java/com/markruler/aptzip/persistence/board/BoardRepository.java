@@ -1,11 +1,9 @@
 package com.markruler.aptzip.persistence.board;
 
 import java.util.List;
-
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CategoryEntity;
-import com.markruler.aptzip.domain.common.AptEntity;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;

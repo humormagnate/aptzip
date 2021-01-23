@@ -109,17 +109,17 @@
             <nav>
               <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${list.prevPage}">
-                  <a th:href="${list.prevPage.pageNumber+1}" class="page-link">
+                  <a th:href="${'/index/' + (list.prevPage.pageNumber+1)}" class="page-link">
                     &laquo;
                   </a>
                 </li>
                 <li class="page-item" th:each="p:${list.pageList}" th:classappend="${p.pageNumber eq list.currentPageNum-1} ? active : ''">
-                  <a th:href="${p.pageNumber+1}" class="page-link">
+                  <a th:href="${'/index/' + (p.pageNumber+1)}" class="page-link">
                     [[${p.pageNumber} + 1]]
                   </a>
                 </li>
                 <li class="page-item" th:if="${list.nextPage}">
-                  <a th:href="${list.nextPage.pageNumber+1}" class="page-link">
+                  <a th:href="${'/index/' + (list.nextPage.pageNumber+1)}" class="page-link">
                     &raquo;
                   </a>
                 </li>

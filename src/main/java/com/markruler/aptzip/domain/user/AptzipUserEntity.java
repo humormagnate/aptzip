@@ -2,7 +2,6 @@ package com.markruler.aptzip.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,14 +14,11 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.markruler.aptzip.domain.board.BoardEntity;
-import com.markruler.aptzip.domain.common.AptEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.markruler.aptzip.domain.apartment.AptEntity;
+import com.markruler.aptzip.domain.board.BoardEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -45,7 +41,7 @@ public class AptzipUserEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-	
+
   @Column(length = 30, nullable = false, unique = true)
   private String email;
 
@@ -57,7 +53,7 @@ public class AptzipUserEntity {
 
   @Lob
   private String introduction;
-  
+
   @CreationTimestamp
   private LocalDateTime signupDate;
 
@@ -72,15 +68,15 @@ public class AptzipUserEntity {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
-  
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_id")
   private AptEntity apt;
-  
+
   @JsonIgnore
   @OneToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> following;
-  
+
   @JsonIgnore
   @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> follower;
@@ -88,7 +84,7 @@ public class AptzipUserEntity {
   private boolean isEnabled;
 
   private String providerId;
-  
+
   private String providerUserId;
 
 }

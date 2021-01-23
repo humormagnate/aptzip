@@ -4,19 +4,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
 import com.markruler.aptzip.domain.board.LikeEntity;
-import com.markruler.aptzip.domain.common.AptEntity;
 import com.markruler.aptzip.domain.user.UserResponseDto;
+import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 import com.markruler.aptzip.persistence.board.CategoryRepository;
 import com.markruler.aptzip.persistence.board.LikeRepository;
-import com.markruler.aptzip.vo.PageVo;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 
@@ -27,13 +27,13 @@ public class BoardService {
   private final LikeRepository likeRepository;
   private final CategoryRepository categoryRepository;
 
-  public Page<BoardEntity> listBoardByPage(Long id, PageVo pageVo) {
-    Pageable pageable = pageVo.makePageable(0, "id");
-    if (id != 0) {
+  @Transactional(readOnly = true)
+  public Page<BoardEntity> listBoardByPage(Long apartmentID, CustomPage customPage) {
+    if (apartmentID != 0) {
       // 아파트 ID를 받아 해당 아파트의 thread만 받음
-      pageVo.setAptId(id);
+      customPage.setAptId(apartmentID);
     }
-    return boardRepository.findBoardByDynamicQuery(pageable, pageVo);
+    return boardRepository.findBoardByDynamicQuery(customPage.makePageable(true, "id"), customPage);
   }
 
   public void findById(Long id, UserResponseDto principal, Model model) {

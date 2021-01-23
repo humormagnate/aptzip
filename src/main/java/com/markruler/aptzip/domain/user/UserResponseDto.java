@@ -3,12 +3,9 @@ package com.markruler.aptzip.domain.user;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
-import com.markruler.aptzip.domain.common.AptEntity;
-
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,7 +29,7 @@ public class UserResponseDto extends User {
   private AptEntity apt;
   private List<UserFollowEntity> following;
   private List<UserFollowEntity> follower;
-  
+
   public UserResponseDto(
                     long id
                   , String username

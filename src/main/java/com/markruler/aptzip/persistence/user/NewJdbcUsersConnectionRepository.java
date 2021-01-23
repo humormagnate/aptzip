@@ -37,24 +37,23 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * {@link UsersConnectionRepository} that uses the JDBC API to persist connection data to a relational database.
  * The supporting schema is defined in JdbcUsersConnectionRepository.sql.
  * @author Keith Donald
  */
-@Slf4j
+// @lombok.extern.slf4j.Slf4j;
 public class NewJdbcUsersConnectionRepository implements UsersConnectionRepository {
 
 	private final JdbcTemplate jdbcTemplate;
-	
+
 	private final ConnectionFactoryLocator connectionFactoryLocator;
 
 	private final TextEncryptor textEncryptor;
 
 	private ConnectionSignUp connectionSignUp;
-	
+
 	private String tablePrefix = "";
 
 	public NewJdbcUsersConnectionRepository(DataSource dataSource, ConnectionFactoryLocator connectionFactoryLocator, TextEncryptor textEncryptor) {
@@ -70,19 +69,16 @@ public class NewJdbcUsersConnectionRepository implements UsersConnectionReposito
 
 	/**
 	 * Sets a table name prefix. This will be prefixed to all the table names before queries are executed. Defaults to "".
-	 * This is can be used to qualify the table name with a schema or to distinguish Spring Social tables from other application tables. 
+	 * This is can be used to qualify the table name with a schema or to distinguish Spring Social tables from other application tables.
 	 * @param tablePrefix the tablePrefix to set
 	 */
 	public void setTablePrefix(String tablePrefix) {
 		this.tablePrefix = tablePrefix;
 	}
-	
-	public List<String> findUserIdsWithConnection(Connection<?> connection) {
-		log.debug("============================= findUserIdsWithConnection =============================");
-		log.debug("Connection : {}", connection);
 
+	public List<String> findUserIdsWithConnection(Connection<?> connection) {
 		ConnectionKey key = connection.getKey();
-		List<String> localUserIds = jdbcTemplate.queryForList("select userId from " + tablePrefix + "UserConnection where providerId = ? and providerUserId = ?", String.class, key.getProviderId(), key.getProviderUserId());		
+		List<String> localUserIds = jdbcTemplate.queryForList("select userId from " + tablePrefix + "UserConnection where providerId = ? and providerUserId = ?", String.class, key.getProviderId(), key.getProviderUserId());
 		if (localUserIds.size() == 0 && connectionSignUp != null) {
 			String newUserId = connectionSignUp.execute(connection);
 			if (newUserId != null) {

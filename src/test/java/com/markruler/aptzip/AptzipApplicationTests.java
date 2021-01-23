@@ -14,16 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 @Commit
 class AptzipApplicationTests {
 
-	private final PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-	@Test
-	public void password() {
-		for (int i = 0; i < 10; i++) {
-			log.debug(passwordEncoder.encode("qwe"));
-		}
-	}
+  @Test
+  public void password() {
+    for (int i = 0; i < 10; i++) {
+      log.debug(passwordEncoder.encode("qwe"));
+    }
+  }
 
-	@Test
-	void contextLoads() {
-	}
+  @Test
+  void contextLoads() {
+  }
 }

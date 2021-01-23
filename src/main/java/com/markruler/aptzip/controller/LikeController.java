@@ -1,6 +1,5 @@
 package com.markruler.aptzip.controller;
 
-import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.user.UserResponseDto;
 import com.markruler.aptzip.service.LikeService;
