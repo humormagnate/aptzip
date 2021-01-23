@@ -14,8 +14,8 @@
 							<div class="tt-icon">
 								<svg class="tt-icon">
 									<!-- Get First Letter of Name -->
-									<!-- <use sec:authorize="isAuthenticated()" th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use> -->
-									<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(infouser.getUsername(), 0, 1) }"></use>
+									<!-- <use sec:authorize="isAuthenticated()" th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }"></use> -->
+									<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(infouser.getUsername(), 0, 1) }"></use>
 								</svg>
 							</div>
 						</div>
@@ -37,7 +37,7 @@
 								<a sec:authorize="isAuthenticated()" th:if="${ infouser.getId() == #authentication.principal.getId() }"
 									href="#" class="tt-btn-icon" id="js-settings-btn">
 									<svg class="tt-icon">
-										<use xlink:href="#icon-settings_fill"></use>
+										<use xlink:href="/fonts/forum.svg#icon-settings_fill"></use>
 									</svg>
 								</a>
 								<!-- <a th:href="@{ ~/user/{id}/message(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
@@ -89,7 +89,7 @@
 								<div class="tt-item" th:each="board : ${ boards }">
 									<div class="tt-col-avatar">
 										<svg class="tt-icon">
-											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }"></use>
+											<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }"></use>
 										</svg>
 									</div>
 									<div class="tt-col-description">
@@ -130,7 +130,7 @@
 								<div class="tt-row-btn">
 									<button type="button" class="btn-icon js-topiclist-showmore">
 										<svg class="tt-icon">
-											<use xlink:href="#icon-load_lore_icon"></use>
+											<use xlink:href="/fonts/forum.svg#icon-load_lore_icon"></use>
 										</svg>
 									</button>
 								</div>
@@ -151,7 +151,7 @@
 								<div class="tt-item" th:each="comment : ${comments}">
 									<div class="tt-col-avatar">
 										<svg class="tt-icon">
-											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(comment.user.username, 0, 1) }"></use>
+											<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(comment.user.username, 0, 1) }"></use>
 										</svg>
 									</div>
 									<div class="tt-col-description">
@@ -199,7 +199,7 @@
 								<div class="tt-row-btn">
 									<button type="button" class="btn-icon js-topiclist-showmore">
 										<svg class="tt-icon">
-											<use xlink:href="#icon-load_lore_icon"></use>
+											<use xlink:href="/fonts/forum.svg#icon-load_lore_icon"></use>
 										</svg>
 									</button>
 								</div>
@@ -222,7 +222,7 @@
 									<div class="tt-col-merged">
 										<div class="tt-col-avatar">
 											<svg class="tt-icon">
-												<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(follower.follower.username, 0, 1) }"></use>
+												<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(follower.follower.username, 0, 1) }"></use>
 											</svg>
 										</div>
 										<div class="tt-col-description">
@@ -261,7 +261,7 @@
 									<div class="tt-col-merged">
 										<div class="tt-col-avatar">
 											<svg class="tt-icon">
-												<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(following.following.username, 0, 1) }"></use>
+												<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(following.following.username, 0, 1) }"></use>
 											</svg>
 										</div>
 										<div class="tt-col-description">
@@ -315,7 +315,7 @@
 													</div>
 													<a href="#" class="tt-btn-icon">
 														<i class="tt-icon"><svg>
-																<use xlink:href="#icon-favorite"></use>
+																<use xlink:href="/fonts/forum.svg#icon-favorite"></use>
 															</svg></i>
 													</a>
 												</div>
@@ -326,7 +326,7 @@
 											<div class="tt-row-btn">
 												<button type="button" class="btn-icon js-topiclist-showmore">
 													<svg class="tt-icon">
-														<use xlink:href="#icon-load_lore_icon"></use>
+														<use xlink:href="/fonts/forum.svg#icon-load_lore_icon"></use>
 													</svg>
 												</button>
 											</div>
@@ -354,7 +354,7 @@
 					<a href="#">
 						<span class="tt-icon-title">
 							<svg>
-								<use xlink:href="#icon-settings_fill"></use>
+								<use xlink:href="/fonts/forum.svg#icon-settings_fill"></use>
 							</svg>
 						</span>
 						<span class="tt-icon-text">
@@ -362,7 +362,7 @@
 						</span>
 						<span class="tt-icon-close">
 							<svg>
-								<use xlink:href="#icon-cancel"></use>
+								<use xlink:href="/fonts/forum.svg#icon-cancel"></use>
 							</svg>
 						</span>
 					</a>
@@ -374,7 +374,7 @@
 								<div class="tt-avatar">
 									<svg>
 										<use
-											th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }">
+											th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(#authentication.principal.getUsername(), 0, 1) }">
 										</use>
 									</svg>
 								</div>
@@ -414,7 +414,7 @@
 			<a th:href="@{/board/write}" class="tt-btn-create-topic">
 				<span class="tt-icon">
 					<svg>
-						<use xlink:href="#icon-create_new"></use>
+						<use xlink:href="/fonts/forum.svg#icon-create_new"></use>
 					</svg>
 				</span>
 			</a>

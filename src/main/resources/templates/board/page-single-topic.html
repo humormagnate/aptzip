@@ -14,7 +14,7 @@
 							<div class="tt-item-info info-top">
 								<div class="tt-avatar-icon">
 									<i class="tt-icon"><svg>
-											<use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }">
+											<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }">
 											</use>
 										</svg></i>
 								</div>
@@ -27,7 +27,7 @@
 								<span class="tt-info-time">
 									<i class="tt-icon">
 										<svg>
-											<use xlink:href="#icon-time"></use>
+											<use xlink:href="/fonts/forum.svg#icon-time"></use>
 										</svg>
 									</i>[[${ #temporals.format(board.updateDate, 'yyyy-MM-dd') }]]
 								</span>
@@ -60,13 +60,13 @@
 							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent" id="likeBtn">
 								<i class="tt-icon">
 									<svg id="iconLike">
-										<use xlink:href="#icon-favorite"></use>
+										<use xlink:href="/fonts/forum.svg#icon-favorite"></use>
 									</svg>
 								</i>
 							</a>
 							<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent" id="iconReply">
 								<i class="tt-icon"><svg>
-										<use xlink:href="#icon-reply"></use>
+										<use xlink:href="/fonts/forum.svg#icon-reply"></use>
 									</svg></i>
 							</a>
 						</div>
@@ -82,7 +82,7 @@
 							<div class="tt-item">
 								<span href="#" class="tt-icon-btn tt-position-bottom">
 									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-view"></use>
+											<use xlink:href="/fonts/forum.svg#icon-view"></use>
 										</svg></i>
 									<span class="tt-text">[[${board?.viewCount}]]</span>
 								</span>
@@ -90,7 +90,7 @@
 							<div class="tt-item">
 								<span href="#" class="tt-icon-btn tt-position-bottom">
 									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-favorite"></use>
+											<use xlink:href="/fonts/forum.svg#icon-favorite"></use>
 										</svg></i>
 									<span class="tt-text">[[${#lists.size(likes)}]]</span>
 								</span>
@@ -98,7 +98,7 @@
 							<div class="tt-item">
 								<span href="#" class="tt-icon-btn tt-position-bottom">
 									<i class="tt-icon"><svg>
-											<use xlink:href="#icon-reply"></use>
+											<use xlink:href="/fonts/forum.svg#icon-reply"></use>
 										</svg></i>
 									<span class="tt-text" id="replyCount">[[${#lists.size(board.comments)}]]</span>
 								</span>
@@ -133,7 +133,7 @@
 										<div class="tt-avatar-icon">
 											<i class="tt-icon"><svg>
 													<use
-														th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(comment.user.getUsername(), 0, 1) }">
+														th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(comment.user.getUsername(), 0, 1) }">
 													</use>
 												</svg></i>
 										</div>
@@ -142,7 +142,7 @@
 										</div>
 										<span class="tt-info-time">
 											<i class="tt-icon"><svg>
-													<use xlink:href="#icon-time"></use>
+													<use xlink:href="/fonts/forum.svg#icon-time"></use>
 												</svg></i>[[${ #temporals.format(comment.updateDate, 'yyyy-MM-dd') }]]
 										</span>
 									</div>
@@ -156,7 +156,7 @@
 								<div class="tt-item-info info-bottom">
 									<a href="#" class="tt-icon-btn">
 										<i class="tt-icon"><svg>
-												<use xlink:href="#icon-favorite"></use>
+												<use xlink:href="/fonts/forum.svg#icon-favorite"></use>
 											</svg></i>
 										<span class="tt-text">0</span>
 									</a>
@@ -164,12 +164,12 @@
 									<a sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id} eq ${comment.user.id}"
 										href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
 										<i class="tt-icon"><svg>
-												<use xlink:href="#icon-edit"></use>
+												<use xlink:href="/fonts/forum.svg#icon-edit"></use>
 											</svg></i>
 									</a>
 									<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
 										<i class="tt-icon"><svg>
-												<use xlink:href="#icon-reply"></use>
+												<use xlink:href="/fonts/forum.svg#icon-reply"></use>
 											</svg></i>
 									</a>
 								</div>
@@ -190,7 +190,7 @@
 				<div class="tt-item tt-item-popup">
 					<div class="tt-col-avatar">
 						<svg class="tt-icon">
-							<use xlink:href="#icon-ava-f"></use>
+							<use xlink:href="/fonts/forum.svg#icon-ava-f"></use>
 						</svg>
 					</div>
 					<div class="tt-col-message">
@@ -201,7 +201,7 @@
 						<a th:href="@{/signup}" class="btn btn-secondary">Sign up</a>
 						<button type="button" class="btn-icon" id="removePopup">
 							<svg class="tt-icon">
-								<use xlink:href="#icon-cancel"></use>
+								<use xlink:href="/fonts/forum.svg#icon-cancel"></use>
 							</svg>
 						</button>
 					</div>
@@ -241,7 +241,7 @@
 					<a href="#">
 						<span class="tt-icon-title">
 							<svg>
-								<use xlink:href="#icon-edit"></use>
+								<use xlink:href="/fonts/forum.svg#icon-edit"></use>
 							</svg>
 						</span>
 						<span class="tt-icon-text">
@@ -249,7 +249,7 @@
 						</span>
 						<span class="tt-icon-close">
 							<svg>
-								<use xlink:href="#icon-cancel"></use>
+								<use xlink:href="/fonts/forum.svg#icon-cancel"></use>
 							</svg>
 						</span>
 					</a>
@@ -278,7 +278,7 @@
 	<a th:href="@{/board/write}" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
-				<use xlink:href="#icon-create_new"></use>
+				<use xlink:href="/fonts/forum.svg#icon-create_new"></use>
 			</svg>
 		</span>
 	</a>

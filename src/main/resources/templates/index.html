@@ -36,7 +36,7 @@
                 <div class="tt-item tt-item-popup">
                   <div class="tt-col-avatar">
                     <svg class="tt-icon">
-                      <use xlink:href="#icon-ava-f"></use>
+                      <use xlink:href="/fonts/forum.svg#icon-ava-f"></use>
                     </svg>
                   </div>
                   <div class="tt-col-message">
@@ -47,7 +47,7 @@
                     <a th:href="@{/signup}" class="btn btn-secondary">Sign up</a>
                     <button type="button" class="btn-icon" id="removePopup">
                       <svg class="tt-icon">
-                        <use xlink:href="#icon-cancel"></use>
+                        <use xlink:href="/fonts/forum.svg#icon-cancel"></use>
                       </svg>
                     </button></div>
                 </div>
@@ -59,7 +59,7 @@
               <div class="tt-col-avatar">
                 <svg class="tt-icon">
                   <use
-                    th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(board?.user?.getUsername(), 0, 1) }"
+                    th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(board?.user?.getUsername(), 0, 1) }"
                   ></use>
                 </svg>
               </div>
@@ -136,7 +136,7 @@
   	<a th:href="@{/board/write}" class="tt-btn-create-topic">
   		<span class="tt-icon">
   			<svg>
-  				<use xlink:href="#icon-create_new"></use>
+  				<use xlink:href="/fonts/forum.svg#icon-create_new"></use>
   			</svg>
   		</span>
   	</a>

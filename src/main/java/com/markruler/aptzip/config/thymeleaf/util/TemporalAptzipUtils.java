@@ -5,9 +5,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+// @lombok.extern.slf4j.Slf4j
 public final class TemporalAptzipUtils {
 
   public TemporalAptzipUtils() {
@@ -29,7 +27,7 @@ public final class TemporalAptzipUtils {
       result = hour + "h";
     } else if (hour < (24L * 30L)) {
       result = (hour / 24L) + "d";
-      log.debug("betweenNowAndTime result : {}", result);
+      // log.debug("betweenNowAndTime result : {}", result);
     } else if (hour < (24L * 365L)) {
       result = (hour / 24L / 30L) + "m";
     } else {

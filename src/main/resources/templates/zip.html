@@ -43,7 +43,7 @@
                       <a th:href="@{/user/{id}(id=${admin.id}) }" class="tt-avatar">
                         <div class="tt-col-icon">
                           <svg class="tt-icon">
-                            <use th:attr="'xlink:href'='#icon-ava-' + ${ #strings.substring(admin.username, 0, 1) }"></use>
+                            <use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(admin.username, 0, 1) }"></use>
                           </svg>
                         </div>
                         <div class="tt-col-description">
@@ -108,7 +108,7 @@
   <a href="page-create-topic.html" class="tt-btn-create-topic">
     <span class="tt-icon">
       <svg>
-        <use xlink:href="#icon-create_new"></use>
+        <use xlink:href="/fonts/forum.svg#icon-create_new"></use>
       </svg>
     </span>
   </a>

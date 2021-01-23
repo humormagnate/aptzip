@@ -18,6 +18,7 @@ module.exports = {
     "./src/main/resources/static/js/aptzip/main.js",
     "./src/main/resources/static/scss/forum.scss",
     "./src/main/resources/static/scss/aptzip.scss",
+    // "./node_modules/bootstrap/dist/css/bootstrap.min.css",
   ],
   // entry: {
   //   main: './src/main/resources/static/js/aptzip/main.js',
@@ -33,6 +34,17 @@ module.exports = {
   plugins,
   module: {
     rules: [
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/i,
+        use: {
+          loader: "url-loader",
+          options: {
+            name: "[name].[ext]",
+            // limit: 8192,
+            encoding: false,
+          },
+        },
+      },
       // https://webpack.js.org/loaders/babel-loader/
       {
         test: /\.js$/i,
@@ -56,7 +68,7 @@ module.exports = {
       {
         // https://github.com/webpack-contrib/sass-loader/
         // https://webpack.js.org/plugins/mini-css-extract-plugin/
-        test: /\.s[ac]ss$/i,
+        test: /\.(s[ac]ss|css)$/i,
         // test: /\.(sa|sc|c)ss$/i,
         use: [
           // devMode ? 'style-loader' : MiniCssExtractPlugin.loader,

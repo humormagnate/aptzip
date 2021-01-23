@@ -35,7 +35,7 @@
 										th:classappend="${board} ne null and ${board.category.id} eq ${category.id} ? 'active' : ''">
 										<span class="tt-icon">
 											<svg>
-												<use th:attr="'xlink:href'='#icon-' + ${ category.name }"></use>
+												<use th:attr="'xlink:href'='/fonts/forum.svg#icon-' + ${ category.name }"></use>
 											</svg>
 										</span>
 										<span class="tt-text">[[${category.name}]]</span>
@@ -84,7 +84,7 @@
 	<a href="/board/write" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
-				<use xlink:href="#icon-create_new"></use>
+				<use xlink:href="/fonts/forum.svg#icon-create_new"></use>
 			</svg>
 		</span>
 	</a>

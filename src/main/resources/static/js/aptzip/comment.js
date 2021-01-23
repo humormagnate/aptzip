@@ -1,7 +1,7 @@
 // export {
 //   createComment,
-//   update,
-//   remove,
+//   updateComment,
+//   removeComment,
 //   listComments,
 //   renderComment,
 //   deletePopup,
@@ -61,15 +61,9 @@ const listComments = (obj, callback) => {
 };
 
 const renderComment = (list, container, USER_ID) => {
-  console.log(list);
-  // hbs("comments-template", list, container, USER_ID);
-
   let str = "";
-  let renderObject = "";
 
-  for (let i = 0; i < list.length; i++) {
-    renderObject = list[i];
-    console.log(renderObject);
+  list.forEach((renderObject) => {
     let temporal = new Date(renderObject.updateDate);
 
     str += `<div class="tt-item">
@@ -80,7 +74,7 @@ const renderComment = (list, container, USER_ID) => {
   		          <div class="tt-avatar-icon">
                 <i class="tt-icon">
                   <svg>
-                    <use xlink:href="#icon-ava-${renderObject.user.username.substring(
+                    <use xlink:href="/fonts/forum.svg#icon-ava-${renderObject.user.username.substring(
                       0,
                       1
                     )}"></use>
@@ -95,7 +89,7 @@ const renderComment = (list, container, USER_ID) => {
               <a href="#" class="tt-info-time">
                 <i class="tt-icon">
                   <svg>
-                    <use xlink:href="#icon-time"></use>
+                    <use xlink:href="/fonts/forum.svg#icon-time"></use>
                   </svg>
                 </i>
                 ${
@@ -117,7 +111,7 @@ const renderComment = (list, container, USER_ID) => {
               <a href="#" class="tt-icon-btn">
                   <i class="tt-icon">
                     <svg>
-                      <use xlink:href="#icon-favorite"></use>
+                      <use xlink:href="/fonts/forum.svg#icon-favorite"></use>
                     </svg>
                   </i>
                 <span class="tt-text">0</span>
@@ -129,21 +123,21 @@ const renderComment = (list, container, USER_ID) => {
       `<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
           <i class="tt-icon">
             <svg>
-              <use xlink:href="#icon-edit"></use>
+              <use xlink:href="/fonts/forum.svg#icon-edit"></use>
             </svg>
           </i>
         </a>
         <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
           <i class="tt-icon">
             <svg>
-              <use xlink:href="#icon-share"></use>
+              <use xlink:href="/fonts/forum.svg#icon-share"></use>
             </svg>
           </i>
         </a>
         <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
           <i class="tt-icon">
             <svg>
-              <use xlink:href="#icon-reply"></use>
+              <use xlink:href="/fonts/forum.svg#icon-reply"></use>
             </svg>
           </i>
         </a>`;
@@ -156,7 +150,7 @@ const renderComment = (list, container, USER_ID) => {
     `;
     container.innerHTML = str;
     editBtn();
-  }
+  });
 };
 
 const deletePopup = (event) => {

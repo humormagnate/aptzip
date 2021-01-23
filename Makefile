@@ -18,8 +18,8 @@ docker:
 
 .PHONY: run
 run:
-	#mvn spring-boot:run -D spring-boot.run.profiles=dev -D spring.config.location=file:application.yml
-	mvn spring-boot:run -D spring-boot.run.profiles=dev
+	@#mvn spring-boot:run -D spring-boot.run.profiles=dev -D spring.config.location=file:application.yml
+	@mvn spring-boot:run -D spring-boot.run.profiles=dev
 
 .PHONY: jar
 jar:
