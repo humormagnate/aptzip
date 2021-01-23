@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public final class TemporalAptzipUtils {
-  
+
   public TemporalAptzipUtils() {
     super();
   }
-  
+
   public Temporal minusOneHour() {
     return LocalTime.now().minusHours(1L);
   }
@@ -49,16 +49,18 @@ public final class TemporalAptzipUtils {
     Long day = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L;
     return day;
   }
-  
+
   public Long betweenNowAndTimeMonth(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
-    Long month = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L / 30L;  // 30일로 통일
+    // 30일로 통일
+    Long month = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L / 30L;
     return month;
   }
 
   public Long betweenNowAndTimeYear(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
-    Long year = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L / 365L; // 30L / 12L 하면 360일이 됨
+    // 30L / 12L 나누면 360일이 됨
+    Long year = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L / 365L;
     return year;
   }
 

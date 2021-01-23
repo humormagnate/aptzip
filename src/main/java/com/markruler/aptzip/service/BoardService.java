@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import com.markruler.aptzip.domain.board.BoardEntity;
+import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
 import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.common.AptEntity;
@@ -83,13 +84,13 @@ public class BoardService {
     boardRepository.deleteById(id);
   }
 
-  public void updateById(Long id, BoardEntity board, String categoryId) {
+  public void updateById(BoardRequestDto board) {
     boardRepository.updateById(
     // @formatter:off
-			id,
+			board.getId(),
 			board.getBoardTitle(),
 			board.getBoardContent(),
-      new CategoryEntity(Long.valueOf(categoryId))
+      new CategoryEntity(board.getCategoryId())
     // @formatter:on
     );
   }

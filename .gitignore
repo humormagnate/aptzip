@@ -39,3 +39,4 @@ application-server.yaml
 # *.yaml
 # *.properties
 # *.bak
+node_modules/

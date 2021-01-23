@@ -1,0 +1,53 @@
+{
+  "name": "aptzip",
+  "version": "0.1.0",
+  "description": "아파트 중심 무료 커뮤니티 서비스",
+  "main": "main.js",
+  "scripts": {
+    "bundle": "npx webpack build --config webpack.config.js",
+    "bundle:watch": "npx webpack build --config webpack.config.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "outdated": "npm outdated",
+    "docker": "make docker",
+    "clean": "make clean",
+    "build": "make build",
+    "start:jar": "make jar",
+    "start": "make run"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cxsu/aptzip.git"
+  },
+  "author": {
+    "name": "Changsu Im",
+    "email": "imcxsu@gmail.com",
+    "url": "https://github.com/cxsu/aptzip"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cxsu/aptzip/issues"
+  },
+  "homepage": "https://github.com/cxsu/aptzip#readme",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "magnific-popup": "^1.1.0",
+    "perfect-scrollbar": "^1.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/runtime": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^5.0.1",
+    "mini-css-extract-plugin": "^1.2.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "sass": "^1.27.0",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.17.0",
+    "webpack-cli": "^4.4.0"
+  }
+}

@@ -1,135 +1,109 @@
 <!DOCTYPE html>
-<html lang="ko"
-			xmlns:th="http://www.thymeleaf.org"
-			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-			layout:decorate="~{layout/layout.html}">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout.html}">
 
-  <div layout:fragment="content">
+<div layout:fragment="content">
 
-		<main id="tt-pageContent">
-			<div class="container">
-				<div class="tt-wrapper-inner">
-					<h1 class="tt-title-border">
-						[[${ board } ? 'Update Post' : 'Create New Post' ]]
-					</h1>
-					<form class="form-default form-create-topic" id="form-create-topic" action="write" method="post">
-						<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
-						<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
-						<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category.id } : ''">
+	<main id="tt-pageContent">
+		<div class="container">
+			<div class="tt-wrapper-inner">
+				<h1 class="tt-title-border">
+					[[${ board } ? 'Update Post' : 'Create New Post' ]]
+				</h1>
+				<form class="form-default form-create-topic" id="form-create-topic" action="write" method="post">
+					<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+					<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
+					<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category.id } : ''">
 
-						<div class="form-group">
-							<label for="inputTopicTitle">Post Title</label>
-							<div class="tt-value-wrapper">
-								<input type="text" id="boardTitle" name="boardTitle" class="form-control"
-									placeholder="Subject of your topic" maxlength="99" th:value="${ board } ? ${ board.boardTitle } : ''">
-								<span class="tt-value-input"></span>
-							</div>
-							<div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
+					<div class="form-group">
+						<label for="inputTopicTitle">Post Title</label>
+						<div class="tt-value-wrapper">
+							<input type="text" id="boardTitle" name="boardTitle" class="form-control"
+								placeholder="Subject of your topic" maxlength="99" th:value="${ board } ? ${ board.boardTitle } : ''">
+							<span class="tt-value-input"></span>
 						</div>
+						<div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
+					</div>
 
+					<div class="form-group">
+						<label>Post Type</label>
+						<div class="tt-js-active-btn tt-wrapper-btnicon">
+							<div class="row tt-w410-col-02 topic-type">
+
+								<div class="col-4 col-lg-3 col-xl-2" th:each="category : ${categories}">
+									<a href="#" class="tt-button-icon"
+										th:classappend="${board} ne null and ${board.category.id} eq ${category.id} ? 'active' : ''">
+										<span class="tt-icon">
+											<svg>
+												<use th:attr="'xlink:href'='#icon-' + ${ category.name }"></use>
+											</svg>
+										</span>
+										<span class="tt-text">[[${category.name}]]</span>
+										<input type="hidden" th:value="${ category.id }" />
+									</a>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="pt-editor">
+						<h6 class="pt-title">Post Body</h6>
+						<div class="pt-row">
+							<div class="col-left">
+							</div>
+						</div>
 						<div class="form-group">
-							<label>Post Type</label>
-							<div class="tt-js-active-btn tt-wrapper-btnicon">
-								<div class="row tt-w410-col-02 topic-type">
+							<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
+								placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
+						</div>
+						<div class="row">
+							<div class="col-auto ml-md-auto">
 
-									<div class="col-4 col-lg-3 col-xl-2" th:each="category : ${categories}">
-										<a href="#" class="tt-button-icon" th:classappend="${board} ne null and ${board.category.id} eq ${category.id} ? 'active' : ''">
-											<span class="tt-icon">
-												<svg>
-													<use th:attr="'xlink:href'='#icon-' + ${ category.name }"></use>
-												</svg>
-											</span>
-											<span class="tt-text">[[${category.name}]]</span>
-											<input type="hidden" th:value="${ category.id }" />
-										</a>
+								<th:block th:if="${ board }">
+									<div th:if="${ board }" id="deleteBoardButton" class="btn btn-secondary btn-width-lg">
+										Delete Post
 									</div>
+									<div th:if="${ board }" id="updateBoardButton" class="btn btn-secondary btn-width-lg">
+										Update Post
+									</div>
+								</th:block>
 
-								</div>
+								<button th:if="${#strings.contains(#request.getRequestURI(), '/board/write')}" type="submit"
+									class="btn btn-secondary btn-width-lg">
+									Create Post
+								</button>
+
 							</div>
 						</div>
-						<div class="pt-editor">
-							<h6 class="pt-title">Post Body</h6>
-							<div class="pt-row">
-								<div class="col-left">
-								</div>
-							</div>
-							<div class="form-group">
-								<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
-									placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
-							</div>
-							<div class="row">
-								<div class="col-auto ml-md-auto">
-
-									<th:block th:if="${ board }">
-										<button th:if="${ board }" id="deletePostBtn" class="btn btn-secondary btn-width-lg">
-											Delete Post
-										</button>
-										<button th:if="${ board }" id="updatePostBtn" class="btn btn-secondary btn-width-lg">
-											Update Post
-										</button>
-									</th:block>
-
-									<button th:if="${#strings.contains(#request.getRequestURI(), '/board/write')}" type="submit" class="btn btn-secondary btn-width-lg">
-										Create Post
-									</button>
-
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
-		</main>
-	
-		<a href="/board/write" class="tt-btn-create-topic">
-			<span class="tt-icon">
-				<svg>
-					<use xlink:href="#icon-create_new"></use>
-				</svg>
-			</span>
-		</a>
-	</div>
-		
-	<script layout:fragment="script">
-		const BOARD_ID = document.getElementById('boardId');
-		const BOARD_TITLE = document.getElementById('boardTitle');
+		</div>
+	</main>
 
-		const DELETE_POST_BTN = document.getElementById('deletePostBtn');
-		const UPDATE_POST_BTN = document.getElementById('updatePostBtn');
+	<a href="/board/write" class="tt-btn-create-topic">
+		<span class="tt-icon">
+			<svg>
+				<use xlink:href="#icon-create_new"></use>
+			</svg>
+		</span>
+	</a>
+</div>
 
-		window.onload = loadCalcRestTitle();
+<script layout:fragment="script">
+	window.onload = loadCalcRestTitle();
 
-		BOARD_TITLE.addEventListener('keyup', function () {
-			keyUpCalcRestTitle()
-		}, false);
+	const boardTitle = document.getElementById('boardTitle');
+	boardTitle.addEventListener('keyup', function () {
+		keyUpCalcRestTitle()
+	}, false);
 
-		const categoryTypes = document.querySelectorAll('.tt-button-icon');
-		const hiddenCategoryTypes = document.querySelector('input[name=categoryId]');
-		categoryTypes.forEach((input) => selectCategoryTypes(input));
+	const categoryTypes = document.querySelectorAll('.tt-button-icon');
+	categoryTypes.forEach((input) => selectCategoryTypes(input));
 
-		if (DELETE_POST_BTN != undefined && DELETE_POST_BTN != null) {
-			DELETE_POST_BTN.addEventListener('click', function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				const URL = "[[@{/board/}]]" + BOARD_ID.value;
-				deletePost(URL);
-			}, false);
-		}
+	const writeForm = document.getElementById('form-create-topic');
+	writeForm.addEventListener('submit', validateForm);
 
-		if (UPDATE_POST_BTN) {
-			UPDATE_POST_BTN.addEventListener('click', function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				const NEW_BOARD_TITLE = document.getElementById('boardTitle');
-				const NEW_BOARD_CONTENT = document.getElementById('boardContent');
-				const URL = "[[@{/board/}]]" + BOARD_ID.value;
-				updatePost(URL, NEW_BOARD_TITLE.value, NEW_BOARD_CONTENT.value);
-			}, false);
-		}
-
-		const writeForm = document.getElementById('form-create-topic');
-		writeForm.addEventListener('submit', validateForm);
-
-	</script>
+</script>
 
 </html>

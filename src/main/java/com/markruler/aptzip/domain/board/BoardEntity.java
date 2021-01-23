@@ -18,6 +18,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.markruler.aptzip.domain.common.AptEntity;
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
 
@@ -49,25 +50,28 @@ public class BoardEntity {
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
 
+  @JsonProperty(value = "boardTitle")
   @Column(name = "board_title")
-	private String boardTitle;
+  private String boardTitle;
+
+  @JsonProperty(value = "boardContent")
   @Column(name = "board_content")
 	private String boardContent;
-	
+
 	@Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
 	private String boardStatus;
-	
+
 	@Column(name = "view_count")
 	@ColumnDefault(value = "0")
 	private long viewCount;
-	
+
 	@CreationTimestamp
   @Column(name = "create_date")
 	private LocalDateTime createDate;
 
   @Column(name = "update_date")
 	private LocalDateTime updateDate;
-	
+
   @JsonIgnore
 	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
 	@OrderBy("id asc")

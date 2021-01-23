@@ -16,9 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.util.StringUtils;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+// @lombok.extern.slf4j.Slf4j
 public class BoardRepositoryImpl extends QuerydslRepositorySupport implements BoardRepositoryCustom {
 
   private final JPAQueryFactory queryFactory;
@@ -30,9 +28,6 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 
   @Override
   public Page<BoardEntity> findBoardByDynamicQuery(Pageable pageable, PageVo pageVo) {
-    log.debug("pageable : {}", pageable);
-    log.debug("pageVo : {}", pageVo);
-
     JPQLQuery<BoardEntity> query =
       queryFactory
         .selectFrom(boardEntity)
@@ -42,7 +37,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
           containsCategory(pageVo.getCategory()),
           eqApt(pageVo.getAptId())
         );
-    
+
     // QuerydslRepositorySupport
     List<BoardEntity> content = getQuerydsl().applyPagination(pageable, query).fetch();
     long total = query.fetchCount();

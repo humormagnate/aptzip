@@ -1,6 +1,4 @@
-#commentList {
-  margin-top: 30px;
-}
+@import "aptzip/comment";
 
 .tt-item.tt-item-popup {
   -webkit-transition: all 0.5s ease;
@@ -125,7 +123,12 @@
 }
 
 .writer-email {
-  background: linear-gradient(transparent 45%, #ff6ba1 46%, #ff424f 85%, transparent 86%);
+  background: linear-gradient(
+    transparent 45%,
+    #ff6ba1 46%,
+    #ff424f 85%,
+    transparent 86%
+  );
   color: #2b2b2b;
   font-size: 26px;
   font-weight: bold;
@@ -138,7 +141,7 @@ bootstrap
   padding: 1.5rem;
   margin-right: 0;
   margin-left: 0;
-  border-width: .2rem;
+  border-width: 0.2rem;
   border: solid #f8f9fa;
 }
 

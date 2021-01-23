@@ -26,10 +26,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDto implements SocialUserDetails {
+	private static final Long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	private long id;
+	private Long id;
 
 	@NotBlank(message = "메일을 입력해주세요.")
 	@Email(message = "메일 양식을 지켜주세요.")

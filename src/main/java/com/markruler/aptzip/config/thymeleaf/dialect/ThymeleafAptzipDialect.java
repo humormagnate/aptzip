@@ -9,12 +9,12 @@ public class ThymeleafAptzipDialect extends AbstractDialect implements IExpressi
   private final IExpressionObjectFactory APTZIP_EXPRESSION_OBJECTS_FACTORY = new ThymeleafAptzipExpressionFactory();
 
   public ThymeleafAptzipDialect() {
-      super("aptzip");
+    super("aptzip");
   }
 
   @Override
   public IExpressionObjectFactory getExpressionObjectFactory() {
-      return APTZIP_EXPRESSION_OBJECTS_FACTORY;
+    return APTZIP_EXPRESSION_OBJECTS_FACTORY;
   }
 
 }
