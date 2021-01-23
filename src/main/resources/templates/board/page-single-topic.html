@@ -77,7 +77,9 @@
 				<!-- tt-info-box start -->
 				<div class="tt-item">
 					<div class="tt-info-box">
-						<h6 class="tt-title">Thread Status</h6>
+					<th:block th:if="${false}">
+						<h6 class="tt-title">[[${#messages.msg('ThreadStatus')}]]</h6>
+					</th:block>
 						<div class="tt-row-icon">
 							<div class="tt-item">
 								<span href="#" class="tt-icon-btn tt-position-bottom">
@@ -105,17 +107,20 @@
 							</div>
 						</div>
 
+						
+					<th:block th:if="${false}">
 						<hr>
-
 						<div class="row-object-inline form-default">
-							<h6 class="tt-title">Sort comments by:</h6>
+							<h6 class="tt-title">[[${#messages.msg('S014')}]]</h6>
 							<ul class="tt-list-badge tt-size-lg">
-								<li><a href="#"><span class="tt-color02 tt-badge">Recent</span></a></li>
+								<li><a href="#"><span class="tt-color02 tt-badge">[[${#messages.msg('Recent')}]]</span></a></li>
 							</ul>
 							<select class="tt-select form-control">
-								<option value="Recent">Recent</option>
+								<option value="Recent">[[${#messages.msg('Recent')}]]</option>
 							</select>
 						</div>
+					</th:block>
+
 					</div>
 				</div>
 				<!-- tt-info-box end -->
@@ -183,7 +188,11 @@
 
 			<!-- login-message start -->
 			<div class="tt-wrapper-inner">
-				<h4 class="tt-title-separator"><span>댓글에 상처받는 이는 바로 우리의 이웃입니다.</span></h4>
+				<h4 class="tt-title-separator">
+					<span>
+						[[${#messages.msg('S015')}]]
+					</span>
+				</h4>
 			</div>
 
 			<div class="tt-topic-list" sec:authorize="isAnonymous()">
@@ -194,11 +203,11 @@
 						</svg>
 					</div>
 					<div class="tt-col-message">
-						Looks like you are new here. Register for free, learn and contribute.
+						[[${#messages.msg('S001')}]]
 					</div>
 					<div class="tt-col-btn">
-						<a th:href="@{/login}" class="btn btn-primary">Log in</a>
-						<a th:href="@{/signup}" class="btn btn-secondary">Sign up</a>
+						<a th:href="@{/login}" class="btn btn-primary">[[${#messages.msg('Login')}]]</a>
+						<a th:href="@{/signup}" class="btn btn-secondary">[[${#messages.msg('Signup')}]]</a>
 						<button type="button" class="btn-icon" id="removePopup">
 							<svg class="tt-icon">
 								<use xlink:href="/fonts/forum.svg#icon-cancel"></use>
@@ -212,16 +221,18 @@
 			<!-- comment form start -->
 			<div sec:authorize="isAuthenticated()" class="tt-wrapper-inner">
 				<div class="pt-editor form-default">
-					<h6 class="pt-title">Post Your Comment</h6>
+					<h6 class="pt-title">
+						[[${#messages.msg('S024')}]]
+					</h6>
 
 					<div class="form-group">
 						<th:block th:if="${board.apt.id} eq ${#authentication.principal.apt.id}">
 							<textarea name="message" id="commentContent" class="form-control" rows="5"
-								placeholder="Lets get started"></textarea>
+								th:placeholder="${#messages.msg('S023')}"></textarea>
 						</th:block>
 						<th:block th:if="${board.apt.id} ne ${#authentication.principal.apt.id}">
 							<textarea name="message" id="commentContent" class="form-control" rows="5"
-								placeholder="같은 아파트 단지의 주민만 댓글을 입력하실 수 있습니다." disabled></textarea>
+								th:placeholder="${#messages.msg('S027')}" disabled></textarea>
 						</th:block>
 					</div>
 

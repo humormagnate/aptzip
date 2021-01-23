@@ -8,25 +8,31 @@
 		<div class="container">
 			<div class="tt-wrapper-inner">
 				<h1 class="tt-title-border">
-					[[${ board } ? 'Update Post' : 'Create New Post' ]]
+					[[${ board } ? ${#messages.msg('S020')} : ${#messages.msg('S017')} ]]
 				</h1>
 				<form class="form-default form-create-topic" id="form-create-topic" action="write" method="post">
-					<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+					<th:block th:if="${false}">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+					</th:block>
+					
 					<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
 					<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category.id } : ''">
 
 					<div class="form-group">
-						<label for="inputTopicTitle">Post Title</label>
+						<label for="inputTopicTitle">[[${#messages.msg('PostTitle')}]]</label>
 						<div class="tt-value-wrapper">
 							<input type="text" id="boardTitle" name="boardTitle" class="form-control"
-								placeholder="Subject of your topic" maxlength="99" th:value="${ board } ? ${ board.boardTitle } : ''">
+								th:placeholder="${#messages.msg('S021')}" maxlength="99"
+								th:value="${ board } ? ${ board.boardTitle } : ''">
 							<span class="tt-value-input"></span>
 						</div>
-						<div class="tt-note">Describe your topic well, while keeping the subject as short as possible.</div>
+						<div class="tt-note">
+							[[${#messages.msg('S022')}]]
+						</div>
 					</div>
 
 					<div class="form-group">
-						<label>Post Type</label>
+						<label>[[${#messages.msg('PostType')}]]</label>
 						<div class="tt-js-active-btn tt-wrapper-btnicon">
 							<div class="row tt-w410-col-02 topic-type">
 
@@ -47,30 +53,30 @@
 						</div>
 					</div>
 					<div class="pt-editor">
-						<h6 class="pt-title">Post Body</h6>
+						<h6 class="pt-title">[[${#messages.msg('PostBody')}]]</h6>
 						<div class="pt-row">
 							<div class="col-left">
 							</div>
 						</div>
 						<div class="form-group">
 							<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
-								placeholder="Lets get started">[[${ board } ? ${ board.boardContent } : '']]</textarea>
+								th:placeholder="${#messages.msg('S023')}">[[${ board } ? ${ board.boardContent } : '']]</textarea>
 						</div>
 						<div class="row">
 							<div class="col-auto ml-md-auto">
 
 								<th:block th:if="${ board }">
 									<div th:if="${ board }" id="deleteBoardButton" class="btn btn-secondary btn-width-lg">
-										Delete Post
+										[[${#messages.msg('S019')}]]
 									</div>
 									<div th:if="${ board }" id="updateBoardButton" class="btn btn-secondary btn-width-lg">
-										Update Post
+										[[${#messages.msg('S020')}]]
 									</div>
 								</th:block>
 
 								<button th:if="${#strings.contains(#request.getRequestURI(), '/board/write')}" type="submit"
 									class="btn btn-secondary btn-width-lg">
-									Create Post
+									[[${#messages.msg('S018')}]]
 								</button>
 
 							</div>

@@ -4,14 +4,16 @@
     <ul></ul>
     <div class="mm-navbtn-names">
       <div class="mm-closebtn">
-        Close
+        [[${#messages.msg('Close')}]]
         <div class="tt-icon">
           <svg>
             <use xlink:href="/fonts/forum.svg#icon-cancel"></use>
           </svg>
         </div>
       </div>
-      <div class="mm-backbtn">Back</div>
+      <div class="mm-backbtn">
+        [[${#messages.msg('Back')}]]
+      </div>
     </div>
   </nav>
   <div id="tt-header">
@@ -27,7 +29,7 @@
           <!-- /toggle mobile menu -->
           <!-- logo -->
           <div class="tt-logo">
-            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="" /></a>
+            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="aptzip-logo" /></a>
           </div>
           <!-- /logo -->
           <!-- desctop menu -->
@@ -36,13 +38,13 @@
               <ul>
                 <li>
                   <a sec:authorize="isAuthenticated()"
-                    th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>Apt</span></a>
+                    th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>[[${#messages.msg('apt-zip')}]]</span></a>
                 </li>
                 <li>
-                  <a th:href="@{/zip}"><span>Zip</span></a>
+                  <a th:href="@{/zip}"><span>[[${#messages.msg('Danji')}]]</span></a>
                 </li>
                 <li>
-                  <a th:href="@{/board/write}"><span>New</span></a>
+                  <a th:href="@{/board/write}"><span>[[${#messages.msg('New')}]]</span></a>
                 </li>
               </ul>
             </nav>
@@ -59,7 +61,7 @@
 
             <form class="search-wrapper">
               <div class="search-form">
-                <input type="text" name="query" id="search-query" class="tt-search__input" placeholder="Search" />
+                <input type="text" name="query" id="search-query" class="tt-search__input" th:placeholder="${#messages.msg('Search')}" />
                 <button class="tt-search__btn" type="submit">
                   <svg class="tt-icon">
                     <use xlink:href="/fonts/forum.svg#icon-search"></use>
@@ -98,8 +100,8 @@
 
         <div class="col-auto ml-auto">
           <div class="tt-account-btn" sec:authorize="isAnonymous()">
-            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-primary">Login</a>
-            <a sec:authorize="isAnonymous()" th:href="@{/signup}" class="btn btn-secondary">Signup</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-primary">[[${#messages.msg('Login')}]]</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/signup}" class="btn btn-secondary">[[${#messages.msg('Signup')}]]</a>
           </div>
 
           <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
@@ -113,10 +115,10 @@
                   </svg>
                 </i>
               </a>
-              <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>Admin</span></a>
+              <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}"><span>[[${#messages.msg('Admin')}]]</span></a>
             </div>
             <div class="tt-btn-icon">
-              <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+              <a th:href="@{/logout}" class="btn btn-secondary">[[${#messages.msg('Logout')}]]</a>
             </div>
           </div>
         </div>

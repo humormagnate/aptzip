@@ -11,10 +11,10 @@
         <div class="tt-wrapper-inner">
           <ul class="nav nav-tabs pt-tabs-default" role="tablist">
             <li class="nav-item">
-              <a class="nav-link show active" data-toggle="tab" href="#tt-tab-01" role="tab"><span>About</span></a>
+              <a class="nav-link show active" data-toggle="tab" href="#tt-tab-01" role="tab"><span>[[${#messages.msg('About')}]]</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#tt-tab-02" role="tab"><span>Guidelines</span></a>
+              <a class="nav-link" data-toggle="tab" href="#tt-tab-02" role="tab"><span>[[${#messages.msg('Guidelines')}]]</span></a>
             </li>
           </ul>
         </div>
@@ -28,13 +28,14 @@
 
               <div class="tt-wrapper-inner">
                 <h2 class="tt-title">
-                  About [[${#authentication.principal.apt.aptName}]]아파트
+                  [[${#authentication.principal.apt.aptName}]]아파트
                 </h2>
-                [[${#authentication.principal.apt.aptName}]]아파트는 좋은 아파트입니다.
-                
+                <span>
+                  좋은 아파트입니다.
+                </span>
                 <!-- admin list start -->
                 <h3 class="tt-title">
-                  Admins
+                  [[${#messages.msg('Admins')}]]
                 </h3>
                 <div class="tt-list-avatar">
                   <div class="row">
@@ -62,16 +63,16 @@
               <!-- Statistics start -->
               <div class="table-responsive-sm tt-indent-top">
                 <table class="table-01">
-                  <caption>Site Statistics</caption>
+                  <caption>[[${#messages.msg('SiteStatistics')}]]</caption>
                   <thead>
                     <tr>
-                      <th>Topic</th>
-                      <th>All Time</th>
+                      <th>[[${#messages.msg('Topic')}]]</th>
+                      <th>[[${#messages.msg('AllTime')}]]</th>
                     </tr>
                   </thead>
                   <tbody class="table-zebra">
                     <tr>
-                      <td>Posts</td>
+                      <td>[[${#messages.msg('Posts')}]]</td>
                       <td>[[${boardSize}]]</td>
                     </tr>
                   </tbody>
@@ -81,9 +82,11 @@
 
               <div class="tt-wrapper-inner tt-indent-top">
                 <h4 class="tt-title">
-                  Contact Us
+                  [[${#messages.msg('S016')}]]
                 </h4>
-                <span class="writer-email">imcxsu@gmail.com</span>
+                <span class="writer-email">
+                  [[${#messages.msg('changsu-email')}]]
+                </span>
               </div>
 
             </div>

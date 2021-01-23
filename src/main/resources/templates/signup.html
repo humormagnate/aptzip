@@ -29,42 +29,49 @@
 					<a th:href="@{/}" class="tt-block-title">
 						<img th:src="@{/images/logo.png}" alt="">
 						<div class="tt-title">
-							Welcome to apt-zip
+							[[${#messages.msg('S004')}]]
 						</div>
 						<div class="tt-description">
 							Join our service to unlock true power of community.
 						</div>
 					</a>
 					<form action="#" class="form-default" th:action="@{/signup}" th:object="${user}" method="post">
-						<!-- <input type ="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+						<th:block th:if="${false}">
+							<input type ="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+						</th:block>
+						
 						<div th:if="${error}">
 							<div class="alert alert-danger" role="alert">
 								Failed to registered.
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="loginUserName">Username</label>
-							<input th:field="*{username}" type="text" name="username" class="form-control" id="loginUserName" placeholder="your name">
+							<label for="loginUserName">[[${#messages.msg('Username')}]]</label>
+							<input th:field="*{username}" type="text" name="username" class="form-control" id="loginUserName" th:placeholder="${#messages.msg('yourname')}">
 						</div>
 						<div class="form-group">
-							<label for="loginUserEmail">Email</label>
+							<label for="loginUserEmail">[[${#messages.msg('Email')}]]</label>
 							<input th:field="*{email}" type="text" name="email" class="form-control" id="loginUserEmail" placeholder="sample@aptzip.com">
 						</div>
 						<div class="form-group">
-							<label for="loginUserPassword">Password</label>
+							<label for="loginUserPassword">[[${#messages.msg('Password')}]]</label>
 							<input th:field="*{password}" type="password" name="password" class="form-control" id="loginUserPassword" placeholder="************">
 						</div>
 						<div class="form-group">
-							<label for="loginUserApartment">Apartment</label>
+							<label for="loginUserApartment">[[${#messages.msg('Apartment')}]]</label>
 							<input type="text" name="aptId" class="form-control" id="loginUserApartment" placeholder="1-5 사이의 값을 입력해주세요">
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-secondary btn-block">Create my account</button>
+							<button type="submit" class="btn btn-secondary btn-block">[[${#messages.msg('S011')}]]</button>
 						</div>
 
 						
 						<div class="tt-notes">
-							<p>Already have an account? <a th:href="@{/login}" class="tt-underline">Login here</a></p>
+							<p>[[${#messages.msg('S012')}]]
+								<a th:href="@{/login}" class="tt-underline">
+									&nbsp;[[${#messages.msg('S013')}]]
+								</a>
+							</p>
 						</div>
 					</form>
 				</div>

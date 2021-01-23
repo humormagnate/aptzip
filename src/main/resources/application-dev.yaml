@@ -26,6 +26,12 @@ spring:
   devtools:
     livereload:
       enabled: true
+  mvc:
+    locale-resolver: accept-header
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+    # cache-seconds: 10
   jpa:
     generate-ddl: true
     # show-sql: true

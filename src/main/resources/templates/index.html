@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko"
-			xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 			xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 			layout:decorate="~{layout/layout.html}">
 
@@ -12,12 +11,12 @@
         <div class="tt-topic-list">
           <!-- list-header start -->
           <div class="tt-list-header">
-            <div class="tt-col-topic">Topic</div>
-            <div class="tt-col-category">Category</div>
-            <div class="tt-col-value hide-mobile">Likes</div>
-            <div class="tt-col-value hide-mobile">Comments</div>
-            <div class="tt-col-value hide-mobile">Views</div>
-            <div class="tt-col-value">Activity</div>
+            <div class="tt-col-topic">[[${#messages.msg('Topic')}]]</div>
+            <div class="tt-col-category">[[${#messages.msg('Category')}]]</div>
+            <div class="tt-col-value hide-mobile">[[${#messages.msg('Likes')}]]</div>
+            <div class="tt-col-value hide-mobile">[[${#messages.msg('Comments')}]]</div>
+            <div class="tt-col-value hide-mobile">[[${#messages.msg('Views')}]]</div>
+            <div class="tt-col-value">[[${#messages.msg('Activity')}]]</div>
           </div>
           <!-- list-header end -->
 
@@ -40,11 +39,11 @@
                     </svg>
                   </div>
                   <div class="tt-col-message">
-                    Looks like you are new here. Register for free, learn and contribute.
+                    [[${#messages.msg('S001')}]]
                   </div>
                   <div class="tt-col-btn">
-                    <a th:href="@{/login}" class="btn btn-primary">Log in</a>
-                    <a th:href="@{/signup}" class="btn btn-secondary">Sign up</a>
+                    <a th:href="@{/login}" class="btn btn-primary">[[${#messages.msg('Login')}]]</a>
+                    <a th:href="@{/signup}" class="btn btn-secondary">[[${#messages.msg('Signup')}]]</a>
                     <button type="button" class="btn-icon" id="removePopup">
                       <svg class="tt-icon">
                         <use xlink:href="/fonts/forum.svg#icon-cancel"></use>

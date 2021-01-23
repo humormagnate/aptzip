@@ -67,14 +67,11 @@ public class BoardRepositoryTest {
 
     // when
     // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
-    CustomPage customPage = CustomPage.builder()
-                          .page(1)
-                          .size(10)
-                          .query("1")
-                          .username("q")
-                          .category("Discussion")
-                          .date("")
-                          .build();
+    CustomPage customPage = new CustomPage();
+    customPage.setQuery("1");
+    customPage.setUsername("q");
+    customPage.setCategory("Discussion");
+    customPage.setDate("");
 
     Page<BoardEntity> content = boardService.listBoardByPage(0L, customPage);
     log.debug("content : {}", content);

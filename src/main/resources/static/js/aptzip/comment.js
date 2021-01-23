@@ -116,33 +116,32 @@ const renderComment = (list, container, USER_ID) => {
                   </i>
                 <span class="tt-text">0</span>
               </a>
-            </div>
             <div class="col-separator"></div>`;
 
     if (USER_ID == renderObject.user.id) {
-      `<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
-          <i class="tt-icon">
-            <svg>
-              <use xlink:href="/fonts/forum.svg#icon-edit"></use>
-            </svg>
-          </i>
-        </a>
-        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-          <i class="tt-icon">
-            <svg>
-              <use xlink:href="/fonts/forum.svg#icon-share"></use>
-            </svg>
-          </i>
-        </a>
-        <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-          <i class="tt-icon">
-            <svg>
-              <use xlink:href="/fonts/forum.svg#icon-reply"></use>
-            </svg>
-          </i>
-        </a>`;
+      str += `<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
+                <i class="tt-icon">
+                  <svg>
+                    <use xlink:href="/fonts/forum.svg#icon-edit"></use>
+                  </svg>
+                </i>
+              </a>
+              <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                <i class="tt-icon">
+                  <svg>
+                    <use xlink:href="/fonts/forum.svg#icon-share"></use>
+                  </svg>
+                </i>
+              </a>
+              <a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+                <i class="tt-icon">
+                  <svg>
+                    <use xlink:href="/fonts/forum.svg#icon-reply"></use>
+                  </svg>
+                </i>
+              </a>`;
     }
-    str += `
+    str += `</div>
           </div>
         </div>
       </div>
