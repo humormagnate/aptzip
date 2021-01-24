@@ -14,15 +14,20 @@
 							<div class="tt-item-info info-top">
 								<div class="tt-avatar-icon">
 									<i class="tt-icon"><svg>
-											<use th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }">
+											<use
+												th:attr="'xlink:href'='/fonts/forum.svg#icon-ava-' + ${ #strings.substring(board.user.username, 0, 1) }">
 											</use>
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
 									<a th:href="@{/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
-									<input type="hidden" id="boardId" th:value="${ board.id }">
-									<input sec:authorize="isAuthenticated()" type="hidden" id="commentUser"
+									<input type="hidden" id="boardID" th:value="${ board.id }">
+									<input type="hidden" id="boardAptID" th:value="${ board.apt.id }">
+									<input sec:authorize="isAuthenticated()" type="hidden" id="readerID"
 										th:value="${#authentication.principal.id}">
+									<input sec:authorize="isAuthenticated()" type="hidden" id="readerAptID"
+										th:value="${#authentication.principal.apt.id}">
+									<input type="hidden" id="likeBoard" th:value="${ like }">
 								</div>
 								<span class="tt-info-time">
 									<i class="tt-icon">
@@ -77,9 +82,9 @@
 				<!-- tt-info-box start -->
 				<div class="tt-item">
 					<div class="tt-info-box">
-					<th:block th:if="${false}">
-						<h6 class="tt-title">[[${#messages.msg('ThreadStatus')}]]</h6>
-					</th:block>
+						<th:block th:if="${false}">
+							<h6 class="tt-title">[[${#messages.msg('ThreadStatus')}]]</h6>
+						</th:block>
 						<div class="tt-row-icon">
 							<div class="tt-item">
 								<span href="#" class="tt-icon-btn tt-position-bottom">
@@ -107,19 +112,19 @@
 							</div>
 						</div>
 
-						
-					<th:block th:if="${false}">
-						<hr>
-						<div class="row-object-inline form-default">
-							<h6 class="tt-title">[[${#messages.msg('S014')}]]</h6>
-							<ul class="tt-list-badge tt-size-lg">
-								<li><a href="#"><span class="tt-color02 tt-badge">[[${#messages.msg('Recent')}]]</span></a></li>
-							</ul>
-							<select class="tt-select form-control">
-								<option value="Recent">[[${#messages.msg('Recent')}]]</option>
-							</select>
-						</div>
-					</th:block>
+
+						<th:block th:if="${false}">
+							<hr>
+							<div class="row-object-inline form-default">
+								<h6 class="tt-title">[[${#messages.msg('S014')}]]</h6>
+								<ul class="tt-list-badge tt-size-lg">
+									<li><a href="#"><span class="tt-color02 tt-badge">[[${#messages.msg('Recent')}]]</span></a></li>
+								</ul>
+								<select class="tt-select form-control">
+									<option value="Recent">[[${#messages.msg('Recent')}]]</option>
+								</select>
+							</div>
+						</th:block>
 
 					</div>
 				</div>
@@ -266,7 +271,7 @@
 					</a>
 				</div>
 				<form class="form-default">
-					<input type="hidden" id="commentHiddenId">
+					<input type="hidden" id="commentHiddenID">
 					<div class="form-group">
 						<label for="settingsUserAbout">Content</label>
 						<textarea name="commentContent" placeholder="Edit Your Comment" class="form-control"
@@ -296,123 +301,8 @@
 
 </div>
 
-
-<script layout:fragment="script">
-	const USER_ID = "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.id} : '']]";
-	const BOARD_ID = document.getElementById('boardId').value;
-	const BOARD_APT_ID = "[[${board.apt.id}]]";
-	const USER_APT_ID = "[[${#authentication.principal} ne 'anonymousUser' ? ${#authentication.principal.apt.id} : '']]";
-
-	const CREATE_COMMENT_BTN = document.getElementById('createReplyBtn');
-	let commentList = document.getElementById('commentList');
-	let likeflag = true;
-
-	if (CREATE_COMMENT_BTN != undefined && CREATE_COMMENT_BTN != null) {
-		CREATE_COMMENT_BTN.addEventListener('click', function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			const COMMENT_CONTENT = document.getElementById('commentContent').value;
-			// createReply(BOARD_ID, COMMENT_CONTENT);
-			const URL = '[[@{/comment}]]/' + BOARD_ID;
-			const obj = { boardId: BOARD_ID, commentContent: COMMENT_CONTENT, url: URL };
-			createComment(obj, list => {
-				// https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
-				// 0	CONNECTING	Socket has been created. The connection is not yet open.
-				// 1	OPEN	The connection is open and ready to communicate.
-				// 2	CLOSING	The connection is in the process of closing.
-				// 3	CLOSED	The connection is closed or couldn't be opened.
-				// if (ws.readyState === 1) {
-				// 	let msg = COMMENT_CONTENT + "|+|" + "[[${#authentication?.principal} ne 'anonymousUser' ? ${#authentication?.principal.username} : '']]" + "|+|" + "[[${ board.user.username }]]";
-				// 	ws.send(msg);
-				// }
-
-				document.getElementById('commentContent').value = '';
-				commentList.innerHTML = '';
-				renderComment(list, commentList, USER_ID);
-				document.getElementById('replyCount').innerText = list.length;
-
-			});
-		}, false);
-	}
-
-	const likeBtn = document.getElementById('likeBtn');
-	if (likeBtn != undefined && likeBtn != null) {
-		likeBtn.addEventListener('click', function (event) {
-			event.preventDefault();
-			let like = new Like();
-			if (USER_ID == '') location.href = '[[@{/login}]]';
-			const URL = '[[@{/like}]]/' + BOARD_ID;
-			const obj = { type: 1, boardId: BOARD_ID, url: URL };
-			if (likeflag) {
-				like.insert(obj);
-			} else {
-				like.insert(obj);	// 우선 flag로 처리
-				// like.delete(obj);
-			}
-		});
-	}
-
-	const DELETE_COMMENT_BTN = document.getElementById('deleteCommentBtn');
-	if (DELETE_COMMENT_BTN != undefined && DELETE_COMMENT_BTN != null) {
-		DELETE_COMMENT_BTN.addEventListener('click', function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-
-			if (confirm('정말 삭제하시겠습니까?')) {
-				const commentId = document.getElementById('commentHiddenId').value;
-				const URL = '[[@{/comment}]]/' + BOARD_ID + '/' + commentId;
-				const obj = { boardId: BOARD_ID, commentId: commentId, url: URL };
-
-				comment.remove(obj, function (list) {
-					document.getElementById('updateCommentContent').value = '';
-					commentList.innerHTML = '';
-					renderComment(list, commentList, USER_ID);
-					document.getElementById('replyCount').innerText = list.length;
-					document.getElementsByClassName('modal-filter').item(0).click();
-				});
-			}
-		}, false);
-	}
-
-	/*
-		popup
-	*/
-	const REMOVE_POPUP_BTN = document.getElementById('removePopup');
-	if (REMOVE_POPUP_BTN != undefined && REMOVE_POPUP_BTN != null) {
-		REMOVE_POPUP_BTN.addEventListener('click', function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-
-			this.parentNode.parentNode.parentElement.remove();
-		}, false);
-	}
-
-	document.getElementById('iconReply').addEventListener('click', function (event) {
-		event.preventDefault();
-		if (USER_ID != '') {
-			if (BOARD_APT_ID != USER_APT_ID) {
-				alert('같은 아파트 단지의 주민만 댓글을 입력하실 수 있습니다.');
-			}
-			document.getElementById('commentContent').focus();
-		} else {
-			location.href = '[[@{/login}]]';
-		}
-	});
-
-
-	document.addEventListener("DOMContentLoaded", () => {
-		const obj = { boardId: BOARD_ID, url: `/comment/${BOARD_ID}` };
-		listComments(obj, (list) => {
-			renderComment(list, commentList, USER_ID);
-		});
-
-		const like = '[[${like}]]';
-		if (like !== '') {
-			document.getElementById('iconLike').style.fill = '#ff5722';
-			likeflag = false;
-		}
-	});
-
-</script>
+<th:block th:if="${false}">
+	<script layout:fragment="script"></script>
+</th:block>
 
 </html>

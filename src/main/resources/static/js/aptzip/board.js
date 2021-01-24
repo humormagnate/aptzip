@@ -1,11 +1,59 @@
+import { validateBoardForm } from "./validation.js";
 export {
   selectCategoryTypes,
   calcTitleLength,
   keyUpCalcRestTitle,
   deleteBoard,
   updateBoard,
-  validateForm,
 };
+
+if (
+  window.location.href.includes("/board/write") ||
+  window.location.href.includes("/edit")
+) {
+  window.onload = calcTitleLength();
+
+  const categories = document.querySelectorAll(".select-category");
+  categories.forEach((element) => {
+    element.addEventListener("click", (event) => {
+      selectCategoryTypes(event, categories);
+    });
+  });
+
+  document
+    .getElementById("boardTitle")
+    .addEventListener("keyup", keyUpCalcRestTitle, false);
+
+  document
+    .getElementById("form-create-topic")
+    .addEventListener("submit", validateBoardForm, false);
+}
+
+if (document.body.contains(document.getElementById("deleteBoardButton"))) {
+  document.getElementById("deleteBoardButton").addEventListener(
+    "click",
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const boardId = document.getElementById("boardId");
+      deleteBoard(`/board/${boardId.value}`);
+    },
+    false
+  );
+}
+
+if (document.body.contains(document.getElementById("updateBoardButton"))) {
+  document.getElementById("updateBoardButton").addEventListener(
+    "click",
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const boardId = document.getElementById("boardId");
+      updateBoard("/board", boardId.value);
+    },
+    false
+  );
+}
 
 /*
   write - select category
@@ -90,32 +138,4 @@ function updateBoard(requestPath, boardId) {
       window.location.replace(document.referrer);
     })
     .catch((err) => console.error(err));
-}
-
-function validateForm(event) {
-  const boardTitle = document.getElementById("boardTitle");
-  const boardContent = document.getElementById("boardContent");
-
-  if (!boardTitle.value) {
-    boardTitle.focus({ preventScroll: false });
-    alert("제목을 입력해주세요.");
-    event.preventDefault();
-    return false;
-  }
-
-  const hiddenCategoryTypes = document.querySelector("input[name=categoryId]");
-  if (!hiddenCategoryTypes.value) {
-    alert("카테고리를 선택해주세요.");
-    event.preventDefault();
-    return false;
-  }
-
-  if (!boardContent.value) {
-    boardContent.focus({ preventScroll: false });
-    alert("내용을 입력해주세요.");
-    event.preventDefault();
-    return false;
-  }
-
-  return true;
 }

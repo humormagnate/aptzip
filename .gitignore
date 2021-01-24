@@ -40,3 +40,4 @@ application-server.yaml
 # *.properties
 # *.bak
 node_modules/
+**/dist/
