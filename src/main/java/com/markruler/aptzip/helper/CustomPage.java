@@ -26,7 +26,7 @@ public class CustomPage {
   private String category; // 카테고리
   private String date; // 작성일
   private Integer limit; // 검색결과 개수 제한
-  private Long aptId; // Apt 탭을 위한 아파트 고유번호
+  private String aptCode; // Apt 탭을 위한 아파트 고유번호
 
   public CustomPage() {
     this.page = 1;

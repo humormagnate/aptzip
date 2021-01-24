@@ -41,7 +41,7 @@ public class BoardRepositoryTest {
   public void insertBoardDummies() {
     AptzipUserEntity user = AptzipUserEntity.builder().id(1).build();
     log.debug("user : {}", user);
-    AptEntity apt = AptEntity.builder().id(1L).build();
+    AptEntity apt = AptEntity.builder().code("").build();
     log.debug("apt : {}", apt);
     CategoryEntity category = new CategoryEntity(1L, "Discussion");
     log.debug("category : {}", category);
@@ -75,7 +75,7 @@ public class BoardRepositoryTest {
     customPage.setCategory("Discussion");
     customPage.setDate("");
 
-    Page<BoardEntity> content = boardService.listBoardByPage(0L, customPage);
+    Page<BoardEntity> content = boardService.listBoardByPage(null, customPage);
     log.debug("content : {}", content);
     log.debug("content.getTotalPages() : {}", content.getTotalPages());
     List<BoardEntity> list = content.getContent();
@@ -95,7 +95,7 @@ public class BoardRepositoryTest {
     // List<BoardEntity> boardEntities = boardRepository.findBoardByDynamicQuery("32", "1", "q");
     CustomPage customPage = new CustomPage();
 
-    Page<BoardEntity> content = boardService.listBoardByPage(0L, customPage);
+    Page<BoardEntity> content = boardService.listBoardByPage(null, customPage);
     log.debug("content : {}", content);
     log.debug("content.getTotalPages() : {}", content.getTotalPages());
     List<BoardEntity> list = content.getContent();

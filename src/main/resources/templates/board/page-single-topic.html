@@ -22,11 +22,11 @@
 								<div class="tt-avatar-title">
 									<a th:href="@{/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardID" th:value="${ board.id }">
-									<input type="hidden" id="boardAptID" th:value="${ board.apt.id }">
+									<input type="hidden" id="boardAptID" th:value="${ board.apt.code }">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="readerID"
 										th:value="${#authentication.principal.id}">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="readerAptID"
-										th:value="${#authentication.principal.apt.id}">
+										th:value="${#authentication.principal.apt.code}">
 									<input type="hidden" id="likeBoard" th:value="${ like }">
 								</div>
 								<span class="tt-info-time">
@@ -37,7 +37,7 @@
 									</i>[[${ #temporals.format(board.updateDate, 'yyyy-MM-dd') }]]
 								</span>
 							</div>
-							<h3 class="tt-item-title">
+							<h3 class="tt-item-title user-select-none">
 								<a href="#">[[${ board.boardTitle }]]</a>
 							</h3>
 							<div class="tt-item-tag">
@@ -49,7 +49,7 @@
 									</li>
 									<li th:each="category : ${ board?.category?.name }">
 										<a href="#">
-											<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }">[[${ category }]]</span>
+											<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }" th:classappend="'user-select-none'">[[${ category }]]</span>
 										</a>
 									</li>
 								</ul>
@@ -231,18 +231,18 @@
 					</h6>
 
 					<div class="form-group">
-						<th:block th:if="${board.apt.id} eq ${#authentication.principal.apt.id}">
+						<th:block th:if="${board.apt.code} eq ${#authentication.principal.apt.code}">
 							<textarea name="message" id="commentContent" class="form-control" rows="5"
 								th:placeholder="${#messages.msg('S023')}"></textarea>
 						</th:block>
-						<th:block th:if="${board.apt.id} ne ${#authentication.principal.apt.id}">
+						<th:block th:if="${board.apt.code} ne ${#authentication.principal.apt.code}">
 							<textarea name="message" id="commentContent" class="form-control" rows="5"
 								th:placeholder="${#messages.msg('S027')}" disabled></textarea>
 						</th:block>
 					</div>
 
 					<div class="pt-row">
-						<div class="col-auto" th:if="${board.apt.id} eq ${#authentication.principal.apt.id}">
+						<div class="col-auto" th:if="${board.apt.code} eq ${#authentication.principal.apt.code}">
 							<a href="#" id="createReplyBtn" class="btn btn-secondary btn-width-lg">Comment</a>
 						</div>
 					</div>

@@ -32,7 +32,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
           containsTitle(CustomPage.getQuery()), //.or(containsContent(CustomPage.getQuery())),
           containsWriter(CustomPage.getUsername()),
           containsCategory(CustomPage.getCategory()),
-          eqApt(CustomPage.getAptId())
+          eqApt(CustomPage.getAptCode())
         );
 
     // QuerydslRepositorySupport
@@ -70,11 +70,11 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
     return boardEntity.category.name.contains(category);
   }
 
-  private BooleanExpression eqApt(Long aptId) {
-    if (StringUtils.isEmpty(aptId)) {
+  private BooleanExpression eqApt(String aptCode) {
+    if (StringUtils.isEmpty(aptCode)) {
       return null;
     }
-    return boardEntity.apt.id.eq(aptId);
+    return boardEntity.apt.code.eq(aptCode);
   }
 
 }

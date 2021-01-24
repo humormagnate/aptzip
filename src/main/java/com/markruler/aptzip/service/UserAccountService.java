@@ -140,7 +140,7 @@ public class UserAccountService implements UserDetailsService {
   }
 
   public List<AptzipUserEntity> listAdminsByAPT(UserResponseDto principal) {
-    AptEntity apt = AptEntity.builder().id(principal.getApt().getId()).build();
+    AptEntity apt = AptEntity.builder().code(principal.getApt().getCode()).build();
     return userJpaRepository.findAllByAptAndRole(apt, new AptzipRoleEntity("ADMIN"));
   }
 

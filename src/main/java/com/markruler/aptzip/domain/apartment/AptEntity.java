@@ -20,25 +20,36 @@ import lombok.ToString;
 @Entity
 @ToString
 @Table(name = "tb_apt")
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "code")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class AptEntity {
   @Id
   @NonNull
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private String code;
 
-  @Column(name = "apt_name")
-  private String aptName;
+  @Column(name = "complex")
+  private String complex;
 
-  @Column(name = "apt_province")
-  private String aptProvince;
+  @Column(name = "province")
+  private String province;
 
-  @Column(name = "apt_city")
-  private String aptCity;
+  @Column(name = "city")
+  private String city;
 
-  @Column(name = "apt_town")
-  private String aptTown;
+  @Column(name = "town")
+  private String town;
+
+  @Column(name = "village")
+  private String village;
+
+  @Column(name = "approval")
+  private String approval;
+
+  @Column(name = "building")
+  private Integer building;
+
+  @Column(name = "apartment")
+  private Integer apartment;
 }

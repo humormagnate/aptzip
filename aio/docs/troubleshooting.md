@@ -7,7 +7,7 @@ init 스크립트를 통해서 등록된 데이터들은 인코딩이 깨지는 
 캐릭터 셋은 다음과 같습니다.
 
 ```bash
-docker exec mysql mysql -u root -ptestmaria -e "show session variables like 'char%';"
+docker exec aptzip-mysql mysql -u root -ptestmaria -e "show session variables like 'char%';"
 
 # +--------------------------+--------------------------------+
 # | Variable_name            | Value                          |
@@ -35,4 +35,38 @@ SET character_set_results = utf8mb4;
 SET character_set_connection = utf8mb4;
 
 USE `aptzip`;
+```
+
+```bash
+docker exec aptzip-mysql mysql -u root -ptestmaria -e "select * from aptzip.tb_category;"
+
++----+---------------+
+| id | category_name |
++----+---------------+
+|  1 | Discussion    |
+|  2 | Question      |
+|  3 | Poll          |
+|  4 | Gallery       |
+|  5 | Media         |
+|  6 | Common        |
++----+---------------+
+```
+
+## 2. init 스크립트 실행 중 에러가 발생할 경우
+
+- 호스트 머신에서 마운트된 init 스크립트 수정
+- `aptzip-mysql` MySQL CLI에서 아래 명령어 실행
+
+```bash
+mysql -u root -p
+Enter password:
+
+mysql> source /docker-entrypoint-initdb.d/3-aptzip-data.sql;
+```
+
+- 셸에서 비밀번호를 입력하는 것은 위험하다.
+
+```bash
+mysql -u root -ptestmaria < /docker-entrypoint-initdb.d/3-aptzip-data.sql
+# mysql: [Warning] Using a password on the command line interface can be insecure.
 ```

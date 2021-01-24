@@ -48,7 +48,7 @@ public class EmailSenderController {
 
   @PostMapping(value = "/signup")
   public String registerUser(AptzipUserEntity user, RedirectAttributes redirectAttributes,
-      String aptId, ConnectionData connection) {
+      String aptCode, ConnectionData connection) {
     AptzipUserEntity existingUser =
         userJpaRepository.findByEmailIgnoreCase(user.getEmail()).orElse(null);
 
@@ -59,8 +59,7 @@ public class EmailSenderController {
     } else {
       log.info("User Not Found");
 
-      Long apt = Long.valueOf(aptId);
-      user.setApt(AptEntity.builder().id(apt).build());
+      user.setApt(AptEntity.builder().code(aptCode).build());
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
 

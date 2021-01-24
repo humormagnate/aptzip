@@ -36,7 +36,7 @@ public class CommonController {
     if (pageNumber == null) pageNumber = 1;
     CustomPage customPage = new CustomPage();
     customPage.setPage(pageNumber);
-    Page<BoardEntity> boards = boardService.listBoardByPage(0L, customPage);
+    Page<BoardEntity> boards = boardService.listBoardByPage(null, customPage);
     CustomPageMaker<BoardEntity> list = new CustomPageMaker<>(boards);
 
     // TODO: 최근 게시물 개수 구하기

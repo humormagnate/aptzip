@@ -28,10 +28,10 @@ public class BoardService {
   private final CategoryRepository categoryRepository;
 
   @Transactional(readOnly = true)
-  public Page<BoardEntity> listBoardByPage(Long apartmentID, CustomPage customPage) {
-    if (apartmentID != 0) {
+  public Page<BoardEntity> listBoardByPage(String apartmentCode, CustomPage customPage) {
+    if (apartmentCode != null && !apartmentCode.isEmpty()) {
       // 아파트 ID를 받아 해당 아파트의 thread만 받음
-      customPage.setAptId(apartmentID);
+      customPage.setAptCode(apartmentCode);
     }
     return boardRepository.findBoardByDynamicQuery(customPage.makePageable(true, "id"), customPage);
   }
@@ -65,7 +65,7 @@ public class BoardService {
   }
 
   public List<BoardEntity> listBoardsByAPT(UserResponseDto principal) {
-    AptEntity apt = AptEntity.builder().id(principal.getApt().getId()).build();
+    AptEntity apt = AptEntity.builder().code(principal.getApt().getCode()).build();
     return StreamSupport.stream(boardRepository.findAllByApt(apt).spliterator(), false)
         .collect(Collectors.toList());
   }

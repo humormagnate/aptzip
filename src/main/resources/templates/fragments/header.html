@@ -38,7 +38,7 @@
               <ul>
                 <li>
                   <a sec:authorize="isAuthenticated()"
-                    th:href="@{/apt/{id}(id=${#authentication.principal.apt.id})}"><span>[[${#messages.msg('apt-zip')}]]</span></a>
+                    th:href="@{/apt/{code}(code=${#authentication.principal.apt.code})}"><span>[[${#messages.msg('apt-zip')}]]</span></a>
                 </li>
                 <li>
                   <a th:href="@{/zip}"><span>[[${#messages.msg('Danji')}]]</span></a>

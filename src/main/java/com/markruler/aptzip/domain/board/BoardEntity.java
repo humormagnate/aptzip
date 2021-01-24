@@ -78,6 +78,6 @@ public class BoardEntity {
 	private AptzipUserEntity user;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "apt_id")
+	@JoinColumn(name = "apt_code")
 	private AptEntity apt;
 }

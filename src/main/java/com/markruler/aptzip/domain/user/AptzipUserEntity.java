@@ -70,7 +70,7 @@ public class AptzipUserEntity {
   private AptzipRoleEntity role;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "apt_id")
+  @JoinColumn(name = "apt_code")
   private AptEntity apt;
 
   @JsonIgnore

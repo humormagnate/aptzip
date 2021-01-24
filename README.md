@@ -28,26 +28,33 @@
 
 - 먼저 MySQL 컨테이너를 생성합니다.
 
+> 아파트 데이터(18010 레코드)를 삽입하는 데 대략 2분 20초가 소요됩니다.
+
 ```bash
 docker run \
---name mysql \
+--name aptzip-mysql \
 --publish 13306:3306 \
 --detach \
 --restart=always \
 --env MYSQL_ROOT_PASSWORD=testmaria \
 --env TZ=Asia/Seoul \
---volume /$PWD/aio/mysql/docker-entrypoint-initdb.d/aptzip.sql:/docker-entrypoint-initdb.d/aptzip.sql \
+--volume /$PWD/aio/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/ \
 --volume /$PWD/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
 mysql:8.0.23
+
+# /docker-entrypoint-initdb.d/의 모든 init 스크립트가 실행될 때까지 기다립니다.
+docker logs -f aptzip-mysql
 ```
 
-- 그리고 앞집 서버를 실행합니다.
+- 앞집 서버를 실행합니다.
 
 ```bash
-make run
+npm run start
 ```
 
-### TEST 계정
+## 테스트 계정
+
+- init 스크립트에 포함되어 있는 더미 데이터입니다.
 
 | APT No. | Username | Password |
 | ------- | -------- | -------- |
@@ -107,6 +114,10 @@ make run
 | --------- | ------ | ------------------------------------------ |
 | /apt/{id} | GET    | 현재 로그인 중인 회원의 아파트 게시글 조회 |
 
+## 아파트 단지 데이터셋 출처
+
+- [공공데이터포털 데이터셋: 국토교통부 공동주택관리정보시스템](https://www.data.go.kr/data/15073271/fileData.do)
+- [공공데이터포털 오픈API: 국토교통부 공동주택 단지 목록제공 서비스](https://www.data.go.kr/data/15057332/openapi.do)
 ## 라이센스
 
 - MIT

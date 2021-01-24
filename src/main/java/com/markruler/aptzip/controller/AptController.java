@@ -22,16 +22,17 @@ import lombok.RequiredArgsConstructor;
 public class AptController {
   private final BoardService boardService;
 
-  @GetMapping("/{id}")
+  @GetMapping("/{code}")
   public String thread(
   // @formatter:off
-    @PathVariable("id") Long id,
+    @PathVariable("code") String apartmentCode,
     @AuthenticationPrincipal UserResponseDto principal,
     @ModelAttribute("customPage") CustomPage customPage,
     Model model
     // @formatter:on
   ) {
-    Page<BoardEntity> boards = boardService.listBoardByPage(id, customPage);
+    // TODO: set apartmentCode
+    Page<BoardEntity> boards = boardService.listBoardByPage(null, customPage);
     CustomPageMaker<BoardEntity> list = new CustomPageMaker<BoardEntity>(boards);
 
 		int newBoard = 0;
@@ -44,10 +45,11 @@ public class AptController {
     // }
 
     // @formatter:off
-    model.addAttribute("principal", principal)
-         .addAttribute("list", list)
-         .addAttribute("customPage", customPage)
-         .addAttribute("newBoard", newBoard);
+    model
+      .addAttribute("principal", principal)
+      .addAttribute("list", list)
+      .addAttribute("customPage", customPage)
+      .addAttribute("newBoard", newBoard);
     // @formatter:on
 
 		return "apt";

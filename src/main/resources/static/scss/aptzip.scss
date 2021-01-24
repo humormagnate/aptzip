@@ -234,3 +234,8 @@ bootstrap
     border-bottom-right-radius: 0.2rem;
   }
 }
+
+.user-select-none {
+  cursor: unset;
+  user-select: none;
+}
