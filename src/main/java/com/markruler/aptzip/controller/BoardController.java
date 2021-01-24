@@ -37,8 +37,6 @@ public class BoardController {
 
   private final BoardService boardService;
   private final CategoryService categoryService;
-  // private final LikeService likeService;
-  // private final SimpMessageSendingOperations smso;
 
   @GetMapping("/write")
   public void goWritePage(Model model) {
@@ -53,18 +51,15 @@ public class BoardController {
     BoardEntity board,
     @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
     @AuthenticationPrincipal UserResponseDto principal,
-    RedirectAttributes rttr
+    RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
-    log.debug("board: {}", board);
-    log.debug("categoryId: {}", categoryId);
-    if (board.getBoardTitle().isEmpty() || categoryId.isEmpty()) {
+    if (board.getBoardTitle().isEmpty() || categoryId.isEmpty())
       return "";
-    }
 
     boardService.save(board, categoryId, principal);
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
-    rttr.addFlashAttribute("msg", "success");
+    redirectAttributes.addFlashAttribute("msg", "success");
     return "redirect:/";
   }
 
