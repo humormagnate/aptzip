@@ -1,22 +1,17 @@
-package com.markruler.aptzip;
-
+package com.markruler.aptzip.config.thymeleaf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Locale;
-
 import com.markruler.aptzip.config.thymeleaf.expression.TemporalsAptzip;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -41,7 +36,7 @@ public class ThymeleafUtilsTest {
     LocalTime local = LocalTime.of(currentTime, 59);
     log.debug(currentTime + "");
     log.debug(local.toString());
-    
+
     Long result = temporals.betweenNowAndTimeHour(LocalDateTime.of(LocalDate.now(), local));
     log.debug("result : {}", result);
 
@@ -50,7 +45,7 @@ public class ThymeleafUtilsTest {
 
     assertEquals(result, 1L);
   }
-  
+
   @Test
   public void testBetweenNowAndTime() {
     // int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond
@@ -72,7 +67,7 @@ public class ThymeleafUtilsTest {
   }
 
   @Test
-  public void testIsItOneHourAgo(){
+  public void testIsItOneHourAgo() {
     LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.of(3, 4, 0));
     assertTrue(temporals.isItOneHourAgo(time));
   }

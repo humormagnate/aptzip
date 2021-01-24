@@ -1,15 +1,15 @@
-package com.markruler.aptzip;
+package com.markruler.aptzip.persistence.board;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
+import com.markruler.aptzip.AptzipApplication;
 import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CategoryEntity;
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import com.markruler.aptzip.helper.CustomPage;
-import com.markruler.aptzip.persistence.board.BoardRepository;
 import com.markruler.aptzip.service.BoardService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,8 +31,10 @@ public class BoardRepositoryTest {
   // final로 지정할 경우 ParameterResolver 필요 (JUnit5)
   // @Autowired 지정하지 않을 경우 NullPointerException
   // @Autowired private BoardRepositoryImpl boardRepositoryImpl;
-  @Autowired private BoardRepository boardRepository;
-  @Autowired private BoardService boardService;
+  @Autowired
+  private BoardRepository boardRepository;
+  @Autowired
+  private BoardService boardService;
 
 
   @Test
@@ -53,7 +55,7 @@ public class BoardRepositoryTest {
       board.setCategory(category);
       board.setUser(user);
       board.setApt(apt);
-			board.setUpdateDate(LocalDateTime.now());
+      board.setUpdateDate(LocalDateTime.now());
       board.setBoardStatus("Y");
 
       log.debug("board : {}", board);
