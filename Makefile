@@ -13,7 +13,7 @@ build-with-test: clean
 	@mvn package
 
 .PHONY: docker
-docker:
+docker: build
 	./aio/scripts/docker.sh
 
 .PHONY: run

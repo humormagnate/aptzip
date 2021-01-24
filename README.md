@@ -41,24 +41,10 @@ docker run \
 mysql:8.0.23
 ```
 
-- 로컬 개발 환경에서는 아래 명령어를 실행해주세요.
+- 그리고 앞집 서버를 실행합니다.
 
 ```bash
 make run
-```
-
-- 도커 컨테이너로 앞집을 실행시키고 싶으시다면 아래 명령어를 실행해주세요.
-
-```bash
-# 도커 이미지 빌드
-make docker
-
-# 앞집 컨테이너 생성
-docker run \
---name aptzip \
---publish 9090:8080 \
---detach \
-aptzip:0.1.0
 ```
 
 ### TEST 계정
