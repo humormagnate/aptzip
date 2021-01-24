@@ -1,11 +1,11 @@
-// export {
-//   createComment,
-//   updateComment,
-//   removeComment,
-//   listComments,
-//   renderComment,
-//   deletePopup,
-// };
+export {
+  createComment,
+  updateComment,
+  removeComment,
+  listComments,
+  renderComment,
+  deletePopup,
+};
 
 const createComment = (obj, callback) => {
   fetch(obj.url, {
@@ -21,7 +21,7 @@ const createComment = (obj, callback) => {
     .catch((err) => console.error(err));
 };
 
-const update = function (obj, callback) {
+const updateComment = function (obj, callback) {
   fetch(obj.url, {
     method: "put",
     headers: {
@@ -34,7 +34,7 @@ const update = function (obj, callback) {
     .catch((err) => console.error(err));
 };
 
-const remove = function (obj, callback) {
+const removeComment = function (obj, callback) {
   fetch(obj.url, {
     method: "delete",
     cache: "no-cache",

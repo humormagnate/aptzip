@@ -1,5 +1,28 @@
-import { deleteBoard, updateBoard } from "./board.js";
-import { createComment, listComments } from "./comment.js";
+import * as board from "./board.js";
+import * as comment from "./comment.js";
+import * as user from "./user.js";
+
+if (
+  window.location.href.includes("/board/write") ||
+  window.location.href.includes("/edit")
+) {
+  window.onload = board.calcTitleLength();
+
+  const categories = document.querySelectorAll(".select-category");
+  categories.forEach((element) => {
+    element.addEventListener("click", (event) => {
+      board.selectCategoryTypes(event, categories);
+    });
+  });
+
+  document
+    .getElementById("boardTitle")
+    .addEventListener("keyup", board.keyUpCalcRestTitle, false);
+
+  document
+    .getElementById("form-create-topic")
+    .addEventListener("submit", board.validateForm, false);
+}
 
 if (document.body.contains(document.getElementById("deleteBoardButton"))) {
   document.getElementById("deleteBoardButton").addEventListener(
@@ -8,7 +31,7 @@ if (document.body.contains(document.getElementById("deleteBoardButton"))) {
       event.preventDefault();
       event.stopPropagation();
       const boardId = document.getElementById("boardId");
-      deleteBoard(`/board/${boardId.value}`);
+      board.deleteBoard(`/board/${boardId.value}`);
     },
     false
   );
@@ -21,31 +44,8 @@ if (document.body.contains(document.getElementById("updateBoardButton"))) {
       event.preventDefault();
       event.stopPropagation();
       const boardId = document.getElementById("boardId");
-      updateBoard("/board", boardId.value);
+      board.updateBoard("/board", boardId.value);
     },
     false
   );
-}
-
-function userFollow(URL) {
-  fetch(URL, {
-    method: "post",
-    body: {
-      userId: USER_ID,
-    },
-  })
-    .then((res) => res.text())
-    .then((result) => {
-      const userFollowButton = document.getElementById("userFollowBtn");
-      userFollowButton.classList.remove("btn-secondary");
-      userFollowButton.classList.add("btn-primary");
-      if (result === "save") {
-        alert("팔로우 성공");
-      } else if (result === "delete") {
-        alert("팔로우 취소");
-      } else {
-        console.error(result);
-      }
-    })
-    .catch((err) => console.error(err));
 }

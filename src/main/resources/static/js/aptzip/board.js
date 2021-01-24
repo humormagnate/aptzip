@@ -1,6 +1,6 @@
 export {
   selectCategoryTypes,
-  loadCalcRestTitle,
+  calcTitleLength,
   keyUpCalcRestTitle,
   deleteBoard,
   updateBoard,
@@ -10,16 +10,20 @@ export {
 /*
   write - select category
 */
-function selectCategoryTypes(input) {
-  input.addEventListener("click", function (event) {
-    hiddenCategoryTypes.value = this.childNodes.item(5).value;
+function selectCategoryTypes(event, categories) {
+  const hiddenCategoryTypes = document.querySelector("input[name=categoryId]");
+  // hiddenCategoryTypes.value = event.currentTarget.childNodes.item(5).value;
+  hiddenCategoryTypes.value = event.currentTarget.querySelector("input").value;
+  categories.forEach((categoryComponent) => {
+    categoryComponent.classList.remove("active");
   });
+  event.currentTarget.classList.add("active");
 }
 
 /*
   write - typing title
 */
-function loadCalcRestTitle() {
+function calcTitleLength() {
   const maxInputTopicTitle = 99;
   let newBoardTitle = document.getElementById("boardTitle");
   document.getElementsByClassName("tt-value-input").item(0).textContent =
@@ -99,6 +103,7 @@ function validateForm(event) {
     return false;
   }
 
+  const hiddenCategoryTypes = document.querySelector("input[name=categoryId]");
   if (!hiddenCategoryTypes.value) {
     alert("카테고리를 선택해주세요.");
     event.preventDefault();

@@ -37,7 +37,7 @@
 							<div class="row tt-w410-col-02 topic-type">
 
 								<div class="col-4 col-lg-3 col-xl-2" th:each="category : ${categories}">
-									<a href="#" class="tt-button-icon"
+									<a href="#" class="tt-button-icon select-category"
 										th:classappend="${board} ne null and ${board.category.id} eq ${category.id} ? 'active' : ''">
 										<span class="tt-icon">
 											<svg>
@@ -95,21 +95,5 @@
 		</span>
 	</a>
 </div>
-
-<script layout:fragment="script">
-	window.onload = loadCalcRestTitle();
-
-	const boardTitle = document.getElementById('boardTitle');
-	boardTitle.addEventListener('keyup', function () {
-		keyUpCalcRestTitle()
-	}, false);
-
-	const categoryTypes = document.querySelectorAll('.tt-button-icon');
-	categoryTypes.forEach((input) => selectCategoryTypes(input));
-
-	const writeForm = document.getElementById('form-create-topic');
-	writeForm.addEventListener('submit', validateForm);
-
-</script>
 
 </html>
