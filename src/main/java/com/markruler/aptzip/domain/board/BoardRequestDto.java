@@ -20,19 +20,37 @@ public class BoardRequestDto {
   private static final long serialVersionUID = 1L;
 
   private Long id;
-	private Long categoryId;
-	private Long viewCount;
+  private CategoryEntity category;
 
   private String boardTitle;
-	private String boardContent;
+  private String boardContent;
   private String boardStatus;
+  private Long viewCount;
 
-	private LocalDateTime createDate;
+  private LocalDateTime createDate;
   private LocalDateTime updateDate;
 
-	private AptzipUserEntity user;
+  private AptzipUserEntity user;
   private AptEntity apt;
 
   @JsonIgnore
-	private List<CommentEntity> comments;
+  private List<CommentEntity> comments;
+
+  public BoardEntity toEntity() {
+    // @formatter:off
+    return new BoardEntity(
+      this.id,
+      this.category,
+      this.boardTitle,
+      this.boardContent,
+      this.boardStatus,
+      this.viewCount,
+      this.createDate,
+      this.updateDate,
+      this.comments,
+      this.user,
+      this.apt
+    );
+    // @formatter:on
+  }
 }

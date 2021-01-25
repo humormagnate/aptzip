@@ -3,7 +3,6 @@
 ## TO-DO
 
 - `/user/{id}/follow` => 팔로우 취소는 PATCH로 분리
-- `/board/write` => 게시글 작성은 `/board` POST로 수정
 - `/like/{id}` => 좋아요 취소는 DELETE로 분리
   - 좋아요(like) API는 게시글/댓글/사용자로 분리
 - `/comment/{id}` => DELETE는 PATCH로 수정

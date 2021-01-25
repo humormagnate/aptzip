@@ -1,13 +1,9 @@
 package com.markruler.aptzip.controller;
 
 import java.util.List;
-
 import javax.transaction.Transactional;
-
-import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
 import com.markruler.aptzip.domain.user.UserResponseDto;
-import com.markruler.aptzip.persistence.board.CommentRepository;
 import com.markruler.aptzip.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

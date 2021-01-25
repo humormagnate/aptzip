@@ -70,3 +70,15 @@ mysql> source /docker-entrypoint-initdb.d/3-aptzip-data.sql;
 mysql -u root -ptestmaria < /docker-entrypoint-initdb.d/3-aptzip-data.sql
 # mysql: [Warning] Using a password on the command line interface can be insecure.
 ```
+
+## 3. @RequestMapping
+
+- `@RequestMapping`에 Entity 오브젝트를 직접 넘기지 말 것
+
+```java
+// Persistent entities should not be used as arguments of "@RequestMapping" methods (java:S4684)
+@PostMapping("/write")
+public String postWrite(BoardEntity board) throws Exception {
+  return "redirect:/";
+}
+```

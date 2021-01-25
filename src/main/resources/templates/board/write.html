@@ -10,7 +10,7 @@
 				<h1 class="tt-title-border">
 					[[${ board } ? ${#messages.msg('S020')} : ${#messages.msg('S017')} ]]
 				</h1>
-				<form class="form-default form-create-topic" id="form-create-topic" action="write" method="post">
+				<form class="form-default form-create-topic" id="form-create-topic" th:action="@{/board/write}" th:object="${board}" method="post">
 					<th:block th:if="${false}">
 						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 					</th:block>

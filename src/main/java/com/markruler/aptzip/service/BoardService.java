@@ -70,14 +70,17 @@ public class BoardService {
         .collect(Collectors.toList());
   }
 
-  public boolean save(BoardEntity board, String categoryId, UserResponseDto principal) {
-    board.setCategory(new CategoryEntity(Long.valueOf(categoryId)));
-    board.setBoardStatus("Y");
-    board.setUser(principal.toEntity());
-    board.setApt(board.getUser().getApt());
-    board.setUpdateDate(LocalDateTime.now());
-    BoardEntity ret = boardRepository.save(board);
-    return ret != null;
+  public boolean save(BoardRequestDto boardDTO, String categoryId, UserResponseDto principal) {
+    // TODO: default 값 만들기
+    boardDTO.setCategory(new CategoryEntity(Long.valueOf(categoryId)));
+    boardDTO.setBoardStatus("Y");
+    boardDTO.setViewCount(0L);
+    boardDTO.setUser(principal.toEntity());
+    boardDTO.setApt(boardDTO.getUser().getApt());
+    boardDTO.setUpdateDate(LocalDateTime.now());
+    BoardEntity board = boardDTO.toEntity();
+    board = boardRepository.save(board);
+    return board != null;
   }
 
   public void deleteById(Long id) {
@@ -89,8 +92,8 @@ public class BoardService {
     // @formatter:off
 			board.getId(),
 			board.getBoardTitle(),
-			board.getBoardContent(),
-      new CategoryEntity(board.getCategoryId())
+      board.getBoardContent(),
+      board.getCategory()
     // @formatter:on
     );
   }

@@ -1,7 +1,6 @@
 package com.markruler.aptzip.controller;
 
 import java.util.List;
-import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
 import com.markruler.aptzip.domain.user.UserResponseDto;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,15 +47,18 @@ public class BoardController {
   @PostMapping("/write")
   public String postWrite(
   // @formatter:off
-    // TODO: Replace this persistent entity with a simple POJO or DTO object.sonarlint(java:S4684)
-    BoardEntity board,
+    @ModelAttribute BoardRequestDto board,
     @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
     @AuthenticationPrincipal UserResponseDto principal,
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
-    if (board.getBoardTitle().isEmpty() || categoryId.isEmpty())
+    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty()
+        || categoryId.isEmpty()) {
+      log.debug("board: {}", board);
+      log.debug("categoryID: {}", categoryId);
       return "";
+    }
 
     boardService.save(board, categoryId, principal);
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
