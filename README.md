@@ -8,8 +8,7 @@
 이 비율이 상승할수록 아파트 주민 간 소통의 중요성은 늘어나고 있습니다.
 
 ![아파트 커뮤니티 활성화 필요성](apt-stat.jpg)
-*출처: [아파트 갈등 해결책 "오늘도 눈인사 하셨나요? 그거예요" - 더스쿠프](https://m.post.naver.com/viewer/postView.nhn?volumeNo=29654178&memberNo=12494964)*
-
+_출처: [아파트 갈등 해결책 "오늘도 눈인사 하셨나요? 그거예요" - 더스쿠프](https://m.post.naver.com/viewer/postView.nhn?volumeNo=29654178&memberNo=12494964)_
 
 하지만 좁은 아파트 단지에서 괜히 껄끄러운 관계를 만들고 싶지 않은 분들도 많습니다.
 제가 느끼기엔 소통이 완전히 단절된 느낌입니다.
@@ -52,9 +51,13 @@ docker logs -f aptzip-mysql
 npm run start
 ```
 
-## 테스트 계정
+## API
 
-- init 스크립트에 포함되어 있는 더미 데이터입니다.
+- [docs/api](aio/docs/api.md)
+
+## 테스트 데이터
+
+- init 스크립트에 포함되어 있는 테스트 데이터입니다.
 
 | APT No. | Username | Password |
 | ------- | -------- | -------- |
@@ -68,56 +71,11 @@ npm run start
 | 3       | user31   | pass31   |
 | 3       | user32   | pass32   |
 
-## API
-
-### `USER`
-
-| Path              | Method | Description                          |
-| ----------------- | ------ | ------------------------------------ |
-| /login            | GET    | 로그인 페이지 이동 (Spring Security) |
-| /login            | POST   | 로그인 (Spring Security)             |
-| /user/signup      | POST   | 회원 가입                            |
-| /user/{id}        | GET    | 회원 정보 조회                       |
-| /user/{id}        | PATCH  | 회원 탈퇴                            |
-| /user/{id}/pw     | PATCH  | 비밀번호 변경                        |
-| /user/{id}/follow | POST   | 회원 팔로우/취소 (추후 수정 필요)    |
-
-### `BOARD`
-
-| Path             | Method | Description             |
-| ---------------- | ------ | ----------------------- |
-| /board/write     | GET    | 게시글 작성 페이지 이동 |
-| /board/write     | POST   | 게시글 작성             |
-| /board/{id}      | GET    | 게시글 조회             |
-| /board/{id}      | DELETE | 게시글 삭제             |
-| /board/{id}/edit | GET    | 게시글 수정 페이지 이동 |
-| /board/{id}      | PUT    | 게시글 수정             |
-
-### `LIKE`
-
-| Path       | Method | Description                         |
-| ---------- | ------ | ----------------------------------- |
-| /like/{id} | POST   | 게시글 좋아요/취소 (추후 수정 필요) |
-
-### `COMMENT`
-
-| Path          | Method | Description |
-| ------------- | ------ | ----------- |
-| /comment/{id} | POST   | 댓글 작성   |
-| /comment/{id} | GET    | 댓글 조회   |
-| /comment/{id} | DELETE | 댓글 삭제   |
-| /comment/{id} | PUT    | 댓글 수정   |
-
-### `APT`
-
-| Path      | Method | Description                                |
-| --------- | ------ | ------------------------------------------ |
-| /apt/{id} | GET    | 현재 로그인 중인 회원의 아파트 게시글 조회 |
-
 ## 아파트 단지 데이터셋 출처
 
 - [공공데이터포털 데이터셋: 국토교통부 공동주택관리정보시스템](https://www.data.go.kr/data/15073271/fileData.do)
 - [공공데이터포털 오픈API: 국토교통부 공동주택 단지 목록제공 서비스](https://www.data.go.kr/data/15057332/openapi.do)
+
 ## 라이센스
 
 - MIT
