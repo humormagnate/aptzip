@@ -2,15 +2,15 @@ VERSION := 0.1.0
 
 .PHONY: clean
 clean:
-	@mvnw clean
+	@./mvnw clean
 
 .PHONY: build
 build: clean
-	@mvnw package -DskipTests
+	@./mvnw package -DskipTests
 
 .PHONY: build-with-test
 build-with-test: clean
-	@mvnw package
+	@./mvnw package
 
 .PHONY: docker
 docker: build
@@ -18,8 +18,8 @@ docker: build
 
 .PHONY: run
 run:
-	@#mvnw spring-boot:run -D spring-boot.run.profiles=dev -D spring.config.location=file:application.yml
-	@mvnw spring-boot:run -D spring-boot.run.profiles=dev
+	@#./mvnw spring-boot:run -D spring-boot.run.profiles=dev -D spring.config.location=file:application.yml
+	@./mvnw spring-boot:run -D spring-boot.run.profiles=dev
 
 .PHONY: jar
 jar:
@@ -27,4 +27,4 @@ jar:
 
 .PHONY: deps
 deps:
-	mvnw dependency:analyze
+	./mvnw dependency:analyze
