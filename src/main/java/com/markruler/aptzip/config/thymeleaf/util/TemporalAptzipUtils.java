@@ -16,7 +16,7 @@ public final class TemporalAptzipUtils {
     return LocalTime.now().minusHours(1L);
   }
 
-  // 타임리프에서 24시간이 지날 경우 d 단위로, 30일이 지날 경우 m 단위로, 12개월이 지날 경우 y 단위로 수정
+  // Thymeleaf에서 24시간이 지날 경우 d 단위로, 30일이 지날 경우 m 단위로, 12개월이 지날 경우 y 단위로 수정
   public String betweenNowAndTime(final LocalDateTime time) {
     LocalDateTime now = LocalDateTime.now();
     Long hour = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L;
@@ -54,6 +54,6 @@ public final class TemporalAptzipUtils {
   }
 
   public boolean isLessThanOneHour(final LocalDateTime time) {
-    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) <= (1 * 1000 * 60 * 60);
+    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) < (1 * 1000 * 60 * 60);
   }
 }
