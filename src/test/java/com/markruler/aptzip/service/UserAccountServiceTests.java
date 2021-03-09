@@ -83,11 +83,12 @@ class UserAccountServiceTests {
   @DisplayName("Test save user")
   void testSave() {
     // Setup our mock repository
-    AptzipUserEntity user = AptzipUserEntity.builder().id(1L).email("user@aptzip.com").isEnabled(true).build();
+    AptzipUserEntity user = AptzipUserEntity.builder().id(1L).password("passwd").email("user@aptzip.com").isEnabled(true).build();
     Mockito.doReturn(user).when(repository).save(any());
 
     // Execute the service call
-    AptzipUserEntity returnedUser = service.save(user);
+    AptzipUserEntity returnedUser = service.save(user, "A10024484");
+    log.debug("returnedUser: {}", returnedUser);
 
     // Assert the response
     Assertions.assertNotNull(returnedUser, "The saved user should not be null");

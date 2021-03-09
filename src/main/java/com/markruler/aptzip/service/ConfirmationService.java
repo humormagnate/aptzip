@@ -1,0 +1,24 @@
+package com.markruler.aptzip.service;
+
+import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.ConfirmationToken;
+import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
+
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class ConfirmationService {
+  private final ConfirmationTokenRepository confirmationTokenRepository;
+
+  public ConfirmationToken createToken(AptzipUserEntity user) {
+    ConfirmationToken confirmationToken = new ConfirmationToken(user);
+    return confirmationTokenRepository.save(confirmationToken);
+  }
+
+  public ConfirmationToken findToken(String token) {
+    return confirmationTokenRepository.findByConfirmationToken(token);
+  }
+}

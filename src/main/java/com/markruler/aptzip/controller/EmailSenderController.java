@@ -1,17 +1,15 @@
 package com.markruler.aptzip.controller;
 
-import com.markruler.aptzip.domain.apartment.AptEntity;
-import com.markruler.aptzip.domain.user.AptzipRoleEntity;
+import java.util.Optional;
+
 import com.markruler.aptzip.domain.user.AptzipUserEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
-import com.markruler.aptzip.domain.user.UserRole;
-import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
-import com.markruler.aptzip.persistence.user.UserJpaRepository;
+import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.service.ConfirmationService;
 import com.markruler.aptzip.service.EmailSenderService;
 import com.markruler.aptzip.service.UserAccountService;
+
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.connect.ConnectionData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,73 +19,55 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Controller
 @Slf4j
 @RequiredArgsConstructor
-@Controller
 public class EmailSenderController {
-
-  private final UserJpaRepository userJpaRepository;
-  private final ConfirmationTokenRepository confirmationTokenRepository;
   private final UserAccountService userAccountService;
-  private final PasswordEncoder passwordEncoder;
   private final EmailSenderService emailSenderService;
+  private final ConfirmationService confirmationService;
 
   @GetMapping("/login")
   public void login() {
   }
 
   @GetMapping(value = "/signup")
-  public ModelAndView displayRegistration(ModelAndView modelAndView, AptzipUserEntity user) {
+  public ModelAndView displayRegistration(ModelAndView modelAndView, UserRequestDto user) {
     modelAndView.addObject("user", user);
     modelAndView.setViewName("signup");
     return modelAndView;
   }
 
   @PostMapping(value = "/signup")
-  public String registerUser(AptzipUserEntity user, RedirectAttributes redirectAttributes,
-      String aptCode, ConnectionData connection) {
-    AptzipUserEntity existingUser =
-        userJpaRepository.findByEmailIgnoreCase(user.getEmail()).orElse(null);
-
-    if (existingUser != null) {
-
-      redirectAttributes.addFlashAttribute("error", true);
+  public String registerUser(AptzipUserEntity user, RedirectAttributes redirectAttributes, String aptCode/*, ConnectionData connection*/) {
+    log.debug("apartment code: {}", aptCode);
+    AptzipUserEntity returnedUser = userAccountService.save(user, aptCode);
+    if (returnedUser == null) {
+      redirectAttributes.addFlashAttribute("error", true).addFlashAttribute("message", "이미 가입된 이메일입니다.");
       return "redirect:/signup";
-    } else {
-      log.info("User Not Found");
-
-      user.setApt(AptEntity.builder().code(aptCode).build());
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
-
-      if (connection != null) {
-        user.setProviderId(connection.getProviderId());
-        user.setProviderUserId(connection.getProviderUserId());
-      }
-
-      userAccountService.save(user);
-      redirectAttributes.addFlashAttribute("success", true);
-
-      ConfirmationToken confirmationToken = new ConfirmationToken(user);
-
-      confirmationTokenRepository.save(confirmationToken);
-
-      SimpleMailMessage mailMessage = new SimpleMailMessage();
-      mailMessage.setTo(user.getEmail());
-      mailMessage.setSubject("Complete Registration!");
-      mailMessage.setFrom("noreply@markruler.com");
-      mailMessage.setText("To confirm your account, please click here : "
-          + "https://markruler.com/aptzip/confirm-account?token="
-          + confirmationToken.getConfirmationToken());
-
-      emailSenderService.sendEmail(mailMessage);
-      redirectAttributes.addFlashAttribute("email", user.getEmail());
-
-      return "redirect:/register";
     }
+    redirectAttributes.addFlashAttribute("success", true);
+
+    // 실제 서비스가 아니라면 개발 환경에서 오류가 발생하므로 주석 처리
+    /*
+     * ConfirmationToken confirmationToken = confirmationService.createToken(user);
+     *
+     * SimpleMailMessage mailMessage = new SimpleMailMessage();
+     * mailMessage.setTo(user.getEmail());
+     * mailMessage.setSubject("Complete Registration!");
+     * mailMessage.setFrom("noreply@markruler.com");
+     * mailMessage.setText("To confirm your account, please click here : " +
+     * "https://markruler.com/aptzip/confirm-account?token=" +
+     * confirmationToken.getConfirmationToken());
+     *
+     * emailSenderService.sendEmail(mailMessage);
+     * redirectAttributes.addFlashAttribute("email", user.getEmail());
+     */
+    return "redirect:/login";
   }
 
   // 로그인 페이지 redirect를 피하려고 만든 컨트롤러
@@ -97,48 +77,44 @@ public class EmailSenderController {
     return "user/page-register";
   }
 
-  @RequestMapping(value = "/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
+  @Deprecated
+  @RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
   public String confirmUserAccount(RedirectAttributes redirectAttributes,
       @RequestParam("token") String confirmationToken) {
-    ConfirmationToken token =
-        confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+    ConfirmationToken token = confirmationService.findToken(confirmationToken);
 
     if (token != null) {
-      AptzipUserEntity user =
-          userJpaRepository.findByEmailIgnoreCase(token.getUser().getEmail()).orElse(null);
-
-      user.setEnabled(true);
-      userJpaRepository.save(user);
-      redirectAttributes.addFlashAttribute("success", true);
-      return "redirect:/login";
-    } else {
-      redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
+      Optional<AptzipUserEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
+      if (user.isPresent()) {
+        userAccountService.enabledUser(user.get().getId());
+        redirectAttributes.addFlashAttribute("success", true);
+        return "redirect:/login";
+      }
     }
+    redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
     return "redirect:/error";
   }
 
   @GetMapping(value = "/forgot")
-  public String displayResetPassword(Model model, AptzipUserEntity user) {
+  public String displayResetPassword(Model model, UserRequestDto user) {
     model.addAttribute("user", user);
     return "user/page-forgot-password";
   }
 
+  @Deprecated
   @PostMapping(value = "/forgot")
-  public String forgotUserPassword(RedirectAttributes redirectAttributes, AptzipUserEntity user) {
-    AptzipUserEntity existingUser =
-        userJpaRepository.findByEmailIgnoreCase(user.getEmail()).orElse(null);
+  public String forgotUserPassword(RedirectAttributes redirectAttributes, UserRequestDto user) {
+    Optional<AptzipUserEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
 
-    if (existingUser != null) {
-      ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
-      confirmationTokenRepository.save(confirmationToken);
+    if (existingUser.isPresent()) {
+      ConfirmationToken confirmationToken = confirmationService.createToken(existingUser.get());
 
       SimpleMailMessage mailMessage = new SimpleMailMessage();
-      mailMessage.setTo(existingUser.getEmail());
+      mailMessage.setTo(existingUser.get().getEmail());
       mailMessage.setSubject("Complete Password Reset!");
       mailMessage.setFrom("markrulerofficial@gmail.com");
       mailMessage.setText("To complete the password reset process, please click here: "
-          + "https://markruler.com/aptzip/confirm-reset?token="
-          + confirmationToken.getConfirmationToken());
+          + "https://markruler.com/aptzip/confirm-reset?token=" + confirmationToken.getConfirmationToken());
 
       emailSenderService.sendEmail(mailMessage);
 
@@ -155,24 +131,22 @@ public class EmailSenderController {
     return "user/page-confirm-reset";
   }
 
-  @RequestMapping(value = "/confirm-reset", method = {RequestMethod.GET, RequestMethod.POST})
+  @Deprecated
+  @RequestMapping(value = "/confirm-reset", method = { RequestMethod.GET, RequestMethod.POST })
   public String validateResetToken(RedirectAttributes redirectAttributes,
       @RequestParam("token") String confirmationToken) {
-    ConfirmationToken token =
-        confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+    ConfirmationToken token = confirmationService.findToken(confirmationToken);
 
     if (token != null) {
-      AptzipUserEntity user =
-          userJpaRepository.findByEmailIgnoreCase(token.getUser().getEmail()).orElse(null);
-      user.setEnabled(true);
-      userJpaRepository.save(user);
-      redirectAttributes.addFlashAttribute("user", user).addFlashAttribute("email",
-          user.getEmail());
-      return "redirect:/reset";
-    } else {
-      redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
-      return "redirect:/error";
+      Optional<AptzipUserEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
+      if (user.isPresent()) {
+        userAccountService.enabledUser(user.get().getId());
+        redirectAttributes.addFlashAttribute("user", user).addFlashAttribute("email", user.get().getEmail());
+        return "redirect:/reset";
+      }
     }
+    redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
+    return "redirect:/error";
   }
 
   @GetMapping("/reset")
@@ -180,19 +154,18 @@ public class EmailSenderController {
     return "user/page-reset-password";
   }
 
+  @Deprecated(forRemoval = false)
   @PostMapping(value = "/reset")
-  public String resetUserPassword(RedirectAttributes redirectAttributes, AptzipUserEntity user) {
+  public String resetUserPassword(RedirectAttributes redirectAttributes, UserRequestDto user) {
     if (user.getEmail() != null) {
-      AptzipUserEntity tokenUser =
-          userJpaRepository.findByEmailIgnoreCase(user.getEmail()).orElse(null);
-      tokenUser.setPassword(passwordEncoder.encode(user.getPassword()));
-      userJpaRepository.save(tokenUser);
-      redirectAttributes.addFlashAttribute("success", true);
-      return "redirect:/login";
-    } else {
-      redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
-      return "redirect:/error";
+      Optional<AptzipUserEntity> tokenUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
+      if (tokenUser.isPresent()) {
+        userAccountService.updatePassword(user);
+        redirectAttributes.addFlashAttribute("success", true);
+        return "redirect:/login";
+      }
     }
+    redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
+    return "redirect:/error";
   }
-
 }

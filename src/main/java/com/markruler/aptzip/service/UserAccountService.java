@@ -64,8 +64,7 @@ public class UserAccountService implements UserDetailsService {
     }
 
     if (!user.isEnabled()) {
-      throw new AuthenticationCredentialsNotFoundException(
-          "This account requires email verification or disabled.");
+      throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
 
     // TODO: Make a builder pattern
@@ -119,7 +118,25 @@ public class UserAccountService implements UserDetailsService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public AptzipUserEntity save(AptzipUserEntity user) {
+  public AptzipUserEntity save(AptzipUserEntity user, String aptCode) {
+    Optional<AptzipUserEntity> existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail());
+
+    if (existingUser.isPresent()) {
+      return null;
+    }
+
+    log.info("The email address not found");
+
+    user.setApt(AptEntity.builder().code(aptCode).build());
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
+
+    // if (connection != null) {
+    //   user.setProviderId(connection.getProviderId());
+    //   user.setProviderUserId(connection.getProviderUserId());
+    // }
+
+    user.setEnabled(true); // email confirmation 절차가 없을 경우에만 사용
     return userJpaRepository.save(user);
   }
 
@@ -139,6 +156,10 @@ public class UserAccountService implements UserDetailsService {
     return userJpaRepository.findById(id);
   }
 
+  public Optional<AptzipUserEntity> findByEmailIgnoreCase(String email) {
+    return userJpaRepository.findByEmailIgnoreCase(email);
+  }
+
   public List<AptzipUserEntity> listAdminsByAPT(UserResponseDto principal) {
     AptEntity apt = AptEntity.builder().code(principal.getApt().getCode()).build();
     return userJpaRepository.findAllByAptAndRole(apt, new AptzipRoleEntity("ADMIN"));
@@ -146,6 +167,10 @@ public class UserAccountService implements UserDetailsService {
 
   public void disabledUser(Long id) {
     userJpaRepository.disabledUserById(id);
+  }
+
+  public void enabledUser(Long id) {
+    userJpaRepository.enabledUserById(id);
   }
 
   public void updatePassword(UserRequestDto user) {
@@ -156,15 +181,13 @@ public class UserAccountService implements UserDetailsService {
   public String createFollow(Long id, UserResponseDto principal) {
     AptzipUserEntity following = AptzipUserEntity.builder().id(id).build();
     AptzipUserEntity follower = principal.toEntity();
-    UserFollowEntity relationship =
-        followRepository.findByFollowingAndFollower(following, follower);
+    UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
 
     if (relationship != null) {
       followRepository.delete(relationship);
       return "delete";
     } else {
-      followRepository
-          .save(UserFollowEntity.builder().following(following).follower(follower).build());
+      followRepository.save(UserFollowEntity.builder().following(following).follower(follower).build());
       return "save";
     }
   }
