@@ -28,18 +28,12 @@ _출처: [아파트 갈등 해결책 "오늘도 눈인사 하셨나요? 그거�
 - 먼저 MySQL 컨테이너를 생성합니다.
 
 ```bash
-docker run \
---name aptzip-mysql \
---publish 13306:3306 \
---detach \
---restart=always \
---env MYSQL_ROOT_PASSWORD=testmaria \
---env TZ=Asia/Seoul \
---volume /$PWD/aio/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/ \
---volume /$PWD/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
-mysql:8.0.23
+make db-local
+```
 
-# /docker-entrypoint-initdb.d/의 모든 init 스크립트가 실행되어야 정상적으로 테스트 데이터를 확인할 수 있습니다.
+- /docker-entrypoint-initdb.d/의 모든 init 스크립트가 실행되어야 정상적으로 테스트 데이터를 확인할 수 있습니다.
+
+```bash
 docker logs -f aptzip-mysql
 ```
 
@@ -53,7 +47,7 @@ npm run bundle
 - `aptzip` 서버를 실행합니다.
 
 ```bash
-npm run start
+make run
 ```
 
 ## API

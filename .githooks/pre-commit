@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# chmod +x .githooks/pre-commit
+# git config core.hookspath .githooks
+
+echo "pre-commit test"
+
+make test-all
