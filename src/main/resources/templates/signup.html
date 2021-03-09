@@ -32,7 +32,7 @@
 							[[${#messages.msg('S004')}]]
 						</div>
 						<div class="tt-description">
-							Join our service to unlock true power of community.
+							[[${#messages.msg('S010')}]]
 						</div>
 					</a>
 					<form action="#" class="form-default" th:action="@{/signup}" th:object="${user}" method="post">
@@ -59,7 +59,8 @@
 						</div>
 						<div class="form-group">
 							<label for="loginUserApartment">[[${#messages.msg('Apartment')}]]</label>
-							<input type="text" name="aptId" class="form-control" id="loginUserApartment" placeholder="1-5 사이의 값을 입력해주세요">
+							<small>(현재는 아파트를 선택할 수 없습니다)</small>
+							<input type="text" name="aptCode" class="form-control" id="loginUserApartment" placeholder="A10024484" value="A10024484" readonly>
 						</div>
 						<div class="form-group">
 							<button type="submit" class="btn btn-secondary btn-block">[[${#messages.msg('S011')}]]</button>
