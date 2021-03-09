@@ -44,7 +44,7 @@ public class CommonController {
     // List<BoardEntity> list = new ArrayList<BoardEntity>();
     // for (BoardEntity str : board) {
     // list.add(str);
-    // if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {
+    // if (new TemporalsAptzip(Locale.KOREA).isLessThanOneHour(str.getCreateDate())) {
     // newBoard++;
     // }
     // }

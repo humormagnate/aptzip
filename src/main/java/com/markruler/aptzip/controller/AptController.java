@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.RequiredArgsConstructor;
 
-// @lombok.extern.slf4j.Slf4j
+@lombok.extern.slf4j.Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/apt/")
 @Controller
@@ -31,15 +31,16 @@ public class AptController {
     Model model
     // @formatter:on
   ) {
+    log.debug("Apartment Code: {}", apartmentCode);
     // TODO: set apartmentCode
     Page<BoardEntity> boards = boardService.listBoardByPage(null, customPage);
-    CustomPageMaker<BoardEntity> list = new CustomPageMaker<BoardEntity>(boards);
+    CustomPageMaker<BoardEntity> list = new CustomPageMaker<>(boards);
 
 		int newBoard = 0;
     // List<BoardEntity> list = new ArrayList<BoardEntity>();
 		// for (BoardEntity str : board) {
 		// 	list.add(str);
-		// 	if (new TemporalsAptzip(Locale.KOREA).isItOneHourAgo(str.getCreateDate())) {
+		// 	if (new TemporalsAptzip(Locale.KOREA).isLessThanOneHour(str.getCreateDate())) {
 		// 		newBoard++;
 		// 	}
     // }

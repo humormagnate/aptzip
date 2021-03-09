@@ -27,7 +27,6 @@ public final class TemporalAptzipUtils {
       result = hour + "h";
     } else if (hour < (24L * 30L)) {
       result = (hour / 24L) + "d";
-      // log.debug("betweenNowAndTime result : {}", result);
     } else if (hour < (24L * 365L)) {
       result = (hour / 24L / 30L) + "m";
     } else {
@@ -37,33 +36,24 @@ public final class TemporalAptzipUtils {
   }
 
   public Long betweenNowAndTimeHour(final LocalDateTime time) {
-    LocalDateTime now = LocalDateTime.now();
-    Long hour = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L;
-    return hour;
+    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) / 1000L / 60L / 60L;
   }
 
   public Long betweenNowAndTimeDay(final LocalDateTime time) {
-    LocalDateTime now = LocalDateTime.now();
-    Long day = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L;
-    return day;
+    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) / 1000L / 60L / 60L / 24L;
   }
 
   public Long betweenNowAndTimeMonth(final LocalDateTime time) {
-    LocalDateTime now = LocalDateTime.now();
     // 30일로 통일
-    Long month = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L / 30L;
-    return month;
+    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) / 1000L / 60L / 60L / 24L / 30L;
   }
 
   public Long betweenNowAndTimeYear(final LocalDateTime time) {
-    LocalDateTime now = LocalDateTime.now();
     // 30L / 12L 나누면 360일이 됨
-    Long year = ChronoUnit.MILLIS.between(time, now) / 1000L / 60L / 60L / 24L / 365L;
-    return year;
+    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) / 1000L / 60L / 60L / 24L / 365L;
   }
 
-  public boolean isItOneHourAgo(final LocalDateTime time) {
-    LocalDateTime now = LocalDateTime.now();
-    return ChronoUnit.MILLIS.between(time, now) <= (1 * 1000 * 60 * 60);
+  public boolean isLessThanOneHour(final LocalDateTime time) {
+    return ChronoUnit.MILLIS.between(time, LocalDateTime.now()) <= (1 * 1000 * 60 * 60);
   }
 }

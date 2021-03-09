@@ -47,8 +47,8 @@ public final class TemporalsAptzip {
     return temporalAptzipUtils.betweenNowAndTimeYear(time);
   }
 
-  public boolean isItOneHourAgo(LocalDateTime time) {
-    return temporalAptzipUtils.isItOneHourAgo(time);
+  public boolean isLessThanOneHour(LocalDateTime time) {
+    return temporalAptzipUtils.isLessThanOneHour(time);
   }
 
 }

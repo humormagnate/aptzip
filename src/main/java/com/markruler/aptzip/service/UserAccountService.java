@@ -106,7 +106,7 @@ public class UserAccountService implements UserDetailsService {
     List<UserFollowEntity> followings = followRepository.findAllByFollowing(id);
     List<UserFollowEntity> followers = followRepository.findAllByFollower(id);
 
-    AptzipUserEntity user = findById(id);
+    AptzipUserEntity user = findById(id).orElse(new AptzipUserEntity());
 
     // @formatter:off
     model
@@ -119,8 +119,8 @@ public class UserAccountService implements UserDetailsService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public void save(AptzipUserEntity user) {
-    userJpaRepository.save(user);
+  public AptzipUserEntity save(AptzipUserEntity user) {
+    return userJpaRepository.save(user);
   }
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -135,8 +135,8 @@ public class UserAccountService implements UserDetailsService {
     // @formatter:on
   }
 
-  public AptzipUserEntity findById(Long id) {
-    return userJpaRepository.findById(id).orElse(new AptzipUserEntity());
+  public Optional<AptzipUserEntity> findById(Long id) {
+    return userJpaRepository.findById(id);
   }
 
   public List<AptzipUserEntity> listAdminsByAPT(UserResponseDto principal) {

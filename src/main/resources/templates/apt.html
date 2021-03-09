@@ -55,7 +55,7 @@
             </th:block>
             
             <!-- new board -->
-            <div class="tt-item" th:classappend="${#aptzip.isItOneHourAgo(board?.createDate)} ? 'tt-itemselect' : ''">
+            <div class="tt-item" th:classappend="${#aptzip.isLessThanOneHour(board?.createDate)} ? 'tt-itemselect' : ''">
               <div class="tt-col-avatar">
                 <svg class="tt-icon">
                   <use
