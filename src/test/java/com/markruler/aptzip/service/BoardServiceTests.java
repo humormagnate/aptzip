@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CategoryEntity;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +32,7 @@ class BoardServiceTests {
   @Test
   @DisplayName("Test save board")
   void testSaveBoard() {
-    AptzipUserEntity user = AptzipUserEntity.builder().id(1).build();
+    UserAccountEntity user = UserAccountEntity.builder().id(1).build();
     AptEntity apt = AptEntity.builder().code("").build();
     CategoryEntity category = new CategoryEntity(1L, "Discussion");
     BoardEntity board = new BoardEntity();

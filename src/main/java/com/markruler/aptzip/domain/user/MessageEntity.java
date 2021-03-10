@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class MessageEntity {
 	private String msg;
-	private AptzipUserEntity user;
+	private UserAccountEntity user;
 }

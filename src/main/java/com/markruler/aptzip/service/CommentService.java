@@ -1,11 +1,14 @@
 package com.markruler.aptzip.service;
 
 import java.util.List;
+
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.user.UserResponseDto;
+import com.markruler.aptzip.domain.user.UserRequestDto;
 import com.markruler.aptzip.persistence.board.CommentRepository;
+
 import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -40,11 +43,11 @@ public class CommentService {
     return list;
   }
 
-  public boolean create(Long boardId, CommentEntity comment, UserResponseDto principal) {
+  public boolean create(Long boardId, CommentEntity comment, UserRequestDto user) {
     BoardEntity board = new BoardEntity();
     board.setId(boardId);
 
-    comment.setUser(principal.toEntity());
+    comment.setUser(user.toEntity());
     comment.setBoard(board);
     comment.setCommentStatus("Y");
     CommentEntity result = commentRepository.save(comment);

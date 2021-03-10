@@ -39,9 +39,9 @@ public class ConfirmationToken {
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", nullable = true)
-  private AptzipUserEntity user;
+  private UserAccountEntity user;
 
-  public ConfirmationToken(AptzipUserEntity user) {
+  public ConfirmationToken(UserAccountEntity user) {
     this.user = user;
     confirmationToken = UUID.randomUUID().toString();
   }

@@ -1,10 +1,13 @@
 package com.markruler.aptzip.controller;
 
 import java.util.List;
+
 import javax.transaction.Transactional;
+
 import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.user.UserResponseDto;
+import com.markruler.aptzip.domain.user.UserRequestDto;
 import com.markruler.aptzip.service.CommentService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,15 +39,10 @@ public class CommentController {
 
   @Transactional
   @PostMapping("/{boardId}")
-  public ResponseEntity<List<CommentEntity>> commentPost(
-    // @formatter:off
-    @PathVariable("boardId") Long boardId,
-    // TODO: Replace this persistent entity with a simple POJO or DTO object.sonarlint(java:S4684)
-    @RequestBody CommentEntity comment,
-    @AuthenticationPrincipal UserResponseDto principal
-  // @formatter:on
-  ) {
-    boolean createResult = commentService.create(boardId, comment, principal);
+  public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
+      @RequestBody CommentEntity comment, @AuthenticationPrincipal UserRequestDto user) {
+    log.debug("comment: {}", comment);
+    boolean createResult = commentService.create(boardId, comment, user);
     if (!createResult) {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -54,12 +53,8 @@ public class CommentController {
 
   @Transactional
   @DeleteMapping("/{boardId}/{commentId}")
-  public ResponseEntity<List<CommentEntity>> commentDelete(
-  // @formatter:off
-    @PathVariable("boardId") Long boardId,
-    @PathVariable("commentId") Long commentId
-  // @formatter:on
-  ) {
+  public ResponseEntity<List<CommentEntity>> commentDelete(@PathVariable("boardId") Long boardId,
+      @PathVariable("commentId") Long commentId) {
     commentService.deleteById(commentId);
     List<CommentEntity> list = commentService.listComments(boardId);
     return new ResponseEntity<>(list, HttpStatus.OK);
@@ -67,13 +62,8 @@ public class CommentController {
 
   @Transactional
   @PutMapping("/{boardId}")
-  public ResponseEntity<List<CommentEntity>> updateComment(
-  // @formatter:off
-    @PathVariable("boardId") Long boardId,
-    // TODO: Replace this persistent entity with a simple POJO or DTO object.sonarlint(java:S4684)
-    @RequestBody CommentEntity comment
-  // @formatter:on
-  ) {
+  public ResponseEntity<List<CommentEntity>> updateComment(@PathVariable("boardId") Long boardId,
+      @RequestBody CommentEntity comment) {
     commentService.updateComment(comment);
     List<CommentEntity> list = commentService.listComments(boardId);
     return new ResponseEntity<>(list, HttpStatus.CREATED);

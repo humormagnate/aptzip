@@ -2,11 +2,11 @@ package com.markruler.aptzip.controller;
 
 import java.util.Optional;
 
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
 import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.service.AuthService;
 import com.markruler.aptzip.service.ConfirmationService;
-import com.markruler.aptzip.service.EmailSenderService;
 import com.markruler.aptzip.service.UserAccountService;
 
 import org.springframework.mail.SimpleMailMessage;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,13 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class EmailSenderController {
-  private final UserAccountService userAccountService;
-  private final EmailSenderService emailSenderService;
+public class AuthController {
+  private final AuthService authService;
   private final ConfirmationService confirmationService;
+  private final UserAccountService userAccountService;
 
   @GetMapping("/login")
-  public void login() {
+  public String login() {
+    return "login";
   }
 
   @GetMapping(value = "/signup")
@@ -43,9 +45,10 @@ public class EmailSenderController {
   }
 
   @PostMapping(value = "/signup")
-  public String registerUser(AptzipUserEntity user, RedirectAttributes redirectAttributes, String aptCode/*, ConnectionData connection*/) {
+  public String registerUser(@RequestBody UserRequestDto user, RedirectAttributes redirectAttributes,
+      String aptCode/* , ConnectionData connection */) {
     log.debug("apartment code: {}", aptCode);
-    AptzipUserEntity returnedUser = userAccountService.save(user, aptCode);
+    UserAccountEntity returnedUser = userAccountService.save(user, aptCode);
     if (returnedUser == null) {
       redirectAttributes.addFlashAttribute("error", true).addFlashAttribute("message", "이미 가입된 이메일입니다.");
       return "redirect:/signup";
@@ -84,7 +87,7 @@ public class EmailSenderController {
     ConfirmationToken token = confirmationService.findToken(confirmationToken);
 
     if (token != null) {
-      Optional<AptzipUserEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
+      Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
       if (user.isPresent()) {
         userAccountService.enabledUser(user.get().getId());
         redirectAttributes.addFlashAttribute("success", true);
@@ -104,7 +107,7 @@ public class EmailSenderController {
   @Deprecated
   @PostMapping(value = "/forgot")
   public String forgotUserPassword(RedirectAttributes redirectAttributes, UserRequestDto user) {
-    Optional<AptzipUserEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
+    Optional<UserAccountEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
 
     if (existingUser.isPresent()) {
       ConfirmationToken confirmationToken = confirmationService.createToken(existingUser.get());
@@ -116,7 +119,7 @@ public class EmailSenderController {
       mailMessage.setText("To complete the password reset process, please click here: "
           + "https://markruler.com/aptzip/confirm-reset?token=" + confirmationToken.getConfirmationToken());
 
-      emailSenderService.sendEmail(mailMessage);
+      authService.sendEmail(mailMessage);
 
       redirectAttributes.addFlashAttribute("email", user.getEmail());
       return "redirect:/confirm";
@@ -138,7 +141,7 @@ public class EmailSenderController {
     ConfirmationToken token = confirmationService.findToken(confirmationToken);
 
     if (token != null) {
-      Optional<AptzipUserEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
+      Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
       if (user.isPresent()) {
         userAccountService.enabledUser(user.get().getId());
         redirectAttributes.addFlashAttribute("user", user).addFlashAttribute("email", user.get().getEmail());
@@ -158,7 +161,7 @@ public class EmailSenderController {
   @PostMapping(value = "/reset")
   public String resetUserPassword(RedirectAttributes redirectAttributes, UserRequestDto user) {
     if (user.getEmail() != null) {
-      Optional<AptzipUserEntity> tokenUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
+      Optional<UserAccountEntity> tokenUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
       if (tokenUser.isPresent()) {
         userAccountService.updatePassword(user);
         redirectAttributes.addFlashAttribute("success", true);

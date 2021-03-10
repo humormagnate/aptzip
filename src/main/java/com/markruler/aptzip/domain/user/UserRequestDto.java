@@ -4,16 +4,20 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
+
 import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
+
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.social.security.SocialUserDetails;
+// import org.springframework.security.core.userdetails.User;
+// import org.springframework.social.security.SocialUserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,11 +29,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@ToString(exclude = { "following", "follower" })
+@ToString(exclude = { "password", "following", "follower" })
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto implements SocialUserDetails {
-  private static final Long serialVersionUID = 1L;
+public class UserRequestDto implements UserDetails {
+  private static final long serialVersionUID = 7811067135242824850L;
 
   private Long id;
 
@@ -57,18 +61,32 @@ public class UserRequestDto implements SocialUserDetails {
   private transient List<UserFollowEntity> following;
   private transient List<UserFollowEntity> follower;
   private boolean isEnabled;
-  private String providerId;
-  private String providerUserId;
+  // private String providerId;
+  // private String providerUserId;
 
-  public UserRequestDto(AptzipUserEntity user) {
+  public UserRequestDto(UserAccountEntity user) {
     this.id = user.getId();
     this.username = user.getUsername();
     this.email = user.getEmail();
   }
 
-  public AptzipUserEntity toEntity() {
-    return new AptzipUserEntity(this.id == null ? null : this.id, email, password, username, introduction, signUpDate,
-        reported, board, role, apt, following, follower, isEnabled, providerId, providerUserId);
+  public UserAccountEntity toEntity() {
+    // @formatter:off
+    return UserAccountEntity.builder()
+      .id(this.id == null ? null : this.id)
+      .email(this.email)
+      .password(this.password)
+      .username(this.username)
+      .introduction(this.introduction)
+      .reported(this.reported)
+      .board(this.board)
+      .role(this.role)
+      .apt(this.apt)
+      .following(this.following)
+      .follower(this.follower)
+      .isEnabled(this.isEnabled)
+      .build();
+    // @formatter:on
   }
 
   @Override
@@ -98,12 +116,6 @@ public class UserRequestDto implements SocialUserDetails {
   @Override
   public boolean isEnabled() {
     return true;
-  }
-
-  // Social Account
-  @Override
-  public String getUserId() {
-    return providerUserId;
   }
 
 }

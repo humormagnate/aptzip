@@ -44,7 +44,7 @@
 							<div class="tt-item-tag">
 								<ul class="tt-list-badge">
 									<li sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id} eq ${board.user.id}">
-										<a th:href="@{/board/{id}/edit(id=${board.id})}">
+										<a th:href="@{/boards/{id}/edit(id=${board.id})}">
 											<span class="tt-color08 tt-badge">edit</span>
 										</a>
 									</li>
@@ -293,7 +293,7 @@
 
 	</main>
 
-	<a th:href="@{/board/write}" class="tt-btn-create-topic">
+	<a th:href="@{/boards/new}" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
 				<use xlink:href="/fonts/forum.svg#icon-create_new"></use>

@@ -2,7 +2,7 @@ package com.markruler.aptzip.service;
 
 import java.util.Optional;
 
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
 import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
 
@@ -29,7 +29,7 @@ class ConfirmationServiceTests {
   @DisplayName("Test findById Success")
   void testFindById() {
     // Setup our mock repository
-    AptzipUserEntity user = AptzipUserEntity.builder().id(1L).email("test@example.com").build();
+    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
     log.debug("Test ConfirmationToken: {}", confirmationToken);
     Mockito.doReturn(confirmationToken).when(repository).findByConfirmationToken(confirmationToken.getConfirmationToken());

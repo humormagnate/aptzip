@@ -1,6 +1,6 @@
 package com.markruler.aptzip.config.social;
 
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
 import org.springframework.social.connect.Connection;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SocialImplicitSignUp implements ConnectionSignUp {
 
 	private final UserJpaRepository userJpaRepository;
-	
+
 	@Override
 	public String execute(Connection<?> connection) {
     log.debug("================================== SocialImplicitSignUp execute ==================================");
@@ -25,18 +25,18 @@ public class SocialImplicitSignUp implements ConnectionSignUp {
     // -> ConnectController
     UserProfile profile = connection.fetchUserProfile();
     log.debug("profile : {}", profile);
-    
-    AptzipUserEntity user =
-      AptzipUserEntity
+
+    UserAccountEntity user =
+      UserAccountEntity
         .builder()
         .username(profile.getUsername())
         .email(profile.getEmail())
         .build();
     userJpaRepository.save(user);
-    
+
     log.debug("user : {}", user);
 
 		return user.getUsername();
 	}
-	
+
 }

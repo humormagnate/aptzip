@@ -27,7 +27,7 @@
             
             <!-- new post -->
             <div th:if="${ newBoard ne 0 and index.index eq 0}" class="tt-topic-alert tt-alert-default" role="alert">
-              <a th:href="@{/board/{id}(id=${board.id})}" target="_blank">[[${ newBoard }]] new posts</a>
+              <a th:href="@{/boards/{id}(id=${board.id})}" target="_blank">[[${ newBoard }]] new posts</a>
               are added recently, click here to load the most recent one.
             </div>
 
@@ -65,7 +65,7 @@
               </div>
               <div class="tt-col-description">
                 <h6 class="tt-title">
-                  <a th:href="@{/board/{id}(id=${board.id})}">
+                  <a th:href="@{/boards/{id}(id=${board.id})}">
                     [[${ board?.boardTitle }]]
                   </a>
                 </h6>
@@ -119,7 +119,7 @@
       <!-- container end -->
     </main>
     
-  	<a th:href="@{/board/write}" class="tt-btn-create-topic">
+  	<a th:href="@{/boards/new}" class="tt-btn-create-topic">
   		<span class="tt-icon">
   			<svg>
   				<use xlink:href="/fonts/forum.svg#icon-create_new"></use>

@@ -1,6 +1,6 @@
 package com.markruler.aptzip.service;
 
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
 import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class ConfirmationService {
   private final ConfirmationTokenRepository confirmationTokenRepository;
 
-  public ConfirmationToken createToken(AptzipUserEntity user) {
+  public ConfirmationToken createToken(UserAccountEntity user) {
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
     return confirmationTokenRepository.save(confirmationToken);
   }

@@ -3,11 +3,12 @@ package com.markruler.aptzip.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.user.AptzipRoleEntity;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserFollowEntity;
 import com.markruler.aptzip.domain.user.UserRequestDto;
 import com.markruler.aptzip.domain.user.UserResponseDto;
@@ -16,6 +17,7 @@ import com.markruler.aptzip.persistence.board.BoardRepository;
 import com.markruler.aptzip.persistence.board.CommentRepository;
 import com.markruler.aptzip.persistence.user.FollowRepository;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,55 +43,40 @@ public class UserAccountService implements UserDetailsService {
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository;
 
-  boolean enabled = true;
-  boolean accountNonExpired = true;
-  boolean credentialsNonExpired = true;
-  boolean accountNonLocked = true;
-
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
     log.debug(
         "=============================== UserService-loadUserByUsername start =====================================");
-    log.debug("username : {}", username);
+    log.debug("username: {}", username);
 
-    Optional<AptzipUserEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
-    AptzipUserEntity user = userEntityWrapper.get();
+    Optional<UserAccountEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
+    if (userEntityWrapper.isEmpty()) {
+      throw new UsernameNotFoundException("Not found " + username);
+    }
+    UserAccountEntity user = userEntityWrapper.get();
 
     log.debug(
         "=============================== UserService-loadUserByUsername get =====================================");
-    log.debug("user : {}", user);
-
-    if (user == null) {
-      throw new UsernameNotFoundException("Not found " + username);
-    }
-
+    log.debug("user: {}", user);
     if (!user.isEnabled()) {
       throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
 
-    // TODO: Make a builder pattern
-    UserResponseDto urd = new UserResponseDto(
-    // @formatter:off
-      user.getId(),
-      user.getUsername(),
-      user.getPassword(),
-      enabled,
-      accountNonExpired,
-      credentialsNonExpired,
-      accountNonLocked,
-      UserRole.USER.getGrantedAuthorities(),
-      user.getEmail(),
-      user.getIntroduction(),
-      user.getSignupDate(),
-      user.getReported(),
-      UserRole.USER,
-      UserRole.USER.getPrivileges(),
-      user.getApt(),
-      user.getFollowing(),
-      user.getFollower()
-    );
-    // @formatter:on
+    UserResponseDto urd = new UserResponseDto(user.getUsername(), user.getPassword(), true, true, true, true,
+        UserRole.USER.getGrantedAuthorities());
+    log.debug("urd: {}", urd);
+    urd.setId(user.getId());
+    urd.setEmail(user.getEmail());
+    urd.setIntroduction(user.getIntroduction());
+    urd.setSignupDate(user.getSignupDate());
+    urd.setReported(user.getReported());
+    urd.setRole(UserRole.USER);
+    urd.setPrivilege(UserRole.USER.getPrivileges());
+    urd.setApt(user.getApt());
+    urd.setFollowing(user.getFollowing());
+    urd.setFollower(user.getFollower());
+
     if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
       urd.setRole(UserRole.USER);
       urd.setPrivilege(UserRole.USER.getPrivileges());
@@ -96,16 +84,17 @@ public class UserAccountService implements UserDetailsService {
       urd.setRole(UserRole.ADMIN);
       urd.setPrivilege(UserRole.ADMIN.getPrivileges());
     }
+    log.debug("urd: {}", urd);
     return urd;
   }
 
-  public void readUserInfoById(Long id, Model model) {
+  public void readUserPropertyById(Long id, Model model) {
     List<BoardEntity> boards = boardRepository.findByUserIdOrderByIdDesc(id);
     List<CommentEntity> comments = commentRepository.findByUserIdOrderByIdDesc(id);
     List<UserFollowEntity> followings = followRepository.findAllByFollowing(id);
     List<UserFollowEntity> followers = followRepository.findAllByFollower(id);
 
-    AptzipUserEntity user = findById(id).orElse(new AptzipUserEntity());
+    UserAccountEntity user = findById(id).orElse(new UserAccountEntity());
 
     // @formatter:off
     model
@@ -118,8 +107,8 @@ public class UserAccountService implements UserDetailsService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public AptzipUserEntity save(AptzipUserEntity user, String aptCode) {
-    Optional<AptzipUserEntity> existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail());
+  public UserAccountEntity save(UserRequestDto user, String aptCode) {
+    Optional<UserAccountEntity> existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail());
 
     if (existingUser.isPresent()) {
       return null;
@@ -128,40 +117,35 @@ public class UserAccountService implements UserDetailsService {
     log.info("The email address not found");
 
     user.setApt(AptEntity.builder().code(aptCode).build());
+    // user.setPassword(user.getPassword());
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
 
     // if (connection != null) {
-    //   user.setProviderId(connection.getProviderId());
-    //   user.setProviderUserId(connection.getProviderUserId());
+    // user.setProviderId(connection.getProviderId());
+    // user.setProviderUserId(connection.getProviderUserId());
     // }
 
     user.setEnabled(true); // email confirmation 절차가 없을 경우에만 사용
-    return userJpaRepository.save(user);
+    return userJpaRepository.save(user.toEntity());
   }
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @Transactional(readOnly = true)
   public List<UserRequestDto> findAll() {
-    // @formatter:off
-    return userJpaRepository
-            .findAll()
-            .stream()
-            .map(UserRequestDto::new)
-            .collect(Collectors.toList());
-    // @formatter:on
+    return userJpaRepository.findAll().stream().map(UserRequestDto::new).collect(Collectors.toList());
   }
 
-  public Optional<AptzipUserEntity> findById(Long id) {
+  public Optional<UserAccountEntity> findById(Long id) {
     return userJpaRepository.findById(id);
   }
 
-  public Optional<AptzipUserEntity> findByEmailIgnoreCase(String email) {
+  public Optional<UserAccountEntity> findByEmailIgnoreCase(String email) {
     return userJpaRepository.findByEmailIgnoreCase(email);
   }
 
-  public List<AptzipUserEntity> listAdminsByAPT(UserResponseDto principal) {
-    AptEntity apt = AptEntity.builder().code(principal.getApt().getCode()).build();
+  public List<UserAccountEntity> listAdminsByApt(UserRequestDto user) {
+    AptEntity apt = AptEntity.builder().code(user.getApt().getCode()).build();
     return userJpaRepository.findAllByAptAndRole(apt, new AptzipRoleEntity("ADMIN"));
   }
 
@@ -178,9 +162,9 @@ public class UserAccountService implements UserDetailsService {
     userJpaRepository.updatePasswordById(user.getPassword(), user.getId());
   }
 
-  public String createFollow(Long id, UserResponseDto principal) {
-    AptzipUserEntity following = AptzipUserEntity.builder().id(id).build();
-    AptzipUserEntity follower = principal.toEntity();
+  public String createFollow(Long id, UserRequestDto user) {
+    UserAccountEntity following = UserAccountEntity.builder().id(id).build();
+    UserAccountEntity follower = user.toEntity();
     UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
 
     if (relationship != null) {

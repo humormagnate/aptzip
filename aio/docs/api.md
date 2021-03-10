@@ -1,13 +1,5 @@
 # 앞집 API
 
-## TO-DO
-
-- `/user/{id}/follow` => 팔로우 취소는 PATCH로 분리
-- `/like/{id}` => 좋아요 취소는 DELETE로 분리
-  - 좋아요(like) API는 게시글/댓글/사용자로 분리
-- `/comment/{id}` => DELETE는 PATCH로 수정
-- `/apt/{code}`는 아파트 조회 기능으로 만드는 것이 더 직관적, 특정 아파트 게시글들은 별도의 API 필요
-
 ## 사용자
 
 | Path              | Method | Description   |
@@ -21,18 +13,14 @@
 
 ## 게시글
 
-| Path         | Method | Description |
-| ------------ | ------ | ----------- |
-| /board/write | POST   | 작성        |
-| /board/{id}  | GET    | 조회        |
-| /board/{id}  | DELETE | 삭제        |
-| /board/{id}  | PUT    | 수정        |
-
-## 좋아요
-
-| Path       | Method | Description |
-| ---------- | ------ | ----------- |
-| /like/{id} | POST   | 좋아요/취소 |
+| Path              | Method | Description |
+| ----------------- | ------ | ----------- |
+| /boards/new       | POST   | 작성        |
+| /boards/{id}      | GET    | 조회        |
+| /boards/{id}      | DELETE | 삭제        |
+| /boards/{id}      | PUT    | 수정        |
+| /boards/{id}/like | POST   | 좋아요      |
+| /boards/{id}/like | DELETE | 좋아요 취소 |
 
 ## 댓글
 

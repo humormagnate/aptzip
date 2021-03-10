@@ -2,9 +2,11 @@ package com.markruler.aptzip.domain.board;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.markruler.aptzip.domain.apartment.AptEntity;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,13 +26,13 @@ public class BoardRequestDto {
 
   private String boardTitle;
   private String boardContent;
-  private String boardStatus;
+  private Boolean isEnabled;
   private Long viewCount;
 
   private LocalDateTime createDate;
   private LocalDateTime updateDate;
 
-  private AptzipUserEntity user;
+  private UserAccountEntity user;
   private AptEntity apt;
 
   @JsonIgnore
@@ -43,7 +45,7 @@ public class BoardRequestDto {
       this.category,
       this.boardTitle,
       this.boardContent,
-      this.boardStatus,
+      this.isEnabled,
       this.viewCount,
       this.createDate,
       this.updateDate,

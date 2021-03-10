@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.markruler.aptzip.domain.apartment.AptEntity;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import lombok.AllArgsConstructor;
@@ -54,8 +54,9 @@ public class BoardEntity {
   @Column(name = "board_content")
 	private String boardContent;
 
-	@Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
-	private String boardStatus;
+	// @Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
+	@Column(columnDefinition = "TINYINT(1) default 1", name = "enabled")
+	private Boolean isEnabled;
 
 	@Column(name = "view_count")
 	@ColumnDefault(value = "0")
@@ -75,7 +76,7 @@ public class BoardEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private AptzipUserEntity user;
+	private UserAccountEntity user;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "apt_code")

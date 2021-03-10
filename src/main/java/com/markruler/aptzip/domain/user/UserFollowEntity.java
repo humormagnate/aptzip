@@ -42,12 +42,12 @@ public class UserFollowEntity {
   @JsonBackReference(value = "following")
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "following")
-  private AptzipUserEntity following;
-  
+  private UserAccountEntity following;
+
   @JsonBackReference(value = "follower")
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "follower")
-  private AptzipUserEntity follower;
+  private UserAccountEntity follower;
 
   @CreationTimestamp
   @Column(name = "create_date")
