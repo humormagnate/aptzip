@@ -30,12 +30,12 @@ public class CommentService {
     return comments;
   }
 
-  public boolean save(Long boardId, CommentRequestDto comment, UserAccountRequestDto user) {
+  public CommentEntity save(Long boardId, CommentRequestDto comment, UserAccountRequestDto user) {
     BoardEntity board = BoardRequestDto.builder().id(boardId).build().toEntity();
     comment.setUser(user.toEntity());
     comment.setBoard(board);
     comment.setEnabled(true);
-    return commentRepository.save(comment.toEntity()) != null;
+    return commentRepository.save(comment.toEntity());
   }
 
   public void updateComment(CommentRequestDto comment) {

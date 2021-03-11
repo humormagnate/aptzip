@@ -2,8 +2,6 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import java.util.List;
-
 import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.board.LikeRequestDto;
 import com.markruler.aptzip.persistence.board.LikeRepository;

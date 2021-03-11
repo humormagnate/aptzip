@@ -44,8 +44,8 @@ public class CommentController {
   public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("comment: {}", comment);
-    boolean createResult = commentService.save(boardId, comment, user);
-    if (!createResult) {
+    CommentEntity entity = commentService.save(boardId, comment, user);
+    if (entity == null) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
