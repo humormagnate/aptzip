@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// TODO validation
 @Getter
 @Setter
 @Builder
@@ -50,14 +49,14 @@ public class UserAccountRequestDto implements UserDetails {
   private int reported;
 
   @OneToOne
-  private transient AptEntity apt;
+  private AptEntity apt;
 
   private String introduction;
-  private LocalDateTime signUpDate;
-  private AptzipRoleEntity role;
-  private transient List<BoardEntity> board;
-  private transient List<UserFollowEntity> following;
-  private transient List<UserFollowEntity> follower;
+  private LocalDateTime signupDate;
+  private UserRole role;
+  private List<BoardEntity> board;
+  private List<UserFollowEntity> following;
+  private List<UserFollowEntity> follower;
   private boolean isEnabled;
 
   public UserAccountRequestDto(UserAccountEntity user) {
@@ -69,13 +68,14 @@ public class UserAccountRequestDto implements UserDetails {
   public UserAccountEntity toEntity() {
     // @formatter:off
     return UserAccountEntity.builder()
+      .id(this.id)
       .email(this.email)
       .password(this.password)
       .username(this.username)
       .introduction(this.introduction)
       .reported(this.reported)
       .board(this.board)
-      .role(this.role)
+      .role(new AptzipRoleEntity(this.role.name()))
       .apt(this.apt)
       .following(this.following)
       .follower(this.follower)
@@ -86,7 +86,7 @@ public class UserAccountRequestDto implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    if (UserRole.USER.name().equals(role.getRole())) {
+    if (UserRole.USER.equals(this.role)) {
       return UserRole.USER.getGrantedAuthorities();
     } else {
       return UserRole.ADMIN.getGrantedAuthorities();

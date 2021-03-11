@@ -1,5 +1,6 @@
 package com.markruler.aptzip.domain.user;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -29,7 +30,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFollowEntity {
+public class UserFollowEntity implements Serializable {
+  private static final long serialVersionUID = 1014152119956338331L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

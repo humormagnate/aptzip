@@ -9,12 +9,14 @@ import com.markruler.aptzip.domain.apartment.AptEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 @ToString(exclude = { "password", "following", "follower" })
 public class UserAccountResponseDto extends User {
 
@@ -27,9 +29,9 @@ public class UserAccountResponseDto extends User {
   private int reported;
   private UserRole role;
   private Collection<UserPrivilege> privilege;
-  private transient AptEntity apt;
-  private transient List<UserFollowEntity> following;
-  private transient List<UserFollowEntity> follower;
+  private AptEntity apt;
+  private List<UserFollowEntity> following;
+  private List<UserFollowEntity> follower;
 
   public UserAccountResponseDto(String username, String password, boolean enabled, boolean accountNonExpired,
       boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {

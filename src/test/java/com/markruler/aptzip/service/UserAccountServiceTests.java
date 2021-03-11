@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.UserRole;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
 import org.junit.jupiter.api.Assertions;
@@ -70,8 +71,10 @@ class UserAccountServiceTests {
   @DisplayName("Test findAll")
   void testFindAll() {
     // Setup our mock repository
-    UserAccountRequestDto user1 = UserAccountRequestDto.builder().email("user1@aptzip.com").isEnabled(true).build();
-    UserAccountRequestDto user2 = UserAccountRequestDto.builder().email("user2@aptzip.com").isEnabled(true).build();
+    UserAccountRequestDto user1 = UserAccountRequestDto.builder().id(1L).role(UserRole.ADMIN).build();
+    UserAccountRequestDto user2 = UserAccountRequestDto.builder().id(2L).role(UserRole.USER).build();
+    log.debug("find all User1: {}", user1.toEntity());
+    log.debug("find all User2: {}", user2);
     Mockito.doReturn(Arrays.asList(user1.toEntity(), user2.toEntity())).when(repository).findAll();
 
     // Execute the service call
@@ -85,8 +88,8 @@ class UserAccountServiceTests {
   @DisplayName("Test save user")
   void testSave() {
     // Setup our mock repository
-    UserAccountRequestDto user = UserAccountRequestDto.builder().username("test").password("passwd")
-        .email("user@aptzip.com").isEnabled(true).build();
+    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).username("test").password("passwd")
+        .role(UserRole.USER).email("user@aptzip.com").isEnabled(true).build();
     Mockito.doReturn(user.toEntity()).when(repository).save(any());
 
     UserAccountEntity returnedUser = service.save(user, "A10024484");

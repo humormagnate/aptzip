@@ -34,7 +34,7 @@ make db-local
 - /docker-entrypoint-initdb.d/의 모든 init 스크립트가 실행되어야 정상적으로 테스트 데이터를 확인할 수 있습니다.
 
 ```bash
-docker logs -f aptzip-mysql
+sudo docker logs -f aptzip-mysql
 ```
 
 - 정적 파일을 번들링합니다.

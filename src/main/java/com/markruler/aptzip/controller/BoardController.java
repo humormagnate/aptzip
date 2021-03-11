@@ -50,7 +50,7 @@ public class BoardController {
     List<CategoryEntity> categories = categoryService.findAll();
     log.debug("categories: {}", categories);
     model.addAttribute("categories", categories);
-    return "board/new";
+    return "board/write";
   }
 
   @PostMapping("/new")
@@ -62,12 +62,13 @@ public class BoardController {
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
-    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty() || categoryId.isEmpty()) {
-      log.debug("board: {}", board);
-      log.debug("categoryID: {}", categoryId);
-      return "";
-    }
+    log.debug("board: {}", board);
+    log.debug("categoryID: {}", categoryId);
+    log.debug("user: {}", user);
 
+    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty() || categoryId.isEmpty() || user == null) {
+      return "redirect:/error";
+    }
     boardService.save(board, categoryId, user);
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
     redirectAttributes.addFlashAttribute("msg", "success");

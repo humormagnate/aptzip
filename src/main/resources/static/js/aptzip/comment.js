@@ -337,7 +337,7 @@ if (document.body.contains(document.getElementById("iconReply"))) {
     .addEventListener("click", validateApartment);
 }
 
-if (document.location.href.includes("board")) {
+if (document.location.href.includes("boards") && !document.location.href.includes("new")) {
   document.addEventListener("DOMContentLoaded", () => {
     listComments(
       `/comments/${document.getElementById("boardID").value}`,

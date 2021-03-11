@@ -1,5 +1,7 @@
 package com.markruler.aptzip.domain.board;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,8 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "TB_CATEGORY")
-public class CategoryEntity {
+public class CategoryEntity implements Serializable {
+  private static final long serialVersionUID = 8460545667882912240L;
 
   @Id
   @NonNull

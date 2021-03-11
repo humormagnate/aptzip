@@ -33,9 +33,9 @@ import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Service
 @Slf4j
 @RequiredArgsConstructor
-@Service
 public class UserAccountService implements UserDetailsService {
 
   private final PasswordEncoder passwordEncoder;
@@ -59,26 +59,23 @@ public class UserAccountService implements UserDetailsService {
     }
     log.debug("user: {}", user);
 
-    UserAccountResponseDto urd = new UserAccountResponseDto(user.getUsername(), user.getPassword(), true, true, true,
-        true, UserRole.USER.getGrantedAuthorities());
-    log.debug("urd: {}", urd);
+    UserAccountRequestDto urd = new UserAccountRequestDto();
     urd.setId(user.getId());
     urd.setEmail(user.getEmail());
+    urd.setUsername(user.getUsername());
+    urd.setPassword(user.getPassword());
     urd.setIntroduction(user.getIntroduction());
     urd.setSignupDate(user.getSignupDate());
     urd.setReported(user.getReported());
     urd.setRole(UserRole.USER);
-    urd.setPrivilege(UserRole.USER.getPrivileges());
     urd.setApt(user.getApt());
     urd.setFollowing(user.getFollowing());
     urd.setFollower(user.getFollower());
 
     if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
       urd.setRole(UserRole.USER);
-      urd.setPrivilege(UserRole.USER.getPrivileges());
     } else {
       urd.setRole(UserRole.ADMIN);
-      urd.setPrivilege(UserRole.ADMIN.getPrivileges());
     }
     log.debug("urd: {}", urd);
     return urd;
@@ -112,7 +109,7 @@ public class UserAccountService implements UserDetailsService {
 
     user.setApt(AptRequestDto.builder().code(aptCode).build().toEntity());
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
+    user.setRole(UserRole.USER);
     user.setEnabled(true);
     return userJpaRepository.save(user.toEntity());
   }
