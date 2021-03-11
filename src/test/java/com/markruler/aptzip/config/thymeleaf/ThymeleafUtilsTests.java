@@ -1,10 +1,7 @@
 package com.markruler.aptzip.config.thymeleaf;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.Temporal;
-import java.util.Calendar;
+import java.time.ZoneOffset;
 import java.util.Locale;
 
 import com.markruler.aptzip.config.thymeleaf.expression.TemporalsAptzip;
@@ -15,45 +12,36 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-// @lombok.extern.slf4j.Slf4j
+@lombok.extern.slf4j.Slf4j
 class ThymeleafUtilsTests {
 
   private final TemporalsAptzip temporals = new TemporalsAptzip(Locale.KOREA);
 
   @Test
-  @DisplayName("An hour ago from the current time")
-  void testMinusOneHour() {
-    Temporal temporal = temporals.minusOneHour();
-    Assertions.assertTrue(temporal instanceof LocalTime);
-
-    LocalTime time = (LocalTime) temporal;
-    Assertions.assertEquals(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) - 1, time.getHour());
-  }
-
-  @Test
-  @DisplayName("It does not show \"1h\" because the \"hour\" value is different.")
+  @DisplayName("\"hour\" 값이 다르다고 \"1h\"으로 표시하지 않습니다.")
   void testBetweenNowAndTimeHour() {
-    int currentTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) - 1;
-    // TODO: 테스트 코드 수정 (59분에 테스트할 경우 Failure)
-    LocalTime local = LocalTime.of(currentTime, 59);
-    Long result = temporals.betweenNowAndTimeHour(LocalDateTime.of(LocalDate.now(), local));
-    Assertions.assertEquals(0, result);
+    Long resultMidnight = temporals.betweenNowAndTimeHour(LocalDateTime.now().minusMinutes(59));
+    Assertions.assertEquals(0, resultMidnight);
   }
 
   @Test
-  @DisplayName("Show 0h if present")
+  @DisplayName("현재 시각은 \"0h\"으로 표시합니다.")
   void testBetweenNowAndTime() {
     String resultHour = temporals.betweenNowAndTime(LocalDateTime.now());
     Assertions.assertEquals("0h", resultHour);
   }
 
   @Test
-  @DisplayName("Test less than one hour")
+  @DisplayName("1시간 미만인지 확인합니다.")
   void testIsLessThanOneHour() {
-    LocalDateTime time = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusHours(1L).minusMinutes(1L));
-    Assertions.assertFalse(temporals.isLessThanOneHour(time));
+    LocalDateTime lessHour = LocalDateTime.now().minusMinutes(59);
+    log.info("less than one hour: {}", lessHour);
+    Assertions.assertTrue(temporals.isLessThanOneHour(lessHour));
 
-    time = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(55L));
-    Assertions.assertTrue(temporals.isLessThanOneHour(time));
+    LocalDateTime moreHour = LocalDateTime.now().minusHours(1);
+    log.info("more than one hour: {}", moreHour);
+    log.info("Epoch Time (one hour ago): {}", moreHour.toEpochSecond(ZoneOffset.ofHours(9)));
+    log.info("Epoch Time (now): {}", LocalDateTime.now().toEpochSecond(ZoneOffset.ofHours(9)));
+    Assertions.assertFalse(temporals.isLessThanOneHour(moreHour));
   }
 }

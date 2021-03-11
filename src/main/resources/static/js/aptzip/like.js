@@ -1,11 +1,10 @@
 // export default (() => {
-const Like = (() => {
+export const Like = (() => {
   // Constructor
   function Like(boardId) {
     this.boardId = boardId;
   }
 
-  // public method 1
   Like.prototype.insert = (obj) => {
     fetch(obj.url, {
       method: "post",
@@ -26,7 +25,6 @@ const Like = (() => {
       });
   };
 
-  // public method 2
   Like.prototype.delete = function (obj) {
     console.log(obj);
   };

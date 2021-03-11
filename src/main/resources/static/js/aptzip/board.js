@@ -8,7 +8,7 @@ export {
 };
 
 if (
-  window.location.href.includes("/board/write") ||
+  window.location.href.includes("/boards/new") ||
   window.location.href.includes("/edit")
 ) {
   window.onload = calcTitleLength();
@@ -36,7 +36,7 @@ if (document.body.contains(document.getElementById("deleteBoardButton"))) {
       event.preventDefault();
       event.stopPropagation();
       const boardId = document.getElementById("boardId");
-      deleteBoard(`/board/${boardId.value}`);
+      deleteBoard(`/boards/${boardId.value}`);
     },
     false
   );
@@ -49,7 +49,7 @@ if (document.body.contains(document.getElementById("updateBoardButton"))) {
       event.preventDefault();
       event.stopPropagation();
       const boardId = document.getElementById("boardId");
-      updateBoard("/board", boardId.value);
+      updateBoard("/boards", boardId.value);
     },
     false
   );

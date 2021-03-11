@@ -14,7 +14,7 @@ logging:
     root: info
     org:
       springframework:
-        security: info
+        security: debug
         web: info
       hibernate: info
     com:
@@ -34,9 +34,9 @@ spring:
     # cache-seconds: 10
   jpa:
     generate-ddl: true
-    # show-sql: true
-    hibernate:
-      ddl-auto: update
+    show-sql: true
+    # hibernate:
+    #   ddl-auto: update # create-drop, update, none
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:

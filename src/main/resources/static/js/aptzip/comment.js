@@ -1,4 +1,5 @@
 import { validateApartment } from "./validation.js";
+import { Like } from "./like.js";
 export {
   createComment,
   updateComment,
@@ -292,7 +293,7 @@ if (document.body.contains(document.getElementById("likeBtn"))) {
     event.preventDefault();
     let like = new Like();
     const boardID = document.getElementById("boardID").value;
-    const userID = document.getElementById("readerID").value;
+    const userID = document.getElementById("readerID");
     if (!userID) location.href = `/login`;
     const obj = { type: 1, boardId: boardID, url: `/like/${boardID}` };
     if (likeflag) {

@@ -1,9 +1,10 @@
 package com.markruler.aptzip.controller;
 
 import javax.transaction.Transactional;
-import com.markruler.aptzip.domain.user.UserRequestDto;
-import com.markruler.aptzip.domain.user.UserResponseDto;
+
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.UserAccountService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import lombok.RequiredArgsConstructor;
 
-// @lombok.extern.slf4j.Slf4j
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @Controller
@@ -33,8 +36,8 @@ public class UserAccountController {
    * @return
    */
   @GetMapping("/{id}")
-  public String readUserInfoById(@PathVariable("id") Long id, Model model) {
-    userAccountService.readUserInfoById(id, model);
+  public String readUserPropertyById(@PathVariable("id") Long id, Model model) {
+    userAccountService.readUserPropertyById(id, model);
     return "user/page-single-user";
   }
 
@@ -47,7 +50,7 @@ public class UserAccountController {
    */
   @Transactional
   @PatchMapping("/{id}/pw")
-  public ResponseEntity<String> updateUserPassword(@RequestBody UserRequestDto user) {
+  public ResponseEntity<String> updateUserPassword(@RequestBody UserAccountRequestDto user) {
     userAccountService.updatePassword(user);
     return ResponseEntity.ok("success");
   }
@@ -62,17 +65,13 @@ public class UserAccountController {
     return new ResponseEntity<>("success", HttpStatus.OK);
   }
 
-  // TODO post와 delete 나누기
+  // TODO: post와 delete 나누기
   @Transactional
   @ResponseBody
   @PostMapping("/{id}/follow")
-  public String createFollow(
-    // @formatter:off
-    @PathVariable("id") Long id,
-    @AuthenticationPrincipal UserResponseDto principal
-    // @formatter:on
-  ) {
-    return userAccountService.createFollow(id, principal);
+  public String createFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
+    log.debug("user: {}", user);
+    return userAccountService.createFollow(id, user);
   }
 
 }

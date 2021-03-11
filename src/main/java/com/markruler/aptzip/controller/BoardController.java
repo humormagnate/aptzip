@@ -1,15 +1,17 @@
 package com.markruler.aptzip.controller;
 
 import java.util.List;
+
 import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
-import com.markruler.aptzip.domain.user.UserResponseDto;
+import com.markruler.aptzip.domain.board.LikeEntity;
+import com.markruler.aptzip.domain.board.LikeRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.BoardService;
 import com.markruler.aptzip.service.CategoryService;
-import org.springframework.http.HttpStatus;
+import com.markruler.aptzip.service.LikeService;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,67 +27,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/boards")
 @Controller
 public class BoardController {
 
   private final BoardService boardService;
   private final CategoryService categoryService;
+  private final LikeService likeService;
 
-  @GetMapping("/write")
+  @GetMapping("/new")
   public void goWritePage(Model model) {
     List<CategoryEntity> categories = categoryService.findAll();
+    log.debug("categories: {}", categories);
     model.addAttribute("categories", categories);
   }
 
-  @PostMapping("/write")
-  public String postWrite(
+  @PostMapping("/new")
+  public String writeNewBoard(
   // @formatter:off
     @ModelAttribute BoardRequestDto board,
     @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
-    @AuthenticationPrincipal UserResponseDto principal,
+    @AuthenticationPrincipal UserAccountRequestDto user,
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
-    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty()
-        || categoryId.isEmpty()) {
+    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty() || categoryId.isEmpty()) {
       log.debug("board: {}", board);
       log.debug("categoryID: {}", categoryId);
       return "";
     }
 
-    boardService.save(board, categoryId, principal);
+    boardService.save(board, categoryId, user);
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
     redirectAttributes.addFlashAttribute("msg", "success");
     return "redirect:/";
   }
 
   @GetMapping("/{id}")
-  public String read(
-  // @formatter:off
-    Model model,
-    @PathVariable("id") Long id,
-    @AuthenticationPrincipal UserResponseDto principal
-  // @formatter:on
-  ) {
-    boardService.findById(id, principal, model);
+  public String read(Model model, @PathVariable("id") Long boardId, @AuthenticationPrincipal UserAccountRequestDto user) {
+    log.debug("user: {}", user);
+    boardService.findById(boardId, user, model);
     return "board/page-single-topic";
   }
 
-  @ResponseBody
-  @DeleteMapping("/{id}")
-  public String deleteById(@PathVariable("id") Long id) {
-    boardService.deleteById(id);
-    return "성공적으로 삭제되었습니다.";
-  }
-
-  @Secured(value = {"ROLE_USER", "ROLE_ADMIN"})
+  @Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
   @GetMapping("/{id}/edit")
   public String editGet(Model model, @PathVariable("id") Long id) {
     List<CategoryEntity> categories = boardService.findByIdFromEdit(id, model);
@@ -94,34 +85,31 @@ public class BoardController {
   }
 
   @ResponseBody
-  @PutMapping()
-  public ResponseEntity<String> updateBoard(
-  // @formatter:off
-    // @PathVariable("id") Long id,
-    // Replace this persistent entity with a simple POJO or DTO object.sonarlint(java:S4684)
-    @RequestBody BoardRequestDto board
-  // @formatter:on
-  ) {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+    boardService.deleteById(id);
+    return ResponseEntity.ok("성공적으로 삭제되었습니다.");
+  }
+
+  @ResponseBody
+  @PutMapping("/{id}")
+  public ResponseEntity<String> updateBoard(@RequestBody BoardRequestDto board) {
     boardService.updateById(board);
-    return new ResponseEntity<>("{\"message\":\"성공적으로 수정되었습니다.\"}", HttpStatus.OK);
+    return ResponseEntity.ok("{\"message\":\"성공적으로 수정되었습니다.\"}");
   }
 
-  /**
-   * 클라이언트는 @MessageMapping 으로 request 서버는 @SendTo 로 response
-   */
-  @MessageMapping("/nbax") // 전역 RequestMapping(여기서 '/board')에 적용되지 않는다.
-                           // -> 따로 컨트롤러를 두자(MessageController)
-  @SendTo("/topic/messagexx") // publishing
-  public String newBoardAlertx(String message) throws Exception {
-    log.debug("STOMP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + message);
-    return message;
+  @ResponseBody
+  @PostMapping("/{id}/like")
+  public ResponseEntity<LikeEntity> createLike(@RequestBody LikeRequestDto like) {
+    LikeEntity responseLike = likeService.save(like);
+    return ResponseEntity.ok(responseLike);
   }
 
-  @MessageMapping("/nbaxx")
-  @SendTo("/topic/messagexx") // publishing
-  public String newBoardAlertxx(String message) throws Exception {
-    log.debug("STOMP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + message);
-    return message;
+  @ResponseBody
+  @DeleteMapping("/{id}/like")
+  public ResponseEntity<String> deleteLike(@RequestBody LikeRequestDto like) {
+    likeService.delete(like);
+    return ResponseEntity.ok().build();
   }
 
 }

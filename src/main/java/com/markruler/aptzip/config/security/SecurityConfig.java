@@ -5,7 +5,6 @@ import java.util.EventListener;
 import javax.sql.DataSource;
 
 import com.markruler.aptzip.domain.user.UserRole;
-import com.markruler.aptzip.service.SocialUserAccountService;
 import com.markruler.aptzip.service.UserAccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     http
+    // @formatter:off
       .sessionManagement()
         .maximumSessions(1)
         .maxSessionsPreventsLogin(true)
@@ -64,12 +64,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/**", "/board/*/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
-        .antMatchers("/board/write/**", "/categories", "/zip", "/like/**").authenticated()
+        .antMatchers("/user/**", "/boards/*/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+        .antMatchers("/boards/new/**", "/categories", "/zip", "/like/**").authenticated()
         .antMatchers("/login/*").anonymous()
         .antMatchers("/**").permitAll()
         .anyRequest().authenticated().and()
-        .exceptionHandling().accessDeniedPage("/") // -> root path("/")를 주소창에 입력해서 접근 시 exception "Access is denied"
+        .exceptionHandling().accessDeniedPage("/")
         .and()
       .csrf()
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .xssProtection()
           .xssProtectionEnabled(true)
         .and()
-        .httpStrictTransportSecurity() // HSTS : HTTPS 를 클라이언트 측에서 강제하는 것
+        .httpStrictTransportSecurity()
           .maxAgeInSeconds(60 * 60 * 24 * 365)
           .includeSubDomains(true).and()
         .and()
@@ -102,11 +102,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .logout()
         .logoutUrl("/logout")
         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // 로그아웃은 POST로 처리하는 것이 안전하다.
-        // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID", "remember-me")
         .logoutSuccessUrl("/");
+    // @formatter:on
   }
 
   @Bean
@@ -122,12 +122,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth.authenticationProvider(daoAuthenticationProvider());
-
-    // TEST
-    // auth.inMemoryAuthentication()
-    // .withUser("test")
-    // .password("test")
-    // .roles(UserRole.ADMIN.name());
   }
 
   @Bean
@@ -170,9 +164,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
   }
 
-  @Bean
-	public SocialUserAccountService socialUsersDetailService() {
-		return new SocialUserAccountService(userService);
-  }
+  // @Deprecated(forRemoval = true)
+  // @Bean
+  // public SocialUserAccountService socialUsersDetailService() {
+  //   return new SocialUserAccountService(userService);
+  // }
 
 }

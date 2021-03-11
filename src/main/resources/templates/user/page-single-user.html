@@ -40,7 +40,7 @@
 										<use xlink:href="/fonts/forum.svg#icon-settings_fill"></use>
 									</svg>
 								</a>
-								<!-- <a th:href="@{ ~/user/{id}/message(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
+								<!-- <a th:href="@{ ~/api/message/user/{id}(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
 								<!-- <a href="#" class="btn btn-primary">Message</a> -->
 								<a th:if="${#authentication.principal.id} ne ${ infouser.id }" href="#" id="userFollowBtn" class="btn btn-secondary">Follow</a>
 							</div>
@@ -94,7 +94,7 @@
 									</div>
 									<div class="tt-col-description">
 										<h6 class="tt-title">
-											<a th:href="@{/board/{id}(id=${board.id})}">
+											<a th:href="@{/boards/{id}(id=${board.id})}">
 												[[${ board.boardTitle }]]
 											</a>
 										</h6>
@@ -156,7 +156,7 @@
 									</div>
 									<div class="tt-col-description">
 										<h6 class="tt-title">
-											<a th:href="@{/board/{id}(id=${comment.board.id})}">
+											<a th:href="@{/boards/{id}(id=${comment.board.id})}">
 												[[${comment.commentContent}]]
 											</a>
 										</h6>
@@ -411,7 +411,7 @@
 			</div>
 			<!-- popup-settings end -->
 
-			<a th:href="@{/board/write}" class="tt-btn-create-topic">
+			<a th:href="@{/boards/new}" class="tt-btn-create-topic">
 				<span class="tt-icon">
 					<svg>
 						<use xlink:href="/fonts/forum.svg#icon-create_new"></use>

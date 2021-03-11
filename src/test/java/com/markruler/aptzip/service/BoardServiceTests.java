@@ -2,13 +2,15 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import com.markruler.aptzip.domain.apartment.AptEntity;
+import com.markruler.aptzip.domain.apartment.AptRequestDto;
 import com.markruler.aptzip.domain.board.BoardEntity;
-import com.markruler.aptzip.domain.board.CategoryEntity;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.board.BoardRequestDto;
+import com.markruler.aptzip.domain.board.CategoryRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,39 +20,32 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: 테스트 코드 작성
 @SpringBootTest
 @Slf4j
 class BoardServiceTests {
 
   @Autowired
-  private BoardService boardService;
+  private BoardService service;
 
   @MockBean
-  private BoardRepository boardRepository;
+  private BoardRepository repository;
 
+  @Disabled("FIXME: Failed: NullPointer")
   @Test
-  @DisplayName("Test save board")
-  void testSaveBoard() {
-    AptzipUserEntity user = AptzipUserEntity.builder().id(1).build();
-    AptEntity apt = AptEntity.builder().code("").build();
-    CategoryEntity category = new CategoryEntity(1L, "Discussion");
-    BoardEntity board = new BoardEntity();
-    board.setApt(apt);
-    board.setUser(user);
-    board.setCategory(category);
-    log.debug("board mock: {}", board);
+  @DisplayName("사용자가 Board를 작성합니다")
+  void testSave() {
+    AptRequestDto apt = AptRequestDto.builder().code("A10024484").build();
+    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).email("").password("").build();
+    CategoryRequestDto category = CategoryRequestDto.builder().id(1L).name("Discussion").build();
+    BoardRequestDto board = BoardRequestDto.builder().apt(apt.toEntity()).user(user.toEntity())
+        .category(category.toEntity()).build();
+    Mockito.doReturn(board.toEntity()).when(repository).save(any()); // NullPointer
 
-    Mockito.doReturn(board).when(boardRepository).save(any());
+    BoardEntity returnedBoard = service.save(board, String.valueOf(board.getCategory().getId()), user);
+    log.debug("returned board: {}", returnedBoard);
 
-    // BoardEntity returnedBoard = boardService.save(boardDTO, categoryId,
-    // principal);
-
-    Assertions.assertTrue(true);
-    // Assertions.assertNotNull(returnedBoard, "The saved board should not be
-    // null");
-    // Assertions.assertEquals(1L, returnedBoard.getId(), "The id should be
-    // incremented");
+    Assertions.assertNotNull(returnedBoard, "The saved board should not be null");
+    Assertions.assertEquals(1L, returnedBoard.getId(), "The id should be incremented");
   }
 
 }

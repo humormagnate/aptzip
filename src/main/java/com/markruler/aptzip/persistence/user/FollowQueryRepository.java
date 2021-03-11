@@ -2,8 +2,8 @@
 
 // import java.util.List;
 
-// import com.markruler.aptzip.domain.user.AptzipUserEntity;
-// import com.markruler.aptzip.domain.user.QAptzipUserEntity;
+// import com.markruler.aptzip.domain.user.UserAccountEntity;
+// import com.markruler.aptzip.domain.user.QUserAccountEntity;
 // import com.markruler.aptzip.domain.user.QUserFollowEntity;
 // import com.querydsl.jpa.impl.JPAQuery;
 // import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -30,13 +30,13 @@
 //     this.followRepo = followRepo;
 //   }
 
-//   private JPAQuery<AptzipUserEntity> followingQuery(Long fromId) {
-//     QAptzipUserEntity user = QAptzipUserEntity.aptzipUserEntity;
+//   private JPAQuery<UserAccountEntity> followingQuery(Long fromId) {
+//     QUserAccountEntity user = QUserAccountEntity.UserAccountEntity;
 //     QUserFollowEntity follow = QUserFollowEntity.userFollowEntity;
 //     log.debug("Quser : {}", user.toString());
 //     log.debug("Qfollow : {}", follow.toString());
 
-//     JPAQuery<AptzipUserEntity> query =
+//     JPAQuery<UserAccountEntity> query =
 //       jpaQueryFactory
 //         .selectFrom(user)
 //         .join(follow)
@@ -49,19 +49,19 @@
 //     return query;
 //   }
 
-//   public List<AptzipUserEntity> following(Long fromId, Long limit, Long offset) {
+//   public List<UserAccountEntity> following(Long fromId, Long limit, Long offset) {
 //     log.debug("fromId : {}", fromId);
 //     log.debug("limit : {}", limit);
 //     log.debug("offset : {}", offset);
-    
-//     JPAQuery<AptzipUserEntity> query = new JPAQuery<>();
+
+//     JPAQuery<UserAccountEntity> query = new JPAQuery<>();
 //     Boolean test = followRepo.existsByUserId(fromId);
 //     log.debug(test.toString());
 
 //     if (followRepo.existsByUserId(fromId)) {
 //       query = followingQuery(fromId);
 //     }
-    
+
 //     QUserFollowEntity follow = QUserFollowEntity.userFollowEntity;
 //     query.orderBy(follow.createDate.desc());
 

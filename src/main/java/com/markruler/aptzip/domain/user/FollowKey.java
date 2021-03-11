@@ -23,10 +23,10 @@
 
 //   @ManyToOne(fetch = FetchType.LAZY)
 //   @JoinColumn(name = "user_id", insertable = false, updatable = false)
-//   private AptzipUserEntity from;
-  
+//   private UserAccountEntity from;
+
 //   @ManyToOne(fetch = FetchType.LAZY)
 //   @JoinColumn(name = "user_id", insertable = false, updatable = false)
-//   private AptzipUserEntity to;
-	
+//   private UserAccountEntity to;
+
 // }

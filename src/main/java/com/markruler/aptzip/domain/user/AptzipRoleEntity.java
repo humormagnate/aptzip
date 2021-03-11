@@ -22,7 +22,7 @@ public class AptzipRoleEntity implements GrantedAuthority {
 
   @Override
   public String getAuthority() {
-    // TODO: GrantedAuthority 상속 구현
+    // TODO: implement GrantedAuthority
     return null;
   }
 

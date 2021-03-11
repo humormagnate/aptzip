@@ -2,12 +2,16 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,12 +40,12 @@ class UserAccountServiceTests {
   @DisplayName("Test findById Success")
   void testFindById() {
     // Setup our mock repository
-    AptzipUserEntity user = AptzipUserEntity.builder().id(1L).email("test@example.com").build();
-    log.debug("Test AptzipUserEntity: {}", user);
+    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
+    log.debug("Test UserAccountEntity: {}", user);
     Mockito.doReturn(Optional.of(user)).when(repository).findById(1L);
 
     // Execute the service call
-    Optional<AptzipUserEntity> returnedUser = service.findById(1L);
+    Optional<UserAccountEntity> returnedUser = service.findById(1L);
 
     // Assert the response
     Assertions.assertTrue(returnedUser.isPresent(), "User was not found");
@@ -55,39 +59,37 @@ class UserAccountServiceTests {
     Mockito.doReturn(Optional.empty()).when(repository).findById(1L);
 
     // Execute the service call
-    Optional<AptzipUserEntity> returnedWidget = service.findById(1L);
+    Optional<UserAccountEntity> returnedWidget = service.findById(1L);
 
     // Assert the response
     Assertions.assertFalse(returnedWidget.isPresent(), "User should not be found");
   }
 
-  // TODO: 테스트 코드 수정
-  // Failed: AuthenticationCredentialsNotFound
-  // @Test
-  // @DisplayName("Test findAll")
-  // void testFindAll() {
-  //   // Setup our mock repository
-  //   AptzipUserEntity user1 = AptzipUserEntity.builder().id(1L).email("user1@example.com").isEnabled(true).build();
-  //   AptzipUserEntity user2 = AptzipUserEntity.builder().id(2L).email("user2@example.com").isEnabled(true).build();
-  //   Mockito.doReturn(Arrays.asList(user1, user2)).when(repository).findAll();
+  @Disabled("FIXME: Failed: AuthenticationCredentialsNotFound")
+  @Test
+  @DisplayName("Test findAll")
+  void testFindAll() {
+    // Setup our mock repository
+    UserAccountEntity user1 = UserAccountEntity.builder().id(1L).email("user1@aptzip.com").isEnabled(true).build();
+    UserAccountEntity user2 = UserAccountEntity.builder().id(2L).email("user2@aptzip.com").isEnabled(true).build();
+    Mockito.doReturn(Arrays.asList(user1, user2)).when(repository).findAll();
 
-  //   // Execute the service call
-  //   // List<AptzipUserEntity> users = service.findAll();
-  //   List<UserRequestDto> users = service.findAll();
+    // Execute the service call
+    List<UserAccountRequestDto> users = service.findAll();
 
-  //   // Assert the response
-  //   Assertions.assertEquals(2, users.size(), "findAll should return 2 users");
-  // }
+    // Assert the response
+    Assertions.assertEquals(2, users.size(), "findAll should return 2 users");
+  }
 
   @Test
   @DisplayName("Test save user")
   void testSave() {
     // Setup our mock repository
-    AptzipUserEntity user = AptzipUserEntity.builder().id(1L).email("user@aptzip.com").isEnabled(true).build();
-    Mockito.doReturn(user).when(repository).save(any());
+    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).password("passwd").email("user@aptzip.com").isEnabled(true).build();
+    Mockito.doReturn(user.toEntity()).when(repository).save(any());
 
-    // Execute the service call
-    AptzipUserEntity returnedUser = service.save(user);
+    UserAccountEntity returnedUser = service.save(user, "A10024484");
+    log.debug("returned User: {}", returnedUser);
 
     // Assert the response
     Assertions.assertNotNull(returnedUser, "The saved user should not be null");

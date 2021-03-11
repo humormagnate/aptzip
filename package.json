@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "bundle": "npx webpack build --config webpack.config.cjs",
-    "bundle:watch": "npx webpack build --config webpack.config.js --watch",
+    "bundle:watch": "npx webpack build --config webpack.config.cjs --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "outdated": "npm outdated",
     "docker": "make docker",

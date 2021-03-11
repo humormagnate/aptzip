@@ -2,6 +2,7 @@ package com.markruler.aptzip.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +15,14 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,10 +37,10 @@ import lombok.ToString;
 @Table(name = "tb_user")
 @EqualsAndHashCode(of = "id")
 @Builder
-@ToString(exclude = {"following", "follower", "board"})
+@ToString(exclude = { "password", "following", "follower", "board" })
 @NoArgsConstructor
 @AllArgsConstructor
-public class AptzipUserEntity {
+public class UserAccountEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,8 +87,8 @@ public class AptzipUserEntity {
 
   private boolean isEnabled;
 
-  private String providerId;
+  // private String providerId;/
 
-  private String providerUserId;
+  // private String providerUserId;
 
 }

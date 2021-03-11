@@ -2,7 +2,7 @@ package com.markruler.aptzip.config.social;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
 import org.springframework.social.connect.Connection;
@@ -26,8 +26,8 @@ public class SocialSignInAdapter implements SignInAdapter {
 		UserProfile profile = connection.fetchUserProfile();
 
 		log.debug("UserProfile : {}", profile);
-		
-		AptzipUserEntity user = userJpaRepository.findByEmailIgnoreCase(profile.getEmail()).orElse(null);
+
+		UserAccountEntity user = userJpaRepository.findByEmailIgnoreCase(profile.getEmail()).orElse(null);
 		if (user != null) {
 			log.debug("social signin user is not null : {}", user);
 			HttpServletRequest servletRequest = ((ServletWebRequest) request).getRequest();

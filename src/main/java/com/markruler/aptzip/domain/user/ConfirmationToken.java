@@ -2,6 +2,7 @@ package com.markruler.aptzip.domain.user;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,22 +12,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.CreationTimestamp;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+import org.hibernate.annotations.CreationTimestamp;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "tb_confirmation_token")
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ConfirmationToken {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="token_id")
-  private long tokenid;
+  private long tokenId;
 
   @Column(name="confirmation_token")
   private String confirmationToken;
@@ -36,9 +39,9 @@ public class ConfirmationToken {
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", nullable = true)
-  private AptzipUserEntity user;
+  private UserAccountEntity user;
 
-  public ConfirmationToken(AptzipUserEntity user) {
+  public ConfirmationToken(UserAccountEntity user) {
     this.user = user;
     confirmationToken = UUID.randomUUID().toString();
   }

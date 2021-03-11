@@ -22,6 +22,7 @@
 								<div class="tt-avatar-title">
 									<a th:href="@{/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardID" th:value="${ board.id }">
+									<input type="hidden" id="boardWriterID" th:value="${ board.user.id }">
 									<input type="hidden" id="boardAptID" th:value="${ board.apt.code }">
 									<input sec:authorize="isAuthenticated()" type="hidden" id="readerID"
 										th:value="${#authentication.principal.id}">
@@ -43,13 +44,14 @@
 							<div class="tt-item-tag">
 								<ul class="tt-list-badge">
 									<li sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id} eq ${board.user.id}">
-										<a th:href="@{/board/{id}/edit(id=${board.id})}">
+										<a th:href="@{/boards/{id}/edit(id=${board.id})}">
 											<span class="tt-color08 tt-badge">edit</span>
 										</a>
 									</li>
 									<li th:each="category : ${ board?.category?.name }">
 										<a href="#">
-											<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }" th:classappend="'user-select-none'">[[${ category }]]</span>
+											<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }"
+												th:classappend="'user-select-none'">[[${ category }]]</span>
 										</a>
 									</li>
 								</ul>
@@ -291,7 +293,7 @@
 
 	</main>
 
-	<a th:href="@{/board/write}" class="tt-btn-create-topic">
+	<a th:href="@{/boards/new}" class="tt-btn-create-topic">
 		<span class="tt-icon">
 			<svg>
 				<use xlink:href="/fonts/forum.svg#icon-create_new"></use>

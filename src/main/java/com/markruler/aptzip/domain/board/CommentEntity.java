@@ -1,6 +1,7 @@
 package com.markruler.aptzip.domain.board;
 
 import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,35 +12,36 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.markruler.aptzip.domain.user.AptzipUserEntity;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity
+@Table(name = "TB_COMMENT")
 @Getter
-@Setter
-@Builder
+@Setter // TODO: Remove setter
 @ToString
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "TB_COMMENT")
 public class CommentEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(name = "comment_content")
-  private String commentContent;
+  private String content;
 
   @Column(name = "ip_address")
   private String ipAddress;
@@ -53,14 +55,14 @@ public class CommentEntity {
   private LocalDateTime updateDate;
 
   @Column(name = "comment_status")
-  private String commentStatus;
+  private boolean enabled;
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "board_id")
+  @JoinColumn(name = "board_id")
   private BoardEntity board;
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
-  private AptzipUserEntity user;
+  private UserAccountEntity user;
 }
