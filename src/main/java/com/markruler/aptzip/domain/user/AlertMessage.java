@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MessageEntity {
+public class AlertMessage {
 	private String msg;
 	private UserAccountEntity user;
 }

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.AuthService;
 import com.markruler.aptzip.service.ConfirmationService;
 import com.markruler.aptzip.service.UserAccountService;
@@ -38,14 +38,14 @@ public class AuthController {
   }
 
   @GetMapping(value = "/signup")
-  public ModelAndView displayRegistration(ModelAndView modelAndView, UserRequestDto user) {
+  public ModelAndView displayRegistration(ModelAndView modelAndView, UserAccountRequestDto user) {
     modelAndView.addObject("user", user);
     modelAndView.setViewName("signup");
     return modelAndView;
   }
 
   @PostMapping(value = "/signup")
-  public String registerUser(@RequestBody UserRequestDto user, RedirectAttributes redirectAttributes,
+  public String registerUser(@RequestBody UserAccountRequestDto user, RedirectAttributes redirectAttributes,
       String aptCode/* , ConnectionData connection */) {
     log.debug("apartment code: {}", aptCode);
     UserAccountEntity returnedUser = userAccountService.save(user, aptCode);
@@ -99,14 +99,14 @@ public class AuthController {
   }
 
   @GetMapping(value = "/forgot")
-  public String displayResetPassword(Model model, UserRequestDto user) {
+  public String displayResetPassword(Model model, UserAccountRequestDto user) {
     model.addAttribute("user", user);
     return "user/page-forgot-password";
   }
 
   @Deprecated
   @PostMapping(value = "/forgot")
-  public String forgotUserPassword(RedirectAttributes redirectAttributes, UserRequestDto user) {
+  public String forgotUserPassword(RedirectAttributes redirectAttributes, UserAccountRequestDto user) {
     Optional<UserAccountEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
 
     if (existingUser.isPresent()) {
@@ -159,7 +159,7 @@ public class AuthController {
 
   @Deprecated(forRemoval = false)
   @PostMapping(value = "/reset")
-  public String resetUserPassword(RedirectAttributes redirectAttributes, UserRequestDto user) {
+  public String resetUserPassword(RedirectAttributes redirectAttributes, UserAccountRequestDto user) {
     if (user.getEmail() != null) {
       Optional<UserAccountEntity> tokenUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
       if (tokenUser.isPresent()) {

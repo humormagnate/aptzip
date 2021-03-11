@@ -2,7 +2,7 @@ package com.markruler.aptzip.controller;
 
 import javax.transaction.Transactional;
 
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.UserAccountService;
 
 import org.springframework.http.HttpStatus;
@@ -50,7 +50,7 @@ public class UserAccountController {
    */
   @Transactional
   @PatchMapping("/{id}/pw")
-  public ResponseEntity<String> updateUserPassword(@RequestBody UserRequestDto user) {
+  public ResponseEntity<String> updateUserPassword(@RequestBody UserAccountRequestDto user) {
     userAccountService.updatePassword(user);
     return ResponseEntity.ok("success");
   }
@@ -69,7 +69,7 @@ public class UserAccountController {
   @Transactional
   @ResponseBody
   @PostMapping("/{id}/follow")
-  public String createFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserRequestDto user) {
+  public String createFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("user: {}", user);
     return userAccountService.createFollow(id, user);
   }

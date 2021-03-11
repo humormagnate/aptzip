@@ -2,13 +2,16 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.markruler.aptzip.domain.user.UserAccountEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -62,33 +65,31 @@ class UserAccountServiceTests {
     Assertions.assertFalse(returnedWidget.isPresent(), "User should not be found");
   }
 
-  // TODO: 테스트 코드 수정
-  // Failed: AuthenticationCredentialsNotFound
-  // @Test
-  // @DisplayName("Test findAll")
-  // void testFindAll() {
-  //   // Setup our mock repository
-  //   UserAccountEntity user1 = UserAccountEntity.builder().id(1L).email("user1@aptzip.com").isEnabled(true).build();
-  //   UserAccountEntity user2 = UserAccountEntity.builder().id(2L).email("user2@aptzip.com").isEnabled(true).build();
-  //   Mockito.doReturn(Arrays.asList(user1, user2)).when(repository).findAll();
+  @Disabled("FIXME: Failed: AuthenticationCredentialsNotFound")
+  @Test
+  @DisplayName("Test findAll")
+  void testFindAll() {
+    // Setup our mock repository
+    UserAccountEntity user1 = UserAccountEntity.builder().id(1L).email("user1@aptzip.com").isEnabled(true).build();
+    UserAccountEntity user2 = UserAccountEntity.builder().id(2L).email("user2@aptzip.com").isEnabled(true).build();
+    Mockito.doReturn(Arrays.asList(user1, user2)).when(repository).findAll();
 
-  //   // Execute the service call
-  //   // List<UserAccountEntity> users = service.findAll();
-  //   List<UserRequestDto> users = service.findAll();
+    // Execute the service call
+    List<UserAccountRequestDto> users = service.findAll();
 
-  //   // Assert the response
-  //   Assertions.assertEquals(2, users.size(), "findAll should return 2 users");
-  // }
+    // Assert the response
+    Assertions.assertEquals(2, users.size(), "findAll should return 2 users");
+  }
 
   @Test
   @DisplayName("Test save user")
   void testSave() {
     // Setup our mock repository
-    UserRequestDto user = UserRequestDto.builder().id(1L).password("passwd").email("user@aptzip.com").isEnabled(true).build();
+    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).password("passwd").email("user@aptzip.com").isEnabled(true).build();
     Mockito.doReturn(user.toEntity()).when(repository).save(any());
 
     UserAccountEntity returnedUser = service.save(user, "A10024484");
-    log.debug("returnedUser: {}", returnedUser);
+    log.debug("returned User: {}", returnedUser);
 
     // Assert the response
     Assertions.assertNotNull(returnedUser, "The saved user should not be null");

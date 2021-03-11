@@ -14,16 +14,14 @@ import com.markruler.aptzip.domain.user.UserAccountEntity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "tb_like")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LikeEntity {
 
   @Id

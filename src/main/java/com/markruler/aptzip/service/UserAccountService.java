@@ -5,13 +5,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.markruler.aptzip.domain.apartment.AptEntity;
+import com.markruler.aptzip.domain.apartment.AptRequestDto;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
 import com.markruler.aptzip.domain.user.AptzipRoleEntity;
 import com.markruler.aptzip.domain.user.UserAccountEntity;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountResponseDto;
 import com.markruler.aptzip.domain.user.UserFollowEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
-import com.markruler.aptzip.domain.user.UserResponseDto;
+import com.markruler.aptzip.domain.user.UserFollowRequestDto;
 import com.markruler.aptzip.domain.user.UserRole;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 import com.markruler.aptzip.persistence.board.CommentRepository;
@@ -63,7 +65,7 @@ public class UserAccountService implements UserDetailsService {
       throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
 
-    UserResponseDto urd = new UserResponseDto(user.getUsername(), user.getPassword(), true, true, true, true,
+    UserAccountResponseDto urd = new UserAccountResponseDto(user.getUsername(), user.getPassword(), true, true, true, true,
         UserRole.USER.getGrantedAuthorities());
     log.debug("urd: {}", urd);
     urd.setId(user.getId());
@@ -107,7 +109,7 @@ public class UserAccountService implements UserDetailsService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public UserAccountEntity save(UserRequestDto user, String aptCode) {
+  public UserAccountEntity save(UserAccountRequestDto user, String aptCode) {
     Optional<UserAccountEntity> existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail());
 
     if (existingUser.isPresent()) {
@@ -116,8 +118,7 @@ public class UserAccountService implements UserDetailsService {
 
     log.info("The email address not found");
 
-    user.setApt(AptEntity.builder().code(aptCode).build());
-    // user.setPassword(user.getPassword());
+    user.setApt(AptRequestDto.builder().code(aptCode).build().toEntity());
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
 
@@ -132,8 +133,8 @@ public class UserAccountService implements UserDetailsService {
 
   @PreAuthorize("hasAuthority('ROLE_ADMIN')")
   @Transactional(readOnly = true)
-  public List<UserRequestDto> findAll() {
-    return userJpaRepository.findAll().stream().map(UserRequestDto::new).collect(Collectors.toList());
+  public List<UserAccountRequestDto> findAll() {
+    return userJpaRepository.findAll().stream().map(UserAccountRequestDto::new).collect(Collectors.toList());
   }
 
   public Optional<UserAccountEntity> findById(Long id) {
@@ -144,8 +145,8 @@ public class UserAccountService implements UserDetailsService {
     return userJpaRepository.findByEmailIgnoreCase(email);
   }
 
-  public List<UserAccountEntity> listAdminsByApt(UserRequestDto user) {
-    AptEntity apt = AptEntity.builder().code(user.getApt().getCode()).build();
+  public List<UserAccountEntity> listAdminsByApt(UserAccountRequestDto user) {
+    AptEntity apt = AptRequestDto.builder().code(user.getApt().getCode()).build().toEntity();
     return userJpaRepository.findAllByAptAndRole(apt, new AptzipRoleEntity("ADMIN"));
   }
 
@@ -157,12 +158,12 @@ public class UserAccountService implements UserDetailsService {
     userJpaRepository.enabledUserById(id);
   }
 
-  public void updatePassword(UserRequestDto user) {
+  public void updatePassword(UserAccountRequestDto user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     userJpaRepository.updatePasswordById(user.getPassword(), user.getId());
   }
 
-  public String createFollow(Long id, UserRequestDto user) {
+  public String createFollow(Long id, UserAccountRequestDto user) {
     UserAccountEntity following = UserAccountEntity.builder().id(id).build();
     UserAccountEntity follower = user.toEntity();
     UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
@@ -171,7 +172,7 @@ public class UserAccountService implements UserDetailsService {
       followRepository.delete(relationship);
       return "delete";
     } else {
-      followRepository.save(UserFollowEntity.builder().following(following).follower(follower).build());
+      followRepository.save(UserFollowRequestDto.builder().following(following).follower(follower).build().toEntity());
       return "save";
     }
   }

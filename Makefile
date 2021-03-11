@@ -17,6 +17,19 @@ db-local:
 		mysql:8.0.23
 .PHONY: db-local
 
+db-test:
+	sudo docker run \
+		--name aptzip-mysql \
+		--publish 13306:3306 \
+		--detach \
+		--restart=always \
+		--env MYSQL_ROOT_PASSWORD=testmaria \
+		--env MYSQL_DATABASE=aptzip \
+		--env TZ=Asia/Seoul \
+		--volume $(PWD)/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
+		mysql:8.0.23
+.PHONY: db-test
+
 test-all:
 	@./mvnw test
 .PHONY: test-all
@@ -25,7 +38,7 @@ test-all:
 # ./mvnw test -Dtest=UserAccountServiceTests#testFindById
 # make test-unit TEST_UNIT=UserAccountServiceTests#testFindById
 test-unit:
-	./mvnw test -Dtest=${TEST_UNIT}
+	./mvnw test -Dtest=${TEST_UNIT} #-X
 .PHONY: test-unit
 
 build-with-test: clean

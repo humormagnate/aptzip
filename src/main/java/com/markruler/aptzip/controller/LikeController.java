@@ -1,7 +1,8 @@
 package com.markruler.aptzip.controller;
 
 import com.markruler.aptzip.domain.board.LikeEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.board.LikeRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.LikeService;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,10 +23,10 @@ public class LikeController {
   private final LikeService likeService;
 
   @PostMapping("/{boardID}")
-  public LikeEntity like(@PathVariable("boardID") Long boardID, @RequestBody LikeEntity like,
-      @AuthenticationPrincipal UserRequestDto user) {
+  public LikeEntity like(@PathVariable("boardID") Long boardID, @RequestBody LikeRequestDto like,
+      @AuthenticationPrincipal UserAccountRequestDto user) {
     like.setUser(user.toEntity());
-    return likeService.createLike(like);
+    return likeService.save(like);
   }
 
 }

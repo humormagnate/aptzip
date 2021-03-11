@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(exclude = { "password", "following", "follower" })
-public class UserResponseDto extends User {
+public class UserAccountResponseDto extends User {
 
   private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class UserResponseDto extends User {
   private transient List<UserFollowEntity> following;
   private transient List<UserFollowEntity> follower;
 
-  public UserResponseDto(String username, String password, boolean enabled, boolean accountNonExpired,
+  public UserAccountResponseDto(String username, String password, boolean enabled, boolean accountNonExpired,
       boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
     super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
   }

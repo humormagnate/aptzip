@@ -19,7 +19,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardRequestDto {
-  private static final long serialVersionUID = 1L;
 
   private Long id;
   private CategoryEntity category;

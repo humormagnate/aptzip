@@ -1,6 +1,6 @@
 package com.markruler.aptzip.controller;
 
-import com.markruler.aptzip.domain.user.MessageEntity;
+import com.markruler.aptzip.domain.user.AlertMessage;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -17,11 +17,10 @@ public class MessageController {
    */
   @MessageMapping("/nbax") // 전역 RequestMapping: root path
   @SendTo("/topic/messagexx") // publishing
-  public MessageEntity newBoardAlertx(@RequestBody MessageEntity msg) throws Exception {
-    MessageEntity alertMessage = new MessageEntity(msg.getMsg(), msg.getUser());
-    log.debug("STOMP >> " + alertMessage.getMsg());
+  public AlertMessage newBoardAlertx(@RequestBody AlertMessage alert) throws Exception {
+    log.debug("STOMP >> " + alert.getMsg());
     Thread.sleep(1000); // simulated delay
-    return alertMessage;
+    return alert;
   }
 
   @Deprecated

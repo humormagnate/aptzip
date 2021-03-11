@@ -5,7 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.board.CommentRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.CommentService;
 
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class CommentController {
 
   @GetMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> commentGet(@PathVariable("boardId") Long boardId) {
+    // TODO: make a response DTO
     List<CommentEntity> list = commentService.listComments(boardId);
     return new ResponseEntity<>(list, HttpStatus.OK);
   }
@@ -40,15 +42,15 @@ public class CommentController {
   @Transactional
   @PostMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
-      @RequestBody CommentEntity comment, @AuthenticationPrincipal UserRequestDto user) {
+      @RequestBody CommentRequestDto comment, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("comment: {}", comment);
-    boolean createResult = commentService.create(boardId, comment, user);
+    boolean createResult = commentService.save(boardId, comment, user);
     if (!createResult) {
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     List<CommentEntity> list = commentService.listComments(boardId);
-    return new ResponseEntity<>(list, HttpStatus.CREATED);
+    return ResponseEntity.status(HttpStatus.CREATED).body(list);
   }
 
   @Transactional
@@ -57,16 +59,16 @@ public class CommentController {
       @PathVariable("commentId") Long commentId) {
     commentService.deleteById(commentId);
     List<CommentEntity> list = commentService.listComments(boardId);
-    return new ResponseEntity<>(list, HttpStatus.OK);
+    return ResponseEntity.ok(list);
   }
 
   @Transactional
   @PutMapping("/{boardId}")
   public ResponseEntity<List<CommentEntity>> updateComment(@PathVariable("boardId") Long boardId,
-      @RequestBody CommentEntity comment) {
+      @RequestBody CommentRequestDto comment) {
     commentService.updateComment(comment);
     List<CommentEntity> list = commentService.listComments(boardId);
-    return new ResponseEntity<>(list, HttpStatus.CREATED);
+    return ResponseEntity.status(HttpStatus.CREATED).body(list);
   }
 
 }

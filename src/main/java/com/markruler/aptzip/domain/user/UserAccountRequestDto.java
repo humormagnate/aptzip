@@ -32,7 +32,7 @@ import lombok.ToString;
 @ToString(exclude = { "password", "following", "follower" })
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto implements UserDetails {
+public class UserAccountRequestDto implements UserDetails {
   private static final long serialVersionUID = 7811067135242824850L;
 
   private Long id;
@@ -64,7 +64,7 @@ public class UserRequestDto implements UserDetails {
   // private String providerId;
   // private String providerUserId;
 
-  public UserRequestDto(UserAccountEntity user) {
+  public UserAccountRequestDto(UserAccountEntity user) {
     this.id = user.getId();
     this.username = user.getUsername();
     this.email = user.getEmail();

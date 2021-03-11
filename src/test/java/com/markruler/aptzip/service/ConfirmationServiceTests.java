@@ -1,9 +1,7 @@
 package com.markruler.aptzip.service;
 
-import java.util.Optional;
-
-import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
 
 import org.junit.jupiter.api.Assertions;

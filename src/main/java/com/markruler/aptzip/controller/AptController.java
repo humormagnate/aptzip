@@ -1,7 +1,7 @@
 package com.markruler.aptzip.controller;
 
 import com.markruler.aptzip.domain.board.BoardEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.helper.CustomPageMaker;
 import com.markruler.aptzip.service.BoardService;
@@ -29,7 +29,7 @@ public class AptController {
   public String thread(
   // @formatter:off
     @PathVariable("code") String apartmentCode,
-    @AuthenticationPrincipal UserRequestDto user,
+    @AuthenticationPrincipal UserAccountRequestDto user,
     @ModelAttribute("customPage") CustomPage customPage,
     Model model
     // @formatter:on

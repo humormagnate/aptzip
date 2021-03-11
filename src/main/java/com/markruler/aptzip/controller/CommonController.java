@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.user.UserAccountEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.helper.CustomPageMaker;
 import com.markruler.aptzip.service.BoardService;
@@ -30,7 +30,7 @@ public class CommonController {
   private final BoardService boardService;
 
   @GetMapping(path = { "/", "/index/{pageNumber}" })
-  public ModelAndView home(@AuthenticationPrincipal UserRequestDto user,
+  public ModelAndView home(@AuthenticationPrincipal UserAccountRequestDto user,
       @PathVariable(name = "pageNumber", required = false) Integer pageNumber, ModelAndView mv) {
 
     if (pageNumber == null) {
@@ -66,7 +66,7 @@ public class CommonController {
   }
 
   @GetMapping("/zip")
-  public void zip(@AuthenticationPrincipal UserRequestDto user, Model model) {
+  public void zip(@AuthenticationPrincipal UserAccountRequestDto user, Model model) {
     log.debug("user: {}", user);
     List<UserAccountEntity> admins = userAccountService.listAdminsByApt(user);
     List<BoardEntity> boards = boardService.listBoardsByApt(user);

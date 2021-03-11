@@ -28,23 +28,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "TB_BOARD")
+@Getter
+@Setter // TODO: remove setter, and make a response dto
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private CategoryEntity category;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "category_id")
+  private CategoryEntity category;
 
   @JsonProperty(value = "boardTitle")
   @Column(name = "board_title")
@@ -52,33 +52,33 @@ public class BoardEntity {
 
   @JsonProperty(value = "boardContent")
   @Column(name = "board_content")
-	private String boardContent;
+  private String boardContent;
 
-	// @Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
-	@Column(columnDefinition = "TINYINT(1) default 1", name = "enabled")
-	private Boolean isEnabled;
+  // @Column(columnDefinition = "varchar(1) default 'Y'", name = "board_status")
+  @Column(columnDefinition = "TINYINT(1) default 1", name = "enabled")
+  private Boolean isEnabled;
 
-	@Column(name = "view_count")
-	@ColumnDefault(value = "0")
-	private long viewCount;
+  @Column(name = "view_count")
+  @ColumnDefault(value = "0")
+  private long viewCount;
 
-	@CreationTimestamp
+  @CreationTimestamp
   @Column(name = "create_date")
-	private LocalDateTime createDate;
+  private LocalDateTime createDate;
 
   @Column(name = "update_date")
-	private LocalDateTime updateDate;
+  private LocalDateTime updateDate;
 
   @JsonIgnore
-	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-	@OrderBy("id asc")
-	private List<CommentEntity> comments;
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+  @OrderBy("id asc")
+  private List<CommentEntity> comments;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private UserAccountEntity user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private UserAccountEntity user;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "apt_code")
-	private AptEntity apt;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "apt_code")
+  private AptEntity apt;
 }

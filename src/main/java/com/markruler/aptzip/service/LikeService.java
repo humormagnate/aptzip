@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.markruler.aptzip.domain.board.LikeEntity;
+import com.markruler.aptzip.domain.board.LikeRequestDto;
 import com.markruler.aptzip.persistence.board.LikeRepository;
 
 import org.springframework.stereotype.Service;
@@ -23,11 +24,11 @@ public class LikeService {
     return StreamSupport.stream(likeRepository.findAll().spliterator(), false).collect(Collectors.toList());
   }
 
-  public LikeEntity createLike(LikeEntity likeEntity) {
-    return likeRepository.save(likeEntity);
+  public LikeEntity save(LikeRequestDto like) {
+    return likeRepository.save(like.toEntity());
   }
 
-  public void deleteLike(LikeEntity like) {
+  public void delete(LikeRequestDto like) {
     Optional<LikeEntity> existLike = likeRepository.findByBoardAndUser(like.getBoard(), like.getUser());
     if (existLike.isPresent()) {
       log.debug("Delete the like");

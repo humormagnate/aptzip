@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.markruler.aptzip.domain.apartment.AptEntity;
+import com.markruler.aptzip.domain.apartment.AptRequestDto;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
+import com.markruler.aptzip.domain.board.CategoryRequestDto;
 import com.markruler.aptzip.domain.board.LikeEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.board.LikeRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 import com.markruler.aptzip.persistence.board.CategoryRepository;
@@ -39,21 +42,21 @@ public class BoardService {
     return boardRepository.findBoardByDynamicQuery(customPage.makePageable(true, "id"), customPage);
   }
 
-  public void findById(Long boardId, UserRequestDto user, Model model) {
+  public void findById(Long boardId, UserAccountRequestDto user, Model model) {
     boardRepository.findById(boardId).ifPresent(board -> {
       board.setViewCount(board.getViewCount() + 1);
       boardRepository.save(board);
       board.setBoardContent(board.getBoardContent().replace(System.lineSeparator(), "<br>"));
       model.addAttribute("board", board);
 
-      LikeEntity likeEntity = LikeEntity.builder().board(board).build();
-      List<LikeEntity> likes = likeRepository.findAllByBoard(likeEntity.getBoard());
+      LikeRequestDto like = LikeRequestDto.builder().board(board).build();
+      List<LikeEntity> likes = likeRepository.findAllByBoard(like.getBoard());
       model.addAttribute("likes", likes);
 
       if (user != null) {
-        likeEntity.setUser(user.toEntity());
-        Optional<LikeEntity> like = likeRepository.findByBoardAndUser(likeEntity.getBoard(), likeEntity.getUser());
-        model.addAttribute("like", like.orElse(null));
+        like.setUser(user.toEntity());
+        Optional<LikeEntity> likeEntity = likeRepository.findByBoardAndUser(like.getBoard(), like.getUser());
+        model.addAttribute("like", likeEntity.orElse(null));
       }
     });
   }
@@ -67,22 +70,19 @@ public class BoardService {
     // @formatter:on
   }
 
-  public List<BoardEntity> listBoardsByApt(UserRequestDto user) {
-    AptEntity apt = AptEntity.builder().code(user.getApt().getCode()).build();
+  public List<BoardEntity> listBoardsByApt(UserAccountRequestDto user) {
+    AptEntity apt = AptRequestDto.builder().code(user.getApt().getCode()).build().toEntity();
     return StreamSupport.stream(boardRepository.findAllByApt(apt).spliterator(), false).collect(Collectors.toList());
   }
 
-  public BoardEntity save(BoardRequestDto boardDTO, String categoryId, UserRequestDto user) {
-    // @formatter:off
-    BoardRequestDto.builder()
-      .category(new CategoryEntity(Long.valueOf(categoryId)))
-      .isEnabled(true)
-      .viewCount(0L)
-      .user(user.toEntity())
-      .apt(boardDTO.getUser().getApt())
-      .updateDate(LocalDateTime.now());
-    // @formatter:on
-    return boardRepository.save(boardDTO.toEntity());
+  public BoardEntity save(BoardRequestDto board, String categoryId, UserAccountRequestDto user) {
+    board.setCategory(CategoryRequestDto.builder().id(Long.valueOf(categoryId)).build().toEntity());
+    board.setIsEnabled(true);
+    board.setViewCount(0L);
+    board.setUser(user.toEntity());
+    board.setApt(user.getApt());
+    board.setUpdateDate(LocalDateTime.now());
+    return boardRepository.save(board.toEntity());
   }
 
   public void deleteById(Long id) {

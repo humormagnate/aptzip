@@ -5,7 +5,8 @@ import java.util.List;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
 import com.markruler.aptzip.domain.board.LikeEntity;
-import com.markruler.aptzip.domain.user.UserRequestDto;
+import com.markruler.aptzip.domain.board.LikeRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.BoardService;
 import com.markruler.aptzip.service.CategoryService;
 import com.markruler.aptzip.service.LikeService;
@@ -52,7 +53,7 @@ public class BoardController {
   // @formatter:off
     @ModelAttribute BoardRequestDto board,
     @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
-    @AuthenticationPrincipal UserRequestDto user,
+    @AuthenticationPrincipal UserAccountRequestDto user,
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
@@ -69,7 +70,7 @@ public class BoardController {
   }
 
   @GetMapping("/{id}")
-  public String read(Model model, @PathVariable("id") Long boardId, @AuthenticationPrincipal UserRequestDto user) {
+  public String read(Model model, @PathVariable("id") Long boardId, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("user: {}", user);
     boardService.findById(boardId, user, model);
     return "board/page-single-topic";
@@ -99,15 +100,15 @@ public class BoardController {
 
   @ResponseBody
   @PostMapping("/{id}/like")
-  public ResponseEntity<LikeEntity> createLike(@RequestBody LikeEntity likeEntity) {
-    LikeEntity responseLike = likeService.createLike(likeEntity);
+  public ResponseEntity<LikeEntity> createLike(@RequestBody LikeRequestDto like) {
+    LikeEntity responseLike = likeService.save(like);
     return ResponseEntity.ok(responseLike);
   }
 
   @ResponseBody
   @DeleteMapping("/{id}/like")
-  public ResponseEntity<String> deleteLike(@RequestBody LikeEntity likeEntity) {
-    likeService.deleteLike(likeEntity);
+  public ResponseEntity<String> deleteLike(@RequestBody LikeRequestDto like) {
+    likeService.delete(like);
     return ResponseEntity.ok().build();
   }
 

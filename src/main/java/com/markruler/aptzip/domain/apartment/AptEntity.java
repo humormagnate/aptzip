@@ -6,22 +6,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-@Getter
-@Builder
 @Entity
-@ToString
 @Table(name = "tb_apt")
+@Getter
+@ToString
 @EqualsAndHashCode(of = "code")
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class AptEntity {
   @Id
