@@ -46,10 +46,11 @@ public class BoardController {
   private final LikeService likeService;
 
   @GetMapping("/new")
-  public void goWritePage(Model model) {
+  public String goWritePage(Model model) {
     List<CategoryEntity> categories = categoryService.findAll();
     log.debug("categories: {}", categories);
     model.addAttribute("categories", categories);
+    return "board/new";
   }
 
   @PostMapping("/new")

@@ -79,7 +79,4 @@ public class CommonController {
     // @formatter:on
   }
 
-  // @GetMapping("/categories")
-  // public void categories() {
-  // }
 }

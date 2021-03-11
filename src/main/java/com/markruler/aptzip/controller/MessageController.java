@@ -31,7 +31,7 @@ public class MessageController {
     return message;
   }
 
-  @GetMapping("/api/message/user/{id}")
+  @GetMapping("/api/message/users/{id}")
   public String message() {
     return "user/page-messages";
   }

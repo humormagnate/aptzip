@@ -24,12 +24,13 @@ import org.springframework.social.security.SpringSocialConfigurer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Deprecated(forRemoval = true)
 @Slf4j
 @RequiredArgsConstructor
 // @Configuration
 // @EnableSocial // @Import(SocialConfiguration.class)
 public class SocialConfig extends SocialConfigurerAdapter {
-  
+
 	private final DataSource dataSource;
 	private final UserJpaRepository userJpaRepository;
 
@@ -67,7 +68,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
     log.debug("getUsersConnectionRepository : {}", repository);
 		return repository;
 	}
-  
+
 	// "/connection/facebook" post
 	// ConnectController
 	@Bean
@@ -81,7 +82,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
   //   log.debug("============================================= ConnectController =============================================");
 	// 	return new ProviderSignInController(connectionFactoryLocator, getUsersConnectionRepository(connectionFactoryLocator), signInAdapter());
 	// }
-	
+
 	// "/signin/facebook" post
 	// ProviderSignInController
 	@Bean

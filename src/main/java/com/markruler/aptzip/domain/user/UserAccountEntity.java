@@ -12,8 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,11 +69,11 @@ public class UserAccountEntity {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<BoardEntity> board;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_code")
   private AptEntity apt;
 
@@ -87,7 +87,7 @@ public class UserAccountEntity {
 
   private boolean isEnabled;
 
-  // private String providerId;/
+  // private String providerId;
 
   // private String providerUserId;
 

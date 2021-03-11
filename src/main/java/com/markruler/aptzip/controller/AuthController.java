@@ -2,8 +2,8 @@ package com.markruler.aptzip.controller;
 
 import java.util.Optional;
 
-import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.AuthService;
 import com.markruler.aptzip.service.ConfirmationService;
@@ -13,8 +13,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
 @Slf4j
+@Controller
 @RequiredArgsConstructor
 public class AuthController {
   private final AuthService authService;
@@ -44,9 +44,8 @@ public class AuthController {
     return modelAndView;
   }
 
-  @PostMapping(value = "/signup")
-  public String registerUser(@RequestBody UserAccountRequestDto user, RedirectAttributes redirectAttributes,
-      String aptCode/* , ConnectionData connection */) {
+  @PostMapping(value = "/signup", consumes = "application/x-www-form-urlencoded")
+  public String registerUser(@ModelAttribute UserAccountRequestDto user, RedirectAttributes redirectAttributes, String aptCode/* , ConnectionData connection */) {
     log.debug("apartment code: {}", aptCode);
     UserAccountEntity returnedUser = userAccountService.save(user, aptCode);
     if (returnedUser == null) {
@@ -75,7 +74,7 @@ public class AuthController {
 
   // 로그인 페이지 redirect를 피하려고 만든 컨트롤러
   // 그렇지 않으면 매핑 경로가 아닌 HTML 파일 경로를 적어줘야 합니다.
-  @GetMapping(value = "/register")
+  @GetMapping("/register")
   public String register() {
     return "user/page-register";
   }
@@ -98,14 +97,14 @@ public class AuthController {
     return "redirect:/error";
   }
 
-  @GetMapping(value = "/forgot")
+  @GetMapping("/forgot")
   public String displayResetPassword(Model model, UserAccountRequestDto user) {
     model.addAttribute("user", user);
     return "user/page-forgot-password";
   }
 
   @Deprecated
-  @PostMapping(value = "/forgot")
+  @PostMapping("/forgot")
   public String forgotUserPassword(RedirectAttributes redirectAttributes, UserAccountRequestDto user) {
     Optional<UserAccountEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
 
@@ -158,7 +157,7 @@ public class AuthController {
   }
 
   @Deprecated(forRemoval = false)
-  @PostMapping(value = "/reset")
+  @PostMapping("/reset")
   public String resetUserPassword(RedirectAttributes redirectAttributes, UserAccountRequestDto user) {
     if (user.getEmail() != null) {
       Optional<UserAccountEntity> tokenUser = userAccountService.findByEmailIgnoreCase(user.getEmail());

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
+@Deprecated(forRemoval = false)
 @Service
 @RequiredArgsConstructor
 public class ConfirmationService {

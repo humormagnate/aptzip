@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 @Service("authService")
 public class AuthService {
 
-    private JavaMailSender javaMailSender;
+  private JavaMailSender javaMailSender;
 
-    @Autowired
-    public AuthService(JavaMailSender javaMailSender) {
-      this.javaMailSender = javaMailSender;
-    }
+  @Autowired
+  public AuthService(JavaMailSender javaMailSender) {
+    this.javaMailSender = javaMailSender;
+  }
 
-    @Async
-    public void sendEmail(SimpleMailMessage email) {
-      javaMailSender.send(email);
-    }
+  @Async
+  public void sendEmail(SimpleMailMessage email) {
+    javaMailSender.send(email);
+  }
 }

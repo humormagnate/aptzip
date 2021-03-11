@@ -17,16 +17,16 @@ public class WebSocketConfig implements WebSocketConfigurer {
      * setAllowedOrigins("*")
      */
     // pure websocket (standard) > IE 10
-    registry.addHandler(new CommentEchoHandler(), "/ws/comment")
+    registry.addHandler(new CommentEchoHandler(), "/ws/comments")
             .setAllowedOrigins("*");
             // .setHandshakeHandler();
 
     // Use SockJS Library > IE 8
     // client js 라이브러리 필요(cdn || webjar)
     // endpoint
-    // registry.addHandler(new CommentEchoHandler(), "/ws/message")
+    // registry.addHandler(new CommentEchoHandler(), "/ws/messages")
     //         .setAllowedOrigins("*")
     //         .withSockJS();
   }
-  
+
 }

@@ -20,7 +20,7 @@
 										</svg></i>
 								</div>
 								<div class="tt-avatar-title">
-									<a th:href="@{/user/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
+									<a th:href="@{/users/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
 									<input type="hidden" id="boardID" th:value="${ board.id }">
 									<input type="hidden" id="boardWriterID" th:value="${ board.user.id }">
 									<input type="hidden" id="boardAptID" th:value="${ board.apt.code }">
@@ -150,7 +150,7 @@
 												</svg></i>
 										</div>
 										<div class="tt-avatar-title">
-											<a th:href="@{/user/{id}(id=${comment.user.id}) }">[[${ comment.user.username }]]</a>
+											<a th:href="@{/users/{id}(id=${comment.user.id}) }">[[${ comment.user.username }]]</a>
 										</div>
 										<span class="tt-info-time">
 											<i class="tt-icon"><svg>

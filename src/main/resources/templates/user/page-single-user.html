@@ -40,7 +40,7 @@
 										<use xlink:href="/fonts/forum.svg#icon-settings_fill"></use>
 									</svg>
 								</a>
-								<!-- <a th:href="@{ ~/api/message/user/{id}(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
+								<!-- <a th:href="@{ ~/api/message/users/{id}(id=${#authentication.principal.id}) }" class="btn btn-primary">Message</a> -->
 								<!-- <a href="#" class="btn btn-primary">Message</a> -->
 								<a th:if="${#authentication.principal.id} ne ${ infouser.id }" href="#" id="userFollowBtn" class="btn btn-secondary">Follow</a>
 							</div>
@@ -179,7 +179,7 @@
 											</div>
 										</div>
 										<div class="tt-content">
-											<a th:href="@{/user/{id}(id=${comment.user.id})}">
+											<a th:href="@{/users/{id}(id=${comment.user.id})}">
 												[[${comment.user.username}]]
 											</a>
 										</div>
@@ -227,7 +227,7 @@
 										</div>
 										<div class="tt-col-description">
 											<h6 class="tt-title">
-												<a th:href="@{/user/{id}(id=${follower.follower.id})}">[[${follower.follower.username}]]</a>
+												<a th:href="@{/users/{id}(id=${follower.follower.id})}">[[${follower.follower.username}]]</a>
 											</h6>
 											<ul>
 												<li><a th:href="'mailto:' + ${follower.follower.email}">@[[${follower.follower.username}]]</a></li>
@@ -266,7 +266,7 @@
 										</div>
 										<div class="tt-col-description">
 											<h6 class="tt-title">
-												<a th:href="@{/user/{id}(id=${following.following.id}) }">[[${following.following.username}]]</a>
+												<a th:href="@{/users/{id}(id=${following.following.id}) }">[[${following.following.username}]]</a>
 											</h6>
 											<ul>
 												<li><a th:href="'mailto:' + ${following.following.email}">@[[${following.following.username}]]</a></li>
@@ -367,7 +367,7 @@
 						</span>
 					</a>
 				</div>
-				<form class="form-default" action="/user/edit" method="post">
+				<form class="form-default" action="/users/edit" method="post">
 					<div class="tt-form-upload">
 						<div class="row no-gutter">
 							<div class="col-auto">
@@ -438,7 +438,7 @@
 			const obj = { id:USER_ID, password:NEW_PASSWORD };
 
 			$.ajax({
-	      url: '[[@{/user/edit/pw}]]',
+	      url: `[[@{/users/${USER_ID}/pw}]]`,
 	      method: 'patch',
 				data: JSON.stringify(obj),
 				// client -> server
@@ -465,7 +465,7 @@
 	if (userFollowBtn != null) {
 		userFollowBtn.addEventListener('click', function(event){
 			event.preventDefault();
-			const URL = '[[@{/user}]]/' + TARGET_ID + '/follow';
+			const URL = '[[@{/users}]]/' + TARGET_ID + '/follow';
 			userFollow(URL);
 		}, false);
 	}
@@ -475,7 +475,7 @@
 		userLeave.addEventListener('click', function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: '[[@{/user/}]]' + USER_ID,
+				url: '[[@{/users/}]]' + USER_ID,
 				method: 'patch',
 				data: {
 					id: USER_ID

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -64,17 +65,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
       .authorizeRequests()
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/**", "/boards/*/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
-        .antMatchers("/boards/new/**", "/categories", "/zip", "/like/**").authenticated()
-        .antMatchers("/login/*").anonymous()
+        .antMatchers("/users/**", "/boards/*/edit/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+        .antMatchers("/boards/new").authenticated()
+        .antMatchers("/login", "/signup").anonymous()
         .antMatchers("/**").permitAll()
         .anyRequest().authenticated().and()
         .exceptionHandling().accessDeniedPage("/")
         .and()
       .csrf()
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .ignoringAntMatchers("/**")
-        .and()
+        .disable()
+        // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        // .ignoringAntMatchers("/**")
+        // .and()
       .headers()
         .frameOptions()
           .sameOrigin()
@@ -82,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .xssProtectionEnabled(true)
         .and()
         .httpStrictTransportSecurity()
-          .maxAgeInSeconds(60 * 60 * 24 * 365)
+          .maxAgeInSeconds(60 * 60 * 24 * 365L)
           .includeSubDomains(true).and()
         .and()
       .rememberMe()
@@ -101,7 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
       .logout()
         .logoutUrl("/logout")
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // 로그아웃은 POST로 처리하는 것이 안전하다.
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", HttpMethod.GET.name())) // FIXME: POST
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID", "remember-me")
@@ -141,13 +143,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public AuthenticationFailureHandler failureHandler() {
-    log.debug("===============================Security-Config-failureHandler=====================================");
+    log.debug("Security-Config-failureHandler >>");
     return new SimpleUrlAuthenticationFailureHandler("/login?error=true");
   }
 
   @Bean
   public AuthenticationSuccessHandler successHandler() {
-    log.debug("===============================Security-Config-successHandler=====================================");
+    log.debug("Security-Config-successHandler >>");
     return new LoginSuccessHandler("/");
   }
 
