@@ -48,25 +48,20 @@ public class UserAccountService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    log.debug(
-        "=============================== UserService-loadUserByUsername start =====================================");
     log.debug("username: {}", username);
-
     Optional<UserAccountEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
     if (userEntityWrapper.isEmpty()) {
       throw new UsernameNotFoundException("Not found " + username);
     }
-    UserAccountEntity user = userEntityWrapper.get();
 
-    log.debug(
-        "=============================== UserService-loadUserByUsername get =====================================");
-    log.debug("user: {}", user);
+    UserAccountEntity user = userEntityWrapper.get();
     if (!user.isEnabled()) {
       throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
+    log.debug("user: {}", user);
 
-    UserAccountResponseDto urd = new UserAccountResponseDto(user.getUsername(), user.getPassword(), true, true, true, true,
-        UserRole.USER.getGrantedAuthorities());
+    UserAccountResponseDto urd = new UserAccountResponseDto(user.getUsername(), user.getPassword(), true, true, true,
+        true, UserRole.USER.getGrantedAuthorities());
     log.debug("urd: {}", urd);
     urd.setId(user.getId());
     urd.setEmail(user.getEmail());
@@ -163,17 +158,26 @@ public class UserAccountService implements UserDetailsService {
     userJpaRepository.updatePasswordById(user.getPassword(), user.getId());
   }
 
-  public String createFollow(Long id, UserAccountRequestDto user) {
+  // public UserFollowEntity createFollow(UserFollowRequestDto follow) {
+  // return followRepository.save(follow.toEntity());
+  // }
+
+  public UserFollowEntity createFollow(Long id, UserAccountRequestDto user) {
     UserAccountEntity following = UserAccountEntity.builder().id(id).build();
     UserAccountEntity follower = user.toEntity();
     UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
 
     if (relationship != null) {
-      followRepository.delete(relationship);
-      return "delete";
-    } else {
-      followRepository.save(UserFollowRequestDto.builder().following(following).follower(follower).build().toEntity());
-      return "save";
+      return relationship;
     }
+    return followRepository
+        .save(UserFollowRequestDto.builder().following(following).follower(follower).build().toEntity());
+  }
+
+  public void deleteFollow(Long id, UserAccountRequestDto user) {
+    UserAccountEntity following = UserAccountEntity.builder().id(id).build();
+    UserAccountEntity follower = user.toEntity();
+    UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
+    followRepository.delete(relationship);
   }
 }

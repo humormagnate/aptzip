@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/comment/")
+@RequestMapping("/comments/")
 @RestController
 public class CommentController {
 

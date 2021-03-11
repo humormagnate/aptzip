@@ -3,6 +3,7 @@ package com.markruler.aptzip.controller;
 import javax.transaction.Transactional;
 
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.UserFollowEntity;
 import com.markruler.aptzip.service.UserAccountService;
 
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Controller
 public class UserAccountController {
   private final UserAccountService userAccountService;
@@ -65,13 +67,23 @@ public class UserAccountController {
     return new ResponseEntity<>("success", HttpStatus.OK);
   }
 
-  // TODO: post와 delete 나누기
   @Transactional
   @ResponseBody
   @PostMapping("/{id}/follow")
-  public String createFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
+  public ResponseEntity<UserFollowEntity> createFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("user: {}", user);
-    return userAccountService.createFollow(id, user);
+    UserFollowEntity entity = userAccountService.createFollow(id, user);
+    if (entity == null) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(entity);
+    }
+    return ResponseEntity.ok(entity);
+  }
+
+  @Transactional
+  @DeleteMapping("/{id}/follow")
+  public void deleteFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
+    log.debug("user: {}", user);
+    userAccountService.deleteFollow(id, user);
   }
 
 }

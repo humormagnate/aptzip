@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Common이라는 명칭 지양, `/zip` 분리
 @Slf4j
 @Controller
 @RequiredArgsConstructor
