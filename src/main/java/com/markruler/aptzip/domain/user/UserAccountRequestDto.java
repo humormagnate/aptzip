@@ -14,8 +14,6 @@ import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 
 import org.springframework.security.core.GrantedAuthority;
-// import org.springframework.security.core.userdetails.User;
-// import org.springframework.social.security.SocialUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
@@ -61,8 +59,6 @@ public class UserAccountRequestDto implements UserDetails {
   private transient List<UserFollowEntity> following;
   private transient List<UserFollowEntity> follower;
   private boolean isEnabled;
-  // private String providerId;
-  // private String providerUserId;
 
   public UserAccountRequestDto(UserAccountEntity user) {
     this.id = user.getId();

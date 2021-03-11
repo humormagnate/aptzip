@@ -23,13 +23,11 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table(name = "TB_COMMENT")
 @Getter
-@Setter // TODO: Remove setter
 @ToString
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor

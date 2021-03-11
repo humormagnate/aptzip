@@ -87,8 +87,4 @@ public class UserAccountEntity {
 
   private boolean isEnabled;
 
-  // private String providerId;
-
-  // private String providerUserId;
-
 }

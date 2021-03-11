@@ -1,6 +1,7 @@
 package com.markruler.aptzip.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
@@ -19,9 +20,10 @@ public class CommentService {
 
   private final CommentRepository commentRepository;
 
-  public List<CommentEntity> listComments(Long boardId) {
+  public List<CommentRequestDto> listComments(Long boardId) {
     BoardEntity board = BoardRequestDto.builder().id(boardId).build().toEntity();
-    List<CommentEntity> comments = commentRepository.getCommentsByBoardId(board);
+    List<CommentRequestDto> comments = commentRepository.getCommentsByBoardId(board).stream().map(CommentRequestDto::new).collect(Collectors.toList());;
+
     if (comments.isEmpty()) return comments;
     // board는 저장하려는 객체를 바로 수정하기 때문에 System.lineSeparator()로도 지정해서 변경할 수 있지만,
     // comment는 DB에서 가져오기 때문에 "\n"로 지정해줘야함.
@@ -38,11 +40,8 @@ public class CommentService {
     return commentRepository.save(comment.toEntity());
   }
 
-  public void updateComment(CommentRequestDto comment) {
-    commentRepository.findById(comment.getId()).ifPresent(originComment -> {
-      originComment.setContent(comment.getContent());
-      commentRepository.save(originComment);
-    });
+  public CommentEntity updateComment(CommentRequestDto comment) {
+    return commentRepository.save(comment.toEntity());
   }
 
   public void deleteById(Long commentId) {

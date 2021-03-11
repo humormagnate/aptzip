@@ -73,10 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .exceptionHandling().accessDeniedPage("/")
         .and()
       .csrf()
-        .disable()
-        // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        // .ignoringAntMatchers("/**")
-        // .and()
+        // .disable()
+        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .ignoringAntMatchers("/**")
+        .and()
       .headers()
         .frameOptions()
           .sameOrigin()
@@ -153,23 +153,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return new LoginSuccessHandler("/");
   }
 
-  @Bean // Register HttpSessionEventPublisher
+  /**
+   * Register HttpSessionEventPublisher
+   */
+  @Bean
   public SessionRegistry sessionRegistry() {
     return new SessionRegistryImpl();
   }
 
-  // the servlet container will notify
-  // Spring Security (through HttpSessionEventPublisher) of session life cycle
-  // events
+  /**
+   * the servlet container will notify Spring Security (through
+   * HttpSessionEventPublisher) of session life cycle events
+   */
   @Bean
   public static ServletListenerRegistrationBean<EventListener> httpSessionEventPublisher() {
     return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
   }
-
-  // @Deprecated(forRemoval = true)
-  // @Bean
-  // public SocialUserAccountService socialUsersDetailService() {
-  //   return new SocialUserAccountService(userService);
-  // }
 
 }

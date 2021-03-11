@@ -2,6 +2,6 @@
 # chmod +x .githooks/pre-commit
 # git config core.hookspath .githooks
 
-echo "pre-commit test"
+echo "pre-commit: make test-all"
 
 make test-all

@@ -45,21 +45,9 @@ public class CommonController {
 
     log.debug("User on Landing Page: {}", user);
 
-    // TODO: 최근 게시물 개수 구하기
-    int newBoard = 0;
-    // List<BoardEntity> list = new ArrayList<BoardEntity>();
-    // for (BoardEntity str : board) {
-    // list.add(str);
-    // if (new TemporalsAptzip(Locale.KOREA).isLessThanOneHour(str.getCreateDate()))
-    // {
-    // newBoard++;
-    // }
-    // }
-
     // @formatter:off
     mv.addObject("principal", user)
       .addObject("list", list)
-      .addObject("newBoard", newBoard)
       .setViewName("index");
     // @formatter:on
 

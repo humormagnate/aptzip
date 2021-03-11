@@ -9,6 +9,7 @@ import com.markruler.aptzip.service.AuthService;
 import com.markruler.aptzip.service.ConfirmationService;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,15 @@ public class AuthController {
   private final ConfirmationService confirmationService;
   private final UserAccountService userAccountService;
 
+  private final String CONFIRM_TOKEN_NULL = "The link is invalid or broken!";
+  private final String REDIRECT_ERROR_PAGE = "redirect:/error";
+  private final String REDIRECT_LOGIN_PAGE = "redirect:/login";
+  private final String SUCCESS_MESSAGE = "success";
+  private final String EMAIL_MESSAGE = "email";
+
+  @Value("${spring.profiles.active}")
+  private String activeProfile;
+
   @GetMapping("/login")
   public String login() {
     return "login";
@@ -45,41 +55,37 @@ public class AuthController {
   }
 
   @PostMapping(value = "/signup", consumes = "application/x-www-form-urlencoded")
-  public String registerUser(@ModelAttribute UserAccountRequestDto user, RedirectAttributes redirectAttributes, String aptCode/* , ConnectionData connection */) {
+  public String registerUser(@ModelAttribute UserAccountRequestDto user, RedirectAttributes redirectAttributes,
+      String aptCode/* , ConnectionData connection */) {
     log.debug("apartment code: {}", aptCode);
     UserAccountEntity returnedUser = userAccountService.save(user, aptCode);
     if (returnedUser == null) {
       redirectAttributes.addFlashAttribute("error", true).addFlashAttribute("message", "이미 가입된 이메일입니다.");
       return "redirect:/signup";
     }
-    redirectAttributes.addFlashAttribute("success", true);
+    redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, true);
 
-    // 실제 서비스가 아니라면 개발 환경에서 오류가 발생하므로 주석 처리
-    /*
-     * ConfirmationToken confirmationToken = confirmationService.createToken(user);
-     *
-     * SimpleMailMessage mailMessage = new SimpleMailMessage();
-     * mailMessage.setTo(user.getEmail());
-     * mailMessage.setSubject("Complete Registration!");
-     * mailMessage.setFrom("noreply@markruler.com");
-     * mailMessage.setText("To confirm your account, please click here : " +
-     * "https://markruler.com/aptzip/confirm-account?token=" +
-     * confirmationToken.getConfirmationToken());
-     *
-     * emailSenderService.sendEmail(mailMessage);
-     * redirectAttributes.addFlashAttribute("email", user.getEmail());
-     */
-    return "redirect:/login";
+    // 실제 서비스가 아니라면 개발 환경에서 오류가 발생하므로 프로파일 분기 처리
+    if (activeProfile.equals("prod")) {
+      ConfirmationToken confirmationToken = confirmationService.createToken(user.toEntity());
+      SimpleMailMessage mailMessage = new SimpleMailMessage();
+      mailMessage.setTo(user.getEmail());
+      mailMessage.setSubject("Complete Registration!");
+      mailMessage.setFrom("noreply@markruler.com");
+      mailMessage.setText("To confirm your account, please click here : "
+          + "https://markruler.com/aptzip/confirm-account?token=" + confirmationToken.getConfirmationToken());
+
+      authService.sendEmail(mailMessage);
+    }
+    redirectAttributes.addFlashAttribute(EMAIL_MESSAGE, user.getEmail());
+    return REDIRECT_LOGIN_PAGE;
   }
 
-  // 로그인 페이지 redirect를 피하려고 만든 컨트롤러
-  // 그렇지 않으면 매핑 경로가 아닌 HTML 파일 경로를 적어줘야 합니다.
   @GetMapping("/register")
   public String register() {
     return "user/page-register";
   }
 
-  @Deprecated
   @RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
   public String confirmUserAccount(RedirectAttributes redirectAttributes,
       @RequestParam("token") String confirmationToken) {
@@ -89,11 +95,11 @@ public class AuthController {
       Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
       if (user.isPresent()) {
         userAccountService.enabledUser(user.get().getId());
-        redirectAttributes.addFlashAttribute("success", true);
-        return "redirect:/login";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, true);
+        return REDIRECT_LOGIN_PAGE;
       }
     }
-    redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
+    redirectAttributes.addFlashAttribute("msg", CONFIRM_TOKEN_NULL);
     return "redirect:/error";
   }
 
@@ -103,7 +109,6 @@ public class AuthController {
     return "user/page-forgot-password";
   }
 
-  @Deprecated
   @PostMapping("/forgot")
   public String forgotUserPassword(RedirectAttributes redirectAttributes, UserAccountRequestDto user) {
     Optional<UserAccountEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
@@ -120,11 +125,11 @@ public class AuthController {
 
       authService.sendEmail(mailMessage);
 
-      redirectAttributes.addFlashAttribute("email", user.getEmail());
+      redirectAttributes.addFlashAttribute(EMAIL_MESSAGE, user.getEmail());
       return "redirect:/confirm";
     } else {
       redirectAttributes.addFlashAttribute("msg", "This email address does not exist!");
-      return "redirect:/error";
+      return REDIRECT_ERROR_PAGE;
     }
   }
 
@@ -133,7 +138,6 @@ public class AuthController {
     return "user/page-confirm-reset";
   }
 
-  @Deprecated
   @RequestMapping(value = "/confirm-reset", method = { RequestMethod.GET, RequestMethod.POST })
   public String validateResetToken(RedirectAttributes redirectAttributes,
       @RequestParam("token") String confirmationToken) {
@@ -143,12 +147,12 @@ public class AuthController {
       Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
       if (user.isPresent()) {
         userAccountService.enabledUser(user.get().getId());
-        redirectAttributes.addFlashAttribute("user", user).addFlashAttribute("email", user.get().getEmail());
+        redirectAttributes.addFlashAttribute("user", user).addFlashAttribute(EMAIL_MESSAGE, user.get().getEmail());
         return "redirect:/reset";
       }
     }
-    redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
-    return "redirect:/error";
+    redirectAttributes.addFlashAttribute("msg", CONFIRM_TOKEN_NULL);
+    return REDIRECT_ERROR_PAGE;
   }
 
   @GetMapping("/reset")
@@ -156,18 +160,17 @@ public class AuthController {
     return "user/page-reset-password";
   }
 
-  @Deprecated(forRemoval = false)
   @PostMapping("/reset")
   public String resetUserPassword(RedirectAttributes redirectAttributes, UserAccountRequestDto user) {
     if (user.getEmail() != null) {
       Optional<UserAccountEntity> tokenUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
       if (tokenUser.isPresent()) {
         userAccountService.updatePassword(user);
-        redirectAttributes.addFlashAttribute("success", true);
-        return "redirect:/login";
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, true);
+        return REDIRECT_LOGIN_PAGE;
       }
     }
-    redirectAttributes.addFlashAttribute("msg", "The link is invalid or broken!");
-    return "redirect:/error";
+    redirectAttributes.addFlashAttribute("msg", CONFIRM_TOKEN_NULL);
+    return REDIRECT_ERROR_PAGE;
   }
 }

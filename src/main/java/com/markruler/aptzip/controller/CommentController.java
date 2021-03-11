@@ -33,15 +33,14 @@ public class CommentController {
   private final CommentService commentService;
 
   @GetMapping("/{boardId}")
-  public ResponseEntity<List<CommentEntity>> commentGet(@PathVariable("boardId") Long boardId) {
-    // TODO: make a response DTO
-    List<CommentEntity> list = commentService.listComments(boardId);
+  public ResponseEntity<List<CommentRequestDto>> commentGet(@PathVariable("boardId") Long boardId) {
+    List<CommentRequestDto> list = commentService.listComments(boardId);
     return new ResponseEntity<>(list, HttpStatus.OK);
   }
 
   @Transactional
   @PostMapping("/{boardId}")
-  public ResponseEntity<List<CommentEntity>> commentPost(@PathVariable("boardId") Long boardId,
+  public ResponseEntity<List<CommentRequestDto>> commentPost(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("comment: {}", comment);
     CommentEntity entity = commentService.save(boardId, comment, user);
@@ -49,26 +48,26 @@ public class CommentController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    List<CommentEntity> list = commentService.listComments(boardId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(list);
+    List<CommentRequestDto> list = commentService.listComments(boardId);
+    return ResponseEntity.ok(list);
   }
 
   @Transactional
   @DeleteMapping("/{boardId}/{commentId}")
-  public ResponseEntity<List<CommentEntity>> commentDelete(@PathVariable("boardId") Long boardId,
+  public ResponseEntity<List<CommentRequestDto>> commentDelete(@PathVariable("boardId") Long boardId,
       @PathVariable("commentId") Long commentId) {
     commentService.deleteById(commentId);
-    List<CommentEntity> list = commentService.listComments(boardId);
+    List<CommentRequestDto> list = commentService.listComments(boardId);
     return ResponseEntity.ok(list);
   }
 
   @Transactional
   @PutMapping("/{boardId}")
-  public ResponseEntity<List<CommentEntity>> updateComment(@PathVariable("boardId") Long boardId,
+  public ResponseEntity<List<CommentRequestDto>> updateComment(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment) {
     commentService.updateComment(comment);
-    List<CommentEntity> list = commentService.listComments(boardId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(list);
+    List<CommentRequestDto> list = commentService.listComments(boardId);
+    return ResponseEntity.ok(list);
   }
 
 }

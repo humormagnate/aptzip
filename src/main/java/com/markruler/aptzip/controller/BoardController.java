@@ -92,26 +92,14 @@ public class BoardController {
       // @formatter:on
   ) {
     log.debug("Apartment Code: {}", apartmentCode);
-    // TODO: set apartmentCode
-    Page<BoardEntity> boards = boardService.listBoardByPage(null, customPage);
+    Page<BoardEntity> boards = boardService.listBoardByPage(apartmentCode, customPage);
     CustomPageMaker<BoardEntity> list = new CustomPageMaker<>(boards);
-
-    int newBoard = 0;
-    // List<BoardEntity> list = new ArrayList<BoardEntity>();
-    // for (BoardEntity str : board) {
-    // list.add(str);
-    // if (new TemporalsAptzip(Locale.KOREA).isLessThanOneHour(str.getCreateDate()))
-    // {
-    // newBoard++;
-    // }
-    // }
 
     // @formatter:off
       model
         .addAttribute("principal", user)
         .addAttribute("list", list)
-        .addAttribute("customPage", customPage)
-        .addAttribute("newBoard", newBoard);
+        .addAttribute("customPage", customPage);
       // @formatter:on
 
     return "apt";

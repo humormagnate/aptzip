@@ -41,7 +41,6 @@ public class UserAccountService implements UserDetailsService {
   private final PasswordEncoder passwordEncoder;
   private final UserJpaRepository userJpaRepository;
   private final FollowRepository followRepository;
-  // private final FollowQueryRepository followQuery;
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository;
 
@@ -106,23 +105,15 @@ public class UserAccountService implements UserDetailsService {
   @Transactional(rollbackFor = Exception.class)
   public UserAccountEntity save(UserAccountRequestDto user, String aptCode) {
     Optional<UserAccountEntity> existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail());
-
     if (existingUser.isPresent()) {
       return null;
     }
-
     log.info("The email address not found");
 
     user.setApt(AptRequestDto.builder().code(aptCode).build().toEntity());
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
-
-    // if (connection != null) {
-    // user.setProviderId(connection.getProviderId());
-    // user.setProviderUserId(connection.getProviderUserId());
-    // }
-
-    user.setEnabled(true); // email confirmation 절차가 없을 경우에만 사용
+    user.setEnabled(true);
     return userJpaRepository.save(user.toEntity());
   }
 
@@ -133,6 +124,7 @@ public class UserAccountService implements UserDetailsService {
   }
 
   public Optional<UserAccountEntity> findById(Long id) {
+    // return userJpaRepository.findById(id).map(UserAccountRequestDto::new);
     return userJpaRepository.findById(id);
   }
 
@@ -157,10 +149,6 @@ public class UserAccountService implements UserDetailsService {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     userJpaRepository.updatePasswordById(user.getPassword(), user.getId());
   }
-
-  // public UserFollowEntity createFollow(UserFollowRequestDto follow) {
-  // return followRepository.save(follow.toEntity());
-  // }
 
   public UserFollowEntity createFollow(Long id, UserAccountRequestDto user) {
     UserAccountEntity following = UserAccountEntity.builder().id(id).build();
