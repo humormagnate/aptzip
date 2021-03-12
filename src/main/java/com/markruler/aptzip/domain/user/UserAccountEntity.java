@@ -35,7 +35,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_user")
+@Table(name = "TB_USER")
 @EqualsAndHashCode(of = "id")
 @Builder
 @ToString(exclude = { "password", "following", "follower", "board" })

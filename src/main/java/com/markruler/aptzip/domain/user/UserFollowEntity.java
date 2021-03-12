@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "tb_user_follow")
+@Table(name = "TB_USER_FOLLOW")
 @Getter
 @ToString
 @EqualsAndHashCode

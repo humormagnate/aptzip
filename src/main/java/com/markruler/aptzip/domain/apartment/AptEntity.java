@@ -15,7 +15,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 @Entity
-@Table(name = "tb_apt")
+@Table(name = "TB_APT")
 @Getter
 @ToString
 @EqualsAndHashCode(of = "code")
