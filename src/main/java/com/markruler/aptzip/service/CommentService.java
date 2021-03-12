@@ -24,7 +24,7 @@ public class CommentService {
 
   public List<CommentRequestDto> listComments(Long boardId) {
     BoardEntity board = BoardRequestDto.builder().id(boardId).build().toEntity();
-    List<CommentRequestDto> comments = commentRepository.getCommentsByBoardId(board).stream().map(CommentRequestDto::new).collect(Collectors.toList());;
+    List<CommentRequestDto> comments = commentRepository.getCommentsByBoardId(board).stream().map(CommentRequestDto::new).collect(Collectors.toList());
 
     if (comments.isEmpty()) return comments;
     // board는 저장하려는 객체를 바로 수정하기 때문에 System.lineSeparator()로도 지정해서 변경할 수 있지만,

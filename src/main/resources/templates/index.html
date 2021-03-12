@@ -65,7 +65,7 @@
               <div class="tt-col-description">
                 <h6 class="tt-title">
                   <a th:href="@{/boards/{id}(id=${board.id})}">
-                    [[${ board?.boardTitle }]]
+                    [[${ board?.title }]]
                   </a>
                 </h6>
 
@@ -74,7 +74,7 @@
                     <ul class="tt-list-badge">
                       <li class="show-mobile">
                         <a href="#">
-                          <span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }" th:classappend="'user-select-none'">[[${not #strings.isEmpty(board?.category)} ? ${board?.category?.name} : 'Common']]</span>
+                          <span th:class="'tt-color0' + ${ board?.category + ' tt-badge' }" th:classappend="'user-select-none'">[[${not #strings.isEmpty(board?.category)} ? ${board?.category} : 'Common']]</span>
                         </a>
                       </li>
                     </ul>
@@ -85,8 +85,8 @@
                 </div>
               </div>
               <div class="tt-col-category">
-                <span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }" th:classappend="'user-select-none'">
-                  [[${not #strings.isEmpty(board?.category)} ? ${board?.category?.name} : 'Common']]
+                <span th:class="'tt-color0' + ${ board?.category + ' tt-badge' }" th:classappend="'user-select-none'">
+                  [[${not #strings.isEmpty(board?.category)} ? ${board?.category} : 'Common']]
                 </span>
               </div>
               <div class="tt-col-value hide-mobile">0</div>

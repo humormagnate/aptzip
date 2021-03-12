@@ -39,7 +39,7 @@
 								</span>
 							</div>
 							<h3 class="tt-item-title user-select-none">
-								<a href="#">[[${ board.boardTitle }]]</a>
+								<a href="#">[[${ board.title }]]</a>
 							</h3>
 							<div class="tt-item-tag">
 								<ul class="tt-list-badge">
@@ -48,9 +48,9 @@
 											<span class="tt-color08 tt-badge">edit</span>
 										</a>
 									</li>
-									<li th:each="category : ${ board?.category?.name }">
+									<li th:each="category : ${ board?.category }">
 										<a href="#">
-											<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge' }"
+											<span th:class="'tt-color0' + ${ board?.category + ' tt-badge' }"
 												th:classappend="'user-select-none'">[[${ category }]]</span>
 										</a>
 									</li>
@@ -58,8 +58,8 @@
 							</div>
 						</div>
 						<div class="tt-item-description">
-							<p th:utext="${board.boardContent}">
-								<!-- <p th:text="${board.boardContent}"> -->
+							<p th:utext="${board.content}">
+								<!-- <p th:text="${board.content}"> -->
 							</p>
 						</div>
 						<div class="tt-item-info info-bottom">

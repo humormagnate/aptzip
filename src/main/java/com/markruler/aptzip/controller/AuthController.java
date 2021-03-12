@@ -48,15 +48,46 @@ public class AuthController {
   }
 
   @GetMapping(value = "/signup")
-  public ModelAndView displayRegistration(ModelAndView modelAndView, UserAccountRequestDto user) {
+  public ModelAndView displayRegistration(
+  // @formatter:off
+    ModelAndView modelAndView,
+    UserAccountRequestDto user
+  // @formatter:on
+  ) {
     modelAndView.addObject("user", user);
     modelAndView.setViewName("signup");
     return modelAndView;
   }
 
+  @GetMapping("/register")
+  public String register() {
+    return "user/page-register";
+  }
+
+  @GetMapping("/forgot")
+  public String displayResetPassword(Model model, UserAccountRequestDto user) {
+    model.addAttribute("user", user);
+    return "user/page-forgot-password";
+  }
+
+  @GetMapping("/confirm")
+  public String confimResetGet() {
+    return "user/page-confirm-reset";
+  }
+
+  @GetMapping("/reset")
+  public String resetUserPasswordPost() {
+    return "user/page-reset-password";
+  }
+
   @PostMapping(value = "/signup", consumes = "application/x-www-form-urlencoded")
-  public String registerUser(@ModelAttribute UserAccountRequestDto user, RedirectAttributes redirectAttributes,
-      String aptCode/* , ConnectionData connection */) {
+  public String registerUser(
+  // @formatter:off
+    @ModelAttribute UserAccountRequestDto user,
+    RedirectAttributes redirectAttributes,
+    String aptCode
+  // @formatter:on
+  ) {
     log.debug("apartment code: {}", aptCode);
     UserAccountEntity returnedUser = userAccountService.save(user, aptCode);
     if (returnedUser == null) {
@@ -81,16 +112,14 @@ public class AuthController {
     return REDIRECT_LOGIN_PAGE;
   }
 
-  @GetMapping("/register")
-  public String register() {
-    return "user/page-register";
-  }
-
   @RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
-  public String confirmUserAccount(RedirectAttributes redirectAttributes,
-      @RequestParam("token") String confirmationToken) {
+  public String confirmUserAccount(
+  // @formatter:off
+    RedirectAttributes redirectAttributes,
+    @RequestParam("token") String confirmationToken
+  // @formatter:on
+  ) {
     ConfirmationToken token = confirmationService.findToken(confirmationToken);
-
     if (token != null) {
       Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
       if (user.isPresent()) {
@@ -101,12 +130,6 @@ public class AuthController {
     }
     redirectAttributes.addFlashAttribute("msg", CONFIRM_TOKEN_NULL);
     return "redirect:/error";
-  }
-
-  @GetMapping("/forgot")
-  public String displayResetPassword(Model model, UserAccountRequestDto user) {
-    model.addAttribute("user", user);
-    return "user/page-forgot-password";
   }
 
   @PostMapping("/forgot")
@@ -133,16 +156,14 @@ public class AuthController {
     }
   }
 
-  @GetMapping("/confirm")
-  public String confimResetGet() {
-    return "user/page-confirm-reset";
-  }
-
   @RequestMapping(value = "/confirm-reset", method = { RequestMethod.GET, RequestMethod.POST })
-  public String validateResetToken(RedirectAttributes redirectAttributes,
-      @RequestParam("token") String confirmationToken) {
+  public String validateResetToken(
+  // @formatter:off
+    RedirectAttributes redirectAttributes,
+    @RequestParam("token") String confirmationToken
+  // @formatter:on
+  ) {
     ConfirmationToken token = confirmationService.findToken(confirmationToken);
-
     if (token != null) {
       Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
       if (user.isPresent()) {
@@ -153,11 +174,6 @@ public class AuthController {
     }
     redirectAttributes.addFlashAttribute("msg", CONFIRM_TOKEN_NULL);
     return REDIRECT_ERROR_PAGE;
-  }
-
-  @GetMapping("/reset")
-  public String resetUserPasswordPost() {
-    return "user/page-reset-password";
   }
 
   @PostMapping("/reset")

@@ -1,18 +1,20 @@
 package com.markruler.aptzip.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
-import com.markruler.aptzip.domain.board.CategoryEntity;
+import com.markruler.aptzip.domain.board.Category;
 import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.board.LikeRequestDto;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.helper.CustomPageMaker;
 import com.markruler.aptzip.service.BoardService;
-import com.markruler.aptzip.service.CategoryService;
 import com.markruler.aptzip.service.LikeService;
+import com.markruler.aptzip.service.UserAccountService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -42,13 +44,15 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 
   private final BoardService boardService;
-  private final CategoryService categoryService;
+  private final UserAccountService userService;
   private final LikeService likeService;
 
   @GetMapping("/new")
   public String goWritePage(Model model) {
-    List<CategoryEntity> categories = categoryService.findAll();
-    log.debug("categories: {}", categories);
+    Category[] categories = Category.values();
+    for (Category c : categories) {
+      log.debug("categories: {}", c);
+    }
     model.addAttribute("categories", categories);
     return "board/write";
   }
@@ -66,10 +70,15 @@ public class BoardController {
     log.debug("categoryID: {}", categoryId);
     log.debug("user: {}", user);
 
-    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty() || categoryId.isEmpty() || user == null) {
+    if (board.getTitle() == null || board.getTitle().isEmpty() || board.getContent() == null
+        || board.getContent().isEmpty() || categoryId == null || categoryId.isEmpty() || user == null) {
       return "redirect:/error";
     }
-    boardService.save(board, categoryId, user);
+    Optional<UserAccountEntity> userEntity = userService.findByEmailIgnoreCase(user.getEmail());
+    if (userEntity.isEmpty()) {
+      return "redirect:/error";
+    }
+    boardService.save(board, categoryId, userEntity.get());
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
     redirectAttributes.addFlashAttribute("msg", "success");
     return "redirect:/";
@@ -78,8 +87,20 @@ public class BoardController {
   @GetMapping("/{id}")
   public String read(Model model, @PathVariable("id") Long boardId,
       @AuthenticationPrincipal UserAccountRequestDto user) {
-    log.debug("user: {}", user);
-    boardService.findById(boardId, user, model);
+    BoardEntity board = boardService.findById(boardId);
+    List<LikeEntity> likes = likeService.findLikesByBoard(board);
+    LikeEntity like = null;
+    for (LikeEntity el : likes) {
+      if (el.getUser().getEmail().equals(user.getEmail())) {
+        like = new LikeEntity(el.getId(), el.getBoard(), el.getUser(), el.getCreateDate());
+      }
+    }
+    // @formatter:off
+    model
+      .addAttribute("board", board)
+      .addAttribute("likes", likes)
+      .addAttribute("like", like);
+    // @formatter:on
     return "board/page-single-topic";
   }
 
@@ -97,11 +118,11 @@ public class BoardController {
     CustomPageMaker<BoardEntity> list = new CustomPageMaker<>(boards);
 
     // @formatter:off
-      model
-        .addAttribute("principal", user)
-        .addAttribute("list", list)
-        .addAttribute("customPage", customPage);
-      // @formatter:on
+    model
+      .addAttribute("principal", user)
+      .addAttribute("list", list)
+      .addAttribute("customPage", customPage);
+    // @formatter:on
 
     return "apt";
   }
@@ -109,8 +130,6 @@ public class BoardController {
   @Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
   @GetMapping("/{id}/edit")
   public String editGet(Model model, @PathVariable("id") Long id) {
-    List<CategoryEntity> categories = boardService.findByIdFromEdit(id, model);
-    model.addAttribute("categories", categories);
     return "board/write";
   }
 

@@ -8,7 +8,6 @@ import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.apartment.AptRequestDto;
 import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.user.AptzipRoleEntity;
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.domain.user.UserFollowEntity;
@@ -73,7 +72,7 @@ public class UserAccountService implements UserDetailsService {
     urd.setFollowing(user.getFollowing());
     urd.setFollower(user.getFollower());
 
-    if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
+    if (user.getRole() != null && user.getRole().equals(UserRole.USER.name())) {
       urd.setRole(UserRole.USER);
     } else {
       urd.setRole(UserRole.ADMIN);
@@ -132,7 +131,7 @@ public class UserAccountService implements UserDetailsService {
 
   public List<UserAccountEntity> listAdminsByApt(UserAccountRequestDto user) {
     AptEntity apt = AptRequestDto.builder().code(user.getApt().getCode()).build().toEntity();
-    return userJpaRepository.findAllByAptAndRole(apt, new AptzipRoleEntity("ADMIN"));
+    return userJpaRepository.findAllByAptAndRole(apt, UserRole.ADMIN.name());
   }
 
   public void disabledUser(Long id) {

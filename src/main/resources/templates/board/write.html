@@ -16,14 +16,14 @@
 					</th:block>
 					
 					<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
-					<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category.id } : ''">
+					<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category } : ''">
 
 					<div class="form-group">
 						<label for="inputTopicTitle">[[${#messages.msg('PostTitle')}]]</label>
 						<div class="tt-value-wrapper">
-							<input type="text" id="boardTitle" name="boardTitle" class="form-control"
+							<input type="text" id="title" name="title" class="form-control"
 								th:placeholder="${#messages.msg('S021')}" maxlength="99"
-								th:value="${ board } ? ${ board.boardTitle } : ''">
+								th:value="${ board } ? ${ board.title } : ''">
 							<span class="tt-value-input"></span>
 						</div>
 						<div class="tt-note">
@@ -38,14 +38,14 @@
 
 								<div class="col-4 col-lg-3 col-xl-2" th:each="category : ${categories}">
 									<a href="#" class="tt-button-icon select-category"
-										th:classappend="${board} ne null and ${board.category.id} eq ${category.id} ? 'active' : ''">
+										th:classappend="${board} ne null and ${board.category} eq ${category} ? 'active' : ''">
 										<span class="tt-icon">
 											<svg>
-												<use th:attr="'xlink:href'='/fonts/forum.svg#icon-' + ${ category.name }"></use>
+												<use th:attr="'xlink:href'='/fonts/forum.svg#icon-' + ${ category }"></use>
 											</svg>
 										</span>
-										<span class="tt-text">[[${category.name}]]</span>
-										<input type="hidden" th:value="${ category.id }" />
+										<span class="tt-text">[[${category}]]</span>
+										<input type="hidden" th:value="${ category }" />
 									</a>
 								</div>
 
@@ -60,7 +60,7 @@
 						</div>
 						<div class="form-group">
 							<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
-								th:placeholder="${#messages.msg('S023')}">[[${ board } ? ${ board.boardContent } : '']]</textarea>
+								th:placeholder="${#messages.msg('S023')}">[[${ board } ? ${ board.content } : '']]</textarea>
 						</div>
 						<div class="row">
 							<div class="col-auto ml-md-auto">

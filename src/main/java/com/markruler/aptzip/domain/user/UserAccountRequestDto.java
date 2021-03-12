@@ -68,14 +68,13 @@ public class UserAccountRequestDto implements UserDetails {
   public UserAccountEntity toEntity() {
     // @formatter:off
     return UserAccountEntity.builder()
-      .id(this.id)
       .email(this.email)
       .password(this.password)
       .username(this.username)
       .introduction(this.introduction)
       .reported(this.reported)
       .board(this.board)
-      .role(new AptzipRoleEntity(this.role.name()))
+      .role(this.role.name())
       .apt(this.apt)
       .following(this.following)
       .follower(this.follower)

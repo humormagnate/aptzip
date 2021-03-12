@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.board.LikeRequestDto;
 import com.markruler.aptzip.persistence.board.LikeRepository;
@@ -41,6 +42,12 @@ public class LikeBoardServiceImpl implements LikeService {
     } else {
       log.debug("The like not found");
     }
+  }
+
+  @Override
+  public List<LikeEntity> findLikesByBoard(BoardEntity board) {
+    LikeRequestDto like = LikeRequestDto.builder().board(board).build();
+    return likeRepository.findAllByBoard(like.getBoard());
   }
 
 }

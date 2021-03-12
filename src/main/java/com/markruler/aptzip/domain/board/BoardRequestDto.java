@@ -12,19 +12,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardRequestDto {
 
   private Long id;
-  private CategoryEntity category;
+  private Category category;
 
-  private String boardTitle;
-  private String boardContent;
+  private String title;
+  private String content;
   private Boolean isEnabled;
   private Long viewCount;
 
@@ -42,8 +44,8 @@ public class BoardRequestDto {
     return new BoardEntity(
       this.id,
       this.category,
-      this.boardTitle,
-      this.boardContent,
+      this.title,
+      this.content,
       this.isEnabled,
       this.viewCount,
       this.createDate,

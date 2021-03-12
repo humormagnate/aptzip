@@ -1,8 +1,11 @@
 package com.markruler.aptzip.helper;
 
+import com.markruler.aptzip.domain.board.Category;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,12 +24,12 @@ public class CustomPage {
   private int size; // 한 페이지당 게시물 개수
 
   private String query; // 검색어
-  private String username; // 작성자
-  private Boolean liked; // 좋아요한 게시물
-  private String category; // 카테고리
-  private String date; // 작성일
   private Integer limit; // 검색결과 개수 제한
-  private String aptCode; // Apt 탭을 위한 아파트 고유번호
+  private String writer;
+  private Boolean liked;
+  private Category category;
+  private String date;
+  private String aptCode;
 
   public CustomPage() {
     this.page = 1;

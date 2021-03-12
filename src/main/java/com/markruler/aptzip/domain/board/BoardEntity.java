@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -48,24 +51,23 @@ public class BoardEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "category_id")
-  private CategoryEntity category;
+  @Enumerated(EnumType.STRING)
+  private Category category;
 
-  @JsonProperty(value = "boardTitle")
-  @Column(name = "board_title")
-  private String boardTitle;
+  @JsonProperty(value = "title")
+  @Column(name = "title")
+  private String title;
 
-  @JsonProperty(value = "boardContent")
-  @Column(name = "board_content")
-  private String boardContent;
+  @JsonProperty(value = "content")
+  @Column(name = "content")
+  private String content;
 
   @Column(columnDefinition = "TINYINT(1) default 1", name = "is_enabled")
   private Boolean isEnabled;
 
   @Column(name = "view_count")
   @ColumnDefault(value = "0")
-  private long viewCount;
+  private Long viewCount;
 
   @CreationTimestamp
   @Column(name = "create_date")

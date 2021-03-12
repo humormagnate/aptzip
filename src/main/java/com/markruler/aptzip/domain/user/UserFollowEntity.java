@@ -23,13 +23,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity
-@Table(name = "TB_USER_FOLLOW")
 @Getter
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "TB_USER_FOLLOW")
+@Entity
 public class UserFollowEntity implements Serializable {
   private static final long serialVersionUID = 1014152119956338331L;
 

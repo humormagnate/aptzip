@@ -1,9 +1,11 @@
 package com.markruler.aptzip.domain.user;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class AlertMessage {
 	private String msg;

@@ -34,19 +34,19 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "TB_USER")
-@EqualsAndHashCode(of = "id")
 @Builder
+@EqualsAndHashCode(of = "id")
 @ToString(exclude = { "password", "following", "follower", "board" })
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "TB_USER")
+@Entity
 public class UserAccountEntity implements Serializable {
   private static final long serialVersionUID = -8064298299029398631L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @Column(length = 30, nullable = false, unique = true)
   private String email;
@@ -71,11 +71,10 @@ public class UserAccountEntity implements Serializable {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<BoardEntity> board;
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinColumn(name = "role")
-  private AptzipRoleEntity role;
+  @Column(name = "role")
+  private String role;
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_code")
   private AptEntity apt;
 

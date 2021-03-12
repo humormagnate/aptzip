@@ -40,7 +40,7 @@ public class CommentEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "comment_content")
+  @Column(name = "content")
   private String content;
 
   @Column(name = "ip_address")
@@ -54,7 +54,7 @@ public class CommentEntity implements Serializable {
   @UpdateTimestamp
   private LocalDateTime updateDate;
 
-  @Column(name = "comment_status")
+  @Column(name = "enabled")
   private boolean enabled;
 
   @JsonIgnore

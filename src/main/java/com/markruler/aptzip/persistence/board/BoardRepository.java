@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
-import com.markruler.aptzip.domain.board.CategoryEntity;
+import com.markruler.aptzip.domain.board.Category;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,9 +19,10 @@ public interface BoardRepository
 
   @Modifying
   @Query(
+  // @formatter:off
     "update BoardEntity b " +
-    "set b.boardTitle = :title, " +
-    "b.boardContent = :content, " +
+    "set b.title = :title, " +
+    "b.content = :content, " +
     "b.category = :category, " +
     "b.updateDate = CURRENT_TIMESTAMP " +
     "where b.id = :id"
@@ -30,10 +31,11 @@ public interface BoardRepository
     @Param("id") Long id,
     @Param("title") String title,
     @Param("content") String content,
-    @Param("category") CategoryEntity category
-    );
+    @Param("category") Category category
+  // @formatter:on
+  );
 
-  public List<BoardEntity> findByUserIdOrderByIdDesc(long userId);
+  public List<BoardEntity> findByUserIdOrderByIdDesc(Long userId);
 
   public List<BoardEntity> findAllOrderById(@Param("id") Long id);
 

@@ -5,6 +5,7 @@ import static com.markruler.aptzip.domain.board.QBoardEntity.boardEntity;
 import java.util.List;
 
 import com.markruler.aptzip.domain.board.BoardEntity;
+import com.markruler.aptzip.domain.board.Category;
 import com.markruler.aptzip.helper.CustomPage;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
@@ -26,14 +27,14 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
   }
 
   @Override
-  public Page<BoardEntity> findBoardByDynamicQuery(Pageable pageable, CustomPage CustomPage) {
-    JPQLQuery<BoardEntity> query = queryFactory.selectFrom(boardEntity).where(containsTitle(CustomPage.getQuery()), // .or(containsContent(CustomPage.getQuery())),
-        containsWriter(CustomPage.getUsername()), containsCategory(CustomPage.getCategory()),
-        eqApt(CustomPage.getAptCode()));
+  public Page<BoardEntity> findBoardByDynamicQuery(Pageable pageable, CustomPage customPage) {
+    JPQLQuery<BoardEntity> query = queryFactory.selectFrom(boardEntity).where(containsTitle(customPage.getQuery()), // .or(containsContent(CustomPage.getQuery())),
+        containsWriter(customPage.getWriter()), containsCategory(customPage.getCategory()),
+        eqApt(customPage.getAptCode()));
 
     // QuerydslRepositorySupport
     List<BoardEntity> content = getQuerydsl().applyPagination(pageable, query).fetch();
-    long total = query.fetchCount();
+    Long total = query.fetchCount();
 
     return new PageImpl<>(content, pageable, total);
   }
@@ -42,7 +43,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
     if (StringUtils.isEmpty(title)) {
       return null;
     }
-    return boardEntity.boardTitle.contains(title);
+    return boardEntity.title.contains(title);
   }
 
   private BooleanExpression containsWriter(String writer) {
@@ -52,11 +53,11 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
     return boardEntity.user.username.contains(writer);
   }
 
-  private BooleanExpression containsCategory(String category) {
+  private BooleanExpression containsCategory(Category category) {
     if (StringUtils.isEmpty(category)) {
       return null;
     }
-    return boardEntity.category.name.contains(category);
+    return boardEntity.category.eq(category);
   }
 
   private BooleanExpression eqApt(String aptCode) {

@@ -14,7 +14,7 @@ logging:
     root: info
     org:
       springframework:
-        security: debug
+        security: info
         web: info
       hibernate: info
     com:

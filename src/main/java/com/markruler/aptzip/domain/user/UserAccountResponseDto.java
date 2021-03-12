@@ -22,7 +22,7 @@ public class UserAccountResponseDto extends User {
 
   private static final long serialVersionUID = 1L;
 
-  private long id;
+  private Long id;
   private String email;
   private String introduction;
   private LocalDateTime signupDate;
@@ -48,7 +48,7 @@ public class UserAccountResponseDto extends User {
       .introduction(introduction)
       .signupDate(signupDate)
       .reported(reported)
-      .role(new AptzipRoleEntity(role.name()))
+      .role(role.name())
       .apt(apt)
       .following(following)
       .follower(follower)

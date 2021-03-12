@@ -46,9 +46,11 @@ spring:
   datasource:
     initialization-mode: always
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://aptzip-mysql:3306/aptzip?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
-    username: aptziphashid
-    password: todopasswd
+    url: jdbc:mysql://aptzip-db:3306/aptzip?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: testmaria
+    # username: aptziphashid
+    # password: todopasswd
     tomcat:
       initial-size: 151
     dbcp2:

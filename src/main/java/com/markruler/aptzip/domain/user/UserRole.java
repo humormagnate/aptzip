@@ -32,9 +32,7 @@ public enum UserRole {
         .map(permission -> new SimpleGrantedAuthority(permission.getPrivileges())).collect(Collectors.toSet());
 
     privileges.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-
     log.debug("privileges : " + privileges);
-
     return privileges;
   }
 
