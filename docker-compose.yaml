@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  mysql:
+    container_name: aptzip-db
+    image: mysql:8.0.23
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: testmaria
+      # MYSQL_DATABASE: "aptzip" # ERROR 1007 (HY000) at line 1: Can't create database 'aptzip'; database exists
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      TZ: Asia/Seoul
+    restart: always
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro
+      # - ./aio/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+      - ./aio/mysql/docker-entrypoint-initdb.d/1-aptzip-schema.sql:/docker-entrypoint-initdb.d/1-aptzip-schema.sql
+      # - ./aio/mysql/docker-entrypoint-initdb.d/2-k-apt-data.sql:/docker-entrypoint-initdb.d/2-k-apt-data.sql
+      - ./aio/mysql/docker-entrypoint-initdb.d/3-aptzip-data.sql:/docker-entrypoint-initdb.d/3-aptzip-data.sql

@@ -25,30 +25,15 @@ _출처: [아파트 갈등 해결책 "오늘도 눈인사 하셨나요? 그거�
 
 ### 로컬 환경
 
-- 먼저 MySQL 컨테이너를 생성합니다.
-
 ```bash
-make db-scripts
+make build
 ```
 
-- /docker-entrypoint-initdb.d/의 모든 init 스크립트가 실행되어야 정상적으로 테스트 데이터를 확인할 수 있습니다.
-
 ```bash
-sudo docker logs -f aptzip-mysql
+make docker-up
 ```
 
-- 정적 파일을 번들링합니다.
-
-```bash
-npm install
-npm run bundle
-```
-
-- `aptzip` 서버를 실행합니다.
-
-```bash
-make run
-```
+- [localhost:8080](http://localhost:8080)
 
 ## API
 

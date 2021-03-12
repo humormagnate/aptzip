@@ -17,7 +17,8 @@ REPO="cxsu"
 REPO_PORT=""
 
 remove::docker_images
-docker build --build-arg JAR_FILE=target/$BINARY-$VERSION.jar -t $IMAGE:$VERSION -f ./aio/Dockerfile .
+# docker build --build-arg JAR_FILE=target/$BINARY-$VERSION.jar -t $IMAGE:$VERSION -f ./aio/Dockerfile .
+docker build -t $IMAGE:$VERSION -f ./aio/Dockerfile .
 docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:$VERSION
 docker tag $IMAGE:$VERSION $REPO$REPO_PORT/$IMAGE:latest
 

@@ -4,19 +4,14 @@ clean:
 	@./mvnw clean
 .PHONY: clean
 
-db-scripts:
-	sudo docker run \
-		--name aptzip-mysql \
-		--publish 13306:3306 \
-		--detach \
-		--restart=always \
-		--env MYSQL_ROOT_PASSWORD=testmaria \
-		--env TZ=Asia/Seoul \
-		--volume $(PWD)/aio/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/ \
-		--volume $(PWD)/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
-		mysql:8.0.23
-	@sudo docker logs -f aptzip-mysql
-.PHONY: db-scripts
+db-up:
+	sudo docker-compose --file=docker-compose.yaml up --detach
+	sudo docker logs -f aptzip-db
+.PHONY: db-up
+
+db-down:
+	sudo docker-compose down
+.PHONY: db-down
 
 db-empty:
 	sudo docker run \
@@ -29,7 +24,7 @@ db-empty:
 		--env TZ=Asia/Seoul \
 		--volume $(PWD)/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
 		mysql:8.0.23
-	@sudo docker logs -f aptzip-mysql
+	@sudo docker logs -f aptzip-db
 .PHONY: db-empty
 
 test-all:
@@ -48,12 +43,22 @@ build-with-test: clean
 .PHONY: build-with-test
 
 build: clean
-	@./mvnw package -DskipTests
+	npm install
+	npm run bundle
+	./mvnw package -DskipTests
 .PHONY: build
 
-docker: build
+docker-build: build
 	./aio/scripts/docker.sh
-.PHONY: docker
+.PHONY: docker-build
+
+docker-up:
+	sudo docker-compose --file=docker-compose-web.yaml up --detach --build
+.PHONY: docker-compose
+
+docker-down:
+	sudo docker-compose --file=docker-compose-web.yaml down
+.PHONY: docker-compose
 
 #./mvnw spring-boot:run -D spring-boot.run.profiles=dev -D spring.config.location=file:application.yml
 #./mvnw spring-boot:run -D spring.config.location=classpath:/application-dev.yaml
