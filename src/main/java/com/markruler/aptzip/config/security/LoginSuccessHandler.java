@@ -1,14 +1,18 @@
 package com.markruler.aptzip.config.security;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-// @lombok.extern.slf4j.Slf4j
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
   public LoginSuccessHandler(String defaultTargetUrl) {
@@ -16,16 +20,22 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
   }
 
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-      Authentication authentication) throws ServletException, IOException {
+  public void onAuthenticationSuccess(
+  // @formatter:off
+    HttpServletRequest request,
+    HttpServletResponse response,
+    Authentication authentication
+  // @formatter:on
+  ) throws ServletException, IOException {
 
     HttpSession session = request.getSession();
 
     if (session != null) {
-      String redirectUrl = (String) session.getAttribute("prevPage");
-      if (redirectUrl != null) {
+      String redirectURL = (String) session.getAttribute("prevPage");
+      if (redirectURL != null) {
+        log.debug("redirectURL: {}", redirectURL);
         session.removeAttribute("prevPage");
-        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+        getRedirectStrategy().sendRedirect(request, response, redirectURL);
       } else {
         super.onAuthenticationSuccess(request, response, authentication);
       }

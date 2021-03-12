@@ -14,8 +14,6 @@ import com.markruler.aptzip.domain.apartment.AptEntity;
 import com.markruler.aptzip.domain.board.BoardEntity;
 
 import org.springframework.security.core.GrantedAuthority;
-// import org.springframework.security.core.userdetails.User;
-// import org.springframework.social.security.SocialUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// TODO validation
 @Getter
 @Setter
 @Builder
@@ -42,7 +39,7 @@ public class UserAccountRequestDto implements UserDetails {
   private String email;
 
   @NotBlank(message = "닉네임을 입력해주세요.")
-  @Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문자만 입력가능합니다")
+  @Pattern(regexp = "[a-zA-Z]{4,15}", message = "4~15자리의 영문과 숫자만 입력 가능합니다")
   private String username;
 
   @NotBlank(message = "비밀번호를 입력해주세요")
@@ -52,17 +49,15 @@ public class UserAccountRequestDto implements UserDetails {
   private int reported;
 
   @OneToOne
-  private transient AptEntity apt;
+  private AptEntity apt;
 
   private String introduction;
-  private LocalDateTime signUpDate;
-  private AptzipRoleEntity role;
-  private transient List<BoardEntity> board;
-  private transient List<UserFollowEntity> following;
-  private transient List<UserFollowEntity> follower;
+  private LocalDateTime signupDate;
+  private UserRole role;
+  private List<BoardEntity> board;
+  private List<UserFollowEntity> following;
+  private List<UserFollowEntity> follower;
   private boolean isEnabled;
-  // private String providerId;
-  // private String providerUserId;
 
   public UserAccountRequestDto(UserAccountEntity user) {
     this.id = user.getId();
@@ -73,14 +68,14 @@ public class UserAccountRequestDto implements UserDetails {
   public UserAccountEntity toEntity() {
     // @formatter:off
     return UserAccountEntity.builder()
-      .id(this.id == null ? null : this.id)
+      .id(this.id)
       .email(this.email)
       .password(this.password)
       .username(this.username)
       .introduction(this.introduction)
       .reported(this.reported)
       .board(this.board)
-      .role(this.role)
+      .role(new AptzipRoleEntity(this.role.name()))
       .apt(this.apt)
       .following(this.following)
       .follower(this.follower)
@@ -91,7 +86,7 @@ public class UserAccountRequestDto implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    if (UserRole.USER.name().equals(role.getRole())) {
+    if (UserRole.USER.equals(this.role)) {
       return UserRole.USER.getGrantedAuthorities();
     } else {
       return UserRole.ADMIN.getGrantedAuthorities();

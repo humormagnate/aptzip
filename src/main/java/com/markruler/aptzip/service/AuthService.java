@@ -5,19 +5,21 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service("authService")
+@Transactional
+@Service
 public class AuthService {
 
-    private JavaMailSender javaMailSender;
+  private JavaMailSender javaMailSender;
 
-    @Autowired
-    public AuthService(JavaMailSender javaMailSender) {
-      this.javaMailSender = javaMailSender;
-    }
+  @Autowired
+  public AuthService(JavaMailSender javaMailSender) {
+    this.javaMailSender = javaMailSender;
+  }
 
-    @Async
-    public void sendEmail(SimpleMailMessage email) {
-      javaMailSender.send(email);
-    }
+  @Async
+  public void sendEmail(SimpleMailMessage email) {
+    javaMailSender.send(email);
+  }
 }

@@ -86,7 +86,7 @@ const renderComment = (list) => {
                 </i>
               </div>
   	          <div class="tt-avatar-title">
-  		          <a href="/user/${renderObject.user.id}">${
+  		          <a href="/users/${renderObject.user.id}">${
       renderObject.user.username
     }</a>
   		        </div>
@@ -167,7 +167,7 @@ if (document.body.contains(document.getElementById("saveEditCommentBtn"))) {
       const newCommentContent = document.getElementById("updateCommentContent")
         .value;
       const boardID = document.getElementById("boardID").value;
-      const URL = `/comment/${boardID}`;
+      const URL = `/comments/${boardID}`;
 
       const obj = {
         boardId: boardID,
@@ -263,7 +263,7 @@ if (document.body.contains(document.getElementById("createReplyBtn"))) {
       event.stopPropagation();
       const boardID = document.getElementById("boardID").value;
       const commentContent = document.getElementById("commentContent").value;
-      const requestPath = `/comment/${boardID}`;
+      const requestPath = `/comments/${boardID}`;
       const obj = {
         boardId: boardID,
         commentContent: commentContent,
@@ -316,7 +316,7 @@ if (document.body.contains(document.getElementById("deleteCommentBtn"))) {
         const obj = {
           boardId: boardID,
           commentId: document.getElementById("commentHiddenID").value,
-          url: `/comment/${boardID}/${commentID}`,
+          url: `/comments/${boardID}/${commentID}`,
         };
         removeComment(obj, function (list) {
           document.getElementById("updateCommentContent").value = "";
@@ -337,10 +337,10 @@ if (document.body.contains(document.getElementById("iconReply"))) {
     .addEventListener("click", validateApartment);
 }
 
-if (document.location.href.includes("board")) {
+if (document.location.href.includes("boards") && !document.location.href.includes("new")) {
   document.addEventListener("DOMContentLoaded", () => {
     listComments(
-      `/comment/${document.getElementById("boardID").value}`,
+      `/comments/${document.getElementById("boardID").value}`,
       (list) => {
         renderComment(list);
       }

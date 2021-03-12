@@ -42,7 +42,7 @@ public class CommentEchoHandler extends TextWebSocketHandler {
     // }
 
     // UNICAST
-    // 댓글, 작성자, 게시글작성자, 게시글번호 (comment, comment_user_id, board_user_id, board_id)
+    // 댓글, 작성자, 게시물작성자, 게시물번호 (comment, comment_user_id, board_user_id, board_id)
     String payload = message.getPayload();
 
     if (StringUtils.isNotEmpty(payload)) {

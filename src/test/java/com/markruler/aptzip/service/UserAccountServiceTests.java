@@ -8,16 +8,17 @@ import java.util.Optional;
 
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.UserRole;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,14 +66,16 @@ class UserAccountServiceTests {
     Assertions.assertFalse(returnedWidget.isPresent(), "User should not be found");
   }
 
-  @Disabled("FIXME: Failed: AuthenticationCredentialsNotFound")
   @Test
+  @WithMockUser(authorities = { "ROLE_ADMIN" })
   @DisplayName("Test findAll")
   void testFindAll() {
     // Setup our mock repository
-    UserAccountEntity user1 = UserAccountEntity.builder().id(1L).email("user1@aptzip.com").isEnabled(true).build();
-    UserAccountEntity user2 = UserAccountEntity.builder().id(2L).email("user2@aptzip.com").isEnabled(true).build();
-    Mockito.doReturn(Arrays.asList(user1, user2)).when(repository).findAll();
+    UserAccountRequestDto user1 = UserAccountRequestDto.builder().id(1L).role(UserRole.ADMIN).build();
+    UserAccountRequestDto user2 = UserAccountRequestDto.builder().id(2L).role(UserRole.USER).build();
+    log.debug("find all User1: {}", user1.toEntity());
+    log.debug("find all User2: {}", user2);
+    Mockito.doReturn(Arrays.asList(user1.toEntity(), user2.toEntity())).when(repository).findAll();
 
     // Execute the service call
     List<UserAccountRequestDto> users = service.findAll();
@@ -85,7 +88,8 @@ class UserAccountServiceTests {
   @DisplayName("Test save user")
   void testSave() {
     // Setup our mock repository
-    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).password("passwd").email("user@aptzip.com").isEnabled(true).build();
+    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).username("test").password("passwd")
+        .role(UserRole.USER).email("user@aptzip.com").isEnabled(true).build();
     Mockito.doReturn(user.toEntity()).when(repository).save(any());
 
     UserAccountEntity returnedUser = service.save(user, "A10024484");
@@ -93,6 +97,6 @@ class UserAccountServiceTests {
 
     // Assert the response
     Assertions.assertNotNull(returnedUser, "The saved user should not be null");
-    Assertions.assertEquals(1L, returnedUser.getId(), "The id should not be incremented. (id GenerationType is `IDENTITY`, not `AUTO`)");
+    Assertions.assertEquals("test", returnedUser.getUsername(), "The id should be incremented.");
   }
 }

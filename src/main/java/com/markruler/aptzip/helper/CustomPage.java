@@ -18,11 +18,11 @@ public class CustomPage {
   private static final int DEFAULT_MAX_SIZE = 50;
 
   private int page; // 현재 페이지 - 1
-  private int size; // 한 페이지당 게시글 개수
+  private int size; // 한 페이지당 게시물 개수
 
   private String query; // 검색어
   private String username; // 작성자
-  private Boolean liked; // 좋아요한 게시글
+  private Boolean liked; // 좋아요한 게시물
   private String category; // 카테고리
   private String date; // 작성일
   private Integer limit; // 검색결과 개수 제한

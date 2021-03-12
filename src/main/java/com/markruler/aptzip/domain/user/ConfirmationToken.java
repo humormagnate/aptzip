@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_confirmation_token")
+@Table(name = "TB_CONFIRMATION_TOKEN")
 @Getter
 @Setter
 @RequiredArgsConstructor

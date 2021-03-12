@@ -28,13 +28,13 @@ _출처: [아파트 갈등 해결책 "오늘도 눈인사 하셨나요? 그거�
 - 먼저 MySQL 컨테이너를 생성합니다.
 
 ```bash
-make db-local
+make db-scripts
 ```
 
 - /docker-entrypoint-initdb.d/의 모든 init 스크립트가 실행되어야 정상적으로 테스트 데이터를 확인할 수 있습니다.
 
 ```bash
-docker logs -f aptzip-mysql
+sudo docker logs -f aptzip-mysql
 ```
 
 - 정적 파일을 번들링합니다.

@@ -38,7 +38,7 @@
               <ul>
                 <li>
                   <a sec:authorize="isAuthenticated()"
-                    th:href="@{/apt/{code}(code=${#authentication.principal.apt.code})}"><span>[[${#messages.msg('apt-zip')}]]</span></a>
+                    th:href="@{/boards/apt/{code}(code=${#authentication.principal.apt.code})}"><span>[[${#messages.msg('apt-zip')}]]</span></a>
                 </li>
                 <li>
                   <a th:href="@{/zip}"><span>[[${#messages.msg('Danji')}]]</span></a>
@@ -106,7 +106,7 @@
 
           <div class="tt-user-info d-flex justify-content-center" sec:authorize="isAuthenticated()">
             <div class="tt-avatar-icon tt-size-md">
-              <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}(id=${#authentication.principal.id})}">
+              <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/users/{id}(id=${#authentication.principal.id})}">
                 <i class="tt-icon">
                   <svg>
                     <use

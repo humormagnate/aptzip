@@ -4,7 +4,7 @@ clean:
 	@./mvnw clean
 .PHONY: clean
 
-db-local:
+db-scripts:
 	sudo docker run \
 		--name aptzip-mysql \
 		--publish 13306:3306 \
@@ -15,9 +15,10 @@ db-local:
 		--volume $(PWD)/aio/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/ \
 		--volume $(PWD)/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
 		mysql:8.0.23
-.PHONY: db-local
+	@sudo docker logs -f aptzip-mysql
+.PHONY: db-scripts
 
-db-test:
+db-empty:
 	sudo docker run \
 		--name aptzip-mysql \
 		--publish 13306:3306 \
@@ -28,7 +29,8 @@ db-test:
 		--env TZ=Asia/Seoul \
 		--volume $(PWD)/aio/mysql/my.cnf:/etc/mysql/conf.d/aptzip.cnf,ro \
 		mysql:8.0.23
-.PHONY: db-test
+	@sudo docker logs -f aptzip-mysql
+.PHONY: db-empty
 
 test-all:
 	@./mvnw test

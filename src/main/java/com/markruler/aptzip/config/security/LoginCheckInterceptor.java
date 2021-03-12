@@ -2,14 +2,20 @@ package com.markruler.aptzip.config.security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 @lombok.extern.slf4j.Slf4j
 public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-      throws Exception {
+  public boolean preHandle(
+  // @formatter:off
+    HttpServletRequest request,
+    HttpServletResponse response,
+    Object handler
+  // @formatter:on
+  ) throws Exception {
     log.debug("login check interceptor prehandle");
 
     String referrer = request.getHeader("Referer");

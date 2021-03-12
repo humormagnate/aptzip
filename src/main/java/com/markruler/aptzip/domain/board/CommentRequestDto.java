@@ -25,6 +25,17 @@ public class CommentRequestDto {
   private BoardEntity board;
   private UserAccountEntity user;
 
+  public CommentRequestDto(CommentEntity comment) {
+    this.id = comment.getId();
+    this.content = comment.getContent();
+    this.ipAddress = comment.getIpAddress();
+    this.createDate = comment.getCreateDate();
+    this.updateDate = comment.getUpdateDate();
+    this.enabled = comment.isEnabled();
+    this.board = comment.getBoard();
+    this.user = comment.getUser();
+  }
+
   public CommentEntity toEntity() {
     // @formatter:off
     return new CommentEntity(

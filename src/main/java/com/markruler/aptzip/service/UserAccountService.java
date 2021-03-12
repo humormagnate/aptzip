@@ -11,7 +11,6 @@ import com.markruler.aptzip.domain.board.CommentEntity;
 import com.markruler.aptzip.domain.user.AptzipRoleEntity;
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
-import com.markruler.aptzip.domain.user.UserAccountResponseDto;
 import com.markruler.aptzip.domain.user.UserFollowEntity;
 import com.markruler.aptzip.domain.user.UserFollowRequestDto;
 import com.markruler.aptzip.domain.user.UserRole;
@@ -35,56 +34,49 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class UserAccountService implements UserDetailsService {
 
   private final PasswordEncoder passwordEncoder;
   private final UserJpaRepository userJpaRepository;
   private final FollowRepository followRepository;
-  // private final FollowQueryRepository followQuery;
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    log.debug(
-        "=============================== UserService-loadUserByUsername start =====================================");
     log.debug("username: {}", username);
-
     Optional<UserAccountEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
     if (userEntityWrapper.isEmpty()) {
       throw new UsernameNotFoundException("Not found " + username);
     }
-    UserAccountEntity user = userEntityWrapper.get();
 
-    log.debug(
-        "=============================== UserService-loadUserByUsername get =====================================");
-    log.debug("user: {}", user);
+    UserAccountEntity user = userEntityWrapper.get();
     if (!user.isEnabled()) {
       throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
+    log.debug("user: {}", user);
 
-    UserAccountResponseDto urd = new UserAccountResponseDto(user.getUsername(), user.getPassword(), true, true, true, true,
-        UserRole.USER.getGrantedAuthorities());
-    log.debug("urd: {}", urd);
+    // TODO: Entity to DTO
+    UserAccountRequestDto urd = new UserAccountRequestDto();
     urd.setId(user.getId());
     urd.setEmail(user.getEmail());
+    urd.setUsername(user.getUsername());
+    urd.setPassword(user.getPassword());
     urd.setIntroduction(user.getIntroduction());
     urd.setSignupDate(user.getSignupDate());
     urd.setReported(user.getReported());
     urd.setRole(UserRole.USER);
-    urd.setPrivilege(UserRole.USER.getPrivileges());
     urd.setApt(user.getApt());
     urd.setFollowing(user.getFollowing());
     urd.setFollower(user.getFollower());
 
     if (user.getRole() != null && user.getRole().getRole().equals(UserRole.USER.name())) {
       urd.setRole(UserRole.USER);
-      urd.setPrivilege(UserRole.USER.getPrivileges());
     } else {
       urd.setRole(UserRole.ADMIN);
-      urd.setPrivilege(UserRole.ADMIN.getPrivileges());
     }
     log.debug("urd: {}", urd);
     return urd;
@@ -111,23 +103,15 @@ public class UserAccountService implements UserDetailsService {
   @Transactional(rollbackFor = Exception.class)
   public UserAccountEntity save(UserAccountRequestDto user, String aptCode) {
     Optional<UserAccountEntity> existingUser = userJpaRepository.findByEmailIgnoreCase(user.getEmail());
-
     if (existingUser.isPresent()) {
       return null;
     }
-
     log.info("The email address not found");
 
     user.setApt(AptRequestDto.builder().code(aptCode).build().toEntity());
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    user.setRole(new AptzipRoleEntity(UserRole.USER.name()));
-
-    // if (connection != null) {
-    // user.setProviderId(connection.getProviderId());
-    // user.setProviderUserId(connection.getProviderUserId());
-    // }
-
-    user.setEnabled(true); // email confirmation 절차가 없을 경우에만 사용
+    user.setRole(UserRole.USER);
+    user.setEnabled(true);
     return userJpaRepository.save(user.toEntity());
   }
 
@@ -138,6 +122,7 @@ public class UserAccountService implements UserDetailsService {
   }
 
   public Optional<UserAccountEntity> findById(Long id) {
+    // return userJpaRepository.findById(id).map(UserAccountRequestDto::new);
     return userJpaRepository.findById(id);
   }
 
@@ -163,17 +148,22 @@ public class UserAccountService implements UserDetailsService {
     userJpaRepository.updatePasswordById(user.getPassword(), user.getId());
   }
 
-  public String createFollow(Long id, UserAccountRequestDto user) {
+  public UserFollowEntity createFollow(Long id, UserAccountRequestDto user) {
     UserAccountEntity following = UserAccountEntity.builder().id(id).build();
     UserAccountEntity follower = user.toEntity();
     UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
 
     if (relationship != null) {
-      followRepository.delete(relationship);
-      return "delete";
-    } else {
-      followRepository.save(UserFollowRequestDto.builder().following(following).follower(follower).build().toEntity());
-      return "save";
+      return relationship;
     }
+    return followRepository
+        .save(UserFollowRequestDto.builder().following(following).follower(follower).build().toEntity());
+  }
+
+  public void deleteFollow(Long id, UserAccountRequestDto user) {
+    UserAccountEntity following = UserAccountEntity.builder().id(id).build();
+    UserAccountEntity follower = user.toEntity();
+    UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
+    followRepository.delete(relationship);
   }
 }

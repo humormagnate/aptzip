@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tb_like")
+@Table(name = "TB_LIKE")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

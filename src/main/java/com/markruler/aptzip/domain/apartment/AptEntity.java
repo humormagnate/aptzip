@@ -1,5 +1,7 @@
 package com.markruler.aptzip.domain.apartment;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,13 +15,15 @@ import lombok.NonNull;
 import lombok.ToString;
 
 @Entity
-@Table(name = "tb_apt")
+@Table(name = "TB_APT")
 @Getter
 @ToString
 @EqualsAndHashCode(of = "code")
 @NoArgsConstructor
 @AllArgsConstructor
-public class AptEntity {
+public class AptEntity implements Serializable {
+  private static final long serialVersionUID = -9153138836152397538L;
+
   @Id
   @NonNull
   private String code;

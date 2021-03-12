@@ -26,9 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
+@Transactional
+@Service
 public class BoardService {
   private final BoardRepository boardRepository;
   private final LikeRepository likeRepository;
@@ -82,6 +85,7 @@ public class BoardService {
     board.setUser(user.toEntity());
     board.setApt(user.getApt());
     board.setUpdateDate(LocalDateTime.now());
+    log.debug("board.getUser: {}", board.getUser());
     return boardRepository.save(board.toEntity());
   }
 

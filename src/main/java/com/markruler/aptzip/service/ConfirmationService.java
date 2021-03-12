@@ -1,15 +1,17 @@
 package com.markruler.aptzip.service;
 
-import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.ConfirmationToken;
+import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
+@Transactional
+@Service
 public class ConfirmationService {
   private final ConfirmationTokenRepository confirmationTokenRepository;
 

@@ -10,7 +10,7 @@ let wsConnnectInterval = null;
 function connectWS(URL) {
   // local
   // let socket = new WebSocket("ws://localhost:8888" + URL);
-  // let socket = new WebSocket("ws://localhost:8888/ws/comment");
+  // let socket = new WebSocket("ws://localhost:8888/ws/comments");
 
   // server
   let socket = new WebSocket("wss://localhost:443" + URL);

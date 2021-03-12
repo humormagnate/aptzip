@@ -1,5 +1,6 @@
 package com.markruler.aptzip.domain.user;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,8 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,13 +35,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_user")
+@Table(name = "TB_USER")
 @EqualsAndHashCode(of = "id")
 @Builder
 @ToString(exclude = { "password", "following", "follower", "board" })
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountEntity {
+public class UserAccountEntity implements Serializable {
+  private static final long serialVersionUID = -8064298299029398631L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,11 +51,11 @@ public class UserAccountEntity {
   @Column(length = 30, nullable = false, unique = true)
   private String email;
 
-  @Column(nullable = false)
-  private String password;
-
   @Column(nullable = false, unique = true)
   private String username;
+
+  @Column(nullable = false)
+  private String password;
 
   @Lob
   private String introduction;
@@ -69,11 +71,11 @@ public class UserAccountEntity {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<BoardEntity> board;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "role")
   private AptzipRoleEntity role;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "apt_code")
   private AptEntity apt;
 
@@ -85,10 +87,7 @@ public class UserAccountEntity {
   @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> follower;
 
+  @Column(nullable = false)
   private boolean isEnabled;
-
-  // private String providerId;/
-
-  // private String providerUserId;
 
 }

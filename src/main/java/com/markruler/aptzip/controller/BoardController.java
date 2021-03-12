@@ -2,15 +2,19 @@ package com.markruler.aptzip.controller;
 
 import java.util.List;
 
+import com.markruler.aptzip.domain.board.BoardEntity;
 import com.markruler.aptzip.domain.board.BoardRequestDto;
 import com.markruler.aptzip.domain.board.CategoryEntity;
 import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.board.LikeRequestDto;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
+import com.markruler.aptzip.helper.CustomPage;
+import com.markruler.aptzip.helper.CustomPageMaker;
 import com.markruler.aptzip.service.BoardService;
 import com.markruler.aptzip.service.CategoryService;
 import com.markruler.aptzip.service.LikeService;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,10 +46,11 @@ public class BoardController {
   private final LikeService likeService;
 
   @GetMapping("/new")
-  public void goWritePage(Model model) {
+  public String goWritePage(Model model) {
     List<CategoryEntity> categories = categoryService.findAll();
     log.debug("categories: {}", categories);
     model.addAttribute("categories", categories);
+    return "board/write";
   }
 
   @PostMapping("/new")
@@ -57,12 +62,13 @@ public class BoardController {
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
-    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty() || categoryId.isEmpty()) {
-      log.debug("board: {}", board);
-      log.debug("categoryID: {}", categoryId);
-      return "";
-    }
+    log.debug("board: {}", board);
+    log.debug("categoryID: {}", categoryId);
+    log.debug("user: {}", user);
 
+    if (board.getBoardTitle().isEmpty() || board.getBoardContent().isEmpty() || categoryId.isEmpty() || user == null) {
+      return "redirect:/error";
+    }
     boardService.save(board, categoryId, user);
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
     redirectAttributes.addFlashAttribute("msg", "success");
@@ -70,10 +76,34 @@ public class BoardController {
   }
 
   @GetMapping("/{id}")
-  public String read(Model model, @PathVariable("id") Long boardId, @AuthenticationPrincipal UserAccountRequestDto user) {
+  public String read(Model model, @PathVariable("id") Long boardId,
+      @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("user: {}", user);
     boardService.findById(boardId, user, model);
     return "board/page-single-topic";
+  }
+
+  @GetMapping("/apt/{code}")
+  public String getThreadByApartmentCode(
+  // @formatter:off
+      @PathVariable("code") String apartmentCode,
+      @AuthenticationPrincipal UserAccountRequestDto user,
+      @ModelAttribute("customPage") CustomPage customPage,
+      Model model
+      // @formatter:on
+  ) {
+    log.debug("Apartment Code: {}", apartmentCode);
+    Page<BoardEntity> boards = boardService.listBoardByPage(apartmentCode, customPage);
+    CustomPageMaker<BoardEntity> list = new CustomPageMaker<>(boards);
+
+    // @formatter:off
+      model
+        .addAttribute("principal", user)
+        .addAttribute("list", list)
+        .addAttribute("customPage", customPage);
+      // @formatter:on
+
+    return "apt";
   }
 
   @Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
