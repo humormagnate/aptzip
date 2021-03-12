@@ -15,12 +15,12 @@ import lombok.RequiredArgsConstructor;
 public class ConfirmationService {
   private final ConfirmationTokenRepository confirmationTokenRepository;
 
-  public ConfirmationToken createToken(UserAccountEntity user) {
+  public ConfirmationToken save(UserAccountEntity user) {
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
     return confirmationTokenRepository.save(confirmationToken);
   }
 
-  public ConfirmationToken findToken(String token) {
-    return confirmationTokenRepository.findByConfirmationToken(token);
+  public ConfirmationToken findByToken(String token) {
+    return confirmationTokenRepository.findByToken(token);
   }
 }

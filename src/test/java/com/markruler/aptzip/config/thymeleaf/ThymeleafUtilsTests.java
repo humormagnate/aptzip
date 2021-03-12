@@ -1,7 +1,6 @@
 package com.markruler.aptzip.config.thymeleaf;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Locale;
 
 import com.markruler.aptzip.config.thymeleaf.expression.TemporalsAptzip;
@@ -9,10 +8,7 @@ import com.markruler.aptzip.config.thymeleaf.expression.TemporalsAptzip;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@lombok.extern.slf4j.Slf4j
 class ThymeleafUtilsTests {
 
   private final TemporalsAptzip temporals = new TemporalsAptzip(Locale.KOREA);
@@ -35,13 +31,9 @@ class ThymeleafUtilsTests {
   @DisplayName("1시간 미만인지 확인합니다.")
   void testIsLessThanOneHour() {
     LocalDateTime lessHour = LocalDateTime.now().minusMinutes(59);
-    log.info("less than one hour: {}", lessHour);
     Assertions.assertTrue(temporals.isLessThanOneHour(lessHour));
 
     LocalDateTime moreHour = LocalDateTime.now().minusHours(1);
-    log.info("more than one hour: {}", moreHour);
-    log.info("Epoch Time (one hour ago): {}", moreHour.toEpochSecond(ZoneOffset.ofHours(9)));
-    log.info("Epoch Time (now): {}", LocalDateTime.now().toEpochSecond(ZoneOffset.ofHours(9)));
     Assertions.assertFalse(temporals.isLessThanOneHour(moreHour));
   }
 }

@@ -32,7 +32,7 @@ public class CommentController {
 
   @GetMapping("/{boardId}")
   public ResponseEntity<List<CommentRequestDto>> commentGet(@PathVariable("boardId") Long boardId) {
-    List<CommentRequestDto> list = commentService.listComments(boardId);
+    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
     return new ResponseEntity<>(list, HttpStatus.OK);
   }
 
@@ -45,7 +45,7 @@ public class CommentController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    List<CommentRequestDto> list = commentService.listComments(boardId);
+    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
     return ResponseEntity.ok(list);
   }
 
@@ -53,15 +53,15 @@ public class CommentController {
   public ResponseEntity<List<CommentRequestDto>> commentDelete(@PathVariable("boardId") Long boardId,
       @PathVariable("commentId") Long commentId) {
     commentService.deleteById(commentId);
-    List<CommentRequestDto> list = commentService.listComments(boardId);
+    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
     return ResponseEntity.ok(list);
   }
 
   @PutMapping("/{boardId}")
   public ResponseEntity<List<CommentRequestDto>> updateComment(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment) {
-    commentService.updateComment(comment);
-    List<CommentRequestDto> list = commentService.listComments(boardId);
+    commentService.update(comment);
+    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
     return ResponseEntity.ok(list);
   }
 

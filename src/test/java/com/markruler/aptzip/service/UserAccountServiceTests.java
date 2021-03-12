@@ -14,89 +14,90 @@ import com.markruler.aptzip.persistence.user.UserJpaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import lombok.extern.slf4j.Slf4j;
-
-@SpringBootTest
-@Slf4j
+@ExtendWith(MockitoExtension.class)
 class UserAccountServiceTests {
-  /**
-   * Autowire in the service we want to test
-   */
-  @Autowired
+
+  @InjectMocks
   private UserAccountService service;
 
-  /**
-   * Create a mock implementation of the UserJpaRepository
-   */
-  @MockBean
+  @Mock
+  private PasswordEncoder passwordEncoder;
+
+  @Mock
   private UserJpaRepository repository;
 
+  // @Disabled("tmp")
   @Test
-  @DisplayName("Test findById Success")
-  void testFindById() {
-    // Setup our mock repository
-    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
-    log.debug("Test UserAccountEntity: {}", user);
-    Mockito.doReturn(Optional.of(user)).when(repository).findById(1L);
+  @DisplayName("회원가입시 사용자를 DB에 저장합니다")
+  void testSave() {
+    // given
+    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).username("changsu").password("passwd")
+        .role(UserRole.USER).email("changsu@aptzip.com").isEnabled(true).build();
 
-    // Execute the service call
+    // mocking
+    BDDMockito.given(repository.save(any())).willReturn(user.toEntity());
+
+    // when
+    UserAccountEntity returnedUser = service.save(user, "A10024484");
+
+    // then
+    Assertions.assertNotNull(returnedUser, "The saved user should not be null");
+    Assertions.assertEquals("changsu", returnedUser.getUsername(), "The id should be incremented.");
+  }
+
+  @Test
+  @WithMockUser(authorities = { "ROLE_ADMIN" })
+  @DisplayName("관리자 권한이 있을 경우 모든 사용자를 조회할 수 있습니다")
+  void testFindAll() {
+    // given
+    UserAccountRequestDto user1 = UserAccountRequestDto.builder().id(1L).role(UserRole.ADMIN).build();
+    UserAccountRequestDto user2 = UserAccountRequestDto.builder().id(2L).role(UserRole.USER).build();
+
+    // mocking
+    BDDMockito.given(repository.findAll()).willReturn(Arrays.asList(user1.toEntity(), user2.toEntity()));
+
+    // when
+    List<UserAccountRequestDto> returnedUsers = service.findAll();
+
+    // then
+    Assertions.assertEquals(2, returnedUsers.size(), "findAll should return 2 users");
+  }
+
+  @Test
+  @DisplayName("사용자 ID로 사용자 엔터티를 찾습니다")
+  void testFindById() {
+    // given
+    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
+
+    // mocking
+    BDDMockito.given(repository.findById(1L)).willReturn(Optional.of(user));
+
+    // when
     Optional<UserAccountEntity> returnedUser = service.findById(1L);
 
-    // Assert the response
+    // then
     Assertions.assertTrue(returnedUser.isPresent(), "User was not found");
     Assertions.assertSame(returnedUser.get(), user, "The user returned was not the same as the mock");
   }
 
   @Test
-  @DisplayName("Test findById Not Found")
+  @DisplayName("사용자 ID를 찾을 수 없습니다")
   void testFindByIdNotFound() {
-    // Setup our mock repository
-    Mockito.doReturn(Optional.empty()).when(repository).findById(1L);
+    // mocking
+    BDDMockito.given(repository.findById(1L)).willReturn(Optional.empty());
 
-    // Execute the service call
+    // when
     Optional<UserAccountEntity> returnedWidget = service.findById(1L);
 
-    // Assert the response
+    // then
     Assertions.assertFalse(returnedWidget.isPresent(), "User should not be found");
-  }
-
-  @Test
-  @WithMockUser(authorities = { "ROLE_ADMIN" })
-  @DisplayName("Test findAll")
-  void testFindAll() {
-    // Setup our mock repository
-    UserAccountRequestDto user1 = UserAccountRequestDto.builder().id(1L).role(UserRole.ADMIN).build();
-    UserAccountRequestDto user2 = UserAccountRequestDto.builder().id(2L).role(UserRole.USER).build();
-    log.debug("find all User1: {}", user1.toEntity());
-    log.debug("find all User2: {}", user2);
-    Mockito.doReturn(Arrays.asList(user1.toEntity(), user2.toEntity())).when(repository).findAll();
-
-    // Execute the service call
-    List<UserAccountRequestDto> users = service.findAll();
-
-    // Assert the response
-    Assertions.assertEquals(2, users.size(), "findAll should return 2 users");
-  }
-
-  @Test
-  @DisplayName("Test save user")
-  void testSave() {
-    // Setup our mock repository
-    UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).username("test").password("passwd")
-        .role(UserRole.USER).email("user@aptzip.com").isEnabled(true).build();
-    Mockito.doReturn(user.toEntity()).when(repository).save(any());
-
-    UserAccountEntity returnedUser = service.save(user, "A10024484");
-    log.debug("returned User: {}", returnedUser);
-
-    // Assert the response
-    Assertions.assertNotNull(returnedUser, "The saved user should not be null");
-    Assertions.assertEquals("test", returnedUser.getUsername(), "The id should be incremented.");
   }
 }

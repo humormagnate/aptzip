@@ -26,8 +26,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
 @RequiredArgsConstructor
+@Controller
 public class AuthController {
   private final AuthService authService;
   private final ConfirmationService confirmationService;
@@ -94,21 +94,7 @@ public class AuthController {
       redirectAttributes.addFlashAttribute("error", true).addFlashAttribute("message", "이미 가입된 이메일입니다.");
       return "redirect:/signup";
     }
-    redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, true);
-
-    // 실제 서비스가 아니라면 개발 환경에서 오류가 발생하므로 프로파일 분기 처리
-    if (activeProfile.equals("prod")) {
-      ConfirmationToken confirmationToken = confirmationService.createToken(user.toEntity());
-      SimpleMailMessage mailMessage = new SimpleMailMessage();
-      mailMessage.setTo(user.getEmail());
-      mailMessage.setSubject("Complete Registration!");
-      mailMessage.setFrom("noreply@markruler.com");
-      mailMessage.setText("To confirm your account, please click here : "
-          + "https://markruler.com/aptzip/confirm-account?token=" + confirmationToken.getConfirmationToken());
-
-      authService.sendEmail(mailMessage);
-    }
-    redirectAttributes.addFlashAttribute(EMAIL_MESSAGE, user.getEmail());
+    redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, true).addFlashAttribute(EMAIL_MESSAGE, user.getEmail());
     return REDIRECT_LOGIN_PAGE;
   }
 
@@ -116,12 +102,13 @@ public class AuthController {
   public String confirmUserAccount(
   // @formatter:off
     RedirectAttributes redirectAttributes,
-    @RequestParam("token") String confirmationToken
+    @RequestParam("token") String token
   // @formatter:on
   ) {
-    ConfirmationToken token = confirmationService.findToken(confirmationToken);
-    if (token != null) {
-      Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
+    ConfirmationToken confirmationToken = confirmationService.findByToken(token);
+    if (confirmationToken != null) {
+      Optional<UserAccountEntity> user = userAccountService
+          .findByEmailIgnoreCase(confirmationToken.getUser().getEmail());
       if (user.isPresent()) {
         userAccountService.enabledUser(user.get().getId());
         redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, true);
@@ -137,14 +124,14 @@ public class AuthController {
     Optional<UserAccountEntity> existingUser = userAccountService.findByEmailIgnoreCase(user.getEmail());
 
     if (existingUser.isPresent()) {
-      ConfirmationToken confirmationToken = confirmationService.createToken(existingUser.get());
+      ConfirmationToken confirmationToken = confirmationService.save(existingUser.get());
 
       SimpleMailMessage mailMessage = new SimpleMailMessage();
       mailMessage.setTo(existingUser.get().getEmail());
       mailMessage.setSubject("Complete Password Reset!");
       mailMessage.setFrom("markrulerofficial@gmail.com");
       mailMessage.setText("To complete the password reset process, please click here: "
-          + "https://markruler.com/aptzip/confirm-reset?token=" + confirmationToken.getConfirmationToken());
+          + "https://markruler.com/aptzip/confirm-reset?token=" + confirmationToken.getToken());
 
       authService.sendEmail(mailMessage);
 
@@ -160,12 +147,13 @@ public class AuthController {
   public String validateResetToken(
   // @formatter:off
     RedirectAttributes redirectAttributes,
-    @RequestParam("token") String confirmationToken
+    @RequestParam("token") String token
   // @formatter:on
   ) {
-    ConfirmationToken token = confirmationService.findToken(confirmationToken);
-    if (token != null) {
-      Optional<UserAccountEntity> user = userAccountService.findByEmailIgnoreCase(token.getUser().getEmail());
+    ConfirmationToken confirmationToken = confirmationService.findByToken(token);
+    if (confirmationToken != null) {
+      Optional<UserAccountEntity> user = userAccountService
+          .findByEmailIgnoreCase(confirmationToken.getUser().getEmail());
       if (user.isPresent()) {
         userAccountService.enabledUser(user.get().getId());
         redirectAttributes.addFlashAttribute("user", user).addFlashAttribute(EMAIL_MESSAGE, user.get().getEmail());

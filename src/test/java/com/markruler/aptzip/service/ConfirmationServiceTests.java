@@ -30,12 +30,12 @@ class ConfirmationServiceTests {
     UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
     log.debug("Test ConfirmationToken: {}", confirmationToken);
-    Mockito.doReturn(confirmationToken).when(repository).findByConfirmationToken(confirmationToken.getConfirmationToken());
+    Mockito.doReturn(confirmationToken).when(repository).findByToken(confirmationToken.getToken());
 
     // Execute the service call
-    ConfirmationToken returnedToken = service.findToken(confirmationToken.getConfirmationToken());
+    ConfirmationToken returnedToken = service.findByToken(confirmationToken.getToken());
 
     // Assert the response
-    Assertions.assertSame(returnedToken.getConfirmationToken(), confirmationToken.getConfirmationToken(), "The token returned was not the same as the mock");
+    Assertions.assertSame(returnedToken.getToken(), confirmationToken.getToken(), "The token returned was not the same as the mock");
   }
 }

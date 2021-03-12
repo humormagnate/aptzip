@@ -21,7 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional // TODO: Add Transactional test code
 @Service
 public class LikeBoardServiceImpl implements LikeService {
+
   private final LikeRepository likeRepository;
+
+  @Override
+  public LikeEntity save(LikeRequestDto like) {
+    return likeRepository.save(like.toEntity());
+  }
 
   @Override
   public List<LikeEntity> findAll() {
@@ -29,8 +35,9 @@ public class LikeBoardServiceImpl implements LikeService {
   }
 
   @Override
-  public LikeEntity save(LikeRequestDto like) {
-    return likeRepository.save(like.toEntity());
+  public List<LikeEntity> findLikesByBoard(BoardEntity board) {
+    LikeRequestDto like = LikeRequestDto.builder().board(board).build();
+    return likeRepository.findAllByBoard(like.getBoard());
   }
 
   @Override
@@ -42,12 +49,6 @@ public class LikeBoardServiceImpl implements LikeService {
     } else {
       log.debug("The like not found");
     }
-  }
-
-  @Override
-  public List<LikeEntity> findLikesByBoard(BoardEntity board) {
-    LikeRequestDto like = LikeRequestDto.builder().board(board).build();
-    return likeRepository.findAllByBoard(like.getBoard());
   }
 
 }

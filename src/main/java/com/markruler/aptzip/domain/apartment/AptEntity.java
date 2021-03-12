@@ -29,19 +29,19 @@ public class AptEntity implements Serializable {
   @Column(name = "code", updatable = false)
   private String code;
 
-  @Column(name = "complex")
+  @Column(name = "complex", updatable = false)
   private String complex;
 
-  @Column(name = "province")
+  @Column(name = "province", updatable = false)
   private String province;
 
-  @Column(name = "city")
+  @Column(name = "city", updatable = false)
   private String city;
 
-  @Column(name = "town")
+  @Column(name = "town", updatable = false)
   private String town;
 
-  @Column(name = "village")
+  @Column(name = "village", updatable = false)
   private String village;
 
   @Column(name = "approval")

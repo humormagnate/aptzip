@@ -106,7 +106,6 @@ public class UserAccountService implements UserDetailsService {
       return null;
     }
     log.info("The email address not found");
-
     user.setApt(AptRequestDto.builder().code(aptCode).build().toEntity());
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRole(UserRole.USER);
