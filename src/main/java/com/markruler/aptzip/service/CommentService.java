@@ -11,11 +11,13 @@ import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.persistence.board.CommentRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
+@Transactional
+@Service
 public class CommentService {
 
   private final CommentRepository commentRepository;

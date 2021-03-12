@@ -11,7 +11,6 @@ import com.markruler.aptzip.domain.board.CommentEntity;
 import com.markruler.aptzip.domain.user.AptzipRoleEntity;
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
-import com.markruler.aptzip.domain.user.UserAccountResponseDto;
 import com.markruler.aptzip.domain.user.UserFollowEntity;
 import com.markruler.aptzip.domain.user.UserFollowRequestDto;
 import com.markruler.aptzip.domain.user.UserRole;
@@ -33,9 +32,10 @@ import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
+@Service
 public class UserAccountService implements UserDetailsService {
 
   private final PasswordEncoder passwordEncoder;
@@ -59,6 +59,7 @@ public class UserAccountService implements UserDetailsService {
     }
     log.debug("user: {}", user);
 
+    // TODO: Entity to DTO
     UserAccountRequestDto urd = new UserAccountRequestDto();
     urd.setId(user.getId());
     urd.setEmail(user.getEmail());

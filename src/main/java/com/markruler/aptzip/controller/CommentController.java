@@ -2,8 +2,6 @@ package com.markruler.aptzip.controller;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import com.markruler.aptzip.domain.board.CommentEntity;
 import com.markruler.aptzip.domain.board.CommentRequestDto;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
@@ -38,7 +36,6 @@ public class CommentController {
     return new ResponseEntity<>(list, HttpStatus.OK);
   }
 
-  @Transactional
   @PostMapping("/{boardId}")
   public ResponseEntity<List<CommentRequestDto>> commentPost(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment, @AuthenticationPrincipal UserAccountRequestDto user) {
@@ -52,7 +49,6 @@ public class CommentController {
     return ResponseEntity.ok(list);
   }
 
-  @Transactional
   @DeleteMapping("/{boardId}/{commentId}")
   public ResponseEntity<List<CommentRequestDto>> commentDelete(@PathVariable("boardId") Long boardId,
       @PathVariable("commentId") Long commentId) {
@@ -61,7 +57,6 @@ public class CommentController {
     return ResponseEntity.ok(list);
   }
 
-  @Transactional
   @PutMapping("/{boardId}")
   public ResponseEntity<List<CommentRequestDto>> updateComment(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment) {

@@ -50,7 +50,6 @@ public class UserAccountController {
    * @param request
    * @return
    */
-  @Transactional
   @PatchMapping("/{id}/pw")
   public ResponseEntity<String> updateUserPassword(@RequestBody UserAccountRequestDto user) {
     userAccountService.updatePassword(user);
@@ -60,14 +59,12 @@ public class UserAccountController {
   /**
    * 사용자가 탈퇴하고 해당 정보의 플래그를 바꿉니다.
    */
-  @Transactional
   @PatchMapping("/{id}")
   public ResponseEntity<String> disabledUser(@PathVariable("id") Long id) {
     userAccountService.disabledUser(id);
     return new ResponseEntity<>("success", HttpStatus.OK);
   }
 
-  @Transactional
   @ResponseBody
   @PostMapping("/{id}/follow")
   public ResponseEntity<UserFollowEntity> createFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
@@ -79,7 +76,6 @@ public class UserAccountController {
     return ResponseEntity.ok(entity);
   }
 
-  @Transactional
   @DeleteMapping("/{id}/follow")
   public void deleteFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
     log.debug("user: {}", user);

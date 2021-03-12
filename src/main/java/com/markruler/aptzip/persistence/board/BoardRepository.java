@@ -12,13 +12,11 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BoardRepository
     extends CrudRepository<BoardEntity, Long>, QuerydslPredicateExecutor<BoardEntity>, BoardRepositoryCustom {
 
-  @Transactional
   @Modifying
   @Query(
     "update BoardEntity b " +
