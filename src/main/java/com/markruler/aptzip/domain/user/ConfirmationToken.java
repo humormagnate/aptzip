@@ -6,8 +6,6 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -27,22 +25,18 @@ import lombok.Setter;
 public class ConfirmationToken {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="token_id")
-  private Long tokenId;
-
-  @Column(name="confirmation_token")
-  private String confirmationToken;
+  @Column(name = "token")
+  private String token;
 
   @CreationTimestamp
   private LocalDateTime createdDate;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", nullable = true)
+  @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
   private UserAccountEntity user;
 
   public ConfirmationToken(UserAccountEntity user) {
     this.user = user;
-    confirmationToken = UUID.randomUUID().toString();
+    this.token = UUID.randomUUID().toString();
   }
 }

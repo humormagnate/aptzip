@@ -62,8 +62,8 @@ public class BoardEntity implements Serializable {
   @Column(name = "content")
   private String content;
 
-  @Column(columnDefinition = "TINYINT(1) default 1", name = "is_enabled")
-  private Boolean isEnabled;
+  @Column(columnDefinition = "TINYINT(1) default 1", name = "enabled")
+  private Boolean enabled;
 
   @Column(name = "view_count")
   @ColumnDefault(value = "0")

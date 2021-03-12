@@ -22,18 +22,6 @@ public class CommentService {
 
   private final CommentRepository commentRepository;
 
-  public List<CommentRequestDto> listComments(Long boardId) {
-    BoardEntity board = BoardRequestDto.builder().id(boardId).build().toEntity();
-    List<CommentRequestDto> comments = commentRepository.getCommentsByBoardId(board).stream().map(CommentRequestDto::new).collect(Collectors.toList());
-
-    if (comments.isEmpty()) return comments;
-    // board는 저장하려는 객체를 바로 수정하기 때문에 System.lineSeparator()로도 지정해서 변경할 수 있지만,
-    // comment는 DB에서 가져오기 때문에 "\n"로 지정해줘야함.
-    // (리눅스 환경에서도 가능할지 문제, "\r"은 안됨: 어차피 리눅스는 "\n", 윈도가 "\r\n")
-    comments.forEach(comment -> comment.setContent(comment.getContent().replace("\n", "<br>"))); // System.lineSeparator()
-    return comments;
-  }
-
   public CommentEntity save(Long boardId, CommentRequestDto comment, UserAccountRequestDto user) {
     BoardEntity board = BoardRequestDto.builder().id(boardId).build().toEntity();
     comment.setUser(user.toEntity());
@@ -42,7 +30,21 @@ public class CommentService {
     return commentRepository.save(comment.toEntity());
   }
 
-  public CommentEntity updateComment(CommentRequestDto comment) {
+  public List<CommentRequestDto> findAllByBoard(Long boardId) {
+    BoardEntity board = BoardRequestDto.builder().id(boardId).build().toEntity();
+    List<CommentRequestDto> comments = commentRepository.getCommentsByBoardId(board).stream()
+        .map(CommentRequestDto::new).collect(Collectors.toList());
+
+    if (comments.isEmpty())
+      return comments;
+    // board는 저장하려는 객체를 바로 수정하기 때문에 System.lineSeparator()로도 지정해서 변경할 수 있지만,
+    // comment는 DB에서 가져오기 때문에 "\n"로 지정해줘야함.
+    // (리눅스 환경에서도 가능할지 문제, "\r"은 안됨: 어차피 리눅스는 "\n", 윈도가 "\r\n")
+    comments.forEach(comment -> comment.setContent(comment.getContent().replace("\n", "<br>"))); // System.lineSeparator()
+    return comments;
+  }
+
+  public CommentEntity update(CommentRequestDto comment) {
     return commentRepository.save(comment.toEntity());
   }
 

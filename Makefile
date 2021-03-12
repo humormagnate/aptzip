@@ -35,7 +35,7 @@ test-all:
 # ./mvnw test -Dtest=UserAccountServiceTests#testFindById
 # make test-unit TEST_UNIT=UserAccountServiceTests#testFindById
 test-unit:
-	./mvnw test -Dtest=${TEST_UNIT} #-X
+	./mvnw test -Dtest=${UNIT} #-X
 .PHONY: test-unit
 
 build-with-test: clean
