@@ -39,5 +39,9 @@ application-server.yaml
 # *.yaml
 # *.properties
 # *.bak
+
+### static ###
 node_modules/
-**/dist/
+# **/dist/
+**/js/
+**/scss/

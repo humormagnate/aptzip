@@ -43,8 +43,8 @@ build-with-test: clean
 .PHONY: build-with-test
 
 build: clean
-	npm install
-	npm run bundle
+	@# npm install
+	@# npm run bundle
 	./mvnw package -DskipTests
 .PHONY: build
 
