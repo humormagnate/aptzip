@@ -28,9 +28,9 @@ services:
     depends_on:
       - mysql
     restart: unless-stopped
-    ports:
-      - "8080:8080"
     expose:
       - "8080"
+    ports:
+      - "30414:8080"
     volumes:
       - ./src/main/resources/application-prod.yaml:/application.yaml
