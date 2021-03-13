@@ -40,15 +40,30 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final PasswordEncoder passwordEncoder;
   private final UserAccountService userService;
   private final DataSource dataSource;
 
+  private static final String[] AUTH_WHITELIST = {
+    // @formatter:off
+    "/css/**",
+    "/js/**",
+    "/images/**",
+    "/lib/**",
+    "*.ico",
+    "/swagger-resources/**",
+    "/v2/api-docs",
+    "/swagger-ui/**",
+    "/swagger-ui.html",
+    "/webjars/**"
+    // @formatter:on
+  };
+
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/lib/**", "*.ico");
+    web.ignoring().antMatchers(AUTH_WHITELIST);
   }
 
   @Override

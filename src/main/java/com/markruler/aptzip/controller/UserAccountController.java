@@ -18,13 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Controller
+@RequestMapping("/users")
+@Api(tags = "users")
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/users")
-@Controller
 public class UserAccountController {
   private final UserAccountService userAccountService;
 

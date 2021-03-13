@@ -34,13 +34,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Controller
+@RequestMapping("/boards")
+@Api(tags = "boards")
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/boards")
-@Controller
 public class BoardController {
 
   private final BoardService boardService;

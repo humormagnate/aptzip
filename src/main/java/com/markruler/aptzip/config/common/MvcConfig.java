@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -23,6 +24,18 @@ public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
     registry.addViewController("/home").setViewName("redirect:/");
+    registry.addRedirectViewController("/docs/v2/api-docs", "/v2/api-docs");
+    registry.addRedirectViewController("/docs/swagger-resources/configuration/ui",
+        "/swagger-resources/configuration/ui");
+    registry.addRedirectViewController("/docs/swagger-resources/configuration/security",
+        "/swagger-resources/configuration/security");
+    registry.addRedirectViewController("/docs/swagger-resources", "/swagger-resources");
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/swagger-ui/**")
+        .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/").resourceChain(false);
   }
 
   @Override

@@ -22,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@RequiredArgsConstructor
 @Controller
+@Api(tags = "auth")
+@RequiredArgsConstructor
+@Slf4j
 public class AuthController {
   private final AuthService authService;
   private final ConfirmationService confirmationService;
@@ -80,6 +83,7 @@ public class AuthController {
     return "user/page-reset-password";
   }
 
+  @ApiOperation(value = "회원가입")
   @PostMapping(value = "/signup", consumes = "application/x-www-form-urlencoded")
   public String registerUser(
   // @formatter:off

@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@lombok.extern.slf4j.Slf4j
+import io.swagger.annotations.Api;
+
+@Api(tags = "message")
 @RestController
+@lombok.extern.slf4j.Slf4j
 public class MessageController {
 
   /**
