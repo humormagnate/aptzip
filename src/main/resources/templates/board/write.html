@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<label for="inputTopicTitle">[[${#messages.msg('PostTitle')}]]</label>
 						<div class="tt-value-wrapper">
-							<input type="text" id="title" name="title" class="form-control"
+							<input type="text" id="boardTitle" name="title" class="form-control"
 								th:placeholder="${#messages.msg('S021')}" maxlength="99"
 								th:value="${ board } ? ${ board.title } : ''">
 							<span class="tt-value-input"></span>
