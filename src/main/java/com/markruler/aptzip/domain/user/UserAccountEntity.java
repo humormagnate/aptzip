@@ -86,7 +86,7 @@ public class UserAccountEntity implements Serializable {
   @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserFollowEntity> follower;
 
-  @Column(nullable = false)
-  private boolean isEnabled;
+  @Column(name = "enabled", nullable = false)
+  private boolean enabled;
 
 }

@@ -28,7 +28,7 @@
 							</div>
 							<ul class="tt-list-badge">
 								<li>
-									<span th:class="${infouser.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge user-select-none'" th:text="${ infouser.getRole().getRole() }"></span>
+									<span th:class="${infouser.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge user-select-none'" th:text="${ infouser.getRole() }"></span>
 								</li>
 							</ul>
 						</div>
@@ -102,7 +102,7 @@
 											<div class="col-11">
 												<ul class="tt-list-badge">
 													<li class="show-mobile">
-														<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
+														<span th:class="'tt-color0' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
 													</li>
 													<li>
 													</li>
@@ -116,7 +116,7 @@
 										</div>
 									</div>
 									<div class="tt-col-category">
-										<span th:class="'tt-color0' + ${ board?.category?.id + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
+										<span th:class="'tt-color0' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
 									</div>
 									<div class="tt-col-value hide-mobile">0</div>
 									<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
@@ -165,7 +165,7 @@
 												<ul class="tt-list-badge">
 													<li class="show-mobile">
 														<a href="#">
-															<span th:class="'tt-color0' + ${ comment?.board?.category?.id + ' tt-badge' }">
+															<span th:class="'tt-color0' + ${ comment?.board?.category + ' tt-badge' }">
 																[[${comment.board.category}]]
 															</span>
 														</a>
@@ -186,7 +186,7 @@
 									</div>
 									<div class="tt-col-category">
 										<a href="#">
-											<span th:class="'tt-color0' + ${ comment?.board?.category?.id + ' tt-badge' }">
+											<span th:class="'tt-color0' + ${ comment?.board?.category + ' tt-badge' }">
 												[[${comment.board.category}]]
 											</span>
 										</a>

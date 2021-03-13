@@ -34,7 +34,7 @@ class BoardServiceTests {
     // given
     AptRequestDto apt = AptRequestDto.builder().code("A10024484").build();
     UserAccountEntity user = UserAccountEntity.builder().id(1L).email("email").username("changsu")
-        .role(UserRole.USER.name()).password("password").reported(0).isEnabled(true).build();
+        .role(UserRole.USER.name()).password("password").reported(0).enabled(true).build();
     BoardRequestDto board = BoardRequestDto.builder().apt(apt.toEntity()).user(user).build();
 
     // mocking

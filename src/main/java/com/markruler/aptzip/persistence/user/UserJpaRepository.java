@@ -24,11 +24,11 @@ public interface UserJpaRepository extends JpaRepository<UserAccountEntity, Long
 	List<UserAccountEntity> findAllByAptAndRole(AptEntity apt, String role);
 
 	@Modifying
-	@Query("UPDATE UserAccountEntity u SET u.isEnabled = 0 WHERE u.id = :id")
+	@Query("UPDATE UserAccountEntity u SET u.enabled = 0 WHERE u.id = :id")
 	void disabledUserById(@Param("id") Long id);
 
 	@Modifying
-	@Query("UPDATE UserAccountEntity u SET u.isEnabled = 1 WHERE u.id = :id")
+	@Query("UPDATE UserAccountEntity u SET u.enabled = 1 WHERE u.id = :id")
 	void enabledUserById(@Param("id") Long id);
 
 	@Modifying

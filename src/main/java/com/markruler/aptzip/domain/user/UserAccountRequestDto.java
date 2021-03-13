@@ -57,7 +57,7 @@ public class UserAccountRequestDto implements UserDetails {
   private List<BoardEntity> board;
   private List<UserFollowEntity> following;
   private List<UserFollowEntity> follower;
-  private boolean isEnabled;
+  private boolean enabled;
 
   public UserAccountRequestDto(UserAccountEntity user) {
     this.id = user.getId();
@@ -78,7 +78,7 @@ public class UserAccountRequestDto implements UserDetails {
       .apt(this.apt)
       .following(this.following)
       .follower(this.follower)
-      .isEnabled(this.isEnabled)
+      .enabled(this.enabled)
       .build();
     // @formatter:on
   }

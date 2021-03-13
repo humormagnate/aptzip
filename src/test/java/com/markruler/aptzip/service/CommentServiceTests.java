@@ -32,7 +32,7 @@ class CommentServiceTests {
     // given
     CommentRequestDto comment = CommentRequestDto.builder().id(1L).board(null).user(null).build();
     UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).email("cxsu@aptzip.com").username("changsu")
-        .role(UserRole.USER).password("password").reported(0).isEnabled(true).build();
+        .role(UserRole.USER).password("password").reported(0).enabled(true).build();
 
     // mocking
     BDDMockito.given(repository.save(any())).willReturn(comment.toEntity());

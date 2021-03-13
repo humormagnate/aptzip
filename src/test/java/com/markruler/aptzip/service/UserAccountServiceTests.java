@@ -40,7 +40,7 @@ class UserAccountServiceTests {
   void testSave() {
     // given
     UserAccountRequestDto user = UserAccountRequestDto.builder().id(1L).username("changsu").password("passwd")
-        .role(UserRole.USER).email("changsu@aptzip.com").isEnabled(true).build();
+        .role(UserRole.USER).email("changsu@aptzip.com").enabled(true).build();
 
     // mocking
     BDDMockito.given(repository.save(any())).willReturn(user.toEntity());

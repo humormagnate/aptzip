@@ -27,7 +27,7 @@ public class BoardRequestDto {
 
   private String title;
   private String content;
-  private Boolean isEnabled;
+  private Boolean enabled;
   private Long viewCount;
 
   private LocalDateTime createDate;
@@ -46,7 +46,7 @@ public class BoardRequestDto {
       this.category,
       this.title,
       this.content,
-      this.isEnabled,
+      this.enabled,
       this.viewCount,
       this.createDate,
       this.updateDate,

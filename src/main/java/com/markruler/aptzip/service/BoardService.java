@@ -58,7 +58,7 @@ public class BoardService {
 
   public BoardEntity save(BoardRequestDto board, String categoryId, UserAccountEntity user) {
     board.setCategory(Category.valueOf(categoryId));
-    board.setIsEnabled(true);
+    board.setEnabled(true);
     board.setViewCount(0L);
     board.setUser(user);
     board.setApt(user.getApt());

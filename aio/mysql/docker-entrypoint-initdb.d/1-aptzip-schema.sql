@@ -63,6 +63,7 @@ CREATE TABLE tb_user_follow (
 );
 CREATE TABLE tb_confirmation_token (
 	token VARCHAR(256) NOT NULL,
+	create_date DATETIME,
 	user_id BIGINT NOT NULL,
 	PRIMARY KEY (token),
 	FOREIGN KEY (user_id) REFERENCES tb_user (id)
@@ -82,6 +83,15 @@ CREATE TABLE tb_board (
 	PRIMARY KEY (id),
 	FOREIGN KEY (apt_code) REFERENCES tb_apt (code),
 	FOREIGN KEY (user_id) REFERENCES tb_user (id)
+);
+CREATE TABLE tb_like (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	create_date DATETIME,
+	user_id bigint,
+	board_id bigint,
+	PRIMARY KEY (id),
+	FOREIGN KEY (user_id) REFERENCES tb_user (id),
+	FOREIGN KEY (board_id) REFERENCES tb_board (id)
 );
 -- ALTER TABLE tb_board ADD CONSTRAINT FOREIGN KEY (apt_code) REFERENCES tb_apt (code);
 CREATE TABLE tb_comment (
