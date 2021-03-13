@@ -16,7 +16,7 @@
 					</th:block>
 					
 					<input type="hidden" id="boardId" th:if="${board}" th:value="${board.getId()}" />
-					<input type="hidden" name="categoryId" th:value="${ board } ? ${ board.category } : ''">
+					<input type="hidden" name="category" th:value="${ board } ? ${ board.category } : ''">
 
 					<div class="form-group">
 						<label for="inputTopicTitle">[[${#messages.msg('PostTitle')}]]</label>
@@ -59,7 +59,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<textarea id="boardContent" name="boardContent" class="form-control" rows="5"
+							<textarea id="boardContent" name="content" class="form-control" rows="5"
 								th:placeholder="${#messages.msg('S023')}">[[${ board } ? ${ board.content } : '']]</textarea>
 						</div>
 						<div class="row">

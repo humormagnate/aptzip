@@ -43,5 +43,5 @@ application-server.yaml
 ### static ###
 node_modules/
 # **/dist/
-**/js/
-**/scss/
+# **/js/
+# **/scss/

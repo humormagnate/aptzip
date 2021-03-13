@@ -56,8 +56,9 @@ public class BoardService {
     return StreamSupport.stream(boardRepository.findAllByApt(apt).spliterator(), false).collect(Collectors.toList());
   }
 
-  public BoardEntity save(BoardRequestDto board, String categoryId, UserAccountEntity user) {
-    board.setCategory(Category.valueOf(categoryId));
+  public BoardEntity save(BoardRequestDto board, String category, UserAccountEntity user) {
+    log.debug("board.getUser: {}", board.getUser());
+    board.setCategory(Category.valueOf(category));
     board.setEnabled(true);
     board.setViewCount(0L);
     board.setUser(user);

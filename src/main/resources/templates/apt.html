@@ -75,7 +75,7 @@
                     <ul class="tt-list-badge">
                       <li class="show-mobile">
                         <a href="#">
-                          <span th:class="'tt-color0' + ${ board?.category + ' tt-badge' }">[[${not #strings.isEmpty(board?.category)} ? ${board?.category} : 'Common']]</span>
+                          <span th:class="'tt-color-' + ${ board?.category + ' tt-badge' }">[[${not #strings.isEmpty(board?.category)} ? ${board?.category} : 'Common']]</span>
                         </a>
                       </li>
                     </ul>
@@ -86,7 +86,7 @@
                 </div>
               </div>
               <div class="tt-col-category">
-                <span th:class="'tt-color0' + ${ board?.category + ' tt-badge' }">
+                <span th:class="'tt-color-' + ${ board?.category + ' tt-badge' }">
                   [[${not #strings.isEmpty(board?.category)} ? ${board?.category} : 'Common']]
                 </span>
               </div>

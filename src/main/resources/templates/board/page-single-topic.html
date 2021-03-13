@@ -50,7 +50,7 @@
 									</li>
 									<li th:each="category : ${ board?.category }">
 										<a href="#">
-											<span th:class="'tt-color0' + ${ board?.category + ' tt-badge' }"
+											<span th:class="'tt-color-' + ${ board?.category + ' tt-badge' }"
 												th:classappend="'user-select-none'">[[${ category }]]</span>
 										</a>
 									</li>
