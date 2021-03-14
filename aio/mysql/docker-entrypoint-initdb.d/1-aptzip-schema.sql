@@ -55,7 +55,7 @@ CREATE TABLE tb_user_follow (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	following BIGINT NOT NULL,
 	follower BIGINT NOT NULL,
-	create_date TIMESTAMP NOT NULL,
+	created_date DATETIME NOT NULL,
 	-- PRIMARY KEY (from_user, to_user),
 	PRIMARY KEY (id),
 	FOREIGN KEY (following) REFERENCES tb_user (id),

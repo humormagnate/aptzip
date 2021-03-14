@@ -1,5 +1,7 @@
 # 앞집 API
 
+- [Swagger API 2.0](http://localhost:30414/swagger-ui/index.html)
+
 ## 사용자
 
 | Path               | Method | Description   |
@@ -19,21 +21,20 @@
 
 ## 게시물
 
-| Path               | Method | Description                  |
-| ------------------ | ------ | ---------------------------- |
-| /boards/new        | POST   | 작성                         |
-| /boards/apt/{code} | GET    | 특정 아파트 단지 게시물 조회 |
-| /boards/{id}       | GET    | 조회                         |
-| /boards/{id}       | DELETE | 삭제                         |
-| /boards/{id}       | PUT    | 수정                         |
-| /boards/{id}/like  | POST   | 좋아요                       |
-| /boards/{id}/like  | DELETE | 좋아요 취소                  |
+| Path              | Method | Description |
+| ----------------- | ------ | ----------- |
+| /boards/new       | POST   | 작성        |
+| /boards/{id}      | GET    | 조회        |
+| /boards/{id}      | PUT    | 수정        |
+| /boards/{id}      | DELETE | 삭제        |
+| /boards/{id}/like | POST   | 좋아요      |
+| /boards/{id}/like | DELETE | 좋아요 취소 |
 
 ## 댓글
 
-| Path           | Method | Description |
-| -------------- | ------ | ----------- |
-| /comments/{id} | POST   | 작성        |
-| /comments/{id} | GET    | 조회        |
-| /comments/{id} | DELETE | 삭제        |
-| /comments/{id} | PUT    | 수정        |
+| Path                            | Method | Description |
+| ------------------------------- | ------ | ----------- |
+| /comments/{boardId}             | POST   | 작성        |
+| /comments/{boardId}             | GET    | 조회        |
+| /comments/{boardId}             | PUT    | 수정        |
+| /comments/{boardId}/{commentId} | DELETE | 삭제        |

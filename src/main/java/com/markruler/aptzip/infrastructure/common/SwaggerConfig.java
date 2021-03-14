@@ -21,8 +21,9 @@ public class SwaggerConfig {
     return new Docket(DocumentationType.SWAGGER_2)
       .apiInfo(swaggerApiInfo())
       .select()
-      .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any())
-      // .apis(RequestHandlerSelectors.basePackage("com.markruler.aptzip.controller")).paths(PathSelectors.ant("/api/**"))
+      // .apis(RequestHandlerSelectors.any()).paths(PathSelectors.any())
+      // .apis(RequestHandlerSelectors.basePackage("com.markruler.aptzip.controller.api")).paths(PathSelectors.ant("/api/**"))
+      .apis(RequestHandlerSelectors.basePackage("com.markruler.aptzip.controller.api")).paths(PathSelectors.any())
       .build()
       .useDefaultResponseMessages(false);
     //@formatter:on
