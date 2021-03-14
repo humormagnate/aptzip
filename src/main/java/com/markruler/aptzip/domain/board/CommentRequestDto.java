@@ -9,10 +9,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequestDto {
@@ -21,7 +23,6 @@ public class CommentRequestDto {
   private String ipAddress;
   private LocalDateTime createDate;
   private LocalDateTime updateDate;
-  private boolean enabled;
   private BoardEntity board;
   private UserAccountEntity user;
 
@@ -31,7 +32,6 @@ public class CommentRequestDto {
     this.ipAddress = comment.getIpAddress();
     this.createDate = comment.getCreateDate();
     this.updateDate = comment.getUpdateDate();
-    this.enabled = comment.isEnabled();
     this.board = comment.getBoard();
     this.user = comment.getUser();
   }
@@ -44,10 +44,14 @@ public class CommentRequestDto {
       this.ipAddress,
       this.createDate,
       this.updateDate,
-      this.enabled,
       this.board,
       this.user
     );
     // @formatter:on
+  }
+
+  public void create(BoardEntity board, UserAccountEntity user) {
+    this.board = board;
+    this.user = user;
   }
 }

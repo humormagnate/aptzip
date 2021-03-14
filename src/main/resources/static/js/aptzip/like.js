@@ -1,3 +1,4 @@
+let likeflag = true;
 // export default (() => {
 export const Like = (() => {
   // Constructor
@@ -32,3 +33,26 @@ export const Like = (() => {
   // return constructor
   return Like;
 })();
+
+if (document.body.contains(document.getElementById("likeBtn"))) {
+  document.getElementById("likeBtn").addEventListener("click", (event) => {
+    event.preventDefault();
+    let like = new Like();
+    const boardId = document.getElementById("boardId").value;
+    const userId = document.getElementById("readerId");
+    if (!userId) location.href = `/login`;
+    const obj = { type: 1, boardId: boardId, url: `/like/${boardId}` };
+    // FIXME:
+    if (likeflag) {
+      like.insert(obj);
+    } else {
+      like.insert(obj); // 우선 flag로 처리
+      // like.delete(obj);
+    }
+
+    if (document.getElementById("likeBoard").value) {
+      document.getElementById("iconLike").style.fill = "#ff5722";
+      likeflag = false;
+    }
+  });
+}

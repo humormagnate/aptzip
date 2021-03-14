@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.markruler.aptzip.config.error.ErrorResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,12 +18,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
 
-@Api(tags = "error")
 @Controller
-@Slf4j
+@Api(tags = "error")
 public class ErrorResponseController implements ErrorController {
+  Logger log = LoggerFactory.getLogger(ErrorResponseController.class);
 
   private static final String ERROR_PATH = "error/error";
 

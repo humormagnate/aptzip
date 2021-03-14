@@ -2,12 +2,12 @@ export { validateApartment, validateBoardForm };
 
 function validateApartment(event) {
   event.preventDefault();
-  if (document.getElementById("boardWriterID").value) {
-    const BOARD_APT_ID = document.getElementById("boardAptID").value;
-    if (!document.getElementById("readerAptID")) {
+  if (document.getElementById("boardWriterId").value) {
+    const BOARD_APT_ID = document.getElementById("boardAptId").value;
+    if (!document.getElementById("readerAptId")) {
       location.href = `/login`;
     }
-    const USER_APT_ID = document.getElementById("readerAptID").value;
+    const USER_APT_ID = document.getElementById("readerAptId").value;
     if (BOARD_APT_ID != USER_APT_ID) {
       alert("같은 아파트 단지의 주민만 댓글을 입력하실 수 있습니다.");
     }

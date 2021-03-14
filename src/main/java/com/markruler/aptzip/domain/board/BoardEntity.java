@@ -81,11 +81,11 @@ public class BoardEntity implements Serializable {
   @OrderBy("id asc")
   private List<CommentEntity> comments;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private UserAccountEntity user;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "apt_code")
   private AptEntity apt;
 }

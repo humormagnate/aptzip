@@ -21,12 +21,12 @@
 								</div>
 								<div class="tt-avatar-title">
 									<a th:href="@{/users/{id}(id=${board.user.id}) }">[[${ board.user.username }]]</a>
-									<input type="hidden" id="boardID" th:value="${ board.id }">
-									<input type="hidden" id="boardWriterID" th:value="${ board.user.id }">
-									<input type="hidden" id="boardAptID" th:value="${ board.apt.code }">
-									<input sec:authorize="isAuthenticated()" type="hidden" id="readerID"
+									<input type="hidden" id="boardId" th:value="${ board.id }">
+									<input type="hidden" id="boardWriterId" th:value="${ board.user.id }">
+									<input type="hidden" id="boardAptId" th:value="${ board.apt.code }">
+									<input sec:authorize="isAuthenticated()" type="hidden" id="readerId"
 										th:value="${#authentication.principal.id}">
-									<input sec:authorize="isAuthenticated()" type="hidden" id="readerAptID"
+									<input sec:authorize="isAuthenticated()" type="hidden" id="readerAptId"
 										th:value="${#authentication.principal.apt.code}">
 									<input type="hidden" id="likeBoard" th:value="${ like }">
 								</div>
@@ -162,7 +162,7 @@
 								</div>
 
 								<div class="tt-item-description">
-									[[${ comment.commentContent }]]
+									[[${ comment.content }]]
 								</div>
 
 								<div class="tt-item-info info-bottom">
@@ -273,7 +273,7 @@
 					</a>
 				</div>
 				<form class="form-default">
-					<input type="hidden" id="commentHiddenID">
+					<input type="hidden" id="commentHiddenId">
 					<div class="form-group">
 						<label for="settingsUserAbout">Content</label>
 						<textarea name="commentContent" placeholder="Edit Your Comment" class="form-control"
