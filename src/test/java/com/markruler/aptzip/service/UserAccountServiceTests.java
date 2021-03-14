@@ -76,7 +76,7 @@ class UserAccountServiceTests {
   @DisplayName("사용자 ID로 사용자 엔터티를 찾습니다")
   void testFindById() {
     // given
-    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
+    UserAccountEntity user = UserAccountRequestDto.builder().id(1L).email("test@aptzip.com").role(UserRole.USER).build().toEntity();
 
     // mocking
     BDDMockito.given(repository.findById(1L)).willReturn(Optional.of(user));

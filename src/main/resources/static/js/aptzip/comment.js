@@ -21,7 +21,7 @@ const createComment = (obj, path, callback) => {
     .catch((err) => console.error(err));
 };
 
-const updateComment = function (obj, path, callback) {
+const updateComment = (obj, path, callback) => {
   fetch(path, {
     method: "put",
     headers: {
@@ -34,7 +34,7 @@ const updateComment = function (obj, path, callback) {
     .catch((err) => console.error(err));
 };
 
-const removeComment = function (path, callback) {
+const removeComment = (path, callback) => {
   fetch(path, {
     method: "delete",
     cache: "no-cache",
@@ -61,10 +61,9 @@ const listComments = (path, callback) => {
 
 const renderComment = (list) => {
   const commentContainer = document.getElementById("commentList");
-  const USER_ID = document.getElementById("readerId").value;
+  const readerId = document.getElementById("readerId").value;
   let str = "";
   list.forEach((renderObject) => {
-    console.log(renderObject);
     let temporal = new Date(renderObject.updateDate);
 
     str += `<div class="tt-item">
@@ -119,7 +118,7 @@ const renderComment = (list) => {
               </a>
             <div class="col-separator"></div>`;
 
-    if (USER_ID && USER_ID == renderObject.user.id) {
+    if (readerId && readerId == renderObject.user.id) {
       str += `<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent edit-comment">
                 <i class="tt-icon">
                   <svg>
@@ -178,15 +177,36 @@ if (document.body.contains(document.getElementById("saveEditCommentBtn"))) {
         alert("댓글이 성공적으로 수정되었습니다.");
         renderComment(list);
         // document.getElementsByClassName("modal-filter").item(0).click();
+        document.querySelector(".tt-btn-col-close").click();
       });
     },
     false
   );
 }
 
-/*
-	Comment Edit Popup switching
-*/
+if (document.body.contains(document.getElementById("deleteCommentBtn"))) {
+  document.getElementById("deleteCommentBtn").addEventListener(
+    "click",
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (confirm("정말 삭제하시겠습니까?")) {
+        const boardId = document.getElementById("boardId").value;
+        const commentId = document.getElementById("commentHiddenId").value;
+        removeComment(`/comments/${boardId}/${commentId}`, function (list) {
+          document.getElementById("updateCommentContent").value = "";
+          renderComment(list);
+          document.getElementById("replyCount").innerText = list.length;
+          // TODO: refactor modal-filter
+          // document.getElementsByClassName("modal-filter").item(0).click();
+          document.querySelector(".tt-btn-col-close").click();
+        });
+      }
+    },
+    false
+  );
+}
+
 const editCommentPopUp = document.getElementById("js-popup-edit-comment");
 const closeButton = document.getElementsByClassName("tt-btn-col-close");
 
@@ -279,28 +299,6 @@ if (document.body.contains(document.getElementById("createReplyBtn"))) {
         renderComment(list);
         document.getElementById("replyCount").innerText = list.length;
       });
-    },
-    false
-  );
-}
-
-if (document.body.contains(document.getElementById("deleteCommentBtn"))) {
-  document.getElementById("deleteCommentBtn").addEventListener(
-    "click",
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (confirm("정말 삭제하시겠습니까?")) {
-        const boardId = document.getElementById("boardId").value;
-        const commentId = document.getElementById("commentHiddenId").value;
-        removeComment(`/comments/${boardId}/${commentId}`, function (list) {
-          document.getElementById("updateCommentContent").value = "";
-          renderComment(list);
-          document.getElementById("replyCount").innerText = list.length;
-          // TODO: refactor modal-filter
-          // document.getElementsByClassName("modal-filter").item(0).click();
-        });
-      }
     },
     false
   );

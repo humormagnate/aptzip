@@ -25,16 +25,12 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
-@Builder
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = { "password", "following", "follower", "board" })
 @NoArgsConstructor
@@ -67,16 +63,16 @@ public class UserAccountEntity implements Serializable {
   @Column(nullable = false)
   private int reported;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private List<BoardEntity> board;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "apt_code")
+  private AptEntity apt;
 
   @Column(name = "role")
   private String role;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "apt_code")
-  private AptEntity apt;
+  @JsonIgnore
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<BoardEntity> board;
 
   @JsonIgnore
   @OneToMany(mappedBy = "following", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

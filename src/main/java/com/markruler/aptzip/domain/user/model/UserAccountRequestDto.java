@@ -45,14 +45,15 @@ public class UserAccountRequestDto implements UserDetails {
   @NotBlank(message = "비밀번호를 입력해주세요")
   private String password;
 
+  private String introduction;
+  private LocalDateTime signupDate;
+
   @PositiveOrZero
   private int reported;
 
   @OneToOne
   private AptEntity apt;
 
-  private String introduction;
-  private LocalDateTime signupDate;
   private UserRole role;
   private List<BoardEntity> board;
   private List<UserFollowEntity> following;
@@ -63,25 +64,6 @@ public class UserAccountRequestDto implements UserDetails {
     this.id = user.getId();
     this.username = user.getUsername();
     this.email = user.getEmail();
-  }
-
-  public UserAccountEntity toEntity() {
-    // @formatter:off
-    return UserAccountEntity.builder()
-      .id(this.id)
-      .email(this.email)
-      .password(this.password)
-      .username(this.username)
-      .introduction(this.introduction)
-      .reported(this.reported)
-      .board(this.board)
-      .role(this.role.name())
-      .apt(this.apt)
-      .following(this.following)
-      .follower(this.follower)
-      .enabled(this.enabled)
-      .build();
-    // @formatter:on
   }
 
   @Override
@@ -111,6 +93,45 @@ public class UserAccountRequestDto implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public UserAccountEntity toEntity() {
+    // @formatter:off
+    return new UserAccountEntity(
+      this.id,
+      this.email,
+      this.username,
+      this.password,
+      this.introduction,
+      this.signupDate,
+      this.reported,
+      this.apt,
+      this.role.name(),
+      this.board,
+      this.following,
+      this.follower,
+      this.enabled
+    );
+    // @formatter:on
+  }
+
+  public static UserAccountRequestDto of(UserAccountEntity entity) {
+    // @formatter:off
+    return UserAccountRequestDto.builder()
+      .id(entity.getId())
+      .email(entity.getEmail())
+      .password(entity.getPassword())
+      .username(entity.getUsername())
+      .introduction(entity.getIntroduction())
+      .reported(entity.getReported())
+      .board(entity.getBoard())
+      .role(UserRole.valueOf(entity.getRole()))
+      .apt(entity.getApt())
+      .following(entity.getFollowing())
+      .follower(entity.getFollower())
+      .enabled(entity.isEnabled())
+      .build();
+    // @formatter:on
   }
 
 }

@@ -49,17 +49,14 @@ public class BoardApi {
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
-    log.debug("board: {}", board);
-    log.debug("category: {}", category);
-    log.debug("user: {}", user);
 
     if (board.getTitle() == null || board.getTitle().isEmpty() || board.getContent() == null
         || board.getContent().isEmpty() || category == null || category.isEmpty() || user == null) {
-      return "redirect:/error";
+      return "redirect:/error"; // FIXME: throws exception
     }
     Optional<UserAccountEntity> userEntity = userService.findByEmailIgnoreCase(user.getEmail());
     if (userEntity.isEmpty()) {
-      return "redirect:/error";
+      return "redirect:/error"; // FIXME: throws exception
     }
     boardService.save(board, category, userEntity.get());
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
@@ -70,13 +67,13 @@ public class BoardApi {
   @PutMapping("/{id}")
   public ResponseEntity<String> updateBoard(@RequestBody BoardRequestDto board) {
     boardService.updateById(board);
-    return ResponseEntity.ok("{\"message\":\"성공적으로 수정되었습니다.\"}");
+    return ResponseEntity.ok("success");
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
     boardService.deleteById(id);
-    return ResponseEntity.ok("성공적으로 삭제되었습니다.");
+    return ResponseEntity.ok("success");
   }
 
   @PostMapping("/{id}/like")
@@ -88,7 +85,7 @@ public class BoardApi {
   @DeleteMapping("/{id}/like")
   public ResponseEntity<String> deleteLike(@RequestBody LikeRequestDto like) {
     likeService.delete(like);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok("success");
   }
 
 }

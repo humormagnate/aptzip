@@ -2,6 +2,8 @@ package com.markruler.aptzip.service;
 
 import com.markruler.aptzip.domain.user.model.ConfirmationToken;
 import com.markruler.aptzip.domain.user.model.UserAccountEntity;
+import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.model.UserRole;
 import com.markruler.aptzip.domain.user.repository.ConfirmationTokenRepository;
 import com.markruler.aptzip.domain.user.service.ConfirmationService;
 
@@ -31,7 +33,7 @@ class ConfirmationServiceTests {
   @DisplayName("User ID 값으로 토큰을 조회한다")
   void testFindById() {
     // given
-    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
+    UserAccountEntity user = UserAccountRequestDto.builder().id(1L).email("test@aptzip.com").role(UserRole.USER).build().toEntity();
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
     log.debug("Test ConfirmationToken: {}", confirmationToken);
 

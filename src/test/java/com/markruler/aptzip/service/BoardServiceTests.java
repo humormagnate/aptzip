@@ -9,6 +9,7 @@ import com.markruler.aptzip.domain.board.model.Category;
 import com.markruler.aptzip.domain.board.repository.BoardRepository;
 import com.markruler.aptzip.domain.board.service.BoardService;
 import com.markruler.aptzip.domain.user.model.UserAccountEntity;
+import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
 import com.markruler.aptzip.domain.user.model.UserRole;
 
 import org.junit.jupiter.api.Assertions;
@@ -34,8 +35,8 @@ class BoardServiceTests {
   void testSave() {
     // given
     AptRequestDto apt = AptRequestDto.builder().code("A10024484").build();
-    UserAccountEntity user = UserAccountEntity.builder().id(1L).email("email").username("changsu")
-        .role(UserRole.USER.name()).password("password").reported(0).enabled(true).build();
+    UserAccountEntity user = UserAccountRequestDto.builder().id(1L).email("email").username("changsu")
+        .role(UserRole.USER).password("password").reported(0).enabled(true).build().toEntity();
     BoardRequestDto board = BoardRequestDto.builder().apt(apt.toEntity()).user(user).build();
 
     // mocking

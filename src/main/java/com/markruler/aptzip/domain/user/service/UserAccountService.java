@@ -46,8 +46,6 @@ public class UserAccountService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-    log.debug("username: {}", username);
     Optional<UserAccountEntity> userEntityWrapper = userJpaRepository.findByUsername(username);
     if (userEntityWrapper.isEmpty()) {
       throw new UsernameNotFoundException("Not found " + username);
@@ -57,21 +55,9 @@ public class UserAccountService implements UserDetailsService {
     if (!user.isEnabled()) {
       throw new AuthenticationCredentialsNotFoundException("This account requires email verification or disabled.");
     }
-    log.debug("user: {}", user);
 
-    // TODO: Entity to DTO
-    UserAccountRequestDto urd = new UserAccountRequestDto();
-    urd.setId(user.getId());
-    urd.setEmail(user.getEmail());
-    urd.setUsername(user.getUsername());
-    urd.setPassword(user.getPassword());
-    urd.setIntroduction(user.getIntroduction());
-    urd.setSignupDate(user.getSignupDate());
-    urd.setReported(user.getReported());
-    urd.setRole(UserRole.USER);
-    urd.setApt(user.getApt());
-    urd.setFollowing(user.getFollowing());
-    urd.setFollower(user.getFollower());
+    UserAccountRequestDto urd = UserAccountRequestDto.of(user);
+    log.debug("user: {}", urd);
 
     if (user.getRole() != null && user.getRole().equals(UserRole.USER.name())) {
       urd.setRole(UserRole.USER);
@@ -148,7 +134,8 @@ public class UserAccountService implements UserDetailsService {
   }
 
   public UserFollowEntity createFollow(Long id, UserAccountRequestDto user) {
-    UserAccountEntity following = UserAccountEntity.builder().id(id).build();
+    log.debug("user: {}", user);
+    UserAccountEntity following = UserAccountRequestDto.builder().id(id).build().toEntity();
     UserAccountEntity follower = user.toEntity();
     UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
 
@@ -160,7 +147,8 @@ public class UserAccountService implements UserDetailsService {
   }
 
   public void deleteFollow(Long id, UserAccountRequestDto user) {
-    UserAccountEntity following = UserAccountEntity.builder().id(id).build();
+    log.debug("user: {}", user);
+    UserAccountEntity following = UserAccountRequestDto.builder().id(id).build().toEntity();
     UserAccountEntity follower = user.toEntity();
     UserFollowEntity relationship = followRepository.findByFollowingAndFollower(following, follower);
     followRepository.delete(relationship);

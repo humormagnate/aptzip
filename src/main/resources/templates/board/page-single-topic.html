@@ -49,10 +49,8 @@
 										</a>
 									</li>
 									<li th:each="category : ${ board?.category }">
-										<a href="#">
-											<span th:class="'tt-color-' + ${ board?.category + ' tt-badge' }"
-												th:classappend="'user-select-none'">[[${ category }]]</span>
-										</a>
+										<span th:class="'tt-color-' + ${ board?.category + ' tt-badge' }"
+											th:classappend="'user-select-none'">[[${ category }]]</span>
 									</li>
 								</ul>
 							</div>

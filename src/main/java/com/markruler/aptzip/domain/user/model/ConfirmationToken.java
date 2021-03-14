@@ -17,11 +17,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+@Entity
+@Table(name = "TB_CONFIRMATION_TOKEN")
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Table(name = "TB_CONFIRMATION_TOKEN")
-@Entity
 public class ConfirmationToken {
 
   @Id

@@ -44,7 +44,7 @@ public class UserAccountApi {
   @PostMapping("/{id}/follow")
   public ResponseEntity<UserFollowEntity> createFollow(@PathVariable("id") Long id,
       @AuthenticationPrincipal UserAccountRequestDto user) {
-    log.debug("user: {}", user);
+    log.debug("id: {}", id);
     UserFollowEntity entity = userAccountService.createFollow(id, user);
     if (entity == null) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(entity);
@@ -53,9 +53,10 @@ public class UserAccountApi {
   }
 
   @DeleteMapping("/{id}/follow")
-  public void deleteFollow(@PathVariable("id") Long id, @AuthenticationPrincipal UserAccountRequestDto user) {
-    log.debug("user: {}", user);
+  public ResponseEntity<String> deleteFollow(@PathVariable("id") Long id,
+      @AuthenticationPrincipal UserAccountRequestDto user) {
     userAccountService.deleteFollow(id, user);
+    return ResponseEntity.ok("success");
   }
 
 }

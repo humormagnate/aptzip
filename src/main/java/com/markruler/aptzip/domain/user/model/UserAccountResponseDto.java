@@ -38,22 +38,4 @@ public class UserAccountResponseDto extends User {
     super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
   }
 
-  public UserAccountEntity toEntity() {
-    return UserAccountEntity.builder()
-    // @formatter:off
-      .id(id)
-      .username(super.getUsername())
-      .password(super.getPassword())
-      .email(email)
-      .introduction(introduction)
-      .signupDate(signupDate)
-      .reported(reported)
-      .role(role.name())
-      .apt(apt)
-      .following(following)
-      .follower(follower)
-      .build();
-    // @formatter:on
-  }
-
 }

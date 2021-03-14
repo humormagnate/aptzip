@@ -9,6 +9,7 @@
 		<main id="tt-pageContent" class="tt-offset-small">
 			<div class="tt-wrapper-section">
 				<div class="container">
+					<input type="hidden" id="userId" th:value="${ infouser.id }">
 					<div class="tt-user-header">
 						<div class="tt-col-avatar">
 							<div class="tt-icon">
@@ -28,7 +29,7 @@
 							</div>
 							<ul class="tt-list-badge">
 								<li>
-									<span th:class="${infouser.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge user-select-none'" th:text="${ infouser.getRole() }"></span>
+									<span th:class="${infouser.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge' + ' user-select-none'" th:text="${ infouser.getRole() }"></span>
 								</li>
 							</ul>
 						</div>
@@ -102,7 +103,9 @@
 											<div class="col-11">
 												<ul class="tt-list-badge">
 													<li class="show-mobile">
-														<span th:class="'tt-color-' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
+														<span th:class="'tt-color-' + ${ board?.category + ' tt-badge'}" th:classappend="'user-select-none'">
+															[[${ board.category } ? ${ board.category } : 'common']]
+														</span>
 													</li>
 													<li>
 													</li>
@@ -116,7 +119,9 @@
 										</div>
 									</div>
 									<div class="tt-col-category">
-										<span th:class="'tt-color-' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
+										<span th:class="'tt-color-' + ${ board?.category + ' tt-badge'}" th:classappend="'user-select-none'">
+											[[${ board.category } ? ${ board.category } : 'common']]
+										</span>
 									</div>
 									<div class="tt-col-value hide-mobile">0</div>
 									<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
@@ -237,8 +242,8 @@
 									<div class="tt-col-value-large hide-mobile">[[${#temporals.format(follower.follower.signupDate, 'yyyy-MM-dd')}]]</div>
 									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] ago</div>
 									<div class="tt-col-value">
-										<span th:class="${follower.follower.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
-											[[${follower.follower.role.role}]]
+										<span th:class="${follower.follower.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge' + ' user-select-none'">
+											[[${follower.follower.role}]]
 										</span>
 									</div>
 								</div>
@@ -276,8 +281,8 @@
 									<div class="tt-col-value-large hide-mobile">[[${#temporals.format(following.following.signupDate, 'yyyy-MM-dd')}]]</div>
 									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createDate)}]] ago</div>
 									<div class="tt-col-value">
-										<span th:class="${following.following.role.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="tt-badge">
-											[[${following.following.role.role}]]
+										<span th:class="${following.following.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge' + ' user-select-none'">
+											[[${following.following.role}]]
 										</span>
 									</div>
 								</div>

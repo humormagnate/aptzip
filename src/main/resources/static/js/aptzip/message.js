@@ -10,13 +10,8 @@ function connectSTOMP(URL) {
   stomp.debug = null;
 
   client.connect({}, function(frame) {
-    // console.log(frame);
-    // console.log("Connected stomp!\n", frame);
-    // console.log("Connected stomp!\n" + frame);
-
     // Controller's MessageMapping, header, message(자유형식)
     // client.send("/nba", {}, "msg: string");
-
     // configureMessageBroker() 에서 지정한 Application Destination Prefixes
     stomp.send(
       "/sub/msg",
