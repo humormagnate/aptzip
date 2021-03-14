@@ -107,7 +107,6 @@ public class UserAccountService implements UserDetailsService {
   }
 
   public Optional<UserAccountEntity> findById(Long id) {
-    // return userJpaRepository.findById(id).map(UserAccountRequestDto::new);
     return userJpaRepository.findById(id);
   }
 

@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
+@Entity
+@Table(name = "TB_APT")
 @Getter
 @ToString
 @EqualsAndHashCode(of = "code")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_APT")
-@Entity
 public class AptEntity implements Serializable {
   private static final long serialVersionUID = -9153138836152397538L;
 

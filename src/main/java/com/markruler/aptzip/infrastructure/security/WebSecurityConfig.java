@@ -104,8 +104,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           .includeSubDomains(true).and()
         .and()
       .rememberMe()
-        .rememberMeServices(persistentTokenBasedRememberMeServices())
-        .and()
+        .disable() // FIXME: remember-me
+        // .rememberMeServices(persistentTokenBasedRememberMeServices())
+        // .and()
       .formLogin()
         .loginPage("/login")
         // loginProcessingUrl -> UsernamePasswordAuthenticationFilter
@@ -119,7 +120,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
       .logout()
         .logoutUrl("/logout")
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", HttpMethod.GET.name())) // FIXME: POST
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", HttpMethod.GET.name()))
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID", "remember-me")

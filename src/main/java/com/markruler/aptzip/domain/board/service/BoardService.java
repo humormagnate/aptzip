@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class BoardService {
   Logger log = LoggerFactory.getLogger(BoardService.class);
 

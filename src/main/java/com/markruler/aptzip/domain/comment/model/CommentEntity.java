@@ -26,13 +26,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
+@Table(name = "TB_COMMENT")
 @Getter
 @ToString
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_COMMENT")
-@Entity
 public class CommentEntity implements Serializable {
   private static final long serialVersionUID = 9090255029266850247L;
 

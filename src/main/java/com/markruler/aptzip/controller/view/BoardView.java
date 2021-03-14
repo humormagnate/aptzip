@@ -6,7 +6,7 @@ import com.markruler.aptzip.domain.board.model.BoardEntity;
 import com.markruler.aptzip.domain.board.model.Category;
 import com.markruler.aptzip.domain.board.model.CustomPage;
 import com.markruler.aptzip.domain.board.model.CustomPageMaker;
-import com.markruler.aptzip.domain.board.model.LikeEntity;
+import com.markruler.aptzip.domain.board.model.LikeRequestDto;
 import com.markruler.aptzip.domain.board.service.BoardService;
 import com.markruler.aptzip.domain.board.service.LikeService;
 import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
@@ -54,11 +54,11 @@ public class BoardView {
   public String read(Model model, @PathVariable("id") Long boardId,
       @AuthenticationPrincipal UserAccountRequestDto user) {
     BoardEntity board = boardService.findById(boardId);
-    List<LikeEntity> likes = likeService.findLikesByBoard(board);
-    LikeEntity like = null;
-    for (LikeEntity el : likes) {
+    List<LikeRequestDto> likes = likeService.findLikesByBoard(board);
+    LikeRequestDto like = null;
+    for (LikeRequestDto el : likes) {
       if (el.getUser().getEmail().equals(user.getEmail())) {
-        like = new LikeEntity(el.getId(), el.getBoard(), el.getUser(), el.getCreateDate());
+        like = el;
       }
     }
     // @formatter:off

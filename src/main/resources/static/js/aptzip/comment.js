@@ -106,8 +106,8 @@ const renderComment = (list) => {
             <div class="tt-item-description">
               ${renderObject.content}
             </div>
-
             <div class="tt-item-info info-bottom">
+              <!--
               <a href="#" class="tt-icon-btn">
                   <i class="tt-icon">
                     <svg>
@@ -115,6 +115,7 @@ const renderComment = (list) => {
                     </svg>
                   </i>
                 <span class="tt-text">0</span>
+                -->
               </a>
             <div class="col-separator"></div>`;
 
@@ -197,7 +198,6 @@ if (document.body.contains(document.getElementById("deleteCommentBtn"))) {
           document.getElementById("updateCommentContent").value = "";
           renderComment(list);
           document.getElementById("replyCount").innerText = list.length;
-          // TODO: refactor modal-filter
           // document.getElementsByClassName("modal-filter").item(0).click();
           document.querySelector(".tt-btn-col-close").click();
         });

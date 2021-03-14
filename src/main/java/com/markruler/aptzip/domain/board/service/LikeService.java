@@ -7,11 +7,11 @@ import com.markruler.aptzip.domain.board.model.LikeEntity;
 import com.markruler.aptzip.domain.board.model.LikeRequestDto;
 
 public interface LikeService {
-  LikeEntity save(LikeRequestDto like);
+  LikeEntity save(Long boardId, Long userId);
 
-  List<LikeEntity> findAll();
+  List<LikeRequestDto> findAll();
 
-  void delete(LikeRequestDto like);
+  void delete(Long boardId, Long userId);
 
-  List<LikeEntity> findLikesByBoard(BoardEntity board);
+  List<LikeRequestDto> findLikesByBoard(BoardEntity board);
 }

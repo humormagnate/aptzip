@@ -1,36 +1,44 @@
 let likeflag = true;
+const likeColor = "#ff5722";
+const notLikeColor = "#666f74";
 // export default (() => {
 export const Like = (() => {
   // Constructor
   function Like(boardId) {
     this.boardId = boardId;
+    this.readerId = readerId;
   }
 
-  Like.prototype.insert = (obj) => {
-    fetch(obj.url, {
+  Like.prototype.insert = (path) => {
+    fetch(path, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(obj),
     })
-      .then((res) => res.text())
+      .then((res) => res.json())
       .then((data) => {
-        if (data === "insert") {
-          document.getElementById("iconLike").style.fill = "#ff5722";
-        } else if (data === "delete") {
-          document.getElementById("iconLike").style.fill = "#666f74";
-        } else {
-          console.error("server error");
-        }
+        console.log(data);
+        document.getElementById("iconLike").style.fill = likeColor;
+        likeflag = false;
       });
   };
 
-  Like.prototype.delete = function (obj) {
-    console.log(obj);
+  Like.prototype.delete = (path) => {
+    fetch(path, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        document.getElementById("iconLike").style.fill = notLikeColor;
+        likeflag = true;
+      });
   };
 
-  // return constructor
   return Like;
 })();
 
@@ -39,20 +47,17 @@ if (document.body.contains(document.getElementById("likeBtn"))) {
     event.preventDefault();
     let like = new Like();
     const boardId = document.getElementById("boardId").value;
-    const userId = document.getElementById("readerId");
-    if (!userId) location.href = `/login`;
-    const obj = { type: 1, boardId: boardId, url: `/like/${boardId}` };
-    // FIXME:
+    const readerId = document.getElementById("readerId").value;
+    if (!readerId) location.href = `/login`;
     if (likeflag) {
-      like.insert(obj);
+      like.insert(`/boards/${boardId}/like/${readerId}`);
     } else {
-      like.insert(obj); // 우선 flag로 처리
-      // like.delete(obj);
-    }
-
-    if (document.getElementById("likeBoard").value) {
-      document.getElementById("iconLike").style.fill = "#ff5722";
-      likeflag = false;
+      like.delete(`/boards/${boardId}/like/${readerId}`);
     }
   });
+
+  if (document.getElementById("likeBoard").value) {
+    document.getElementById("iconLike").style.fill = likeColor;
+    likeflag = false;
+  }
 }
