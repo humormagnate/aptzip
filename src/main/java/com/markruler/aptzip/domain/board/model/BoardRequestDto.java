@@ -57,4 +57,26 @@ public class BoardRequestDto {
     );
     // @formatter:on
   }
+
+  public static BoardRequestDto of(BoardEntity entity) {
+    // @formatter:off
+    return BoardRequestDto.builder()
+      .id(entity.getId())
+      .category(entity.getCategory())
+      .title(entity.getTitle())
+      .content(entity.getContent())
+      .enabled(entity.getEnabled())
+      .viewCount(entity.getViewCount())
+      .createDate(entity.getCreateDate())
+      .updateDate(entity.getUpdateDate())
+      .comments(entity.getComments())
+      .user(entity.getUser())
+      .apt(entity.getApt())
+      .build();
+    // @formatter:on
+  }
+
+  public void increaseViewCount() {
+    this.viewCount++;
+  }
 }

@@ -43,12 +43,11 @@ public class BoardService {
   public BoardEntity findById(Long boardId) {
     Optional<BoardEntity> boardEntity = boardRepository.findById(boardId);
     if (boardEntity.isPresent()) {
-      // FIXME: Entity to DTO
-      BoardEntity board = boardEntity.get();
-      board.setViewCount(board.getViewCount() + 1);
-      boardRepository.save(board);
-      board.setContent(board.getContent().replace(System.lineSeparator(), "<br>"));
-      return board;
+      BoardRequestDto board = BoardRequestDto.of(boardEntity.get());
+      board.increaseViewCount();
+      BoardEntity entity = boardRepository.save(board.toEntity());
+      board.setContent(entity.getContent().replace(System.lineSeparator(), "<br>"));
+      return entity;
     }
     return null;
   }

@@ -32,13 +32,11 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table(name = "TB_BOARD")
 @Getter
-@Setter // TODO: remove setter, and make a response dto
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "comments")
 @NoArgsConstructor
