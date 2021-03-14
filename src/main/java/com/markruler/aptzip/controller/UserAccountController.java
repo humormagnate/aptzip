@@ -4,6 +4,8 @@ import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.domain.user.UserFollowEntity;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,14 +22,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/users")
 @Api(tags = "users")
-@Slf4j
 @RequiredArgsConstructor
 public class UserAccountController {
+  Logger log = LoggerFactory.getLogger(UserAccountController.class);
+
   private final UserAccountService userAccountService;
 
   /**

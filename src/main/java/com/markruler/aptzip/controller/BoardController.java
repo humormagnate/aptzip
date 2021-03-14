@@ -16,6 +16,8 @@ import com.markruler.aptzip.service.BoardService;
 import com.markruler.aptzip.service.LikeService;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -36,14 +38,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/boards")
 @Api(tags = "boards")
-@Slf4j
 @RequiredArgsConstructor
 public class BoardController {
+  Logger log = LoggerFactory.getLogger(BoardController.class);
 
   private final BoardService boardService;
   private final UserAccountService userService;

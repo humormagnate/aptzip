@@ -25,7 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class LikeServiceTests {
 
   @InjectMocks
-  private LikeBoardServiceImpl service;
+  private BoardLikeService service;
 
   @Mock
   private LikeRepository repository;

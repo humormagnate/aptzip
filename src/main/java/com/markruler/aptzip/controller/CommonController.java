@@ -10,6 +10,8 @@ import com.markruler.aptzip.helper.CustomPageMaker;
 import com.markruler.aptzip.service.BoardService;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,14 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 // TODO: Common이라는 명칭 지양, `/zip` 분리
 @Controller
 @Api(tags = "common")
-@Slf4j
 @RequiredArgsConstructor
 public class CommonController {
+  Logger log = LoggerFactory.getLogger(CommonController.class);
 
   private final UserAccountService userAccountService;
   private final BoardService boardService;

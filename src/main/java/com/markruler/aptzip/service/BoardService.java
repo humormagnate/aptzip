@@ -16,18 +16,20 @@ import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class BoardService {
+  Logger log = LoggerFactory.getLogger(BoardService.class);
+
   private final BoardRepository boardRepository;
 
   @Transactional(readOnly = true)

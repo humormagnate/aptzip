@@ -7,6 +7,8 @@ import javax.sql.DataSource;
 import com.markruler.aptzip.domain.user.UserRole;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -33,14 +35,13 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+  Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
 
   private final PasswordEncoder passwordEncoder;
   private final UserAccountService userService;

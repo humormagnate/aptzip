@@ -7,18 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import lombok.extern.slf4j.Slf4j;
-
-/**
- * Basic(Pure) WebSocket
- */
-@Slf4j
 public class CommentEchoHandler extends TextWebSocketHandler {
+  Logger log = LoggerFactory.getLogger(CommentEchoHandler.class);
 
   // broadcast
   private final List<WebSocketSession> sessionList = new ArrayList<>();

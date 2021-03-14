@@ -7,35 +7,40 @@ import com.markruler.aptzip.persistence.user.ConfirmationTokenRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import lombok.extern.slf4j.Slf4j;
-
-@SpringBootTest
-@Slf4j
+// @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class ConfirmationServiceTests {
-  @Autowired
+  Logger log = LoggerFactory.getLogger(ConfirmationServiceTests.class);
+
+  @InjectMocks
   private ConfirmationService service;
 
-  @MockBean
+  @Mock
   private ConfirmationTokenRepository repository;
 
   @Test
-  @DisplayName("Test findById Success")
+  @DisplayName("User ID 값으로 토큰을 조회한다")
   void testFindById() {
-    // Setup our mock repository
+    // given
     UserAccountEntity user = UserAccountEntity.builder().id(1L).email("test@aptzip.com").build();
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
     log.debug("Test ConfirmationToken: {}", confirmationToken);
-    Mockito.doReturn(confirmationToken).when(repository).findByToken(confirmationToken.getToken());
 
-    // Execute the service call
+    // mocking
+    BDDMockito.given(repository.findByToken(confirmationToken.getToken())).willReturn(confirmationToken);
+
+    // when
     ConfirmationToken returnedToken = service.findByToken(confirmationToken.getToken());
 
-    // Assert the response
-    Assertions.assertSame(returnedToken.getToken(), confirmationToken.getToken(), "The token returned was not the same as the mock");
+    // then
+    Assertions.assertSame(returnedToken.getToken(), confirmationToken.getToken(), "토큰 값이 일치하지 않습니다");
   }
 }
