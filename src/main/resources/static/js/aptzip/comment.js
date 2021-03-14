@@ -106,8 +106,8 @@ const renderComment = (list) => {
             <div class="tt-item-description">
               ${renderObject.content}
             </div>
-
             <div class="tt-item-info info-bottom">
+              <!--
               <a href="#" class="tt-icon-btn">
                   <i class="tt-icon">
                     <svg>
@@ -115,6 +115,7 @@ const renderComment = (list) => {
                     </svg>
                   </i>
                 <span class="tt-text">0</span>
+                -->
               </a>
             <div class="col-separator"></div>`;
 

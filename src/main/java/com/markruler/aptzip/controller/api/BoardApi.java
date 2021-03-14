@@ -1,10 +1,12 @@
 package com.markruler.aptzip.controller.api;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.collect.ImmutableMap;
 import com.markruler.aptzip.domain.board.model.BoardRequestDto;
 import com.markruler.aptzip.domain.board.model.LikeEntity;
-import com.markruler.aptzip.domain.board.model.LikeRequestDto;
 import com.markruler.aptzip.domain.board.service.BoardService;
 import com.markruler.aptzip.domain.board.service.LikeService;
 import com.markruler.aptzip.domain.user.model.UserAccountEntity;
@@ -86,16 +88,16 @@ public class BoardApi {
     return ResponseEntity.ok("success");
   }
 
-  @PostMapping("/{id}/like")
-  public ResponseEntity<LikeEntity> createLike(@RequestBody LikeRequestDto like) {
-    LikeEntity responseLike = likeService.save(like);
-    return ResponseEntity.ok(responseLike);
+  @PostMapping("/{boardId}/like/{userId}")
+  public ResponseEntity<LikeEntity> createLike(@PathVariable("boardId") Long boardId,
+      @PathVariable("userId") Long userId) {
+    return ResponseEntity.ok(likeService.save(boardId, userId));
   }
 
-  @DeleteMapping("/{id}/like")
-  public ResponseEntity<String> deleteLike(@RequestBody LikeRequestDto like) {
-    likeService.delete(like);
-    return ResponseEntity.ok("success");
+  @DeleteMapping("/{boardId}/like/{userId}")
+  public ResponseEntity<Map<String, String>> deleteLike(@PathVariable("boardId") Long boardId, @PathVariable("userId") Long userId) {
+    likeService.delete(boardId, userId);
+    return ResponseEntity.ok(Collections.singletonMap("msg", "success")); // Map.of("msg", "success")
   }
 
 }

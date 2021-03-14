@@ -26,6 +26,7 @@ public class ErrorResponseController implements ErrorController {
     return ERROR_PATH;
   }
 
+  // FIXME: 에러 처리와 에러 페이지 오류 수정
   @GetMapping(value = { "${server.error.path}" }, produces = MediaType.TEXT_HTML_VALUE)
   public String handleError(HttpServletRequest request, Model model) {
     Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);

@@ -38,7 +38,7 @@ USE `aptzip`;
 ```
 
 ```bash
-docker exec aptzip-mysql mysql -u root -ptestmaria -e "select * from aptzip.tb_category;"
+docker exec aptzip-db mysql -u root -ptestmaria -e "select * from aptzip.tb_category;"
 
 +----+---------------+
 | id | category_name |

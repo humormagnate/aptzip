@@ -104,8 +104,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           .includeSubDomains(true).and()
         .and()
       .rememberMe()
-        .rememberMeServices(persistentTokenBasedRememberMeServices())
-        .and()
+        .disable() // FIXME: remember-me
+        // .rememberMeServices(persistentTokenBasedRememberMeServices())
+        // .and()
       .formLogin()
         .loginPage("/login")
         // loginProcessingUrl -> UsernamePasswordAuthenticationFilter

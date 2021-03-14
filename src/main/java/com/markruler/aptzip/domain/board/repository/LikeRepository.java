@@ -17,4 +17,6 @@ public interface LikeRepository extends CrudRepository<LikeEntity, Long> {
 
   List<LikeEntity> findAllByBoard(BoardEntity board);
 
+  void deleteByBoardAndUser(BoardEntity board, UserAccountEntity user);
+
 }

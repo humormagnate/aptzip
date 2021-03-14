@@ -106,7 +106,7 @@ public class UserAccountRequestDto implements UserDetails {
       this.signupDate,
       this.reported,
       this.apt,
-      this.role.name(),
+      this.role == null ? UserRole.USER.name() : this.role.name(),
       this.board,
       this.following,
       this.follower,
