@@ -2,11 +2,12 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import com.markruler.aptzip.domain.board.CommentEntity;
-import com.markruler.aptzip.domain.board.CommentRequestDto;
-import com.markruler.aptzip.domain.user.UserAccountRequestDto;
-import com.markruler.aptzip.domain.user.UserRole;
-import com.markruler.aptzip.persistence.board.CommentRepository;
+import com.markruler.aptzip.domain.comment.model.CommentEntity;
+import com.markruler.aptzip.domain.comment.model.CommentRequestDto;
+import com.markruler.aptzip.domain.comment.repository.CommentRepository;
+import com.markruler.aptzip.domain.comment.service.CommentService;
+import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.model.UserRole;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

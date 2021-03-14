@@ -5,11 +5,12 @@ import static org.mockito.ArgumentMatchers.any;
 import java.util.Arrays;
 import java.util.List;
 
-import com.markruler.aptzip.domain.board.BoardEntity;
-import com.markruler.aptzip.domain.board.BoardRequestDto;
-import com.markruler.aptzip.domain.board.LikeEntity;
-import com.markruler.aptzip.domain.board.LikeRequestDto;
-import com.markruler.aptzip.persistence.board.LikeRepository;
+import com.markruler.aptzip.domain.board.model.BoardEntity;
+import com.markruler.aptzip.domain.board.model.BoardRequestDto;
+import com.markruler.aptzip.domain.board.model.LikeEntity;
+import com.markruler.aptzip.domain.board.model.LikeRequestDto;
+import com.markruler.aptzip.domain.board.repository.LikeRepository;
+import com.markruler.aptzip.domain.board.service.BoardLikeService;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

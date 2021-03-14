@@ -2,13 +2,14 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import com.markruler.aptzip.domain.apartment.AptRequestDto;
-import com.markruler.aptzip.domain.board.BoardEntity;
-import com.markruler.aptzip.domain.board.BoardRequestDto;
-import com.markruler.aptzip.domain.board.Category;
-import com.markruler.aptzip.domain.user.UserAccountEntity;
-import com.markruler.aptzip.domain.user.UserRole;
-import com.markruler.aptzip.persistence.board.BoardRepository;
+import com.markruler.aptzip.domain.apartment.model.AptRequestDto;
+import com.markruler.aptzip.domain.board.model.BoardEntity;
+import com.markruler.aptzip.domain.board.model.BoardRequestDto;
+import com.markruler.aptzip.domain.board.model.Category;
+import com.markruler.aptzip.domain.board.repository.BoardRepository;
+import com.markruler.aptzip.domain.board.service.BoardService;
+import com.markruler.aptzip.domain.user.model.UserAccountEntity;
+import com.markruler.aptzip.domain.user.model.UserRole;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
