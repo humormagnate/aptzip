@@ -119,7 +119,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
       .logout()
         .logoutUrl("/logout")
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", HttpMethod.GET.name())) // FIXME: POST
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", HttpMethod.GET.name()))
         .clearAuthentication(true)
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID", "remember-me")

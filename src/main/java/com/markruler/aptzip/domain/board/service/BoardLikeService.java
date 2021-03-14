@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional // TODO: Add Transactional test code
+@Transactional
 @RequiredArgsConstructor
 public class BoardLikeService implements LikeService {
   Logger log = LoggerFactory.getLogger(BoardLikeService.class);

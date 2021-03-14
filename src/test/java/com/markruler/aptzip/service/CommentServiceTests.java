@@ -2,6 +2,10 @@ package com.markruler.aptzip.service;
 
 import static org.mockito.ArgumentMatchers.any;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.markruler.aptzip.domain.board.model.BoardRequestDto;
 import com.markruler.aptzip.domain.comment.model.CommentEntity;
 import com.markruler.aptzip.domain.comment.model.CommentRequestDto;
 import com.markruler.aptzip.domain.comment.repository.CommentRepository;
@@ -42,20 +46,25 @@ class CommentServiceTests {
     CommentEntity returnedComment = service.save(1L, comment, user);
 
     // then
-    Assertions.assertNotNull(returnedComment, "The saved like should not be null");
+    Assertions.assertNotNull(returnedComment, "The saved comment should not be null");
     Assertions.assertEquals(1L, returnedComment.getId());
   }
 
-  // TODO: Comment DTO 작성
-  // @Test
+  @Test
   @DisplayName("특정 게시물의 댓글 엔터티를 조회합니다")
-  void testFindAllByBoard() {
+  void testFindAllByBoardIdOrderByIdAsc() {
     // given
+    BoardRequestDto board = BoardRequestDto.builder().id(1L).build();
+    CommentEntity comment1 = CommentRequestDto.builder().id(1L).content("test1").board(board.toEntity()).build().toEntity();
+    CommentEntity comment2 = CommentRequestDto.builder().id(2L).content("test2").board(board.toEntity()).build().toEntity();
 
     // mocking
+    BDDMockito.given(repository.findAllByBoardIdOrderByIdAsc(any())).willReturn(Arrays.asList(comment1, comment2));
 
     // when
+    List<CommentRequestDto> returnedComments = service.findAllByBoardId(board.getId());
 
     // then
+    Assertions.assertEquals(2, returnedComments.size(), "findAll should return 2 comments");
   }
 }

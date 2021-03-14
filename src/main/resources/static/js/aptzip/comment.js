@@ -197,7 +197,6 @@ if (document.body.contains(document.getElementById("deleteCommentBtn"))) {
           document.getElementById("updateCommentContent").value = "";
           renderComment(list);
           document.getElementById("replyCount").innerText = list.length;
-          // TODO: refactor modal-filter
           // document.getElementsByClassName("modal-filter").item(0).click();
           document.querySelector(".tt-btn-col-close").click();
         });
