@@ -8,11 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import io.swagger.annotations.Api;
@@ -43,13 +40,6 @@ public class ErrorResponseController implements ErrorController {
       // @formatter:on
     }
     return ERROR_PATH;
-  }
-
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-    log.error("handleMethodArgumentNotValidException", e);
-    final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getBindingResult(), "");
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
 }
