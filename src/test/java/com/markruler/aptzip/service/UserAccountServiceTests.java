@@ -6,10 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.markruler.aptzip.domain.user.UserAccountEntity;
-import com.markruler.aptzip.domain.user.UserAccountRequestDto;
-import com.markruler.aptzip.domain.user.UserRole;
-import com.markruler.aptzip.persistence.user.UserJpaRepository;
+import com.markruler.aptzip.domain.user.model.UserAccountEntity;
+import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
+import com.markruler.aptzip.domain.user.model.UserRole;
+import com.markruler.aptzip.domain.user.repository.UserJpaRepository;
+import com.markruler.aptzip.domain.user.service.UserAccountService;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
