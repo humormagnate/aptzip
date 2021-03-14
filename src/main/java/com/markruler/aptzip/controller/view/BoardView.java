@@ -56,9 +56,11 @@ public class BoardView {
     BoardEntity board = boardService.findById(boardId);
     List<LikeRequestDto> likes = likeService.findLikesByBoard(board);
     LikeRequestDto like = null;
-    for (LikeRequestDto el : likes) {
-      if (el.getUser().getEmail().equals(user.getEmail())) {
-        like = el;
+    if (user != null) {
+      for (LikeRequestDto el : likes) {
+        if (el.getUser().getEmail().equals(user.getEmail())) {
+          like = el;
+        }
       }
     }
     // @formatter:off
