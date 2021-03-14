@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+  Logger log = LoggerFactory.getLogger(LoginSuccessHandler.class);
 
   public LoginSuccessHandler(String defaultTargetUrl) {
     setDefaultTargetUrl(defaultTargetUrl);

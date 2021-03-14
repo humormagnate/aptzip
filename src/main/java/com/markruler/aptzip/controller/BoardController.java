@@ -16,6 +16,8 @@ import com.markruler.aptzip.service.BoardService;
 import com.markruler.aptzip.service.LikeService;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -36,14 +38,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/boards")
 @Api(tags = "boards")
-@Slf4j
 @RequiredArgsConstructor
 public class BoardController {
+  Logger log = LoggerFactory.getLogger(BoardController.class);
 
   private final BoardService boardService;
   private final UserAccountService userService;
@@ -63,24 +64,27 @@ public class BoardController {
   public String writeNewBoard(
   // @formatter:off
     @ModelAttribute BoardRequestDto board,
-    @RequestParam(value = "categoryId", defaultValue = "") String categoryId,
+    @RequestParam(value = "category", defaultValue = "COMMON") String category,
     @AuthenticationPrincipal UserAccountRequestDto user,
     RedirectAttributes redirectAttributes
   // @formatter:on
   ) throws Exception {
     log.debug("board: {}", board);
-    log.debug("categoryID: {}", categoryId);
+    log.debug("category: {}", category);
     log.debug("user: {}", user);
 
     if (board.getTitle() == null || board.getTitle().isEmpty() || board.getContent() == null
-        || board.getContent().isEmpty() || categoryId == null || categoryId.isEmpty() || user == null) {
+        || board.getContent().isEmpty() || category == null || category.isEmpty() || user == null) {
       return "redirect:/error";
     }
+    log.debug("user1: {}", user);
     Optional<UserAccountEntity> userEntity = userService.findByEmailIgnoreCase(user.getEmail());
+    log.debug("user2: {}", user);
     if (userEntity.isEmpty()) {
       return "redirect:/error";
     }
-    boardService.save(board, categoryId, userEntity.get());
+    log.debug("user3: {}", user);
+    boardService.save(board, category, userEntity.get());
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
     redirectAttributes.addFlashAttribute("msg", "success");
     return "redirect:/";

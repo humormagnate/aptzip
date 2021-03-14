@@ -102,7 +102,7 @@
 											<div class="col-11">
 												<ul class="tt-list-badge">
 													<li class="show-mobile">
-														<span th:class="'tt-color0' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
+														<span th:class="'tt-color-' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
 													</li>
 													<li>
 													</li>
@@ -116,7 +116,7 @@
 										</div>
 									</div>
 									<div class="tt-col-category">
-										<span th:class="'tt-color0' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
+										<span th:class="'tt-color-' + ${ board?.category + ' tt-badge'}">[[${ board.category } ? ${ board.category } : 'common']]</span>
 									</div>
 									<div class="tt-col-value hide-mobile">0</div>
 									<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
@@ -157,7 +157,7 @@
 									<div class="tt-col-description">
 										<h6 class="tt-title">
 											<a th:href="@{/boards/{id}(id=${comment.board.id})}">
-												[[${comment.commentContent}]]
+												[[${comment.content}]]
 											</a>
 										</h6>
 										<div class="row align-items-center no-gutters hide-desktope">
@@ -165,7 +165,7 @@
 												<ul class="tt-list-badge">
 													<li class="show-mobile">
 														<a href="#">
-															<span th:class="'tt-color0' + ${ comment?.board?.category + ' tt-badge' }">
+															<span th:class="'tt-color-' + ${ comment?.board?.category + ' tt-badge' }">
 																[[${comment.board.category}]]
 															</span>
 														</a>
@@ -186,7 +186,7 @@
 									</div>
 									<div class="tt-col-category">
 										<a href="#">
-											<span th:class="'tt-color0' + ${ comment?.board?.category + ' tt-badge' }">
+											<span th:class="'tt-color-' + ${ comment?.board?.category + ' tt-badge' }">
 												[[${comment.board.category}]]
 											</span>
 										</a>

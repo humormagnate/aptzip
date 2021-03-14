@@ -4,15 +4,11 @@
   "description": "아파트 중심 무료 커뮤니티 서비스",
   "main": "main.js",
   "scripts": {
-    "bundle": "npx webpack build --config webpack.config.cjs",
-    "bundle:watch": "npx webpack build --config webpack.config.cjs --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "outdated": "npm outdated",
-    "docker": "make docker",
-    "clean": "make clean",
-    "build": "make build",
-    "start:jar": "make jar",
-    "start": "make run"
+    "test": "npx jest --config jest.config.json",
+    "test:watch": "npx jest --config jest.config.json --watchAll",
+    "bundle": "npx webpack build --config webpack.config.cjs",
+    "bundle:watch": "npx webpack build --config webpack.config.cjs --watch"
   },
   "type": "module",
   "repository": {
@@ -39,6 +35,7 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^5.0.1",
     "file-loader": "^6.2.0",
+    "jest": "^26.6.3",
     "mini-css-extract-plugin": "^1.2.1",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "sass": "^1.27.0",

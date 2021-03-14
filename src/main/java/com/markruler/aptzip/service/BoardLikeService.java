@@ -10,17 +10,18 @@ import com.markruler.aptzip.domain.board.LikeEntity;
 import com.markruler.aptzip.domain.board.LikeRequestDto;
 import com.markruler.aptzip.persistence.board.LikeRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@RequiredArgsConstructor
-@Transactional // TODO: Add Transactional test code
 @Service
-public class LikeBoardServiceImpl implements LikeService {
+@Transactional // TODO: Add Transactional test code
+@RequiredArgsConstructor
+public class BoardLikeService implements LikeService {
+  Logger log = LoggerFactory.getLogger(BoardLikeService.class);
 
   private final LikeRepository likeRepository;
 

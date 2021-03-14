@@ -3,8 +3,8 @@ package com.markruler.aptzip.domain.user;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum UserPrivilege {
   COMMON_READ("common:read"),
   BOARD_READ("board:read"),

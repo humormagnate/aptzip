@@ -18,6 +18,8 @@ import com.markruler.aptzip.persistence.board.CommentRepository;
 import com.markruler.aptzip.persistence.user.FollowRepository;
 import com.markruler.aptzip.persistence.user.UserJpaRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,13 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@RequiredArgsConstructor
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserAccountService implements UserDetailsService {
+  Logger log = LoggerFactory.getLogger(UserAccountService.class);
 
   private final PasswordEncoder passwordEncoder;
   private final UserJpaRepository userJpaRepository;

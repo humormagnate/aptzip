@@ -9,6 +9,8 @@ import com.markruler.aptzip.service.AuthService;
 import com.markruler.aptzip.service.ConfirmationService;
 import com.markruler.aptzip.service.UserAccountService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
@@ -25,13 +27,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Api(tags = "auth")
 @RequiredArgsConstructor
-@Slf4j
 public class AuthController {
+  Logger log = LoggerFactory.getLogger(AuthController.class);
+
   private final AuthService authService;
   private final ConfirmationService confirmationService;
   private final UserAccountService userAccountService;

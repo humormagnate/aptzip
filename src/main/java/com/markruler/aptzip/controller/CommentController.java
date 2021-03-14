@@ -7,6 +7,8 @@ import com.markruler.aptzip.domain.board.CommentRequestDto;
 import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.service.CommentService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,50 +23,48 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/comments")
 @Api(tags = "comments")
-@Slf4j
 @RequiredArgsConstructor
 public class CommentController {
+  Logger log = LoggerFactory.getLogger(CommentController.class);
 
   private final CommentService commentService;
 
-  @GetMapping("/{boardId}")
-  public ResponseEntity<List<CommentRequestDto>> commentGet(@PathVariable("boardId") Long boardId) {
-    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
-    return new ResponseEntity<>(list, HttpStatus.OK);
-  }
-
   @PostMapping("/{boardId}")
-  public ResponseEntity<List<CommentRequestDto>> commentPost(@PathVariable("boardId") Long boardId,
+  public ResponseEntity<List<CommentRequestDto>> save(@PathVariable("boardId") Long boardId,
       @RequestBody CommentRequestDto comment, @AuthenticationPrincipal UserAccountRequestDto user) {
-    log.debug("comment: {}", comment);
     CommentEntity entity = commentService.save(boardId, comment, user);
     if (entity == null) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      throw new IllegalArgumentException("no comment exists");
     }
-
-    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
-    return ResponseEntity.ok(list);
+    return ResponseEntity.ok(commentService.findAllByBoardId(boardId));
   }
 
-  @DeleteMapping("/{boardId}/{commentId}")
-  public ResponseEntity<List<CommentRequestDto>> commentDelete(@PathVariable("boardId") Long boardId,
-      @PathVariable("commentId") Long commentId) {
-    commentService.deleteById(commentId);
-    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
-    return ResponseEntity.ok(list);
+  @GetMapping("/{boardId}")
+  public ResponseEntity<List<CommentRequestDto>> listByBoard(@PathVariable("boardId") Long boardId) {
+    return ResponseEntity.ok(commentService.findAllByBoardId(boardId));
   }
 
   @PutMapping("/{boardId}")
-  public ResponseEntity<List<CommentRequestDto>> updateComment(@PathVariable("boardId") Long boardId,
-      @RequestBody CommentRequestDto comment) {
-    commentService.update(comment);
-    List<CommentRequestDto> list = commentService.findAllByBoard(boardId);
-    return ResponseEntity.ok(list);
+  public ResponseEntity<List<CommentRequestDto>> update(@PathVariable("boardId") Long boardId,
+      @RequestBody CommentRequestDto comment, @AuthenticationPrincipal UserAccountRequestDto user) {
+    if (commentService.update(comment, user) == null) {
+      throw new IllegalArgumentException("update comment error");
+    }
+    return ResponseEntity.ok(commentService.findAllByBoardId(boardId));
+  }
+
+  @DeleteMapping("/{boardId}/{commentId}")
+  public ResponseEntity<List<CommentRequestDto>> delete(@PathVariable("boardId") Long boardId,
+      @PathVariable("commentId") Long commentId, @AuthenticationPrincipal UserAccountRequestDto user) {
+    boolean isDeleted = commentService.deleteById(commentId, user);
+    if (!isDeleted) {
+      throw new IllegalArgumentException("delete comment error");
+    }
+    return ResponseEntity.ok(commentService.findAllByBoardId(boardId));
   }
 
 }

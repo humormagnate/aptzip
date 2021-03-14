@@ -16,18 +16,20 @@ import com.markruler.aptzip.domain.user.UserAccountRequestDto;
 import com.markruler.aptzip.helper.CustomPage;
 import com.markruler.aptzip.persistence.board.BoardRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class BoardService {
+  Logger log = LoggerFactory.getLogger(BoardService.class);
+
   private final BoardRepository boardRepository;
 
   @Transactional(readOnly = true)
@@ -56,8 +58,9 @@ public class BoardService {
     return StreamSupport.stream(boardRepository.findAllByApt(apt).spliterator(), false).collect(Collectors.toList());
   }
 
-  public BoardEntity save(BoardRequestDto board, String categoryId, UserAccountEntity user) {
-    board.setCategory(Category.valueOf(categoryId));
+  public BoardEntity save(BoardRequestDto board, String category, UserAccountEntity user) {
+    log.debug("board.getUser: {}", board.getUser());
+    board.setCategory(Category.valueOf(category));
     board.setEnabled(true);
     board.setViewCount(0L);
     board.setUser(user);

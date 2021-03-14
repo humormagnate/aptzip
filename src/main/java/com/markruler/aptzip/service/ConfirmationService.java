@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class ConfirmationService {
   private final ConfirmationTokenRepository confirmationTokenRepository;
 

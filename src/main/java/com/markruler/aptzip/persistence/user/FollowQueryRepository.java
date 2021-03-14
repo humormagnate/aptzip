@@ -11,11 +11,10 @@
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.stereotype.Repository;
 
-// import lombok.extern.slf4j.Slf4j;
-
-// @Slf4j
+// FIXME: Follow logic
 // @Repository
 // public class FollowQueryRepository {
+// Logger log = LoggerFactory.getLogger(FollowQueryRepository.class);
 
 //   // Parameter 0 of constructor in com.markruler.persistence.FollowQueryRepository required a bean of type 'com.querydsl.jpa.impl.JPAQueryFactory' that could not be found.
 //   private JPAQueryFactory jpaQueryFactory;

@@ -68,6 +68,7 @@ public class UserAccountRequestDto implements UserDetails {
   public UserAccountEntity toEntity() {
     // @formatter:off
     return UserAccountEntity.builder()
+      .id(this.id)
       .email(this.email)
       .password(this.password)
       .username(this.username)

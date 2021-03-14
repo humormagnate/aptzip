@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.markruler.aptzip.domain.user.UserAccountEntity;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,23 +45,23 @@ public class CommentEntity implements Serializable {
   @Column(name = "ip_address")
   private String ipAddress;
 
-  @Column(name = "create_date")
   @CreationTimestamp
+  @Column(name = "create_date", updatable = false)
   private LocalDateTime createDate;
 
-  @Column(name = "update_date")
   @UpdateTimestamp
+  @Column(name = "update_date")
   private LocalDateTime updateDate;
 
-  @Column(name = "enabled")
-  private boolean enabled;
-
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "board_id")
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "board_id", updatable = false)
   private BoardEntity board;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", updatable = false)
   private UserAccountEntity user;
+
+  public void update(String content) {
+    this.content = content;
+  }
 }
