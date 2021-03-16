@@ -38,14 +38,14 @@ test-unit:
 	./mvnw test -Dtest=${UNIT} #-X
 .PHONY: test-unit
 
-build-with-test: clean
-	@./mvnw package
-.PHONY: build-with-test
+build-wo-test: clean
+	@./mvnw package -DskipTests
+.PHONY: build-wo-test
 
 build: clean
 	@# npm install
 	@# npm run bundle
-	./mvnw package -DskipTests
+	./mvnw package
 .PHONY: build
 
 docker-build: build
