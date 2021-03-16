@@ -7,11 +7,11 @@
 ### 로컬 환경
 
 ```bash
-make build
+./mvnw package
 ```
 
 ```bash
-make docker-up
+sudo docker-compose --file=docker-compose-web.yaml up --detach --build
 ```
 
 - [localhost:30414](http://localhost:30414)
