@@ -22,8 +22,8 @@ public class CommentRequestDto {
   private Long id;
   private String content;
   private String ipAddress;
-  private LocalDateTime createDate;
-  private LocalDateTime updateDate;
+  private LocalDateTime createdDate;
+  private LocalDateTime lastModifiedDate;
   private BoardEntity board;
   private UserAccountEntity user;
 
@@ -31,8 +31,8 @@ public class CommentRequestDto {
     this.id = comment.getId();
     this.content = comment.getContent();
     this.ipAddress = comment.getIpAddress();
-    this.createDate = comment.getCreateDate();
-    this.updateDate = comment.getUpdateDate();
+    this.createdDate = comment.getCreatedDate();
+    this.lastModifiedDate = comment.getLastModifiedDate();
     this.board = comment.getBoard();
     this.user = comment.getUser();
   }
@@ -43,8 +43,8 @@ public class CommentRequestDto {
       this.id,
       this.content,
       this.ipAddress,
-      this.createDate,
-      this.updateDate,
+      this.createdDate,
+      this.lastModifiedDate,
       this.board,
       this.user
     );

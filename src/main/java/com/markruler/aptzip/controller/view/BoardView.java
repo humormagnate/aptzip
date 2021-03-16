@@ -3,6 +3,7 @@ package com.markruler.aptzip.controller.view;
 import java.util.List;
 
 import com.markruler.aptzip.domain.board.model.BoardEntity;
+import com.markruler.aptzip.domain.board.model.BoardRequestDto;
 import com.markruler.aptzip.domain.board.model.Category;
 import com.markruler.aptzip.domain.board.model.CustomPage;
 import com.markruler.aptzip.domain.board.model.CustomPageMaker;
@@ -47,6 +48,7 @@ public class BoardView {
   @Secured(value = { "ROLE_USER", "ROLE_ADMIN" })
   @GetMapping("/{id}/edit")
   public String goEditPage(Model model, @PathVariable("id") Long id) {
+    model.addAttribute("board", BoardRequestDto.of(boardService.findById(id)));
     return "board/write";
   }
 

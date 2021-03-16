@@ -64,7 +64,7 @@ public class BoardService {
     board.setViewCount(0L);
     board.setUser(user);
     board.setApt(user.getApt());
-    board.setUpdateDate(LocalDateTime.now());
+    board.setLastModifiedDate(LocalDateTime.now());
     log.debug("board.getUser: {}", board.getUser());
     return boardRepository.save(board.toEntity());
   }

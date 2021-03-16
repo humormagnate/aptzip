@@ -24,7 +24,7 @@ public interface BoardRepository
     "set b.title = :title, " +
     "b.content = :content, " +
     "b.category = :category, " +
-    "b.updateDate = CURRENT_TIMESTAMP " +
+    "b.lastModifiedDate = CURRENT_TIMESTAMP " +
     "where b.id = :id"
   )
   public void updateById(

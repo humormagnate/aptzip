@@ -20,21 +20,21 @@ public class LikeRequestDto {
   private Long id;
   private BoardEntity board;
   private UserAccountEntity user;
-  private LocalDateTime createDate;
+  private LocalDateTime createdDate;
 
   public LikeRequestDto(LikeEntity like) {
     this.id = like.getId();
     this.board = like.getBoard();
     this.user = like.getUser();
-    this.createDate = like.getCreateDate();
+    this.createdDate = like.getCreatedDate();
   }
 
   public LikeEntity toEntity() {
-    return new LikeEntity(this.id, this.board, this.user, this.createDate);
+    return new LikeEntity(this.id, this.board, this.user, this.createdDate);
   }
 
   public static LikeRequestDto of(LikeEntity entity) {
     return LikeRequestDto.builder().id(entity.getId()).board(entity.getBoard()).user(entity.getUser())
-        .createDate(entity.getCreateDate()).build();
+        .createdDate(entity.getCreatedDate()).build();
   }
 }

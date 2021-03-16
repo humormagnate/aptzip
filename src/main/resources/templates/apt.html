@@ -55,7 +55,7 @@
             </th:block>
             
             <!-- new board -->
-            <div class="tt-item" th:classappend="${#aptzip.isLessThanOneHour(board?.createDate)} ? 'tt-itemselect' : ''">
+            <div class="tt-item" th:classappend="${#aptzip.isLessThanOneHour(board?.createdDate)} ? 'tt-itemselect' : ''">
               <div class="tt-col-avatar">
                 <svg class="tt-icon">
                   <use
@@ -81,7 +81,7 @@
                     </ul>
                   </div>
                   <div class="col-1 ml-auto show-mobile">
-                    <div>[[${#aptzip.betweenNowAndTime(board.createDate)}]]</div>
+                    <div>[[${#aptzip.betweenNowAndTime(board.createdDate)}]]</div>
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@
                 [[${ board.viewCount }]]
               </div>
               <div class="tt-col-value hide-mobile">
-                [[${#aptzip.betweenNowAndTime(board.createDate)}]]
+                [[${#aptzip.betweenNowAndTime(board.createdDate)}]]
               </div>
             </div>
           </th:block>

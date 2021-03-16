@@ -48,7 +48,7 @@ public class UserFollowEntity implements Serializable {
   private UserAccountEntity follower;
 
   @CreationTimestamp
-  @Column(name = "create_date")
-  private LocalDateTime createDate;
+  @Column(name = "created_date")
+  private LocalDateTime createdDate;
 
 }

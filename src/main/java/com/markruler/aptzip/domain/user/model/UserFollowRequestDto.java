@@ -13,7 +13,7 @@ public class UserFollowRequestDto {
   private Long id;
   private UserAccountEntity following;
   private UserAccountEntity follower;
-  private LocalDateTime createDate;
+  private LocalDateTime createdDate;
 
   public UserFollowEntity toEntity() {
     // @formatter:off
@@ -21,7 +21,7 @@ public class UserFollowRequestDto {
       this.id,
       this.following,
       this.follower,
-      this.createDate
+      this.createdDate
     );
     // @formatter:on
   }

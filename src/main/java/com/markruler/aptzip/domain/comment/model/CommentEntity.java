@@ -47,12 +47,12 @@ public class CommentEntity implements Serializable {
   private String ipAddress;
 
   @CreationTimestamp
-  @Column(name = "create_date", updatable = false)
-  private LocalDateTime createDate;
+  @Column(name = "created_date", updatable = false)
+  private LocalDateTime createdDate;
 
   @UpdateTimestamp
-  @Column(name = "update_date")
-  private LocalDateTime updateDate;
+  @Column(name = "last_modified_date")
+  private LocalDateTime lastModifiedDate;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "board_id", updatable = false)

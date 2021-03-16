@@ -67,11 +67,11 @@ public class BoardEntity implements Serializable {
   private Long viewCount;
 
   @CreationTimestamp
-  @Column(name = "create_date")
-  private LocalDateTime createDate;
+  @Column(name = "created_date")
+  private LocalDateTime createdDate;
 
-  @Column(name = "update_date")
-  private LocalDateTime updateDate;
+  @Column(name = "last_modified_date")
+  private LocalDateTime lastModifiedDate;
 
   @JsonIgnore
   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)

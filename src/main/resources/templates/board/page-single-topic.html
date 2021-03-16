@@ -35,7 +35,7 @@
 										<svg>
 											<use xlink:href="/fonts/forum.svg#icon-time"></use>
 										</svg>
-									</i>[[${ #temporals.format(board.updateDate, 'yyyy-MM-dd') }]]
+									</i>[[${ #temporals.format(board.lastModifiedDate, 'yyyy-MM-dd') }]]
 								</span>
 							</div>
 							<h3 class="tt-item-title user-select-none">
@@ -153,7 +153,7 @@
 										<span class="tt-info-time">
 											<i class="tt-icon"><svg>
 													<use xlink:href="/fonts/forum.svg#icon-time"></use>
-												</svg></i>[[${ #temporals.format(comment.updateDate, 'yyyy-MM-dd') }]]
+												</svg></i>[[${ #temporals.format(comment.lastModifiedDate, 'yyyy-MM-dd') }]]
 										</span>
 									</div>
 

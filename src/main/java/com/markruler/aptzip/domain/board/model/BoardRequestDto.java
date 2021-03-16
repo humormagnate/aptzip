@@ -31,8 +31,8 @@ public class BoardRequestDto {
   private Boolean enabled;
   private Long viewCount;
 
-  private LocalDateTime createDate;
-  private LocalDateTime updateDate;
+  private LocalDateTime createdDate;
+  private LocalDateTime lastModifiedDate;
 
   private UserAccountEntity user;
   private AptEntity apt;
@@ -49,8 +49,8 @@ public class BoardRequestDto {
       this.content,
       this.enabled,
       this.viewCount,
-      this.createDate,
-      this.updateDate,
+      this.createdDate,
+      this.lastModifiedDate,
       this.comments,
       this.user,
       this.apt
@@ -67,8 +67,8 @@ public class BoardRequestDto {
       .content(entity.getContent())
       .enabled(entity.getEnabled())
       .viewCount(entity.getViewCount())
-      .createDate(entity.getCreateDate())
-      .updateDate(entity.getUpdateDate())
+      .createdDate(entity.getCreatedDate())
+      .lastModifiedDate(entity.getLastModifiedDate())
       .comments(entity.getComments())
       .user(entity.getUser())
       .apt(entity.getApt())

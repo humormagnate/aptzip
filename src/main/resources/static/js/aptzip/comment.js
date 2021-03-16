@@ -64,7 +64,7 @@ const renderComment = (list) => {
   const readerId = document.getElementById("readerId").value;
   let str = "";
   list.forEach((renderObject) => {
-    let temporal = new Date(renderObject.updateDate);
+    let temporal = new Date(renderObject.lastModifiedDate);
 
     str += `<div class="tt-item">
             <div class="tt-single-topic">

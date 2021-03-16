@@ -55,7 +55,7 @@ CREATE TABLE tb_user_follow (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	following BIGINT NOT NULL,
 	follower BIGINT NOT NULL,
-	create_date DATETIME NOT NULL,
+	created_date DATETIME NOT NULL,
 	-- PRIMARY KEY (from_user, to_user),
 	PRIMARY KEY (id),
 	FOREIGN KEY (following) REFERENCES tb_user (id),
@@ -63,7 +63,7 @@ CREATE TABLE tb_user_follow (
 );
 CREATE TABLE tb_confirmation_token (
 	token VARCHAR(256) NOT NULL,
-	create_date DATETIME,
+	created_date DATETIME,
 	user_id BIGINT NOT NULL,
 	PRIMARY KEY (token),
 	FOREIGN KEY (user_id) REFERENCES tb_user (id)
@@ -75,8 +75,8 @@ CREATE TABLE tb_board (
 	attachment VARCHAR(128),
 	category VARCHAR(64),
 	enabled BIT(1) DEFAULT 1 NOT NULL,
-	create_date TIMESTAMP DEFAULT NOW() NOT NULL,
-	update_date TIMESTAMP DEFAULT NOW() NOT NULL,
+	created_date TIMESTAMP DEFAULT NOW() NOT NULL,
+	last_modified_date TIMESTAMP DEFAULT NOW() NOT NULL,
 	view_count INTEGER DEFAULT 0 NOT NULL,
 	user_id BIGINT NOT NULL,
 	apt_code VARCHAR(128) NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE tb_board (
 );
 CREATE TABLE tb_like (
 	id BIGINT NOT NULL AUTO_INCREMENT,
-	create_date DATETIME,
+	created_date DATETIME,
 	user_id bigint,
 	board_id bigint,
 	PRIMARY KEY (id),
@@ -98,8 +98,8 @@ CREATE TABLE tb_comment (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	content TEXT NOT NULL,
 	ip_address VARCHAR(128),
-	create_date TIMESTAMP DEFAULT NOW() NOT NULL,
-	update_date TIMESTAMP DEFAULT NOW() NOT NULL,
+	created_date TIMESTAMP DEFAULT NOW() NOT NULL,
+	last_modified_date TIMESTAMP DEFAULT NOW() NOT NULL,
 	board_id BIGINT NOT NULL,
 	user_id BIGINT NOT NULL,
 	PRIMARY KEY (id),

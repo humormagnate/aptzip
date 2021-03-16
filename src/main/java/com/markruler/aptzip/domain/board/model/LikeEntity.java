@@ -39,5 +39,5 @@ public class LikeEntity {
   private UserAccountEntity user;
 
   @CreationTimestamp
-  private LocalDateTime createDate;
+  private LocalDateTime createdDate;
 }

@@ -113,7 +113,7 @@
 											</div>
 											<div class="col-1 ml-auto show-mobile">
 												<div class="tt-value">
-													[[${ #temporals.format(board.createDate, 'HH:mm') }]]
+													[[${ #temporals.format(board.createdDate, 'HH:mm') }]]
 												</div>
 											</div>
 										</div>
@@ -127,7 +127,7 @@
 									<div class="tt-col-value tt-color-select hide-mobile">[[${ #lists.size(board.comments) }]]</div>
 									<div class="tt-col-value hide-mobile">[[${ board.viewCount }]]</div>
 									<div class="tt-col-value hide-mobile">
-										[[${#aptzip.betweenNowAndTime(board.createDate)}]]
+										[[${#aptzip.betweenNowAndTime(board.createdDate)}]]
 									</div>
 								</div>
 
@@ -179,7 +179,7 @@
 											</div>
 											<div class="col-3 ml-auto show-mobile">
 												<div class="tt-value">
-													[[${#temporals.format(comment.updateDate, 'yyyy-MM-dd')}]]
+													[[${#temporals.format(comment.lastModifiedDate, 'yyyy-MM-dd')}]]
 												</div>
 											</div>
 										</div>
@@ -197,7 +197,7 @@
 										</a>
 									</div>
 									<div class="tt-col-value-large hide-mobile">
-										[[${#aptzip.betweenNowAndTime(comment.updateDate)}]]
+										[[${#aptzip.betweenNowAndTime(comment.lastModifiedDate)}]]
 									</div>
 								</div>
 
@@ -240,7 +240,7 @@
 										</div>
 									</div>
 									<div class="tt-col-value-large hide-mobile">[[${#temporals.format(follower.follower.signupDate, 'yyyy-MM-dd')}]]</div>
-									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createDate)}]] ago</div>
+									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(follower.createdDate)}]] ago</div>
 									<div class="tt-col-value">
 										<span th:class="${follower.follower.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge' + ' user-select-none'">
 											[[${follower.follower.role}]]
@@ -279,7 +279,7 @@
 										</div>
 									</div>
 									<div class="tt-col-value-large hide-mobile">[[${#temporals.format(following.following.signupDate, 'yyyy-MM-dd')}]]</div>
-									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createDate)}]] ago</div>
+									<div class="tt-col-value-large hide-mobile">[[${#aptzip.betweenNowAndTime(following.createdDate)}]] ago</div>
 									<div class="tt-col-value">
 										<span th:class="${following.following.role eq 'ADMIN'} ? tt-color16 : tt-color19" th:classappend="'tt-badge' + ' user-select-none'">
 											[[${following.following.role}]]
