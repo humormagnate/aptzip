@@ -37,11 +37,7 @@ public class BoardView {
 
   @GetMapping("/new")
   public String goWritePage(Model model) {
-    Category[] categories = Category.values();
-    for (Category c : categories) {
-      log.debug("categories: {}", c);
-    }
-    model.addAttribute("categories", categories);
+    model.addAttribute("categories", Category.values());
     return "board/write";
   }
 
@@ -49,6 +45,7 @@ public class BoardView {
   @GetMapping("/{id}/edit")
   public String goEditPage(Model model, @PathVariable("id") Long id) {
     model.addAttribute("board", BoardRequestDto.of(boardService.findById(id)));
+    model.addAttribute("categories", Category.values());
     return "board/write";
   }
 

@@ -4,7 +4,6 @@ import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,8 +36,7 @@ public class AuthView {
   }
 
   @GetMapping("/forgot")
-  public String displayResetPassword(Model model, UserAccountRequestDto user) {
-    model.addAttribute("user", user);
+  public String displayResetPassword() {
     return "user/page-forgot-password";
   }
 
