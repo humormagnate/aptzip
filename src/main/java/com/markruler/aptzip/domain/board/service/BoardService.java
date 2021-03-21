@@ -73,10 +73,10 @@ public class BoardService {
     boardRepository.deleteById(id);
   }
 
-  public void updateById(BoardRequestDto board) {
+  public void updateById(Long id, BoardRequestDto board) {
     // @formatter:off
     boardRepository.updateById(
-			board.getId(),
+			id,
 			board.getTitle(),
       board.getContent(),
       board.getCategory()

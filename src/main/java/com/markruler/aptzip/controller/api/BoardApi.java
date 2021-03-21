@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.ImmutableMap;
 import com.markruler.aptzip.domain.board.model.BoardRequestDto;
 import com.markruler.aptzip.domain.board.model.LikeEntity;
 import com.markruler.aptzip.domain.board.service.BoardService;
@@ -12,6 +11,7 @@ import com.markruler.aptzip.domain.board.service.LikeService;
 import com.markruler.aptzip.domain.user.model.UserAccountEntity;
 import com.markruler.aptzip.domain.user.model.UserAccountRequestDto;
 import com.markruler.aptzip.domain.user.service.UserAccountService;
+import com.markruler.aptzip.infrastructure.common.Constant;
 import com.markruler.aptzip.infrastructure.error.ErrorResponse;
 
 import org.slf4j.Logger;
@@ -39,11 +39,10 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = "boards")
 @RequiredArgsConstructor
 public class BoardApi {
-  Logger log = LoggerFactory.getLogger(BoardApi.class);
-
   private final BoardService boardService;
   private final UserAccountService userService;
   private final LikeService likeService;
+  Logger log = LoggerFactory.getLogger(BoardApi.class);
 
   @ExceptionHandler(IllegalArgumentException.class)
   protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
@@ -54,12 +53,12 @@ public class BoardApi {
 
   @PostMapping("/new")
   public String writeNewBoard(
-  // @formatter:off
-    @ModelAttribute BoardRequestDto board,
-    @RequestParam(value = "category", defaultValue = "COMMON") String category,
-    @AuthenticationPrincipal UserAccountRequestDto user,
-    RedirectAttributes redirectAttributes
-  // @formatter:on
+      // @formatter:off
+      @ModelAttribute BoardRequestDto board,
+      @RequestParam(value = "category", defaultValue = "COMMON") String category,
+      @AuthenticationPrincipal UserAccountRequestDto user,
+      RedirectAttributes redirectAttributes
+      // @formatter:on
   ) throws IllegalArgumentException {
 
     if (board.getTitle() == null || board.getTitle().isEmpty() || board.getContent() == null
@@ -73,24 +72,24 @@ public class BoardApi {
     boardService.save(board, category, userEntity.get());
     // Post-Redirect-Get 방식: 리다이렉트를 하지 않으면 사용자가 여러 번 게시물을 등록할 수 있기 때문에 이를 방지하기 위함
     redirectAttributes.addFlashAttribute("msg", "success");
-    return "redirect:/";
+    return Constant.REDIRECT_HOME_PAGE;
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> updateBoard(@RequestBody BoardRequestDto board) {
-    boardService.updateById(board);
-    return ResponseEntity.ok("success");
+  public ResponseEntity<String> updateBoard(@PathVariable("id") Long id, @RequestBody BoardRequestDto board) {
+    boardService.updateById(id, board);
+    return ResponseEntity.ok(Constant.SUCCESS_MESSAGE);
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
     boardService.deleteById(id);
-    return ResponseEntity.ok("success");
+    return ResponseEntity.ok(Constant.SUCCESS_MESSAGE);
   }
 
   @PostMapping("/{boardId}/like/{userId}")
   public ResponseEntity<LikeEntity> createLike(@PathVariable("boardId") Long boardId,
-      @PathVariable("userId") Long userId) {
+                                               @PathVariable("userId") Long userId) {
     return ResponseEntity.ok(likeService.save(boardId, userId));
   }
 

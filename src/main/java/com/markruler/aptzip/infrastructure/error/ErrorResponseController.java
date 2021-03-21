@@ -32,7 +32,7 @@ public class ErrorResponseController implements ErrorController {
     Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
     HttpStatus httpStatus = HttpStatus.valueOf(Integer.valueOf(status.toString()));
     if (!httpStatus.is2xxSuccessful()) {
-      log.error("HTTP Status: {}", status.toString());
+      log.error("HTTP Status: {}", status);
       log.error("Reason Phrase: {}", httpStatus.getReasonPhrase());
       // @formatter:off
       model

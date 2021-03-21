@@ -312,6 +312,7 @@ if (document.body.contains(document.getElementById("iconReply"))) {
 
 if (
   document.location.href.includes("boards") &&
+  !document.location.href.includes("edit") &&
   !document.location.href.includes("new")
 ) {
   document.addEventListener("DOMContentLoaded", () => {
