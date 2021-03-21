@@ -23,7 +23,7 @@ public class MvcConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    registry.addViewController("/home").setViewName("redirect:/");
+    registry.addViewController("/home").setViewName(Constant.REDIRECT_HOME_PAGE);
     registry.addRedirectViewController("/docs/v2/api-docs", "/v2/api-docs");
     registry.addRedirectViewController("/docs/swagger-resources/configuration/ui",
         "/swagger-resources/configuration/ui");

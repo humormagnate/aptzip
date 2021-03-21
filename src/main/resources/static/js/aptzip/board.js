@@ -53,7 +53,7 @@ if (document.body.contains(document.getElementById("updateBoardButton"))) {
       event.preventDefault();
       event.stopPropagation();
       const boardId = document.getElementById("boardId");
-      updateBoard("/boards", boardId.value);
+      updateBoard(`/boards/${boardId.value}`, boardId.value);
     },
     false
   );
@@ -114,7 +114,7 @@ function updateBoard(requestPath, boardId) {
       category: hiddenCategoryTypes.value,
     }),
   })
-    .then((res) => res.json())
+    .then((res) => res.text())
     .then((data) => {
       alert(data.message);
       window.location.replace(document.referrer);
